@@ -1,0 +1,13 @@
+.atk-layout
+  .ui.left.vertical.menu.inverted.labeled.sidebar.atk-sidenav(class="{CssVisibility}visible{/}")
+    | {$LeftMenu}
+  main.atk-mainContainer.atk-admin-layout
+    | {$TopMenu}
+    .atk-mainContainerWrapper
+      | {$Content}
+  footer.atk-footer
+    .ui.divider
+    .ui.center.aligned.basic.segment {Footer}Made with #[a(href='http://agiletoolkit.org/' target='_blank') Agile Toolkit] v{$version}{/}
+  .atk-overlay.pushable
+    .pusher
+= "\n"

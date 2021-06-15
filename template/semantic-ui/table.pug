@@ -1,0 +1,42 @@
+<table id="{$_id}" class="{_ui}ui{/} {$class} {$_class}" style="{$style}" {$attributes}>
+thead
+    | {Head}
+    tr {$cells}
+    |
+    | {/}
+    | {$SubHead}
+
+tbody
+    | {Body}
+
+    | {Row}
+    tr('data-id'='{$_id}')
+        | {$cells}
+
+    |
+    | {/}
+
+    | {Empty}
+    tr
+        td(colspan="{$columns}") No records.
+    |
+    | {/}
+
+    | {/Body}
+
+| {has_foot}
+tfoot
+    | {Foot}
+
+    | {Totals}
+    tr {$cells}
+    |
+    | {/}
+
+    | {$Paginator}
+
+    | {/}
+| {/}
+
+</table>
+= "\n"
