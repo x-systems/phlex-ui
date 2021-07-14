@@ -127,9 +127,9 @@ $wizard->addStep('Business Model', function ($page) {
         {
             public $title_field = 'reference';
 
-            protected function init(): void
+            protected function doInitialize(): void
             {
-                parent::init();
+                parent::doInitialize();
 
                 $this->addField('reference');
                 $this->addField('date', ['type' => 'date']);
@@ -148,7 +148,7 @@ $wizard->addStep('Business Model', function ($page) {
         $model = $model->tryLoad(1);
         $form->setModel($model);
 
-        if (!$model->loaded()) {
+        if (!$model->isLoaded()) {
             // set default data
             $model->setMulti([
                 'id' => 1,
@@ -207,7 +207,7 @@ $wizard->addStep('Persistence', function ($page) {
 
         Header::addTo($owner, ['Record display in Card View using model data.']);
         $model = $model->tryLoad(1);
-        if ($model->loaded()) {
+        if ($model->isLoaded()) {
             \Phlex\Ui\Card::addTo($owner, ['useLabel' => true])->setModel($model);
         } else {
             Message::addTo($owner, ['Empty record.']);

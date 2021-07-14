@@ -9,9 +9,9 @@ use Phlex\Data\Persistence;
 
 class MyTestModel extends Model
 {
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+    	parent::doInitialize();
 
         $this->addField('regular_field');
         $this->addField('just_for_data', ['never_persist' => true]);

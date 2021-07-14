@@ -16,9 +16,9 @@ class FlyersForm extends Form
         ['name' => 'Around the world', 'id' => 3, 'nodes' => []],
     ];
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         $this->addControl('first_name', [Form\Control\Line::class, 'caption' => 'Main passenger', 'placeholder' => 'First name'], ['required' => true]);
         $this->addControl('last_name', [Form\Control\Line::class, 'renderLabel' => false, 'placeholder' => 'Last name'], ['required' => true]);
@@ -40,9 +40,9 @@ class FlyersForm extends Form
                 isset($data['contains']) ? $model->addCondition('name', 'like', '%' . $data['contains'] . '%') : null;
             },
             'search' => [
-                \Phlex\Ui\Demos\Country::hinting()->fieldName()->name,
-                \Phlex\Ui\Demos\Country::hinting()->fieldName()->iso,
-                \Phlex\Ui\Demos\Country::hinting()->fieldName()->iso3,
+                \Phlex\Ui\Demos\Country::hint()->key()->name,
+                \Phlex\Ui\Demos\Country::hint()->key()->iso,
+                \Phlex\Ui\Demos\Country::hint()->key()->iso3,
             ],
             'caption' => 'Destination',
             'placeholder' => 'Select your destination',

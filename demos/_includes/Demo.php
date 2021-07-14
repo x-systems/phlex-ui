@@ -13,9 +13,9 @@ class Demo extends \Phlex\Ui\Columns
     public $left_width = 8;
     public $right_width = 8;
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
         $this->addClass('celled');
 
         $this->left = $this->addColumn($this->left_width);

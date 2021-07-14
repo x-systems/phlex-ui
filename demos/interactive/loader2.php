@@ -14,7 +14,7 @@ require_once __DIR__ . '/../init-app.php';
 $c = \Phlex\Ui\Columns::addTo($app);
 
 $grid = \Phlex\Ui\Grid::addTo($c->addColumn(), ['ipp' => 10, 'menu' => false]);
-$grid->setModel(new Country($app->db), [Country::hinting()->fieldName()->name]);
+$grid->setModel(new Country($app->db), [Country::hint()->key()->name]);
 
 $countryLoader = \Phlex\Ui\Loader::addTo($c->addColumn(), ['loadEvent' => false, 'shim' => [\Phlex\Ui\Text::class, 'Select country on your left']]);
 

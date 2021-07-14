@@ -86,9 +86,9 @@ class MyModel extends \Phlex\Data\Model
 {
     public $title_field = 'email';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+    	parent::doInitialize();
 
         $this->addField('email');
         $this->addField('password', ['type' => 'password']);

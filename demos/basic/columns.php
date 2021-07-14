@@ -74,9 +74,9 @@ $boxClass = get_class(new class() extends \Phlex\Ui\View {
     public $ui = 'segment';
     public $content = false;
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
         \Phlex\Ui\Table::addTo($this, ['header' => false])
             ->setSource(['One', 'Two', 'Three', 'Four']);
     }

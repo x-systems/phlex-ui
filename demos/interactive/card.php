@@ -50,7 +50,7 @@ $cardStat = \Phlex\Ui\Card::addTo($deck, ['useTable' => true]);
 $cardStat->addContent(new \Phlex\Ui\Header(['Project Info']));
 $stat = (new Stat($app->db))->tryLoadAny();
 
-$cardStat->setModel($stat, [$stat->fieldName()->project_name, $stat->fieldName()->project_code, $stat->fieldName()->client_name, $stat->fieldName()->start_date]);
+$cardStat->setModel($stat, [$stat->key()->project_name, $stat->key()->project_code, $stat->key()->client_name, $stat->key()->start_date]);
 
 $btn = $cardStat->addButton(new \Phlex\Ui\Button(['Email Client']));
 
@@ -58,7 +58,7 @@ $cardStat = \Phlex\Ui\Card::addTo($deck, ['useLabel' => true]);
 $cardStat->addContent(new \Phlex\Ui\Header(['Project Info']));
 $stat = (new Stat($app->db))->tryLoadAny();
 
-$cardStat->setModel($stat, [$stat->fieldName()->project_name, $stat->fieldName()->project_code, $stat->fieldName()->client_name, $stat->fieldName()->start_date]);
+$cardStat->setModel($stat, [$stat->key()->project_name, $stat->key()->project_code, $stat->key()->client_name, $stat->key()->start_date]);
 
 $cardStat->addButton(new \Phlex\Ui\Button(['Email Client']));
 

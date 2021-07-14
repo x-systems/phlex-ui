@@ -19,9 +19,9 @@ $stat = new Stat($app->db);
 $stat = $stat->loadAny();
 
 $c = \Phlex\Ui\Card::addTo($app);
-$c->setModel($stat, [$stat->fieldName()->client_name, $stat->fieldName()->description]);
+$c->setModel($stat, [$stat->key()->client_name, $stat->key()->description]);
 
-$c->addSection('Project: ', $stat, [$stat->fieldName()->start_date, $stat->fieldName()->finish_date], true);
+$c->addSection('Project: ', $stat, [$stat->key()->start_date, $stat->key()->finish_date], true);
 
 $country = $stat->client_country_iso;
 $notify = $country->addUserAction('Notify', [
@@ -32,6 +32,6 @@ $notify = $country->addUserAction('Notify', [
         return 'Note to client is sent: ' . $note;
     },
 ]);
-$c->addSection('Client Country:', $country, [$country->fieldName()->iso, $country->fieldName()->numcode, $country->fieldName()->phonecode], true);
+$c->addSection('Client Country:', $country, [$country->key()->iso, $country->key()->numcode, $country->key()->phonecode], true);
 
 $c->addClickAction($notify, new Button(['Send Note']), [$country->id]);

@@ -11,9 +11,9 @@ class Counter extends \Phlex\Ui\Form\Control\Line
 {
     public $content = 20; // default
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+    	parent::doInitialize();
 
         $this->actionLeft = new \Phlex\Ui\Button(['icon' => 'minus']);
         $this->action = new \Phlex\Ui\Button(['icon' => 'plus']);

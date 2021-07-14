@@ -10,9 +10,9 @@ namespace Phlex\Ui\Demos;
  */
 class ViewTester extends \Phlex\Ui\View
 {
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         $label = \Phlex\Ui\Label::addTo($this, ['CallBack', 'detail' => 'fail', 'red']);
         $reload = new \Phlex\Ui\JsReload($this, [$this->name => 'ok']);

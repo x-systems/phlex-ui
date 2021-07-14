@@ -22,8 +22,8 @@ $vp = $app->add(new \Phlex\Ui\VirtualPage());
 $vp->cb->triggerOnReload = false;
 
 $form = Form::addTo($vp);
-$form->setModel($m->tryLoadAny(), [$m->fieldName()->name]);
-$form->getControl($m->fieldName()->name)->caption = 'TestName';
+$form->setModel($m->tryLoadAny(), [$m->key()->name]);
+$form->getControl($m->key()->name)->caption = 'TestName';
 
 $table = $app->add(new \Phlex\Ui\Table());
 $table->setModel($m);

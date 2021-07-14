@@ -57,4 +57,4 @@ $crud->setModel($country);
 View::addTo($app, ['class' => ['ui divider']]);
 
 $deck = CardDeck::addTo($app, ['menu' => false, 'search' => false, 'paginator' => false, 'useTable' => true]);
-$deck->setModel($country->setLimit(3), [$country->fieldName()->iso, $country->fieldName()->iso3]);
+$deck->setModel($country->setLimit(3), [$country->key()->iso, $country->key()->iso3]);

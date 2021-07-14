@@ -50,7 +50,7 @@ $lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $l
     $row->iso = mb_strtolower($row->iso);
 });
 $lister->setModel(new Country($app->db))
-    ->addCondition(Country::hinting()->fieldName()->id, -1); // no such records so model will be empty
+    ->addCondition(Country::hint()->key()->id, -1); // no such records so model will be empty
 
 \Phlex\Ui\View::addTo($app, ['ui' => 'clearing divider']);
 \Phlex\Ui\Header::addTo($app, ['Item per page', 'subHeader' => 'Lister can display a certain amount of items']);

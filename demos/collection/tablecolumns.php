@@ -11,9 +11,9 @@ require_once __DIR__ . '/../init-app.php';
 
 /** @var \Phlex\Data\Model $modelColorClass */
 $modelColorClass = get_class(new class() extends \Phlex\Data\Model {
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         $this->addField('name', [
             'type' => 'string',

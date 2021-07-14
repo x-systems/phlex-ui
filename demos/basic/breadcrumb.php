@@ -37,7 +37,7 @@ if ($id = $app->stickyGet('country_id')) {
     // display list of countries
     $table = \Phlex\Ui\Table::addTo($app);
     $table->setModel($model);
-    $table->addDecorator($model->fieldName()->name, [\Phlex\Ui\Table\Column\Link::class, [], ['country_id' => 'id']]);
+    $table->addDecorator($model->key()->name, [\Phlex\Ui\Table\Column\Link::class, [], ['country_id' => 'id']]);
 }
 
 $crumb->popTitle();

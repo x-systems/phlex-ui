@@ -6,9 +6,9 @@ namespace Phlex\Ui\Demos;
 
 class Flyers extends \Phlex\Data\Model
 {
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         $this->addField('first_name');
         $this->addField('last_name');

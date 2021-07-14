@@ -14,4 +14,4 @@ $model->getUserAction('delete')->system = true;
 
 $grid = \Phlex\Ui\Crud::addTo($app, ['paginator' => false]);
 $grid->setModel($model);
-$grid->addDecorator($model->fieldName()->project_code, [\Phlex\Ui\Table\Column\Link::class]);
+$grid->addDecorator($model->key()->project_code, [\Phlex\Ui\Table\Column\Link::class]);

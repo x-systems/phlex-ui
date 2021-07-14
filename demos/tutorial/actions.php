@@ -68,7 +68,7 @@ $wizard->addStep('Define User Action', function ($page) {
         $country = $country->tryLoadAny();
 
         $card = \Phlex\Ui\Card::addTo($owner);
-        $card->setModel($country, [$country->fieldName()->iso]);
+        $card->setModel($country, [$country->key()->iso]);
         $card->addClickAction($country->getUserAction('send_message'));
     });
 });
@@ -204,7 +204,7 @@ $wizard->addStep('Crud integration', function ($page) {
             [Button::class, null, 'icon' => 'blue mail'],
             $country->getUserAction('mail')
         );
-        \Phlex\Ui\Crud::addTo($owner, ['ipp' => 5])->setModel($country, [$country->fieldName()->name, $country->fieldName()->iso]);
+        \Phlex\Ui\Crud::addTo($owner, ['ipp' => 5])->setModel($country, [$country->key()->name, $country->key()->iso]);
     });
 });
 

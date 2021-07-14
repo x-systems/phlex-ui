@@ -45,4 +45,4 @@ $infoAction->args = [
 
 $deck = \Phlex\Ui\CardDeck::addTo($app, ['noRecordScopeActions' => ['request_info'], 'singleScopeActions' => ['book']]);
 
-$deck->setModel($countries, ['Cost'], [$countries->fieldName()->iso, $countries->fieldName()->iso3]);
+$deck->setModel($countries, ['Cost'], [$countries->key()->iso, $countries->key()->iso3]);

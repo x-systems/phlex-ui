@@ -21,7 +21,7 @@ $model->addUserAction('test', function ($model) {
 $grid->setModel($model);
 
 // Adding Quicksearch on Name field using auto query.
-$grid->addQuickSearch([$model->fieldName()->name], true);
+$grid->addQuickSearch([$model->key()->name], true);
 
 if ($app->stickyGet('no-ajax')) {
     $grid->quickSearch->useAjax = false;

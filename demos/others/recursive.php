@@ -9,9 +9,9 @@ require_once __DIR__ . '/../init-app.php';
 
 /** @var \Phlex\Ui\View $mySwitcherClass */
 $mySwitcherClass = get_class(new class() extends \Phlex\Ui\View {
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         \Phlex\Ui\Header::addTo($this, ['My name is ' . $this->name, 'red']);
 

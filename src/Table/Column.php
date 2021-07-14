@@ -406,7 +406,7 @@ class Column
      * a column-basis. Will not be invoked if html-output is turned off for the table.
      *
      * @param Model      $row   link to row data
-     * @param Field|null $field field being rendered
+     * @param Model\Field|null $field field being rendered
      *
      * @return array associative array with tags and their HTML values
      */

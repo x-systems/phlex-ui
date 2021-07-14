@@ -49,10 +49,10 @@ $grid->setModel(new Country($app->db));
 $grid->ipp = 5;
 
 // Adding a dropdown menu to the column 'name'.
-$grid->addDropdown(Country::hinting()->fieldName()->name, ['Rename', 'Delete'], function ($item) {
+$grid->addDropdown(Country::hint()->key()->name, ['Rename', 'Delete'], function ($item) {
     return $item;
 });
 
 // Adding a popup view to the column 'iso'
-$pop = $grid->addPopup(Country::hinting()->fieldName()->iso);
+$pop = $grid->addPopup(Country::hint()->key()->iso);
 \Phlex\Ui\Text::addTo($pop)->set('Grid column popup');

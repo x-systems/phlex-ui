@@ -32,7 +32,7 @@ class Table extends Lister
     /**
      * Contains list of declared columns. Value will always be a column object.
      *
-     * @var array
+     * @var array<Table\Column>
      */
     public $columns = [];
 

@@ -26,9 +26,9 @@ $inventoryItemClass = get_class(new class() extends Model {
     public $timeFormat;
     public $countryPersistence;
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         $this->addField('item', [
             'required' => true,

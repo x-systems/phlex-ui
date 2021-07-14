@@ -34,17 +34,17 @@ $form->setModel($model, false);
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class]);
 
 \Phlex\Ui\Header::addTo($sublayout, ['Column Section in Form']);
-$sublayout->setModel($model, [$model->fieldName()->name]);
+$sublayout->setModel($model, [$model->key()->name]);
 
 $colsLayout = $form->layout->addSubLayout([Form\Layout\Section\Columns::class]);
 
 $c1 = $colsLayout->addColumn();
-$c1->setModel($model, [$model->fieldName()->iso, $model->fieldName()->iso3]);
+$c1->setModel($model, [$model->key()->iso, $model->key()->iso3]);
 
 $c2 = $colsLayout->addColumn();
-$c2->setModel($model, [$model->fieldName()->numcode/*, $model->fieldName()->phonecode*/]);
+$c2->setModel($model, [$model->key()->numcode/*, $model->key()->phonecode*/]);
 
-$form->addControl($model->fieldName()->phonecode);
+$form->addControl($model->key()->phonecode);
 
 $form->onSubmit($noSave);
 
@@ -58,15 +58,15 @@ $form->setModel($model, false);
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class]);
 
 \Phlex\Ui\Header::addTo($sublayout, ['Accordion Section in Form']);
-$sublayout->setModel($model, [$model->fieldName()->name]);
+$sublayout->setModel($model, [$model->key()->name]);
 
 $accordionLayout = $form->layout->addSubLayout([Form\Layout\Section\Accordion::class]);
 
 $a1 = $accordionLayout->addSection('Section 1');
-$a1->setModel($model, [$model->fieldName()->iso, $model->fieldName()->iso3]);
+$a1->setModel($model, [$model->key()->iso, $model->key()->iso3]);
 
 $a2 = $accordionLayout->addSection('Section 2');
-$a2->setModel($model, [$model->fieldName()->numcode, $model->fieldName()->phonecode]);
+$a2->setModel($model, [$model->key()->numcode, $model->key()->phonecode]);
 
 $form->onSubmit($noSave);
 
@@ -80,15 +80,15 @@ $form->setModel($model, false);
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class]);
 
 \Phlex\Ui\Header::addTo($sublayout, ['Tabs in Form']);
-$sublayout->setModel($model, [$model->fieldName()->name]);
+$sublayout->setModel($model, [$model->key()->name]);
 
 $tabsLayout = $form->layout->addSubLayout([Form\Layout\Section\Tabs::class]);
 
 $tab1 = $tabsLayout->addTab('Tab 1');
-$tab1->addGroup('In Group')->setModel($model, [$model->fieldName()->iso, $model->fieldName()->iso3]);
+$tab1->addGroup('In Group')->setModel($model, [$model->key()->iso, $model->key()->iso3]);
 
 $tab2 = $tabsLayout->addTab('Tab 2');
-$tab2->setModel($model, [$model->fieldName()->numcode, $model->fieldName()->phonecode]);
+$tab2->setModel($model, [$model->key()->numcode, $model->key()->phonecode]);
 
 $form->onSubmit($noSave);
 
@@ -104,16 +104,16 @@ $form->setModel($model, false);
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class, 'ui' => 'segment red inverted'], false);
 
 \Phlex\Ui\Header::addTo($sublayout, ['This section in Red', 'ui' => 'dividing header', 'element' => 'h2']);
-$sublayout->setModel($model, [$model->fieldName()->name]);
+$sublayout->setModel($model, [$model->key()->name]);
 
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class, 'ui' => 'segment teal inverted']);
 $colsLayout = $sublayout->addSubLayout([Form\Layout\Section\Columns::class]);
 
 $c1 = $colsLayout->addColumn();
-$c1->setModel($model, [$model->fieldName()->iso, $model->fieldName()->iso3]);
+$c1->setModel($model, [$model->key()->iso, $model->key()->iso3]);
 
 $c2 = $colsLayout->addColumn();
-$c2->setModel($model, [$model->fieldName()->numcode, $model->fieldName()->phonecode]);
+$c2->setModel($model, [$model->key()->numcode, $model->key()->phonecode]);
 
 $form->onSubmit($noSave);
 

@@ -87,7 +87,7 @@ class DemoActionsUtil
                 'description' => function (UserAction $action) {
                     return 'Edit ISO3 for country: ' . $action->getEntity()->getTitle();
                 },
-                'fields' => [$country->fieldName()->iso3],
+                'fields' => [$country->key()->iso3],
                 'callback' => function () {
                     return 'ok';
                 },
@@ -133,7 +133,7 @@ class DemoActionsUtil
                     'city' => [],
                     'gender' => ['type' => 'enum', 'values' => ['m' => 'Male', 'f' => 'Female'], 'required' => true, 'default' => 'm'],
                 ],
-                'fields' => [$country->fieldName()->iso3],
+                'fields' => [$country->key()->iso3],
                 'callback' => function ($model, $age, $city, $gender) {
                     $n = $gender === 'm' ? 'Mr.' : 'Mrs.';
 

@@ -78,9 +78,9 @@ $form->onSubmit(function (Form $form) {
 $personClass = get_class(new class() extends \Phlex\Data\Model {
     public $table = 'person';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
         $this->addField('name', ['required' => true]);
         $this->addField('surname', ['ui' => ['placeholder' => 'e.g. Smith']]);
         $this->addField('gender', ['enum' => ['M', 'F']]);

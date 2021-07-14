@@ -8,8 +8,8 @@ namespace Phlex\Ui\Demos;
 require_once __DIR__ . '/../init-app.php';
 
 $model = new Stat($app->db, ['caption' => 'Demo Stat']);
-$model->addCondition($model->fieldName()->finish_time, '=', '22:12:00');
-$model->addCondition($model->fieldName()->start_date, '=', '2020-10-22');
+$model->addCondition($model->key()->finish_time, '=', '22:12:00');
+$model->addCondition($model->key()->start_date, '=', '2020-10-22');
 
 $form = \Phlex\Ui\Form::addTo($app);
 

@@ -13,12 +13,12 @@ $crud = \Phlex\Ui\Crud::addTo($app, ['ipp' => 10]);
 
 // callback for model action add form.
 $crud->onFormAdd(function ($form, $t) use ($model) {
-    $form->js(true, $form->getControl($model->fieldName()->name)->jsInput()->val('Entering value via javascript'));
+    $form->js(true, $form->getControl($model->key()->name)->jsInput()->val('Entering value via javascript'));
 });
 
 // callback for model action edit form.
 $crud->onFormEdit(function ($form) use ($model) {
-    $form->js(true, $form->getControl($model->fieldName()->name)->jsInput()->attr('readonly', true));
+    $form->js(true, $form->getControl($model->key()->name)->jsInput()->attr('readonly', true));
 });
 
 // callback for both model action edit and add.
@@ -40,8 +40,8 @@ $column = $columns->addColumn(0, 'ui blue segment');
 // Crud can operate with various fields
 \Phlex\Ui\Header::addTo($column, ['Configured Crud']);
 $crud = \Phlex\Ui\Crud::addTo($column, [
-    'displayFields' => [$model->fieldName()->name], // field to display in Crud
-    'editFields' => [$model->fieldName()->name, $model->fieldName()->iso, $model->fieldName()->iso3], // field to display on 'edit' action
+    'displayFields' => [$model->key()->name], // field to display in Crud
+    'editFields' => [$model->key()->name, $model->key()->iso, $model->key()->iso3], // field to display on 'edit' action
     'ipp' => 5,
     'paginator' => ['range' => 2, 'class' => ['blue inverted']],  // reduce range on the paginator
     'menu' => ['class' => ['green inverted']],
@@ -49,11 +49,11 @@ $crud = \Phlex\Ui\Crud::addTo($column, [
 ]);
 // Condition on the model can be applied on a model
 $model = new CountryLock($app->db);
-$model->addCondition($model->fieldName()->numcode, '<', 200);
+$model->addCondition($model->key()->numcode, '<', 200);
 $model->onHook(\Phlex\Data\Model::HOOK_VALIDATE, function ($model, $intent) {
     $err = [];
     if ($model->numcode >= 200) {
-        $err[$model->fieldName()->numcode] = 'Should be less than 200';
+        $err[$model->key()->numcode] = 'Should be less than 200';
     }
 
     return $err;
@@ -79,7 +79,7 @@ $myExecutorClass = get_class(new class() extends \Phlex\Ui\UserAction\ModalExecu
 
         $result = parent::addFormTo($left);
 
-        if ($this->action->getModel()->get(File::hinting()->fieldName()->is_folder)) {
+        if ($this->action->getModel()->get(File::hint()->key()->is_folder)) {
             \Phlex\Ui\Grid::addTo($right, ['menu' => false, 'ipp' => 5])
                 ->setModel(File::assertInstanceOf($this->action->getModel())->SubFolder);
         } else {
@@ -100,4 +100,4 @@ $crud = \Phlex\Ui\Crud::addTo($column, [
 $crud->menu->addItem(['Rescan', 'icon' => 'recycle']);
 
 // Condition on the model can be applied after setting the model
-$crud->setModel($file)->addCondition($file->fieldName()->parent_folder_id, null);
+$crud->setModel($file)->addCondition($file->key()->parent_folder_id, null);

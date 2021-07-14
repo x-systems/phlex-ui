@@ -107,7 +107,7 @@ class InlineEdit extends View
     {
         parent::setModel($model);
         $this->field = $this->field ?: $this->model->titleKey;
-        if ($this->autoSave && $this->model->loaded()) {
+        if ($this->autoSave && $this->model->isLoaded()) {
             $value = $_POST['value'] ?? null;
             $this->cb->set(function () use ($value) {
                 try {
@@ -192,7 +192,7 @@ class InlineEdit extends View
             throw new Exception('Only string or number field can be edited inline. Field Type = ' . $type);
         }
 
-        if ($this->model && $this->model->loaded()) {
+        if ($this->model && $this->model->isLoaded()) {
             $initValue = $this->model->get($this->field);
         } else {
             $initValue = $this->initValue;

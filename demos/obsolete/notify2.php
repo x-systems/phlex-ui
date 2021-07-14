@@ -11,9 +11,9 @@ require_once __DIR__ . '/../init-app.php';
 $notifierClass = get_class(new class() extends \Phlex\Data\Model {
     public $table = 'notifier';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         $this->addField('text', ['default' => 'This text will appear in notification', 'caption' => 'type any text']);
         $this->addField('icon', ['default' => 'warning sign', 'caption' => 'Use semantic-ui icon name']);

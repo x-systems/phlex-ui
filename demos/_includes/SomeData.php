@@ -13,9 +13,9 @@ class SomeData extends \Phlex\Data\Model
         parent::__construct($fakerPersistence);
     }
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
         $model = $this;
 
         $model->addField('title');

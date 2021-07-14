@@ -13,7 +13,7 @@ use Phlex\Ui\UserAction\ExecutorFactory;
 require_once __DIR__ . '/../init-app.php';
 
 $model = new ProductLock($app->db);
-$model->addCondition($model->fieldName()->name, '=', 'Mustard');
+$model->addCondition($model->key()->name, '=', 'Mustard');
 
 // use default.
 $app->getExecutorFactory()->useTriggerDefault(ExecutorFactory::TABLE_BUTTON);
@@ -24,4 +24,4 @@ $edit->callback = function ($model) {
 };
 
 $crud = Crud::addTo($app);
-$crud->setModel($model, [$model->fieldName()->name]);
+$crud->setModel($model, [$model->key()->name]);

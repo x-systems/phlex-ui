@@ -184,7 +184,7 @@ class Card extends View
      */
     public function setModel(Model $model, $fields = null)
     {
-        if (!$model->loaded()) {
+        if (!$model->isLoaded()) {
             throw new Exception('Model need to be loaded.');
         }
 
@@ -298,7 +298,7 @@ class Card extends View
         $btn = $this->addButton($button ?? $this->getExecutorFactory()->createTrigger($action, $this->getExecutorFactory()::CARD_BUTTON));
 
         // Setting arg for model id. $args[0] is consider to hold a model id, i.e. as a js expression.
-        if ($this->model && $this->model->loaded() && !isset($args[0])) {
+        if ($this->model && $this->model->isLoaded() && !isset($args[0])) {
             $defaults[] = $this->model->getId();
         }
 

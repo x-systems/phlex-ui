@@ -6,9 +6,9 @@ namespace Phlex\Ui\Demos;
 
 class ReloadTest extends \Phlex\Ui\View
 {
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         $label = \Phlex\Ui\Label::addTo($this, ['Testing...', 'detail' => '', 'red']);
         $reload = new \Phlex\Ui\JsReload($this, [$this->name => 'ok']);

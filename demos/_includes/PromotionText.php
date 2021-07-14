@@ -6,9 +6,9 @@ namespace Phlex\Ui\Demos;
 
 class PromotionText extends \Phlex\Ui\View
 {
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         $t = \Phlex\Ui\Text::addTo($this);
         $t->addParagraph(

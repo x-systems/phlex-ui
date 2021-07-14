@@ -36,13 +36,13 @@ class ModelWithPrefixedFields extends Model
     protected function createHintablePropsFromClassDoc(string $className): array
     {
         return array_map(function (HintablePropertyDef $hintableProp) {
-            $hintableProp->fieldName = $this->prefixFieldName($hintableProp->name);
+            $hintableProp->key = $this->prefixFieldName($hintableProp->name);
 
             return $hintableProp;
         }, parent::createHintablePropsFromClassDoc($className));
     }
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
         if ($this->id_field === 'id') {
             $this->id_field = $this->prefixFieldName($this->id_field);
@@ -52,7 +52,7 @@ class ModelWithPrefixedFields extends Model
             $this->title_field = $this->prefixFieldName($this->title_field);
         }
 
-        parent::init();
+        parent::doInitialize();
     }
 
     public function addField($name, $seed = []): \Phlex\Data\Model\Field
@@ -97,16 +97,16 @@ class Country extends ModelWithPrefixedFields
 {
     public $table = 'country';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
-        $this->addField($this->fieldName()->name, ['actual' => 'atk_afp_country__nicename', 'required' => true, 'type' => 'string']);
-        $this->addField($this->fieldName()->sys_name, ['actual' => 'atk_afp_country__name', 'system' => true]);
+        parent::doInitialize();
+        $this->addField($this->key()->name, ['actual' => 'atk_afp_country__nicename', 'required' => true, 'type' => 'string']);
+        $this->addField($this->key()->sys_name, ['actual' => 'atk_afp_country__name', 'system' => true]);
 
-        $this->addField($this->fieldName()->iso, ['caption' => 'ISO', 'required' => true, 'type' => 'string', 'ui' => ['table' => ['sortable' => false]]]);
-        $this->addField($this->fieldName()->iso3, ['caption' => 'ISO3', 'required' => true, 'type' => 'string']);
-        $this->addField($this->fieldName()->numcode, ['caption' => 'ISO Numeric Code', 'type' => 'number', 'required' => true]);
-        $this->addField($this->fieldName()->phonecode, ['caption' => 'Phone Prefix', 'type' => 'number', 'required' => true]);
+        $this->addField($this->key()->iso, ['caption' => 'ISO', 'required' => true, 'type' => 'string', 'ui' => ['table' => ['sortable' => false]]]);
+        $this->addField($this->key()->iso3, ['caption' => 'ISO3', 'required' => true, 'type' => 'string']);
+        $this->addField($this->key()->numcode, ['caption' => 'ISO Numeric Code', 'type' => 'number', 'required' => true]);
+        $this->addField($this->key()->phonecode, ['caption' => 'Phone Prefix', 'type' => 'number', 'required' => true]);
 
         $this->onHook(Model::HOOK_BEFORE_SAVE, function (self $model) {
             if (!$model->sys_name) {
@@ -120,17 +120,17 @@ class Country extends ModelWithPrefixedFields
         $errors = parent::validate($intent);
 
         if (mb_strlen($this->iso) !== 2) {
-            $errors[$this->fieldName()->iso] = 'Must be exactly 2 characters';
+            $errors[$this->key()->iso] = 'Must be exactly 2 characters';
         }
 
         if (mb_strlen($this->iso3) !== 3) {
-            $errors[$this->fieldName()->iso3] = 'Must be exactly 3 characters';
+            $errors[$this->key()->iso3] = 'Must be exactly 3 characters';
         }
 
         // look if name is unique
-        $c = $this->getModel()->tryLoadBy($this->fieldName()->name, $this->name);
-        if ($c->loaded() && $c->getId() !== $this->getId()) {
-            $errors[$this->fieldName()->name] = 'Country name must be unique';
+        $c = $this->getModel()->tryLoadBy($this->key()->name, $this->name);
+        if ($c->isLoaded() && $c->getId() !== $this->getId()) {
+            $errors[$this->key()->name] = 'Country name must be unique';
         }
 
         return $errors;
@@ -142,9 +142,9 @@ class CountryLock extends Country
     use ModelLockTrait;
     public $caption = 'Country';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
         $this->lock();
     }
 }
@@ -181,30 +181,30 @@ class Stat extends ModelWithPrefixedFields
     public $table = 'stat';
     public $title = 'Project Stat';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
-        $this->addField($this->fieldName()->project_name, ['type' => 'string']);
-        $this->addField($this->fieldName()->project_code, ['type' => 'string']);
-        $this->title_field = $this->fieldName()->project_name;
-        $this->addField($this->fieldName()->description, ['type' => 'text']);
-        $this->addField($this->fieldName()->client_name, ['type' => 'string']);
-        $this->addField($this->fieldName()->client_address, ['type' => 'text', 'ui' => ['form' => [Form\Control\Textarea::class, 'rows' => 4]]]);
+        $this->addField($this->key()->project_name, ['type' => 'string']);
+        $this->addField($this->key()->project_code, ['type' => 'string']);
+        $this->title_field = $this->key()->project_name;
+        $this->addField($this->key()->description, ['type' => 'text']);
+        $this->addField($this->key()->client_name, ['type' => 'string']);
+        $this->addField($this->key()->client_address, ['type' => 'text', 'ui' => ['form' => [Form\Control\Textarea::class, 'rows' => 4]]]);
 
-        $this->hasOne($this->fieldName()->client_country_iso, [
+        $this->hasOne($this->key()->client_country_iso, [
             'model' => [Country::class],
-            'their_field' => Country::hinting()->fieldName()->iso,
+            'their_field' => Country::hint()->key()->iso,
             'type' => 'string',
             'ui' => [
                 'form' => [Form\Control\Line::class],
             ],
         ])
-            ->addField($this->fieldName()->client_country, Country::hinting()->fieldName()->name);
+            ->addField($this->key()->client_country, Country::hint()->key()->name);
 
-        $this->addField($this->fieldName()->is_commercial, ['type' => 'boolean']);
-        $this->addField($this->fieldName()->currency, ['values' => ['EUR' => 'Euro', 'USD' => 'US Dollar', 'GBP' => 'Pound Sterling']]);
-        $this->addField($this->fieldName()->currency_symbol, ['never_persist' => true]);
+        $this->addField($this->key()->is_commercial, ['type' => 'boolean']);
+        $this->addField($this->key()->currency, ['values' => ['EUR' => 'Euro', 'USD' => 'US Dollar', 'GBP' => 'Pound Sterling']]);
+        $this->addField($this->key()->currency_symbol, ['never_persist' => true]);
         $this->onHook(Model::HOOK_AFTER_LOAD, function (self $model) {
             /* implementation for "intl"
             $locale = 'en-UK';
@@ -216,25 +216,25 @@ class Stat extends ModelWithPrefixedFields
             $model->currency_symbol = $map[$model->currency] ?? '?';
         });
 
-        $this->addField($this->fieldName()->project_budget, ['type' => 'money']);
-        $this->addField($this->fieldName()->project_invoiced, ['type' => 'money']);
-        $this->addField($this->fieldName()->project_paid, ['type' => 'money']);
-        $this->addField($this->fieldName()->project_hour_cost, ['type' => 'money']);
+        $this->addField($this->key()->project_budget, ['type' => 'money']);
+        $this->addField($this->key()->project_invoiced, ['type' => 'money']);
+        $this->addField($this->key()->project_paid, ['type' => 'money']);
+        $this->addField($this->key()->project_hour_cost, ['type' => 'money']);
 
-        $this->addField($this->fieldName()->project_hours_est, ['type' => 'integer']);
-        $this->addField($this->fieldName()->project_hours_reported, ['type' => 'integer']);
+        $this->addField($this->key()->project_hours_est, ['type' => 'integer']);
+        $this->addField($this->key()->project_hours_reported, ['type' => 'integer']);
 
-        $this->addField($this->fieldName()->project_expenses_est, ['type' => 'money']);
-        $this->addField($this->fieldName()->project_expenses, ['type' => 'money']);
-        $this->addField($this->fieldName()->project_mgmt_cost_pct, new Percent());
-        $this->addField($this->fieldName()->project_qa_cost_pct, new Percent());
+        $this->addField($this->key()->project_expenses_est, ['type' => 'money']);
+        $this->addField($this->key()->project_expenses, ['type' => 'money']);
+        $this->addField($this->key()->project_mgmt_cost_pct, new Percent());
+        $this->addField($this->key()->project_qa_cost_pct, new Percent());
 
-        $this->addField($this->fieldName()->start_date, ['type' => 'date']);
-        $this->addField($this->fieldName()->finish_date, ['type' => 'date']);
-        $this->addField($this->fieldName()->finish_time, ['type' => 'time']);
+        $this->addField($this->key()->start_date, ['type' => 'date']);
+        $this->addField($this->key()->finish_date, ['type' => 'date']);
+        $this->addField($this->key()->finish_time, ['type' => 'time']);
 
-        $this->addField($this->fieldName()->created, ['type' => 'datetime', 'ui' => ['form' => ['disabled' => true]]]);
-        $this->addField($this->fieldName()->updated, ['type' => 'datetime', 'ui' => ['form' => ['disabled' => true]]]);
+        $this->addField($this->key()->created, ['type' => 'datetime', 'ui' => ['form' => ['disabled' => true]]]);
+        $this->addField($this->key()->updated, ['type' => 'datetime', 'ui' => ['form' => ['disabled' => true]]]);
     }
 }
 
@@ -255,21 +255,21 @@ class File extends ModelWithPrefixedFields
 {
     public $table = 'file';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
-        $this->addField($this->fieldName()->name);
+        parent::doInitialize();
+        $this->addField($this->key()->name);
 
-        $this->addField($this->fieldName()->type, ['caption' => 'MIME Type']);
-        $this->addField($this->fieldName()->is_folder, ['type' => 'boolean']);
+        $this->addField($this->key()->type, ['caption' => 'MIME Type']);
+        $this->addField($this->key()->is_folder, ['type' => 'boolean']);
 
-        $this->hasMany($this->fieldName()->SubFolder, [
+        $this->hasMany($this->key()->SubFolder, [
             'model' => [self::class],
-            'their_field' => self::hinting()->fieldName()->parent_folder_id,
+            'their_field' => self::hint()->key()->parent_folder_id,
         ])
-            ->addField($this->fieldName()->count, ['aggregate' => 'count', 'field' => $this->persistence->expr($this, '*')]);
+            ->addField($this->key()->count, ['aggregate' => 'count', 'field' => $this->persistence->expr($this, '*')]);
 
-        $this->hasOne($this->fieldName()->parent_folder_id, [
+        $this->hasOne($this->key()->parent_folder_id, [
             'model' => [Folder::class],
         ])
             ->addTitle();
@@ -298,9 +298,9 @@ class File extends ModelWithPrefixedFields
                 /*
                 // Disabling saving file in db
                 $m->save([
-                    $this->fieldName()->name => $fileinfo->getFilename(),
-                    $this->fieldName()->is_folder => $fileinfo->isDir(),
-                    $this->fieldName()->type => pathinfo($fileinfo->getFilename(), PATHINFO_EXTENSION),
+                    $this->key()->name => $fileinfo->getFilename(),
+                    $this->key()->is_folder => $fileinfo->isDir(),
+                    $this->key()->type => pathinfo($fileinfo->getFilename(), PATHINFO_EXTENSION),
                 ]);
                 */
 
@@ -314,11 +314,11 @@ class File extends ModelWithPrefixedFields
 
 class Folder extends File
 {
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
-        $this->addCondition($this->fieldName()->is_folder, true);
+        $this->addCondition($this->key()->is_folder, true);
     }
 }
 
@@ -327,9 +327,9 @@ class FileLock extends File
     use ModelLockTrait;
     public $caption = 'File';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
         $this->lock();
     }
 }
@@ -343,18 +343,18 @@ class Category extends ModelWithPrefixedFields
 {
     public $table = 'product_category';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
-        $this->addField($this->fieldName()->name);
+        parent::doInitialize();
+        $this->addField($this->key()->name);
 
-        $this->hasMany($this->fieldName()->SubCategories, [
+        $this->hasMany($this->key()->SubCategories, [
             'model' => [SubCategory::class],
-            'their_field' => SubCategory::hinting()->fieldName()->product_category_id,
+            'their_field' => SubCategory::hint()->key()->product_category_id,
         ]);
-        $this->hasMany($this->fieldName()->Products, [
+        $this->hasMany($this->key()->Products, [
             'model' => [Product::class],
-            'their_field' => Product::hinting()->fieldName()->product_category_id,
+            'their_field' => Product::hint()->key()->product_category_id,
         ]);
     }
 }
@@ -368,17 +368,17 @@ class SubCategory extends ModelWithPrefixedFields
 {
     public $table = 'product_sub_category';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
-        $this->addField($this->fieldName()->name);
+        parent::doInitialize();
+        $this->addField($this->key()->name);
 
-        $this->hasOne($this->fieldName()->product_category_id, [
+        $this->hasOne($this->key()->product_category_id, [
             'model' => [Category::class],
         ]);
-        $this->hasMany($this->fieldName()->Products, [
+        $this->hasMany($this->key()->Products, [
             'model' => [Product::class],
-            'their_field' => Product::hinting()->fieldName()->product_sub_category_id,
+            'their_field' => Product::hint()->key()->product_sub_category_id,
         ]);
     }
 }
@@ -393,15 +393,15 @@ class Product extends ModelWithPrefixedFields
 {
     public $table = 'product';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
-        $this->addField($this->fieldName()->name);
-        $this->addField($this->fieldName()->brand);
-        $this->hasOne($this->fieldName()->product_category_id, [
+        parent::doInitialize();
+        $this->addField($this->key()->name);
+        $this->addField($this->key()->brand);
+        $this->hasOne($this->key()->product_category_id, [
             'model' => [Category::class],
         ])->addTitle();
-        $this->hasOne($this->fieldName()->product_sub_category_id, [
+        $this->hasOne($this->key()->product_sub_category_id, [
             'model' => [SubCategory::class],
         ])->addTitle();
     }
@@ -412,9 +412,9 @@ class ProductLock extends Product
     use ModelLockTrait;
     public $caption = 'Product';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
         $this->lock();
     }
 }

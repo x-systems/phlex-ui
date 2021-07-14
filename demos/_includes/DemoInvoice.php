@@ -13,9 +13,9 @@ class DemoInvoice extends \Phlex\Data\Model
 
     public $title_field = 'reference';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         $this->addField('reference', ['required' => true]);
         $this->addField('date', [

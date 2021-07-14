@@ -24,9 +24,9 @@ $cartClass = get_class(new class() extends \Phlex\Ui\Lister {
 
     public $defaultTemplate = 'lister.html';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         $this->items = $this->recall('items', []);
 
@@ -88,9 +88,9 @@ $cartClass = get_class(new class() extends \Phlex\Ui\Lister {
 $itemShelfClass = get_class(new class() extends \Phlex\Ui\View {
     public $ui = 'green segment';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         $v = \Phlex\Ui\View::addTo($this, ['ui' => 'fluid']);
         $cols = \Phlex\Ui\Columns::addTo($v, ['ui' => 'relaxed divided grid']);

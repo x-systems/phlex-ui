@@ -40,7 +40,7 @@ $finderClass = get_class(new class() extends \Phlex\Ui\Columns {
             $path[] = $id;
             $pushModel = new $model($model->persistence);
             $pushModel = $pushModel->tryLoad($id);
-            if (!$pushModel->loaded()) {
+            if (!$pushModel->isLoaded()) {
                 break;
             }
             $ref = array_shift($route);
@@ -73,8 +73,8 @@ $finderClass = get_class(new class() extends \Phlex\Ui\Columns {
 });
 
 $model = new File($app->db);
-$model->addCondition($model->fieldName()->parent_folder_id, null);
-$model->setOrder([$model->fieldName()->is_folder => 'desc', $model->fieldName()->name]);
+$model->addCondition($model->key()->parent_folder_id, null);
+$model->setOrder([$model->key()->is_folder => 'desc', $model->key()->name]);
 
 \Phlex\Ui\Header::addTo($app, ['MacOS File Finder', 'subHeader' => 'Component built around Table, Columns and JsReload']);
 
@@ -89,4 +89,4 @@ $vp = \Phlex\Ui\VirtualPage::addTo($app)->set(function ($vp) use ($model) {
 
 $finderClass::addTo($app, ['bottom attached'])
     ->addClass('top attached segment')
-    ->setModel($model->setLimit(5), [$model->fieldName()->SubFolder]);
+    ->setModel($model->setLimit(5), [$model->key()->SubFolder]);

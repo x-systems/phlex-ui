@@ -29,7 +29,7 @@ $msg->text->addParagraph('If action require arguments, fields and/or preview, th
 $gl = \Phlex\Ui\GridLayout::addTo($app, ['rows' => 1, 'columns' => 2]);
 $c = \Phlex\Ui\Card::addTo($gl, ['useLabel' => true], ['r1c1']);
 $c->addContent(new \Phlex\Ui\Header(['Using country: ']));
-$c->setModel($entity, [$country->fieldName()->iso, $country->fieldName()->iso3, $country->fieldName()->phonecode]);
+$c->setModel($entity, [$country->key()->iso, $country->key()->iso3, $country->key()->phonecode]);
 
 $buttons = \Phlex\Ui\View::addTo($gl, ['ui' => 'vertical basic buttons'], ['r1c2']);
 

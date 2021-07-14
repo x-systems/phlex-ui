@@ -434,7 +434,7 @@ class Lookup extends Input
 
             $this->model = $this->model->tryLoadBy($id_field, $this->field->get());
 
-            if ($this->model->loaded()) {
+            if ($this->model->isLoaded()) {
                 $row = $this->renderRow($this->model);
 
                 $chain->dropdown('set value', $row['value'])->dropdown('set text', $row['title']);

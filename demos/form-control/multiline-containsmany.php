@@ -17,9 +17,9 @@ if (!class_exists(Client::class)) {
         public $table = 'client';
         public $caption = 'Client';
 
-        protected function init(): void
+        protected function doInitialize(): void
         {
-            parent::init();
+            parent::doInitialize();
 
             $this->addField('name');
             $this->containsMany('Accounts', ['model' => [Account::class]]);
@@ -30,9 +30,9 @@ if (!class_exists(Client::class)) {
     {
         public $caption = ' ';
 
-        protected function init(): void
+        protected function doInitialize(): void
         {
-            parent::init();
+            parent::doInitialize();
 
             $this->addField('email', [
                 'required' => true,

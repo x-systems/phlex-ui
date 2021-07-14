@@ -18,13 +18,13 @@ require_once __DIR__ . '/../init-app.php';
 
 $model = new Stat($app->db, ['caption' => 'Demo Stat']);
 
-$project = new Condition($model->fieldName()->project_name, Condition::OPERATOR_REGEXP, '[a-zA-Z]');
-$brazil = new Condition($model->fieldName()->client_country_iso, '=', 'BR');
-$start = new Condition($model->fieldName()->start_date, '=', '2020-10-22');
-$finish = new Condition($model->fieldName()->finish_time, '!=', '22:22');
-$isCommercial = new Condition($model->fieldName()->is_commercial, '0');
-$budget = new Condition($model->fieldName()->project_budget, '>=', '1000');
-$currency = new Condition($model->fieldName()->currency, 'USD');
+$project = new Condition($model->key()->project_name, Condition::OPERATOR_REGEXP, '[a-zA-Z]');
+$brazil = new Condition($model->key()->client_country_iso, '=', 'BR');
+$start = new Condition($model->key()->start_date, '=', '2020-10-22');
+$finish = new Condition($model->key()->finish_time, '!=', '22:22');
+$isCommercial = new Condition($model->key()->is_commercial, '0');
+$budget = new Condition($model->key()->project_budget, '>=', '1000');
+$currency = new Condition($model->key()->currency, 'USD');
 
 $scope = Scope::createAnd($project, $brazil, $start);
 $orScope = Scope::createOr($finish, $isCommercial, $currency);

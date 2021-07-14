@@ -74,7 +74,7 @@ $card->addContent($content);
 $card->addDescription('Kristy is a friend of Mully.');
 
 $s = $card->addSection('Country');
-$s->addFields($entity = $country->loadAny(), [$country->fieldName()->name, $country->fieldName()->iso]);
+$s->addFields($entity = $country->loadAny(), [$country->key()->name, $country->key()->iso]);
 
 // Pass the model action to the Card::addClickAction() method.
 $card->addClickAction($sendEmailAction, null, ['id' => $entity->getId()]);

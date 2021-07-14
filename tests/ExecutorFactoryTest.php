@@ -19,9 +19,9 @@ class TestModel extends Model
 {
     public $caption = 'Test';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+    	parent::doInitialize();
 
         $this->addField('name');
 

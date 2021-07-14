@@ -15,9 +15,9 @@ $modelClass = get_class(new class() extends \Phlex\Data\Model {
 
     public $caption = 'Country';
 
-    protected function init(): void
+    protected function doInitialize(): void
     {
-        parent::init();
+        parent::doInitialize();
 
         $this->addField('name');
         $this->addField('code');

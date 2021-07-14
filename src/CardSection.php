@@ -50,7 +50,7 @@ class CardSection extends View
      */
     public function addFields(Model $model, array $fields, bool $useLabel = false, bool $useTable = false)
     {
-        if (!$model->loaded()) {
+        if (!$model->isLoaded()) {
             throw new Exception('Model need to be loaded.');
         }
 
@@ -64,14 +64,14 @@ class CardSection extends View
     /**
      * Add fields label and value to section.
      */
-    private function addSectionFields(Model $model, array $fields, bool $useLabel = false)
+    private function addSectionFields(Model $model, array $fieldKeys, bool $useLabel = false)
     {
-        foreach ($fields as $field) {
-            if ($model->titleKey === $field) {
+        foreach ($fieldKeys as $key) {
+            if ($model->titleKey === $key) {
                 continue;
             }
-            $label = $model->getField($field)->getCaption();
             $value = $this->issetApp() ? $this->getApp()->ui_persistence->typecastSaveField($model->getField($field), $model->get($field)) : $model->get($field);
+            $label = $model->getField($key)->getCaption();
             if ($useLabel) {
                 $value = $label . $this->glue . $value;
             }

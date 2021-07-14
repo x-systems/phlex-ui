@@ -21,7 +21,7 @@ $action = $files->addUserAction(
     [
         // Which fields may be edited for the action. Default to all fields.
         // ModalExecutor for example, will only display fields set in this array.
-        'fields' => [$files->fieldName()->name],
+        'fields' => [$files->key()->name],
         // callback function to call in model when action execute.
         // Can use a closure function or model method.
         'callback' => 'importFromFilesystem',

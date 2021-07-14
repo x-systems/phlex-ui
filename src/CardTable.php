@@ -22,7 +22,7 @@ class CardTable extends Table
             return parent::setModel($model);
         }
 
-        if (!$model->loaded()) {
+        if (!$model->isLoaded()) {
             throw (new Exception('Model must be loaded'))
                 ->addMoreInfo('model', $model);
         }

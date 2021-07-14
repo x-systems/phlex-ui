@@ -564,7 +564,7 @@ class Multiline extends Form\Control
     {
         $model = $field->getReference()->refModel();
         $rec = $model->tryLoadBy($field->getReference()->getTheirFieldName(), $value);
-        if ($rec->loaded()) {
+        if ($rec->isLoaded()) {
             $option = [
                 'key' => $value,
                 'text' => $rec->get($model->titleKey),
