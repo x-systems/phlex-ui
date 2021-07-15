@@ -283,7 +283,7 @@ class Modal extends View
         return $this;
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         $data['type'] = $this->type;
         $data['label'] = $this->loading_label;
@@ -328,7 +328,7 @@ class Modal extends View
         }
         $this->js(true)->data($data);
 
-        parent::renderView();
+        parent::doRender();
     }
 
     /** @var AbstractView */

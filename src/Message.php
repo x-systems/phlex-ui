@@ -55,7 +55,7 @@ class Message extends View
         }
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->type) {
             $this->addClass($this->type);
@@ -74,6 +74,6 @@ class Message extends View
             $this->content = null;
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 }

@@ -97,7 +97,7 @@ class Admin extends \Phlex\Ui\Layout implements NavigableInterface
         return $this->menuLeft->addItem($name, $action);
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->menuLeft) {
             if (count($this->menuLeft->elements) === 0) {
@@ -109,6 +109,6 @@ class Admin extends \Phlex\Ui\Layout implements NavigableInterface
             }
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 }

@@ -86,7 +86,7 @@ class ItemsPerPageSelector extends View
         });
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         $menuItems = [];
         foreach ($this->pageLengthItems as $key => $item) {
@@ -108,6 +108,6 @@ class ItemsPerPageSelector extends View
             'values' => $menuItems,
             'onChange' => new JsExpression($function),
         ]);
-        parent::renderView();
+        parent::doRender();
     }
 }

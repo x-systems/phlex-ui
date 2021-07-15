@@ -164,7 +164,7 @@ class View extends AbstractView implements JsExpressionable
 
     /**
      * Associate this view with a model. Do not place any logic in this class, instead take it
-     * to renderView().
+     * to doRender().
      *
      * Do not try to create your own "Model" implementation, instead you must be looking for
      * your own "Persistence" implementation.
@@ -588,13 +588,13 @@ class View extends AbstractView implements JsExpressionable
 
     /**
      * View-specific rendering stuff. Feel free to replace this method with
-     * your own. View::renderView contains some logic that integrates with
+     * your own. View::doRender contains some logic that integrates with
      * semanticUI.
      *
      * NOTE: maybe in the future, SemanticUI-related stuff needs to go into
      * a separate class.
      */
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->class) {
             $this->template->append('class', implode(' ', $this->class));
@@ -670,7 +670,7 @@ class View extends AbstractView implements JsExpressionable
         }
 
         if (!$this->_rendered) {
-            $this->renderView();
+            $this->doRender();
 
             $this->recursiveRender();
             $this->_rendered = true;

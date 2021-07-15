@@ -473,7 +473,7 @@ class Table extends Lister
         return $this->model;
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if (!$this->columns) {
             throw (new Exception('Table does not have any columns defined'))
@@ -541,7 +541,7 @@ class Table extends Lister
             $this->jsPaginator->jsIdle();
         }
 
-        View::renderView();
+        View::doRender();
     }
 
     /**

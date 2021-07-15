@@ -41,7 +41,7 @@ class Radio extends Form\Control
         $this->lister->t_row->set('_name', $this->short_name);
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if (!$this->model) {
             $this->setSource($this->values);
@@ -66,7 +66,7 @@ class Radio extends Form\Control
             $lister->t_row->set('checked', $value === (string) $lister->model->getId() ? 'checked' : '');
         });
 
-        parent::renderView();
+        parent::doRender();
     }
 
     /**

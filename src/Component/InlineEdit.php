@@ -181,9 +181,9 @@ class InlineEdit extends View
     /**
      * Renders View.
      */
-    protected function renderView(): void
+    protected function doRender(): void
     {
-        parent::renderView();
+        parent::doRender();
 
         $type = ($this->model && $this->field) ? $this->model->getField($this->field)->type : 'text';
         $type = ($type === 'string') ? 'text' : $type;

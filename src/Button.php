@@ -27,7 +27,7 @@ class Button extends View
      */
     public $iconRight;
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->icon) {
             if (!is_object($this->icon)) {
@@ -63,6 +63,6 @@ class Button extends View
             $this->addClass('icon');
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 }

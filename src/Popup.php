@@ -273,7 +273,7 @@ class Popup extends View
         return $chain;
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->triggerBy) {
             $this->js(true, $this->jsPopup());
@@ -293,7 +293,7 @@ class Popup extends View
         }
         //$this->setStyle(['min-width' => $this->minWidth, 'min-height' => $this->minHeight]);
 
-        parent::renderView();
+        parent::doRender();
     }
 
     protected function mergeStickyArgsFromChildView(): ?AbstractView

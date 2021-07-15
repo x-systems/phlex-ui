@@ -20,12 +20,12 @@ class Money extends Input
         return number_format($v, $this->getApp()->ui_persistence->currency_decimals);
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->label === null) {
             $this->label = $this->getApp()->ui_persistence->currency;
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 }

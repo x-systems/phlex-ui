@@ -199,7 +199,7 @@ class Wizard extends View
         parent::recursiveRender();
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         // Set proper width to the wizard
         $c = count($this->steps);
@@ -214,7 +214,7 @@ class Wizard extends View
             $this->addClass('small');
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 
     protected function mergeStickyArgsFromChildView(): AbstractView

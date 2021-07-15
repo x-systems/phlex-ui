@@ -128,7 +128,7 @@ class Lister extends View
     /** @var int This will count how many rows are rendered. Needed for JsPaginator for example. */
     protected $_rendered_rows_count = 0;
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if (!$this->template) {
             throw new Exception('Lister requires you to specify template explicitly');
@@ -136,7 +136,7 @@ class Lister extends View
 
         // if no model is set, don't show anything (even warning)
         if (!$this->model) {
-            parent::renderView();
+            parent::doRender();
 
             return;
         }
@@ -183,7 +183,7 @@ class Lister extends View
             $this->jsPaginator->jsIdle();
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 
     /**

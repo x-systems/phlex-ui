@@ -67,13 +67,13 @@ $cartClass = get_class(new class() extends \Phlex\Ui\Lister {
     /**
      * renders as a regular lister, but source is the items.
      */
-    protected function renderView(): void
+    protected function doRender(): void
     {
         // memorize items
 
         $this->setSource($this->items);
 
-        parent::renderView();
+        parent::doRender();
     }
 });
 

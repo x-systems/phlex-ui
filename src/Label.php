@@ -51,7 +51,7 @@ class Label extends View
 
     public $defaultTemplate = 'label.html';
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->icon) {
             $this->icon = Icon::addTo($this, [$this->icon], ['BeforeContent']);
@@ -75,6 +75,6 @@ class Label extends View
             $this->addClass('image');
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 }

@@ -43,11 +43,11 @@ class Centered extends \Phlex\Ui\Layout
         $this->template->trySet('title', $this->getApp()->title);
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->image) {
             $this->template->tryDangerouslySetHtml('HeaderImage', '<img class="ui image" src="' . $this->image . '" alt="' . $this->image_alt . '" />');
         }
-        parent::renderView();
+        parent::doRender();
     }
 }

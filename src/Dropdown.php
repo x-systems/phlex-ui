@@ -59,10 +59,10 @@ class Dropdown extends Lister
         }, ['item' => 'value']);
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         $this->js(true)->dropdown($this->dropdownOptions);
 
-        parent::renderView();
+        parent::doRender();
     }
 }

@@ -88,7 +88,7 @@ class Loader extends View
      * Automatically call the jsLoad on a supplied event unless it was already triggered
      * or if user have invoked jsLoad manually.
      */
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if (!$this->cb->isTriggered()) {
             if ($this->loadEvent) {
@@ -97,7 +97,7 @@ class Loader extends View
             $this->add($this->shim);
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 
     /**

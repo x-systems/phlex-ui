@@ -580,14 +580,14 @@ class Form extends View
         }
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         $this->ajaxSubmit();
         if (!empty($this->controlDisplayRules)) {
             $this->js(true, new JsConditionalForm($this, $this->controlDisplayRules, $this->controlDisplaySelector));
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 
     protected function renderTemplateToHtml(string $region = null): string

@@ -271,7 +271,7 @@ class Dropdown extends Input
     /**
      * Renders view.
      */
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->isMultiple) {
             $this->defaultClass = $this->defaultClass . ' multiple';
@@ -306,7 +306,7 @@ class Dropdown extends Input
         $this->htmlRenderValue();
         $this->jsRenderDropdown();
 
-        parent::renderView();
+        parent::doRender();
     }
 
     // Sets the dropdown items to the template if a model is used

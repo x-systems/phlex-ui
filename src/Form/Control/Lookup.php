@@ -398,7 +398,7 @@ class Lookup extends Input
         $chain->dropdown($settings);
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->multiple) {
             $this->template->set('multiple', 'multiple');
@@ -445,7 +445,7 @@ class Lookup extends Input
 
         $this->js(true, $chain);
 
-        parent::renderView();
+        parent::doRender();
     }
 
     /**

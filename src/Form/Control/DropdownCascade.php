@@ -109,17 +109,17 @@ class DropdownCascade extends Dropdown
     }
 
     /**
-     * Call during parent::renderView()
+     * Call during parent::doRender()
      * Cascade Dropdown values are only render via js.
      */
     protected function htmlRenderValue()
     {
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         // can't be multiple selection.
         $this->isMultiple = false;
-        parent::renderView();
+        parent::doRender();
     }
 }

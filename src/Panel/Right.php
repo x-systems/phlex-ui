@@ -193,12 +193,12 @@ class Right extends View implements Loadable
         return $panel_options;
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         $this->template->trySet('WarningIcon', $this->warningIcon);
         $this->template->trySet('CloseIcon', $this->closeIcon);
 
-        parent::renderView();
+        parent::doRender();
 
         $this->js(true, $this->service()->addPanel($this->getPanelOptions()));
     }

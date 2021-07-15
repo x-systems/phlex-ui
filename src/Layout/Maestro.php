@@ -36,9 +36,9 @@ class Maestro extends Admin
         return $i;
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
-        parent::renderView();
+        parent::doRender();
 
         // initialize all menu group at ounce.
         // since atkSideNav plugin default setting are for Maestro, no need to pass settings to initialize it.

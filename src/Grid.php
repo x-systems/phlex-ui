@@ -666,12 +666,12 @@ class Grid extends View
     /**
      * Before rendering take care of data sorting.
      */
-    protected function renderView(): void
+    protected function doRender(): void
     {
         // take care of sorting
         $this->applySort();
 
-        parent::renderView();
+        parent::doRender();
     }
 
     /**

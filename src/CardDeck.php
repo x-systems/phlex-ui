@@ -378,7 +378,7 @@ class CardDeck extends View
         return $btn;
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if (($this->menu && count($this->menuActions) > 0) || $this->search !== false) {
             View::addTo($this, ['ui' => 'divider'], ['Divider']);
@@ -387,7 +387,7 @@ class CardDeck extends View
         if ($this->container->name === ($_GET['__atk_reload'] ?? null)) {
             $this->applyReload();
         }
-        parent::renderView();
+        parent::doRender();
     }
 
     /**

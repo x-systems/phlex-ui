@@ -90,10 +90,10 @@ class ItemSearch extends View
         return $model;
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         $this->class = [];
-        parent::renderView();
+        parent::doRender();
 
         // reloadId is the view id selector name that need to be reload.
         // this will be pass as get argument to __atk_reload.

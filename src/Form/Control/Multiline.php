@@ -166,7 +166,7 @@ class Multiline extends Form\Control
 
     /**
      * Container for component that need Props set based on their field value as Lookup component.
-     * Set during fieldDefinition and apply during renderView() after getValue().
+     * Set during fieldDefinition and apply during doRender() after getValue().
      * Must contains callable function and function will receive $model field and value as paremeter.
      *
      * @var array
@@ -649,7 +649,7 @@ class Multiline extends Form\Control
         }
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if (!$this->getModel()) {
             throw new Exception('Multiline field needs to have it\'s model setup.');
@@ -659,7 +659,7 @@ class Multiline extends Form\Control
             $this->outputJson();
         });
 
-        parent::renderView();
+        parent::doRender();
 
         $inputValue = $this->getValue();
         $this->valuePropsBinding($inputValue);
