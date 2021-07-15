@@ -288,7 +288,7 @@ Rendering of a Tree
 
 Any view has the ability to render itself. Once executed, render will perform the following:
 
- - call renderView() of a current object.
+ - call doRender() of a current object.
  - call recursiveRender() to recursively render sub-elements.
  - returns ``<script>`` with on-dom-ready instructions along with rendering of a current view.
 
@@ -308,26 +308,26 @@ Modifying rendering logic
 =========================
 
 When you creating your own View, you most likely will want to change it's rendering mechanics.
-The most suitable location for that is inside ``renderView`` method.
+The most suitable location for that is inside ``doRender`` method.
 
-.. php:method:: renderView()
+.. php:method:: doRender()
 
 Perform necessary changes in the $template property according to the presentation logic
 of this view.
 
-You should override this method when necessary and don't forget to execute parent::renderView()::
+You should override this method when necessary and don't forget to execute parent::doRender()::
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if (str_len($this->info) > 100) {
              $this->addClass('tiny');
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 
 It's important when you call parent. You wouldn't be able to affect template of a current view
-anymore after calling renderView.
+anymore after calling doRender.
 
 Also, note that child classes are rendered already before invocation of rederView. If you wish
 to do something before child render, override method :php:meth:`View::recursiveRender()`
@@ -369,9 +369,9 @@ Here is a best practice for using custom template::
 
         public $title = 'Default Title';
 
-        protected function renderView(): void
+        protected function doRender(): void
         {
-            parent::renderView();
+            parent::doRender();
             $this->template->set('title', $this->title);
         }
 

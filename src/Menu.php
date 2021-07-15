@@ -179,7 +179,7 @@ class Menu extends View
         return parent::getHtml();
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->activate_on_click && $this->ui === 'menu') {
             // Semantic UI need some JS magic
@@ -192,6 +192,6 @@ class Menu extends View
             $this->content = null;
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 }

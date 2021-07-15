@@ -151,7 +151,7 @@ class Accordion extends View
         return isset($_GET['__atk-dyn-section']);
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->type) {
             $this->addClass($this->type);
@@ -166,6 +166,6 @@ class Accordion extends View
             $this->jsBehavior('open', [$this->activeSection], true);
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 }

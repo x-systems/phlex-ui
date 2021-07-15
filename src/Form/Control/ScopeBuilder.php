@@ -545,9 +545,9 @@ class ScopeBuilder extends Control
         return $ret;
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
-        parent::renderView();
+        parent::doRender();
 
         $this->scopeBuilderView->vue(
             'atk-query-builder',

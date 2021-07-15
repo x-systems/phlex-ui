@@ -324,7 +324,7 @@ columns can be defined any time and will be stored in the :php:attr:`Table::colu
 without defined name will have a numeric index. It's also possible to define multiple columns per key
 in which case we call them "decorators".
 
-During the render process (see :php:meth:`View::renderView`) Table will perform the following actions:
+During the render process (see :php:meth:`View::doRender`) Table will perform the following actions:
 
 1. Generate header row.
 2. Generate template for data rows.

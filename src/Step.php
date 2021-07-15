@@ -51,7 +51,7 @@ class Step extends View
         $this->title = $title;
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         $this->template->set('title', $this->title);
         $this->template->set('description', $this->description);
@@ -62,6 +62,6 @@ class Step extends View
             $this->template->set('icon', $this->icon);
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 }

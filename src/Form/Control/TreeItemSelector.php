@@ -144,9 +144,9 @@ class TreeItemSelector extends Form\Control
         return $this->getApp()->ui_persistence->typecastSaveField($this->field, $this->field->get());
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
-        parent::renderView();
+        parent::doRender();
 
         $this->itemSelector->template->tryDangerouslySetHtml('Input', $this->getInput());
 

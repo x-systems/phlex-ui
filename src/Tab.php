@@ -32,7 +32,7 @@ class Tab extends Item
     /**
      * Rendering one tab view.
      */
-    protected function renderView(): void
+    protected function doRender(): void
     {
         // Must setting for Fomantic-Ui tab since 2.8.5
         $this->settings = array_merge($this->settings, ['autoTabActivation' => false]);
@@ -52,6 +52,6 @@ class Tab extends Item
             $this->js(true)->click();
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 }

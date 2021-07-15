@@ -23,7 +23,7 @@ class Item extends View
      */
     public $icon;
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->label) {
             Label::addTo($this, [$this->label]);
@@ -33,6 +33,6 @@ class Item extends View
             Icon::addTo($this, [$this->icon]);
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 }

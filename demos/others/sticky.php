@@ -16,12 +16,12 @@ require_once __DIR__ . '/../init-app.php';
 
 /** @var \Phlex\Ui\Button $myButtonClass */
 $myButtonClass = get_class(new class() extends \Phlex\Ui\Button {
-    protected function renderView(): void
+    protected function doRender(): void
     {
         $this->link($this->content);
         $this->addClass('green');
 
-        parent::renderView();
+        parent::doRender();
     }
 });
 

@@ -218,13 +218,13 @@ class Upload extends Input
         }
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         // need before parent rendering.
         if ($this->disabled) {
             $this->addClass('disabled');
         }
-        parent::renderView();
+        parent::doRender();
 
         if ($this->cb->canTerminate()) {
             $uploadAction = $_POST['f_upload_action'] ?? null;

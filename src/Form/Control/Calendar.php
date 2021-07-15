@@ -91,7 +91,7 @@ class Calendar extends Input
         }
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         if ($this->readonly) {
             $this->options['clickOpens'] = false;
@@ -99,7 +99,7 @@ class Calendar extends Input
 
         $this->jsInput(true)->flatpickr($this->options);
 
-        parent::renderView();
+        parent::doRender();
     }
 
     /**

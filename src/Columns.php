@@ -75,7 +75,7 @@ class Columns extends View
         return static::addTo($this, [$width, 'ui' => false])->addClass('row');
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         $width = $this->width ?: $this->calculated_width;
         if ($this->content) {
@@ -87,6 +87,6 @@ class Columns extends View
             $this->addClass($this->sizes[$width] . ' column');
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 }

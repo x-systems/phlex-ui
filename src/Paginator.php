@@ -199,7 +199,7 @@ class Paginator extends View
         $this->template->dangerouslyAppendHtml('rows', $t->renderToHtml());
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         $t_item = $this->template->cloneRegion('Item');
         $t_first = $this->template->hasTag('FirstItem') ? $this->template->cloneRegion('FirstItem') : $t_item;
@@ -224,6 +224,6 @@ class Paginator extends View
             $this->on('click', '.item', new JsReload($this->reload, array_merge([$this->urlTrigger => new JsExpression('$(this).data("page")')], $this->reloadArgs)));
         }
 
-        parent::renderView();
+        parent::doRender();
     }
 }

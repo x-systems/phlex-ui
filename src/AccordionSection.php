@@ -27,9 +27,9 @@ class AccordionSection extends View
 
     public $icon = 'dropdown';
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
-        parent::renderView();
+        parent::doRender();
 
         $this->template->set('icon', $this->icon);
 

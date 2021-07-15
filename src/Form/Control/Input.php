@@ -121,7 +121,7 @@ class Input extends Form\Control
     }
 
     /**
-     * Used only from renderView().
+     * Used only from doRender().
      *
      * @param string|object $label Label class or object
      * @param string        $spot  Template spot
@@ -145,7 +145,7 @@ class Input extends Form\Control
     }
 
     /**
-     * Used only from renderView().
+     * Used only from doRender().
      *
      * @param string|object $button Button class or object
      * @param string        $spot   Template spot
@@ -179,7 +179,7 @@ class Input extends Form\Control
         return $button;
     }
 
-    protected function renderView(): void
+    protected function doRender(): void
     {
         // TODO: I don't think we need the loading state at all.
         if ($this->loading) {
@@ -238,7 +238,7 @@ class Input extends Form\Control
         $this->template->dangerouslySetHtml('Input', $this->getInput());
         $this->content = null;
 
-        parent::renderView();
+        parent::doRender();
     }
 
     /**
