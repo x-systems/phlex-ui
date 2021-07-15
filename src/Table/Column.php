@@ -355,7 +355,7 @@ class Column
      */
     public function getTotalsCellHtml(Model\Field $field, $value)
     {
-        return $this->getTag('foot', $this->getApp()->ui_persistence->typecastSaveField($field, $value));
+        return $this->getTag('foot', $this->getCodec($field)->encode($value));
     }
 
     /**

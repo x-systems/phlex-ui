@@ -22,6 +22,16 @@ class Form extends View
     public const HOOK_DISPLAY_SUCCESS = self::class . '@displaySuccess';
     /** @const string Executed when self::loadPost() method is called. */
     public const HOOK_LOAD_POST = self::class . '@loadPost';
+    
+//     protected static $defaultCodecs = [
+//     		[Form\Control\Line::class],
+//     		Model\Field\Type\Boolean::class => [View\Codec\Boolean::class],
+//     		Model\Field\Type\DateTime::class => [View\Codec\DateTime::class],
+//     		Model\Field\Type\Date::class => [View\Codec\DateTime::class, 'format' => 'd-m-Y', 'timezone' => null],
+//     		Model\Field\Type\Time::class => [View\Codec\DateTime::class, 'format' => 'H:i', 'timezone' => null],
+//     		Model\Field\Type\Array_::class => [View\Codec\Array_::class],
+//     		Model\Field\Type\Selectable::class => [View\Codec\Selectable::class],
+//     ];
 
     // {{{ Properties
 
@@ -488,18 +498,10 @@ class Form extends View
      * 3. $f->type is converted into seed and evaluated
      * 4. lastly, falling back to Line, Dropdown (based on $reference and $enum)
      *
-     * @param \Phlex\Data\Model\Field $field Data model field
      * @param array                   $seed  Defaults to pass to Factory::factory() when control object is initialized
-     *
-     * @return Form\Control
      */
-    public function controlFactory(Model\Field $field, $seed = [])
+    public function controlFactory(Model\Field $field, array $seed = []): Form\Control
     {
-        if ($field && !$field instanceof \Phlex\Data\Model\Field) {
-            throw (new Exception('Argument 1 for controlFactory must be \Phlex\Data\Model\Field or null'))
-                ->addMoreInfo('field', $field);
-        }
-
         $fallbackSeed = [Form\Control\Line::class];
 
         if ($field->type === 'array' && $field->getReference() !== null) {

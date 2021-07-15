@@ -37,7 +37,7 @@ abstract class AbstractLayout extends \Phlex\Ui\View
             $field = ['type' => $field];
         }
 
-        try {
+//         try {
             if (!$this->form->model->hasField($name)) {
                 $field = $this->form->model->addField($name, $field);
             } else {
@@ -54,28 +54,29 @@ abstract class AbstractLayout extends \Phlex\Ui\View
             }
 
             if (is_string($control)) {
-                $control = $this->form->controlFactory($field, ['caption' => $control]);
+                $control = Control::factory($field, ['caption' => $control]);
             } elseif (is_array($control)) {
-                $control = $this->form->controlFactory($field, $control);
+            	$control = Control::factory($field, $control);
             } elseif (!$control) {
-                $control = $this->form->controlFactory($field);
+            	$control = Control::factory($field);
             } elseif (is_object($control)) {
-                if (!$control instanceof \Phlex\Ui\Form\Control) {
-                    throw (new Exception('Form control must descend from ' . \Phlex\Ui\Form\Control::class))
+                if (!$control instanceof Control) {
+                    throw (new Exception('Form control must descend from ' . Control::class))
                         ->addMoreInfo('control', $control);
                 }
-                $control->field = $field;
-                $control->form = $this->form;
+                $control->field = $field;                
             } else {
                 throw (new Exception('Value of $control argument is incorrect'))
                     ->addMoreInfo('control', $control);
             }
-        } catch (\Throwable $e) {
-            throw (new Exception('Unable to add form control', 0, $e))
-                ->addMoreInfo('name', $name)
-                ->addMoreInfo('control', $control)
-                ->addMoreInfo('field', $field);
-        }
+            
+            $control->form = $this->form;
+//         } catch (\Throwable $e) {
+//             throw (new Exception('Unable to add form control', 0, $e))
+//                 ->addMoreInfo('name', $name)
+//                 ->addMoreInfo('control', $control)
+//                 ->addMoreInfo('field', $field);
+//         }
 
         return $this->doAddControl($control, $field);
     }

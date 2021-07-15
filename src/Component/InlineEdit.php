@@ -111,7 +111,7 @@ class InlineEdit extends View
             $value = $_POST['value'] ?? null;
             $this->cb->set(function () use ($value) {
                 try {
-                    $this->model->set($this->field, $this->getApp()->ui_persistence->typecastLoadField($this->model->getField($this->field), $value));
+                    $this->model->set($this->field, $this->getCodec($this->model->getField($this->field))->decode($value));
                     $this->model->save();
 
                     return $this->jsSuccess('Update successfully');

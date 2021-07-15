@@ -7,6 +7,7 @@ namespace Phlex\Ui\Form\Control;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\JsExpressionable;
 use Phlex\Ui\JsFunction;
+use Phlex\Data\Model;
 
 /**
  * Input element for a form control.
@@ -149,6 +150,13 @@ class Dropdown extends Input
         $this->template->del('Item');
         $this->_tIcon = $this->_tItem->cloneRegion('Icon');
         $this->_tItem->del('Icon');
+    }
+    
+    public function setField(Model\Field $field)
+    {
+    	$this->values = $field->getValueType()->values;
+    	
+    	return parent::setField($field);
     }
 
     /**

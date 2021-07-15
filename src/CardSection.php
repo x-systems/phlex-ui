@@ -70,8 +70,8 @@ class CardSection extends View
             if ($model->titleKey === $key) {
                 continue;
             }
-            $value = $this->issetApp() ? $this->getApp()->ui_persistence->typecastSaveField($model->getField($field), $model->get($field)) : $model->get($field);
             $label = $model->getField($key)->getCaption();
+            $value = $model->getField($key)->encode($model->get($key), $this);
             if ($useLabel) {
                 $value = $label . $this->glue . $value;
             }

@@ -787,12 +787,13 @@ class Multiline extends Form\Control
             $values = $dummyModel->tryLoadAny()->get();
             unset($values[$model->id_field]);
 
-            foreach ($values as $f => $value) {
-                if ($value) {
-                    $field = $model->getField($f);
-                    $formatValues[$f] = $this->getApp()->ui_persistence->_typecastSaveField($field, $value);
-                }
-            }
+            $formatValues = $this->encodeRow($model, $values);
+            
+//             foreach ($values as $key => $value) {
+//                 if ($value) {
+//                     $formatValues[$key] = $model->getField($key)->encode($value, $this);
+//                 }
+//             }
         }
 
         return $formatValues;

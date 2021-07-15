@@ -130,13 +130,13 @@ class HtmlTemplate
      */
     protected function _setOrAppend($tag, $value = null, bool $encodeHtml = true, bool $append = false, bool $throwIfNotFound = true): void
     {
-        if ($tag instanceof Model) {
-            if (!$encodeHtml) {
-                throw new Exception('HTML is not allowed to be dangerously set from Model');
-            }
+//         if ($tag instanceof Model) {
+//             if (!$encodeHtml) {
+//                 throw new Exception('HTML is not allowed to be dangerously set from Model');
+//             }
 
-            $tag = $this->getApp()->ui_persistence->typecastSaveRow($tag, $tag->get());
-        }
+//             $tag = $this->getApp()->ui_persistence->typecastSaveRow($tag, $tag->get());
+//         }
 
         // $tag passed as associative array [tag => value]
         // in this case we don't throw exception if tags don't exist

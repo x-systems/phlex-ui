@@ -7,17 +7,30 @@ namespace Phlex\Ui\Form;
 use Phlex\Ui\Exception;
 use Phlex\Ui\Form;
 use Phlex\Ui\View;
+use Phlex\Data\Model;
+use Phlex\Core\Factory;
 
 /**
  * Provides generic functionality for a form control.
  */
-class Control extends View
+class Control extends View implements Model\Field\CodecInterface
 {
+	protected static $fieldControls = [
+			[Form\Control\Line::class],
+			Model\Field\Type\Selectable::class => [Form\Control\Dropdown::class],
+			Model\Field\Type\Boolean::class => [Form\Control\Checkbox::class],
+			Model\Field\Type\Date::class => [Form\Control\Calendar::class, ['type' => 'date']],
+			Model\Field\Type\DateTime::class => [Form\Control\Calendar::class, ['type' => 'datetime']],
+			Model\Field\Type\Time::class => [Form\Control\Calendar::class, ['type' => 'time']],
+			Model\Field\Type\String_::class => [Form\Control\Line::class],
+			Model\Field\Type\Text::class => [Form\Control\Textarea::class],
+	];
+	
 	public const OPTION_PLACEHOLDER = self::class . '@placeholder';
 	
 	public const OPTION_HINT = self::class . '@hint';
 	
-	public const OPTION_FORM = self::class . '@form';
+	public const OPTION_SEED = self::class . '@seed';
 	
     /**
      * @var Form - to which this field belongs
@@ -87,11 +100,18 @@ class Control extends View
 
         if ($this->form && $this->field) {
             if (isset($this->form->controls[$this->field->short_name])) {
-                throw (new Exception('Form already has a field with the same name'))
+                throw (new Exception('Form already has a control with the same name'))
                     ->addMoreInfo('name', $this->field->short_name);
             }
             $this->form->controls[$this->field->short_name] = $this;
         }
+    }
+    
+    public function setField(Model\Field $field)
+    {
+    	$this->field = $field;
+    	
+    	return $this;
     }
 
     /**
@@ -106,7 +126,7 @@ class Control extends View
     public function set($value = null, $junk = null)
     {
         if ($this->field) {
-            $value = $this->getApp()->ui_persistence->typecastLoadField($this->field, $value);
+            $value = $this->getCodec($this->field)->decode($value);
             $this->field->set($value);
 
             return $this;
@@ -192,5 +212,74 @@ class Control extends View
     public function getControlClass()
     {
         return $this->controlClass;
+    }
+    
+    /**
+     * Provided with a Agile Data Model Field, this method have to decide
+     * and create instance of a View that will act as a form-control. It takes
+     * various input and looks for hints as to which class to use:.
+     *
+     * 1. The $seed argument is evaluated
+     * 2. $f->ui['form'] is evaluated if present
+     * 3. $f->type is converted into seed and evaluated
+     * 4. lastly, falling back to Line, Dropdown (based on $reference and $enum)
+     *
+     * @param array                   $seed  Defaults to pass to Factory::factory() when control object is initialized
+     */
+    public static function factory(Model\Field $field, array $seed = []): Form\Control
+    {
+    	$fallbackSeed = [Form\Control\Line::class];
+    	
+    	if ($field->type === 'array' && $field->getReference() !== null) {
+    		$limit = ($field->getReference() instanceof Model\Reference\ContainsMany) ? 0 : 1;
+    		$model = $field->getReference()->refModel();
+    		$fallbackSeed = [Form\Control\Multiline::class, 'model' => $model, 'rowLimit' => $limit, 'caption' => $model->getCaption()];
+    	} elseif ($field->type !== 'boolean') {
+    		if ($field->getValueType() instanceof Model\Field\Type\Selectable) {
+    			$fallbackSeed = [Form\Control\Dropdown::class, 'values' => $field->getValueType()->values];
+    		} elseif ($field->getReference() !== null) {
+    			$fallbackSeed = [Form\Control\Lookup::class, 'model' => $field->getReference()->refModel()];
+    		}
+    	}
+    	
+    	if ($hint = $field->getOption(self::OPTION_HINT)) {
+    		$fallbackSeed['hint'] = $hint;
+    	}
+    	
+    	if ($placeholder = $field->getOption(self::OPTION_PLACEHOLDER)) {
+    		$fallbackSeed['placeholder'] = $placeholder;
+    	}
+    	
+    	$seed = Factory::mergeSeeds(
+    			$seed,
+    			$field->getOption(self::OPTION_SEED),
+    			$this->typeToControl[$field->type] ?? null,
+    			$fallbackSeed
+    	);
+
+    	return Factory::factory($seed, [
+    			'field' => $field,
+    			'short_name' => $field->short_name,
+    	]);
+    }
+    
+    public function encode($value)
+    {
+    	return $value;
+    }
+    
+    public function decode($value)
+    {
+    	return $value;
+    }
+    
+    public function getField(): ?Model\Field
+    {
+    	return $this->field;
+    }
+    
+    public function getValueType(): ?Model\Field\Type
+    {
+    	return $this->field->getValueType();
     }
 }
