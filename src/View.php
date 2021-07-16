@@ -286,8 +286,8 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
      */
     protected function doInitialize(): void
     {
-        $addLater = $this->_add_later;
-        $this->_add_later = [];
+        $addLaterArgs = $this->addLaterArgs;
+        $this->addLaterArgs = [];
         parent::doInitialize();
 
         if ($this->id === null) {
@@ -314,7 +314,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
         }
 
         // add default objects
-        foreach ($addLater as [$object, $region]) {
+        foreach ($addLaterArgs as [$object, $region]) {
             $this->add($object, $region);
         }
 
@@ -349,7 +349,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
         }
 
         if (!$this->issetApp()) {
-            $this->_add_later[] = [$object, $region];
+            $this->addLaterArgs[] = [$object, $region];
 
             return $object;
         }

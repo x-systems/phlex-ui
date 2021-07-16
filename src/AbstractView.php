@@ -44,7 +44,7 @@ abstract class AbstractView
      *
      * @var array
      */
-    protected $_add_later = [];
+    protected $addLaterArgs = [];
 
     /**
      * will be set to true after rendered. This is so that we don't render view twice.
@@ -87,10 +87,10 @@ abstract class AbstractView
         }
 
         // add default objects
-        foreach ($this->_add_later as [$object, $args]) {
+        foreach ($this->addLaterArgs as [$object, $args]) {
             $this->add($object, $args);
         }
-        $this->_add_later = [];
+        $this->addLaterArgs = [];
     }
 
     /**
@@ -107,7 +107,7 @@ abstract class AbstractView
         }
 
         if (!$this->issetApp()) {
-            $this->_add_later[] = [$object, $args];
+            $this->addLaterArgs[] = [$object, $args];
 
             return $object;
         }
