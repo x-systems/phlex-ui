@@ -22,7 +22,7 @@ abstract class AbstractView
 {
     use AppScopeTrait;
     use ContainerTrait {
-        add as private _add;
+        add as private doAdd;
     }
     use DiContainerTrait;
     use InitializerTrait;
@@ -113,9 +113,7 @@ abstract class AbstractView
         }
 
         // will call doInitialize() of the object
-        $this->_add($object, $args);
-
-        return $object;
+        return $this->doAdd($object, $args);
     }
 
     // }}}
