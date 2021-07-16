@@ -24,7 +24,7 @@ class Persistence_Faker extends \Phlex\Data\Persistence
         }
     }
 
-    public function export($model, $fields = [])
+    public function export(\Phlex\Data\Model $model, array $fields = null, bool $decode = true): array
     {
         if (!$fields) {
             foreach ($model->getFields() as $name => $e) {
@@ -61,5 +61,15 @@ class Persistence_Faker extends \Phlex\Data\Persistence
         return array_map(function ($row) use ($model) {
             return $this->typecastLoadRow($model, $row);
         }, $data);
+    }
+    
+    public function query(\Phlex\Data\Model $model): \Phlex\Data\Persistence\Query
+    {
+    	
+    }
+    
+    public function lastInsertId(\Phlex\Data\Model $model = null): string
+    {
+    	
     }
 }
