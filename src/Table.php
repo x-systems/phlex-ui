@@ -71,28 +71,28 @@ class Table extends Lister
      *
      * @var HtmlTemplate
      */
-    public $t_head;
+    public $templateHead;
 
     /**
      * Contain the template for the "Body" type row.
      *
      * @var HtmlTemplate
      */
-    public $t_row;
+    public $templateRow;
 
     /**
      * Contain the template for the "Foot" type row.
      *
      * @var HtmlTemplate
      */
-    public $t_totals;
+    public $templateTotals;
 
     /**
      * Contains the output to show if table contains no rows.
      *
      * @var HtmlTemplate
      */
-    public $t_empty;
+    public $templateEmpty;
 
     /**
      * Set this if you want table to appear as sortable. This does not add any
@@ -147,11 +147,11 @@ class Table extends Lister
      */
     public function initChunks()
     {
-        if (!$this->t_head) {
-            $this->t_head = $this->template->cloneRegion('Head');
+        if (!$this->templateHead) {
+            $this->templateHead = $this->template->cloneRegion('Head');
             $this->t_row_master = $this->template->cloneRegion('Row');
-            $this->t_totals = $this->template->cloneRegion('Totals');
-            $this->t_empty = $this->template->cloneRegion('Empty');
+            $this->templateTotals = $this->template->cloneRegion('Totals');
+            $this->templateEmpty = $this->template->cloneRegion('Empty');
 
             $this->template->del('Head');
             $this->template->del('Body');
@@ -486,15 +486,15 @@ class Table extends Lister
 
         // Generate Header Row
         if ($this->header) {
-            $this->t_head->dangerouslySetHtml('cells', $this->getHeaderRowHtml());
-            $this->template->dangerouslySetHtml('Head', $this->t_head->renderToHtml());
+            $this->templateHead->dangerouslySetHtml('cells', $this->getHeaderRowHtml());
+            $this->template->dangerouslySetHtml('Head', $this->templateHead->renderToHtml());
         }
 
         // Generate template for data row
         $this->t_row_master->dangerouslySetHtml('cells', $this->getDataRowHtml());
         $this->t_row_master->set('_id', '{$_id}');
-        $this->t_row = new HtmlTemplate($this->t_row_master->renderToHtml());
-        $this->t_row->setApp($this->getApp());
+        $this->templateRow = new HtmlTemplate($this->t_row_master->renderToHtml());
+        $this->templateRow->setApp($this->getApp());
 
         // Iterate data rows
         $this->_rendered_rows_count = 0;
@@ -529,11 +529,11 @@ class Table extends Lister
         // Add totals rows or empty message
         if (!$this->_rendered_rows_count) {
             if (!$this->jsPaginator || !$this->jsPaginator->getPage()) {
-                $this->template->dangerouslyAppendHtml('Body', $this->t_empty->renderToHtml());
+                $this->template->dangerouslyAppendHtml('Body', $this->templateEmpty->renderToHtml());
             }
         } elseif ($this->totals_plan) {
-            $this->t_totals->dangerouslySetHtml('cells', $this->getTotalsRowHtml());
-            $this->template->dangerouslyAppendHtml('Foot', $this->t_totals->renderToHtml());
+            $this->templateTotals->dangerouslySetHtml('cells', $this->getTotalsRowHtml());
+            $this->template->dangerouslyAppendHtml('Foot', $this->templateTotals->renderToHtml());
         }
 
         // stop JsPaginator if there are no more records to fetch
@@ -550,7 +550,7 @@ class Table extends Lister
      */
     public function renderRow()
     {
-        $this->t_row->set($this->model->encode($this));
+        $this->templateRow->set($this->model->encode($this));
 
         if ($this->use_html_tags) {
             // Prepare row-specific HTML tags.
@@ -576,12 +576,12 @@ class Table extends Lister
             }
 
             // Render row and add to body
-            $this->t_row->dangerouslySetHtml($html_tags);
-            $this->t_row->set('_id', $this->model->getId());
-            $this->template->dangerouslyAppendHtml('Body', $this->t_row->renderToHtml());
-            $this->t_row->del(array_keys($html_tags));
+            $this->templateRow->dangerouslySetHtml($html_tags);
+            $this->templateRow->set('_id', $this->model->getId());
+            $this->template->dangerouslyAppendHtml('Body', $this->templateRow->renderToHtml());
+            $this->templateRow->del(array_keys($html_tags));
         } else {
-            $this->template->dangerouslyAppendHtml('Body', $this->t_row->renderToHtml());
+            $this->template->dangerouslyAppendHtml('Body', $this->templateRow->renderToHtml());
         }
     }
 

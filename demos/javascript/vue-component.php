@@ -54,7 +54,7 @@ $lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $l
 
     ++$lister->ipp;
     if ($lister->ipp === $lister->model->limit[0]) {
-        $lister->t_row->dangerouslySetHtml('end', '<div class="ui circular basic label"> ...</div>');
+        $lister->templateRow->dangerouslySetHtml('end', '<div class="ui circular basic label"> ...</div>');
     }
 });
 
