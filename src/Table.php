@@ -257,7 +257,7 @@ class Table extends Lister
     private function _addUnchecked(Table\Column $column): Table\Column
     {
         return \Closure::bind(function () use ($column) {
-            return $this->_add($column);
+            return $this->doAdd($column);
         }, $this, AbstractView::class)();
     }
 
