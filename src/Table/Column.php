@@ -237,7 +237,7 @@ class Column
      *
      * You can also use the "{$name}" value if you wish to specific row value:
      *
-     *    $table->column['name']->setAttr('data', '{$id}');
+     *    $table->column['name']->setAttribute('data', '{$id}');
      *
      * @param string $attr
      * @param string $value
@@ -245,7 +245,7 @@ class Column
      *
      * @return $this
      */
-    public function setAttr($attr, $value, $position = 'body')
+    public function setAttribute($attr, $value, $position = 'body')
     {
         $this->attr[$position][$attr] = $value;
 
@@ -267,7 +267,7 @@ class Column
 
     /**
      * Returns a suitable cell tag with the supplied value. Applies modifiers
-     * added through addClass and setAttr.
+     * added through addClass and setAttribute.
      *
      * @param string       $position 'head', 'body' or 'tail'
      * @param string|array $value    either html or array defining HTML structure, see App::getTag help

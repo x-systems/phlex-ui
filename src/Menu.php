@@ -54,7 +54,7 @@ class Menu extends View
         }
 
         if (is_string($action)) {
-            $item->setAttr('href', $action);
+            $item->setAttribute('href', $action);
         }
 
         if ($action instanceof JsExpressionable) {

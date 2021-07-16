@@ -40,11 +40,11 @@ class UploadImage extends Upload
 
         if (!$this->thumbnail) {
             $this->thumbnail = (new View(['element' => 'img', 'class' => ['right', 'floated', 'image'], 'ui' => true]))
-                ->setAttr(['width' => '36px', 'height' => '36px']);
+                ->setAttribute(['width' => '36px', 'height' => '36px']);
         }
 
         if ($this->defaultSrc) {
-            $this->thumbnail->setAttr(['src' => $this->defaultSrc]);
+            $this->thumbnail->setAttribute(['src' => $this->defaultSrc]);
         }
 
         $this->add($this->thumbnail, $this->thumnailRegion);
@@ -57,7 +57,7 @@ class UploadImage extends Upload
      */
     public function setThumbnailSrc($src)
     {
-        $this->thumbnail->setAttr(['src' => $src]);
+        $this->thumbnail->setAttribute(['src' => $src]);
         $action = $this->thumbnail->js();
         $action->attr('src', $src);
         $this->addJsAction($action);

@@ -16,9 +16,9 @@ $mySwitcherClass = get_class(new class() extends \Phlex\Ui\View {
         \Phlex\Ui\Header::addTo($this, ['My name is ' . $this->name, 'red']);
 
         $buttons = \Phlex\Ui\View::addTo($this, ['ui' => 'basic buttons']);
-        \Phlex\Ui\Button::addTo($buttons, ['Yellow'])->setAttr('data-id', 'yellow');
-        \Phlex\Ui\Button::addTo($buttons, ['Blue'])->setAttr('data-id', 'blue');
-        \Phlex\Ui\Button::addTo($buttons, ['Button'])->setAttr('data-id', 'button');
+        \Phlex\Ui\Button::addTo($buttons, ['Yellow'])->setAttribute('data-id', 'yellow');
+        \Phlex\Ui\Button::addTo($buttons, ['Blue'])->setAttribute('data-id', 'blue');
+        \Phlex\Ui\Button::addTo($buttons, ['Button'])->setAttribute('data-id', 'button');
 
         $buttons->on('click', '.button', new \Phlex\Ui\JsReload($this, [$this->name => (new \Phlex\Ui\Jquery())->data('id')]));
 

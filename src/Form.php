@@ -223,7 +223,7 @@ class Form extends View
         // Add save button in layout
         if ($this->buttonSave) {
             $this->buttonSave = $this->layout->addButton($this->buttonSave);
-            $this->buttonSave->setAttr('tabindex', 0);
+            $this->buttonSave->setAttribute('tabindex', 0);
             $this->buttonSave->on('click', $this->js(null, null, $this->formElement)->form('submit'));
             $this->buttonSave->on('keypress', new JsExpression('if (event.keyCode === 13){ $([name]).form("submit"); }', ['name' => '#' . $this->formElement->name]));
         }

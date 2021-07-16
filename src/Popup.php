@@ -280,8 +280,8 @@ class Popup extends View
         }
 
         if ($this->cb) {
-            $this->setAttr('data-uri', $this->cb->getJsUrl());
-            $this->setAttr('data-cache', $this->useCache ? 'true' : 'false');
+            $this->setAttribute('data-uri', $this->cb->getJsUrl());
+            $this->setAttribute('data-cache', $this->useCache ? 'true' : 'false');
         }
 
         if ($this->minWidth) {

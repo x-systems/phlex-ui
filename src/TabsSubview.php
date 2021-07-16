@@ -20,7 +20,7 @@ class TabsSubview extends View
 
     protected function doRender(): void
     {
-        $this->setAttr('data-tab', $this->dataTabName);
+        $this->setAttribute('data-tab', $this->dataTabName);
 
         parent::doRender();
     }

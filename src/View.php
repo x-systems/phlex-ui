@@ -264,13 +264,13 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
     {
         $this->element = 'a';
         if (is_string($url)) {
-            $this->setAttr('href', $url);
+            $this->setAttribute('href', $url);
         } else {
-            $this->setAttr('href', $this->url($url));
+            $this->setAttribute('href', $this->url($url));
         }
 
         if ($target !== null) {
-            $this->setAttr('target', $target);
+            $this->setAttribute('target', $target);
         }
 
         return $this;
@@ -560,7 +560,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
      *
      * @return $this
      */
-    public function setAttr($attr, $value = null)
+    public function setAttribute($attr, $value = null)
     {
         if (is_array($attr)) {
             $this->attr = array_merge($this->attr, $attr);
