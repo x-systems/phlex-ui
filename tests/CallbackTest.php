@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
-
 class AppMock extends \Phlex\Ui\App
 {
     public $terminated = false;

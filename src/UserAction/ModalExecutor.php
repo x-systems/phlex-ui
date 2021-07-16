@@ -183,11 +183,11 @@ class ModalExecutor extends Modal implements JsExecutorInterface
     {
         $id = $this->stickyGet($this->name);
         if ($id && $this->action->appliesTo === Model\UserAction::APPLIES_TO_SINGLE_RECORD) {
-            $this->action->setEntity($this->action->getModel()->tryLoad($id));
+            $this->action->setEntity($this->action->getEntitySet()->tryLoad($id));
         }
 
         if ($this->action->fields === true) {
-            $this->action->fields = array_keys($this->action->getModel()->getFields('editable'));
+            $this->action->fields = array_keys($this->action->getEntitySet()->getFields('editable'));
         }
 
         $this->loader->set(function ($modal) {

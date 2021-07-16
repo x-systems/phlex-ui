@@ -41,12 +41,14 @@ $modelColorClass = get_class(new class() extends \Phlex\Data\Model {
         ]);
 
         $this->addField('key_value', [
-            'type' => 'string',
-            'values' => [
-                1 => '1st val',
-                '2nd val',
-                '3rd val',
-                '4th val',
+            'type' => [
+                'enum',
+                'values' => [
+                    1 => '1st val',
+                    '2nd val',
+                    '3rd val',
+                    '4th val',
+                ],
             ],
             'ui' => [
                 'table' => [
@@ -56,12 +58,14 @@ $modelColorClass = get_class(new class() extends \Phlex\Data\Model {
         ]);
 
         $this->addField('key_value_string', [
-            'type' => 'string',
-            'values' => [
-                'one' => '1st val',
-                'two' => '2nd val',
-                'three' => '3rd val',
-                'four' => '4th val',
+            'type' => [
+                'enum',
+                'values' => [
+                    'one' => '1st val',
+                    'two' => '2nd val',
+                    'three' => '3rd val',
+                    'four' => '4th val',
+                ],
             ],
             'ui' => [
                 'table' => [

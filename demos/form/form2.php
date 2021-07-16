@@ -68,7 +68,7 @@ $form->onSubmit(function (Form $form) {
 
     return $form->success(
         'Record Added',
-        'there are now ' . $form->model->action('count')->getOne() . ' records in DB'
+        'there are now ' . $form->model->getCount() . ' records in DB'
     );
 });
 
@@ -83,7 +83,7 @@ $personClass = get_class(new class() extends \Phlex\Data\Model {
         parent::doInitialize();
         $this->addField('name', ['required' => true]);
         $this->addField('surname', ['ui' => ['placeholder' => 'e.g. Smith']]);
-        $this->addField('gender', ['enum' => ['M', 'F']]);
+        $this->addField('gender', ['type' => ['enum', 'values' => ['M', 'F']]]);
         $this->hasOne('country_lookup_id', ['model' => [Country::class]]); // this works fast
         $this->hasOne('country_dropdown_id', ['model' => [Country::class], 'ui' => ['form' => new Form\Control\Dropdown()]]); // this works slow
     }

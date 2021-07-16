@@ -85,7 +85,7 @@ class TypeDate extends Column\FilterModel
                     $d1 = $this->getDate($filter['value']);
                     $d2 = $this->getDate($filter['range']);
                     if ($d2 >= $d1) {
-                    	$value = $model->getField($filter['name'])->encode($d1);
+                        $value = $model->getField($filter['name'])->encode($d1);
                         $value2 = $model->getField($filter['name'])->encode($d2);
                     } else {
                         $value = $model->getField($filter['name'])->encode($d2);

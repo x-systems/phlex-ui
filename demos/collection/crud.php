@@ -30,7 +30,7 @@ $crud->onFormAddEdit(function ($form, $ex) {
 
 $crud->setModel($model);
 
-$crud->addDecorator($model->title_field, [\Phlex\Ui\Table\Column\Link::class, ['test' => false, 'path' => 'interfaces/page'], ['_id' => 'id']]);
+$crud->addDecorator($model->titleKey, [\Phlex\Ui\Table\Column\Link::class, ['test' => false, 'path' => 'interfaces/page'], ['_id' => 'id']]);
 
 \Phlex\Ui\View::addTo($app, ['ui' => 'divider']);
 

@@ -280,7 +280,7 @@ class CardDeck extends View
     protected function findCard(Model $model)
     {
         $mapResults = function ($a) use ($model) {
-            return $a[$model->id_field];
+            return $a[$model->primaryKey];
         };
         $deck = [];
         foreach ($this->cardHolder->elements as $v => $element) {
@@ -289,7 +289,7 @@ class CardDeck extends View
             }
         }
 
-        if (in_array($model->getId(), array_map($mapResults, $model->export([$model->id_field])), true)) {
+        if (in_array($model->getId(), array_map($mapResults, $model->export([$model->primaryKey])), true)) {
             // might be in result set but not in deck, for example when adding a card.
             return $deck[$model->getId()] ?? null;
         }
@@ -416,7 +416,7 @@ class CardDeck extends View
      */
     protected function initPaginator()
     {
-        $count = $this->model->action('count')->getOne();
+        $count = $this->model->getCount();
         if ($this->paginator) {
             if ($count > 0) {
                 $this->paginator->setTotal((int) ceil($count / $this->ipp));

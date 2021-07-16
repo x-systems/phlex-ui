@@ -36,7 +36,7 @@ $formSubscribe = Form::addTo($app, ['segment']);
 $formSubscribe->addControl('name');
 $formSubscribe->addControl('subscribe', [Form\Control\Checkbox::class, 'Subscribe to weekly newsletter', 'toggle']);
 $formSubscribe->addControl('email');
-$formSubscribe->addControl('gender', [Form\Control\Radio::class], ['enum' => ['Female', 'Male']])->set('Female');
+$formSubscribe->addControl('gender', [Form\Control\Radio::class], ['type' => ['enum', 'values' => ['Female', 'Male']]])->set('Female');
 $formSubscribe->addControl('m_gift', [Form\Control\Dropdown::class, 'caption' => 'Gift for Men', 'values' => ['Beer Glass', 'Swiss Knife']]);
 $formSubscribe->addControl('f_gift', [Form\Control\Dropdown::class, 'caption' => 'Gift for Women', 'values' => ['Wine Glass', 'Lipstick']]);
 

@@ -21,7 +21,7 @@ $finderClass = get_class(new class() extends \Phlex\Ui\Columns {
 
         // lets add our first table here
         $table = \Phlex\Ui\Table::addTo($this->addColumn(), ['header' => false, 'very basic selectable'])->addStyle('cursor', 'pointer');
-        $table->setModel($model, [$model->title_field]);
+        $table->setModel($model, [$model->titleKey]);
 
         $selections = explode(',', $_GET[$this->name] ?? '');
 
@@ -55,7 +55,7 @@ $finderClass = get_class(new class() extends \Phlex\Ui\Columns {
             $pushModel = $pushModel->ref($ref);
 
             $table = \Phlex\Ui\Table::addTo($this->addColumn(), ['header' => false, 'very basic selectable'])->addStyle('cursor', 'pointer');
-            $table->setModel($pushModel->setLimit(10), [$pushModel->title_field]);
+            $table->setModel($pushModel->setLimit(10), [$pushModel->titleKey]);
 
             if ($selections) {
                 $table->js(true)->find('tr[data-id=' . $selections[0] . ']')->addClass('active');
@@ -79,7 +79,7 @@ $model->setOrder([$model->key()->is_folder => 'desc', $model->key()->name]);
 \Phlex\Ui\Header::addTo($app, ['MacOS File Finder', 'subHeader' => 'Component built around Table, Columns and JsReload']);
 
 $vp = \Phlex\Ui\VirtualPage::addTo($app)->set(function ($vp) use ($model) {
-    $model->action('delete')->execute();
+    $model->persistence->query($model)->delete()->execute();
     $model->importFromFilesystem('.');
     \Phlex\Ui\Button::addTo($vp, ['Import Complete', 'big green fluid'])->link('multitable.php');
     $vp->js(true)->closest('.modal')->find('.header')->remove();

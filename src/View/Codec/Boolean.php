@@ -11,16 +11,16 @@ use Phlex\Data\Model;
  */
 class Boolean extends Model\Field\Codec
 {
-	public $valueTrue = 'Yes';
-	
-	public $valueFalse = 'No';
-	
+    public $valueTrue = 'Yes';
+
+    public $valueFalse = 'No';
+
     protected function doEncode($value)
     {
         if ($value === $this->getValueType()->valueTrue) {
             $value = $this->valueTrue;
         } elseif ($value === $this->getValueType()->valueFalse) {
-        	$value = $this->valueFalse;
+            $value = $this->valueFalse;
         }
 
         return $value;

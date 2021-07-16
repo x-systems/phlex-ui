@@ -550,7 +550,7 @@ class Table extends Lister
      */
     public function renderRow()
     {
-        $this->t_row->set($this->model);
+        $this->t_row->set($this->model->encode($this));
 
         if ($this->use_html_tags) {
             // Prepare row-specific HTML tags.

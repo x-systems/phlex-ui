@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Hintable\HintablePropertyDef;
 use Phlex\Data\Model;
 use Phlex\Ui\Form;
-use Mvorisek\Phlex\Hintable\Data\HintablePropertyDef;
 
 try {
     if (file_exists(__DIR__ . '/db.php')) {
@@ -24,19 +24,19 @@ try {
 
 class ModelWithPrefixedFields extends Model
 {
-    private function prefixFieldName(string $fieldName, bool $forActualName = false): string
+    private function prefixKey(string $key, bool $forActualName = false): string
     {
         if ($forActualName) {
-            $fieldName = preg_replace('~^atk_fp_' . preg_quote($this->table, '~') . '__~', '', $fieldName);
+            $key = preg_replace('~^atk_fp_' . preg_quote($this->table, '~') . '__~', '', $key);
         }
 
-        return 'atk_' . ($forActualName ? 'a' : '') . 'fp_' . $this->table . '__' . $fieldName;
+        return 'atk_' . ($forActualName ? 'a' : '') . 'fp_' . $this->table . '__' . $key;
     }
 
     protected function createHintablePropsFromClassDoc(string $className): array
     {
         return array_map(function (HintablePropertyDef $hintableProp) {
-            $hintableProp->key = $this->prefixFieldName($hintableProp->name);
+            $hintableProp->key = $this->prefixKey($hintableProp->name);
 
             return $hintableProp;
         }, parent::createHintablePropsFromClassDoc($className));
@@ -44,21 +44,21 @@ class ModelWithPrefixedFields extends Model
 
     protected function doInitialize(): void
     {
-        if ($this->id_field === 'id') {
-            $this->id_field = $this->prefixFieldName($this->id_field);
+        if ($this->primaryKey === 'id') {
+            $this->primaryKey = $this->prefixKey($this->primaryKey);
         }
 
-        if ($this->title_field === 'name') {
-            $this->title_field = $this->prefixFieldName($this->title_field);
+        if ($this->titleKey === 'name') {
+            $this->titleKey = $this->prefixKey($this->titleKey);
         }
 
         parent::doInitialize();
     }
 
-    public function addField($name, $seed = []): \Phlex\Data\Model\Field
+    public function addField($name, $seed = []): Model\Field
     {
         $seed = \Phlex\Core\Factory::mergeSeeds($seed, [
-            'actual' => $this->prefixFieldName($name, true),
+            'actual' => $this->prefixKey($name, true),
         ]);
 
         return parent::addField($name, $seed);
@@ -105,8 +105,8 @@ class Country extends ModelWithPrefixedFields
 
         $this->addField($this->key()->iso, ['caption' => 'ISO', 'required' => true, 'type' => 'string', 'ui' => ['table' => ['sortable' => false]]]);
         $this->addField($this->key()->iso3, ['caption' => 'ISO3', 'required' => true, 'type' => 'string']);
-        $this->addField($this->key()->numcode, ['caption' => 'ISO Numeric Code', 'type' => 'number', 'required' => true]);
-        $this->addField($this->key()->phonecode, ['caption' => 'Phone Prefix', 'type' => 'number', 'required' => true]);
+        $this->addField($this->key()->numcode, ['caption' => 'ISO Numeric Code', 'type' => 'float', 'required' => true]);
+        $this->addField($this->key()->phonecode, ['caption' => 'Phone Prefix', 'type' => 'float', 'required' => true]);
 
         $this->onHook(Model::HOOK_BEFORE_SAVE, function (self $model) {
             if (!$model->sys_name) {
@@ -187,14 +187,14 @@ class Stat extends ModelWithPrefixedFields
 
         $this->addField($this->key()->project_name, ['type' => 'string']);
         $this->addField($this->key()->project_code, ['type' => 'string']);
-        $this->title_field = $this->key()->project_name;
+        $this->titleKey = $this->key()->project_name;
         $this->addField($this->key()->description, ['type' => 'text']);
         $this->addField($this->key()->client_name, ['type' => 'string']);
         $this->addField($this->key()->client_address, ['type' => 'text', 'ui' => ['form' => [Form\Control\Textarea::class, 'rows' => 4]]]);
 
         $this->hasOne($this->key()->client_country_iso, [
             'model' => [Country::class],
-            'their_field' => Country::hint()->key()->iso,
+            'theirKey' => Country::hint()->key()->iso,
             'type' => 'string',
             'ui' => [
                 'form' => [Form\Control\Line::class],
@@ -203,7 +203,7 @@ class Stat extends ModelWithPrefixedFields
             ->addField($this->key()->client_country, Country::hint()->key()->name);
 
         $this->addField($this->key()->is_commercial, ['type' => 'boolean']);
-        $this->addField($this->key()->currency, ['values' => ['EUR' => 'Euro', 'USD' => 'US Dollar', 'GBP' => 'Pound Sterling']]);
+        $this->addField($this->key()->currency, ['type' => ['enum', 'values' => ['EUR' => 'Euro', 'USD' => 'US Dollar', 'GBP' => 'Pound Sterling']]]);
         $this->addField($this->key()->currency_symbol, ['never_persist' => true]);
         $this->onHook(Model::HOOK_AFTER_LOAD, function (self $model) {
             /* implementation for "intl"
@@ -226,8 +226,8 @@ class Stat extends ModelWithPrefixedFields
 
         $this->addField($this->key()->project_expenses_est, ['type' => 'money']);
         $this->addField($this->key()->project_expenses, ['type' => 'money']);
-        $this->addField($this->key()->project_mgmt_cost_pct, new Percent());
-        $this->addField($this->key()->project_qa_cost_pct, new Percent());
+        $this->addField($this->key()->project_mgmt_cost_pct, ['type' => 'float']);
+        $this->addField($this->key()->project_qa_cost_pct, ['type' => 'float']);
 
         $this->addField($this->key()->start_date, ['type' => 'date']);
         $this->addField($this->key()->finish_date, ['type' => 'date']);
@@ -265,9 +265,9 @@ class File extends ModelWithPrefixedFields
 
         $this->hasMany($this->key()->SubFolder, [
             'model' => [self::class],
-            'their_field' => self::hint()->key()->parent_folder_id,
+            'theirKey' => self::hint()->key()->parent_folder_id,
         ])
-            ->addField($this->key()->count, ['aggregate' => 'count', 'field' => $this->persistence->expr($this, '*')]);
+            ->addField($this->key()->count, ['aggregate' => 'count', 'field' => $this->expr(['*'])]);
 
         $this->hasOne($this->key()->parent_folder_id, [
             'model' => [Folder::class],
@@ -350,11 +350,11 @@ class Category extends ModelWithPrefixedFields
 
         $this->hasMany($this->key()->SubCategories, [
             'model' => [SubCategory::class],
-            'their_field' => SubCategory::hint()->key()->product_category_id,
+            'theirKey' => SubCategory::hint()->key()->product_category_id,
         ]);
         $this->hasMany($this->key()->Products, [
             'model' => [Product::class],
-            'their_field' => Product::hint()->key()->product_category_id,
+            'theirKey' => Product::hint()->key()->product_category_id,
         ]);
     }
 }
@@ -378,7 +378,7 @@ class SubCategory extends ModelWithPrefixedFields
         ]);
         $this->hasMany($this->key()->Products, [
             'model' => [Product::class],
-            'their_field' => Product::hint()->key()->product_sub_category_id,
+            'theirKey' => Product::hint()->key()->product_sub_category_id,
         ]);
     }
 }

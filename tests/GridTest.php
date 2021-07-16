@@ -84,11 +84,11 @@ class GridTest extends \Phlex\Core\PHPUnit\TestCase
 
 class MyModel extends \Phlex\Data\Model
 {
-    public $title_field = 'email';
+    public $titleKey = 'email';
 
     protected function doInitialize(): void
     {
-    	parent::doInitialize();
+        parent::doInitialize();
 
         $this->addField('email');
         $this->addField('password', ['type' => 'password']);

@@ -38,7 +38,7 @@ class Persistence_Faker extends \Phlex\Data\Persistence
             foreach ($fields as $field) {
                 $type = $field;
 
-                if ($field === $model->id_field) {
+                if ($field === $model->primaryKey) {
                     $row[$field] = $i + 1;
 
                     continue;

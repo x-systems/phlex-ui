@@ -84,7 +84,7 @@ class Lookup extends Input
      *
      * @var string
      */
-    public $id_field;
+    public $primaryKey;
 
     /**
      * Set custom model field here to display it's value in dropdown instead of default model title field.
@@ -231,11 +231,11 @@ class Lookup extends Input
      */
     public static function defaultRenderRow($field, Model $row, $key = null)
     {
-        $id_field = $field->id_field ?: $row->id_field;
+        $primaryKey = $field->primaryKey ?: $row->primaryKey;
         $titleKey = $field->titleKey ?: $row->titleKey;
 
         return [
-            'value' => $row->get($id_field),
+            'value' => $row->get($primaryKey),
             'title' => $row->get($titleKey),
         ];
     }
@@ -430,9 +430,9 @@ class Lookup extends Input
         $this->initDropdown($chain);
 
         if ($this->field && $this->field->get()) {
-            $id_field = $this->id_field ?: $this->model->id_field;
+            $primaryKey = $this->primaryKey ?: $this->model->primaryKey;
 
-            $this->model = $this->model->tryLoadBy($id_field, $this->field->get());
+            $this->model = $this->model->tryLoadBy($primaryKey, $this->field->get());
 
             if ($this->model->isLoaded()) {
                 $row = $this->renderRow($this->model);

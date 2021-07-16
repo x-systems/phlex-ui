@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
-use Phlex\Data\Persistence;
-use Phlex\Ui\App;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Phlex\Data\Persistence;
+use Phlex\Ui\App;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 

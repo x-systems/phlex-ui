@@ -21,7 +21,7 @@ class TestModel extends Model
 
     protected function doInitialize(): void
     {
-    	parent::doInitialize();
+        parent::doInitialize();
 
         $this->addField('name');
 

@@ -11,7 +11,7 @@ use Phlex\Data\Model;
  */
 class Array_ extends Model\Field\Codec
 {
-	public $separator = ', ';
+    public $separator = ', ';
 
     protected function doEncode($value)
     {

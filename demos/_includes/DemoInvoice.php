@@ -11,7 +11,7 @@ class DemoInvoice extends \Phlex\Data\Model
 {
     public $dateFormat;
 
-    public $title_field = 'reference';
+    public $titleKey = 'reference';
 
     protected function doInitialize(): void
     {

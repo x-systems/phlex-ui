@@ -17,11 +17,11 @@ $notifierClass = get_class(new class() extends \Phlex\Data\Model {
 
         $this->addField('text', ['default' => 'This text will appear in notification', 'caption' => 'type any text']);
         $this->addField('icon', ['default' => 'warning sign', 'caption' => 'Use semantic-ui icon name']);
-        $this->addField('color', ['enum' => ['green', 'red', 'orange', 'yellow', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown'], 'default' => 'green', 'caption' => 'Select color:']);
-        $this->addField('transition', ['enum' => ['scale', 'fade', 'jiggle', 'flash'], 'default' => 'jiggle', 'caption' => 'Select transition:']);
-        $this->addField('width', ['enum' => ['25%', '50%', '75%', '100%'], 'default' => '25%', 'caption' => 'Select width:']);
-        $this->addField('position', ['enum' => ['topLeft', 'topCenter', 'topRight', 'bottomLeft', 'bottomCenter', 'bottomRight', 'center'], 'default' => 'topRight', 'caption' => 'Select position:']);
-        $this->addField('attach', ['enum' => ['Body', 'Form'], 'default' => 'Body', 'caption' => 'Attach to:']);
+        $this->addField('color', ['type' => ['enum', 'values' => ['green', 'red', 'orange', 'yellow', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown']], 'default' => 'green', 'caption' => 'Select color:']);
+        $this->addField('transition', ['type' => ['enum', 'values' => ['scale', 'fade', 'jiggle', 'flash']], 'default' => 'jiggle', 'caption' => 'Select transition:']);
+        $this->addField('width', ['type' => ['enum', 'values' => ['25%', '50%', '75%', '100%']], 'default' => '25%', 'caption' => 'Select width:']);
+        $this->addField('position', ['type' => ['enum', 'values' => ['topLeft', 'topCenter', 'topRight', 'bottomLeft', 'bottomCenter', 'bottomRight', 'center']], 'default' => 'topRight', 'caption' => 'Select position:']);
+        $this->addField('attach', ['type' => ['enum', 'values' => ['Body', 'Form']], 'default' => 'Body', 'caption' => 'Attach to:']);
     }
 });
 

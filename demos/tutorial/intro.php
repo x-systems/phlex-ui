@@ -125,7 +125,7 @@ $wizard->addStep('Business Model', function ($page) {
         /* Showing Class definition.
         class DemoInvoice extends \Phlex\Data\Model
         {
-            public $title_field = 'reference';
+            public $titleKey = 'reference';
 
             protected function doInitialize(): void
             {

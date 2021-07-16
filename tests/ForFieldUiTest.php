@@ -11,7 +11,7 @@ class MyTestModel extends Model
 {
     protected function doInitialize(): void
     {
-    	parent::doInitialize();
+        parent::doInitialize();
 
         $this->addField('regular_field');
         $this->addField('just_for_data', ['never_persist' => true]);

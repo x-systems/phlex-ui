@@ -87,8 +87,8 @@ class TypeDatetime extends Column\FilterModel
                         $value = $model->getField($filter['name'])->encode($d1);
                         $value2 = $model->getField($filter['name'])->encode($d2);
                     } else {
-                    	$value = $model->getField($filter['name'])->encode($d2);
-                    	$value2 = $model->getField($filter['name'])->encode($d1);
+                        $value = $model->getField($filter['name'])->encode($d2);
+                        $value2 = $model->getField($filter['name'])->encode($d1);
                     }
                     $model->addCondition($model->expr('[field] between [value] and [value2]', ['field' => $model->getField($filter['name']), 'value' => $value, 'value2' => $value2]));
 
@@ -98,11 +98,11 @@ class TypeDatetime extends Column\FilterModel
                     $d1 = clone $this->getDatetime($filter['value'])->setTime(0, 0, 0);
                     $d2 = $this->getDatetime($filter['value'])->setTime(23, 59, 59);
                     if ($d2 >= $d1) {
-                    	$value = $model->getField($filter['name'])->encode($d1);
-                    	$value2 = $model->getField($filter['name'])->encode($d2);
+                        $value = $model->getField($filter['name'])->encode($d1);
+                        $value2 = $model->getField($filter['name'])->encode($d2);
                     } else {
-                    	$value = $model->getField($filter['name'])->encode($d2);
-                    	$value2 = $model->getField($filter['name'])->encode($d1);
+                        $value = $model->getField($filter['name'])->encode($d2);
+                        $value2 = $model->getField($filter['name'])->encode($d1);
                     }
                     $between_condition = $filter['op'] === '!=' ? 'not between' : 'between';
                     $model->addCondition($model->expr('[field] ' . $between_condition . ' [value] and [value2]', ['field' => $model->getField($filter['name']), 'value' => $value, 'value2' => $value2]));

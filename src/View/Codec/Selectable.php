@@ -12,17 +12,17 @@ class Selectable extends Model\Field\Codec
 
     protected function doEncode($values)
     {
-    	if ($values === '') {
+        if ($values === '') {
             return '';
         }
-        
+
         $valueType = $this->getField()->getValueType();
 
         if (!$this->displaysMultipleValues()) {
-        	return $valueType->getLabel($values);
+            return $valueType->getLabel($values);
         }
-        
-        return implode($this->separator, array_map(fn($value) => $valueType->getLabel($value), $values));
+
+        return implode($this->separator, array_map(fn ($value) => $valueType->getLabel($value), $values));
     }
 
     protected function displaysMultipleValues(): bool

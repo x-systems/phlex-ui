@@ -38,39 +38,39 @@ abstract class AbstractLayout extends \Phlex\Ui\View
         }
 
 //         try {
-            if (!$this->form->model->hasField($name)) {
-                $field = $this->form->model->addField($name, $field);
-            } else {
-                $existingField = $this->form->model->getField($name);
+        if (!$this->form->model->hasField($name)) {
+            $field = $this->form->model->addField($name, $field);
+        } else {
+            $existingField = $this->form->model->getField($name);
 
-                if (is_array($field)) {
-                    $field = $existingField->setDefaults($field);
-                } elseif (is_object($field)) {
-                    throw (new Exception('Duplicate field'))
-                        ->addMoreInfo('name', $name);
-                } else {
-                    $field = $existingField;
-                }
+            if (is_array($field)) {
+                $field = $existingField->setDefaults($field);
+            } elseif (is_object($field)) {
+                throw (new Exception('Duplicate field'))
+                    ->addMoreInfo('name', $name);
+            } else {
+                $field = $existingField;
             }
+        }
 
-            if (is_string($control)) {
-                $control = Control::factory($field, ['caption' => $control]);
-            } elseif (is_array($control)) {
-            	$control = Control::factory($field, $control);
-            } elseif (!$control) {
-            	$control = Control::factory($field);
-            } elseif (is_object($control)) {
-                if (!$control instanceof Control) {
-                    throw (new Exception('Form control must descend from ' . Control::class))
-                        ->addMoreInfo('control', $control);
-                }
-                $control->field = $field;                
-            } else {
-                throw (new Exception('Value of $control argument is incorrect'))
+        if (is_string($control)) {
+            $control = Control::factory($field, ['caption' => $control]);
+        } elseif (is_array($control)) {
+            $control = Control::factory($field, $control);
+        } elseif (!$control) {
+            $control = Control::factory($field);
+        } elseif (is_object($control)) {
+            if (!$control instanceof Control) {
+                throw (new Exception('Form control must descend from ' . Control::class))
                     ->addMoreInfo('control', $control);
             }
-            
-            $control->form = $this->form;
+            $control->field = $field;
+        } else {
+            throw (new Exception('Value of $control argument is incorrect'))
+                ->addMoreInfo('control', $control);
+        }
+
+        $control->form = $this->form;
 //         } catch (\Throwable $e) {
 //             throw (new Exception('Unable to add form control', 0, $e))
 //                 ->addMoreInfo('name', $name)

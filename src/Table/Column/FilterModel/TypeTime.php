@@ -39,8 +39,8 @@ class TypeTime extends Column\FilterModel
                         $value = $model->getField($filter['name'])->encode($d1);
                         $value2 = $model->getField($filter['name'])->encode($d2);
                     } else {
-                    	$value = $model->getField($filter['name'])->encode($d2);
-                    	$value2 = $model->getField($filter['name'])->encode($d1);
+                        $value = $model->getField($filter['name'])->encode($d2);
+                        $value2 = $model->getField($filter['name'])->encode($d1);
                     }
                     $model->addCondition($model->expr('[field] between [value] and [value2]', ['field' => $model->getField($filter['name']), 'value' => $value, 'value2' => $value2]));
 

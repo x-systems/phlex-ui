@@ -98,7 +98,7 @@ class Input extends Form\Control
     public function getValue()
     {
         return isset($this->field)
-        			? $this->field->encode($this->field->get(), $this)
+                    ? $this->field->encode($this->field->get(), $this)
                     : ($this->content ?? '');
     }
 

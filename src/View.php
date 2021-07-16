@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Phlex\Ui;
 
+use Phlex\Data;
 use Phlex\Data\Model;
 use Phlex\Data\Persistence\Static_;
 use Phlex\Ui\UserAction\ExecutorFactory;
-use Phlex\Data;
 
 /**
  * Implements a most core view, which all of the other components descend
@@ -15,18 +15,18 @@ use Phlex\Data;
  */
 class View extends AbstractView implements JsExpressionable, Data\MutatorInterface
 {
-	use Data\MutatorTrait;
-	
-	protected static $defaultCodecs = [
-			[Model\Field\Codec::class],
-			Model\Field\Type\Boolean::class => [View\Codec\Boolean::class],
-			Model\Field\Type\DateTime::class => [View\Codec\DateTime::class],
-			Model\Field\Type\Date::class => [View\Codec\DateTime::class, 'format' => 'd-m-Y', 'timezone' => null],
-			Model\Field\Type\Time::class => [View\Codec\DateTime::class, 'format' => 'H:i', 'timezone' => null],			
-			Model\Field\Type\Array_::class => [View\Codec\Array_::class],			
-			Model\Field\Type\Selectable::class => [View\Codec\Selectable::class],			
-	];
-	
+    use Data\MutatorTrait;
+
+    protected static $defaultCodecs = [
+        [Model\Field\Codec::class],
+        Model\Field\Type\Boolean::class => [View\Codec\Boolean::class],
+        Model\Field\Type\DateTime::class => [View\Codec\DateTime::class],
+        Model\Field\Type\Date::class => [View\Codec\DateTime::class, 'format' => 'd-m-Y', 'timezone' => null],
+        Model\Field\Type\Time::class => [View\Codec\DateTime::class, 'format' => 'H:i', 'timezone' => null],
+        Model\Field\Type\Array_::class => [View\Codec\Array_::class],
+        Model\Field\Type\Selectable::class => [View\Codec\Selectable::class],
+    ];
+
     // {{{ Properties of the class
 
     /**
@@ -1194,6 +1194,4 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
     }
 
     // }}}
-    
-    
 }

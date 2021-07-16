@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
-
 class TagTest extends \Phlex\Core\PHPUnit\TestCase
 {
     public function getApp()

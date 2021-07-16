@@ -355,7 +355,7 @@ class Column
      */
     public function getTotalsCellHtml(Model\Field $field, $value)
     {
-        return $this->getTag('foot', $this->getCodec($field)->encode($value));
+        return $this->getTag('foot', $this->table->getCodec($field)->encode($value));
     }
 
     /**
@@ -405,7 +405,7 @@ class Column
      * Return associative array of tags to be filled with pre-rendered HTML on
      * a column-basis. Will not be invoked if html-output is turned off for the table.
      *
-     * @param Model      $row   link to row data
+     * @param Model            $row   link to row data
      * @param Model\Field|null $field field being rendered
      *
      * @return array associative array with tags and their HTML values

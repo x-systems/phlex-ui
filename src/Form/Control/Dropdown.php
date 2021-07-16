@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Form\Control;
 
+use Phlex\Data\Model;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\JsExpressionable;
 use Phlex\Ui\JsFunction;
-use Phlex\Data\Model;
 
 /**
  * Input element for a form control.
@@ -151,12 +151,12 @@ class Dropdown extends Input
         $this->_tIcon = $this->_tItem->cloneRegion('Icon');
         $this->_tItem->del('Icon');
     }
-    
+
     public function setField(Model\Field $field)
     {
-    	$this->values = $field->getValueType()->values;
-    	
-    	return parent::setField($field);
+        $this->values = $field->getValueType()->values;
+
+        return parent::setField($field);
     }
 
     /**
@@ -262,7 +262,7 @@ class Dropdown extends Input
                 }
             } else {
                 // for standard model rendering, only load id and title field
-                $this->model->only_fields = [$this->model->titleKey, $this->model->id_field];
+                $this->model->only_fields = [$this->model->titleKey, $this->model->primaryKey];
                 $this->_renderItemsForModel();
             }
         } else {

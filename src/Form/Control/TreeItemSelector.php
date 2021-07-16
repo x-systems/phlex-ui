@@ -139,8 +139,8 @@ class TreeItemSelector extends Form\Control
 
     public function getValue()
     {
-    	return $this->field->getCodec($this)->encode($this->field->get());
-    	
+        return $this->field->getCodec($this)->encode($this->field->get());
+
         return $this->getApp()->ui_persistence->typecastSaveField($this->field, $this->field->get());
     }
 

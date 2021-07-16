@@ -22,7 +22,7 @@ class Form extends View
     public const HOOK_DISPLAY_SUCCESS = self::class . '@displaySuccess';
     /** @const string Executed when self::loadPost() method is called. */
     public const HOOK_LOAD_POST = self::class . '@loadPost';
-    
+
 //     protected static $defaultCodecs = [
 //     		[Form\Control\Line::class],
 //     		Model\Field\Type\Boolean::class => [View\Codec\Boolean::class],
@@ -498,14 +498,14 @@ class Form extends View
      * 3. $f->type is converted into seed and evaluated
      * 4. lastly, falling back to Line, Dropdown (based on $reference and $enum)
      *
-     * @param array                   $seed  Defaults to pass to Factory::factory() when control object is initialized
+     * @param array $seed Defaults to pass to Factory::factory() when control object is initialized
      */
     public function controlFactory(Model\Field $field, array $seed = []): Form\Control
     {
         $fallbackSeed = [Form\Control\Line::class];
 
         if ($field->type === 'array' && $field->getReference() !== null) {
-        	$limit = ($field->getReference() instanceof Model\Reference\ContainsMany) ? 0 : 1;
+            $limit = ($field->getReference() instanceof Model\Reference\ContainsMany) ? 0 : 1;
             $model = $field->getReference()->refModel();
             $fallbackSeed = [Form\Control\Multiline::class, 'model' => $model, 'rowLimit' => $limit, 'caption' => $model->getCaption()];
         } elseif ($field->type !== 'boolean') {

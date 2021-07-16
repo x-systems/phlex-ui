@@ -13,7 +13,7 @@ class Counter extends \Phlex\Ui\Form\Control\Line
 
     protected function doInitialize(): void
     {
-    	parent::doInitialize();
+        parent::doInitialize();
 
         $this->actionLeft = new \Phlex\Ui\Button(['icon' => 'minus']);
         $this->action = new \Phlex\Ui\Button(['icon' => 'plus']);

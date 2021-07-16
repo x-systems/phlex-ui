@@ -94,8 +94,6 @@ class ActionButtons extends Table\Column
             $defaults = ['title' => $defaults];
         }
 
-        $defaults['appStickyCb'] = true;
-
         $modal = \Phlex\Ui\Modal::addTo($owner, $defaults);
 
         $modal->observeChanges(); // adds scrollbar if needed

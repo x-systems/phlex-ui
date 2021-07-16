@@ -310,7 +310,7 @@ class Multiline extends Form\Control
         foreach ($rows as $cols) {
             $rowId = $this->getMlRowId($cols);
             foreach ($cols as $fieldName => $value) {
-                if ($fieldName === '__atkml' || $fieldName === $model->id_field) {
+                if ($fieldName === '__atkml' || $fieldName === $model->primaryKey) {
                     continue;
                 }
 
@@ -338,10 +338,10 @@ class Multiline extends Form\Control
         $model = $this->getModel();
 
         // collects existing ids.
-        $currentIds = array_column($model->export(), $model->id_field);
+        $currentIds = array_column($model->export(), $model->primaryKey);
 
         foreach ($this->rowData as $row) {
-            $entity = $model->tryLoad($row[$model->id_field] ?? null);
+            $entity = $model->tryLoad($row[$model->primaryKey] ?? null);
             foreach ($row as $fieldName => $value) {
                 if ($fieldName === '__atkml') {
                     continue;
@@ -414,7 +414,7 @@ class Multiline extends Form\Control
         if (!$fieldNames) {
             $fieldNames = array_keys($model->getFields('not system'));
         }
-        $this->rowFields = array_merge([$model->id_field], $fieldNames);
+        $this->rowFields = array_merge([$model->primaryKey], $fieldNames);
 
         foreach ($this->rowFields as $fieldName) {
             $this->fieldDefs[] = $this->getFieldDef($model->getField($fieldName));
@@ -720,7 +720,7 @@ class Multiline extends Form\Control
         $values = [];
         foreach ($this->fieldDefs as $def) {
             $fieldName = $def['name'];
-            if ($fieldName === $model->id_field) {
+            if ($fieldName === $model->primaryKey) {
                 continue;
             }
             $field = $model->getField($fieldName);
@@ -745,7 +745,7 @@ class Multiline extends Form\Control
 
         foreach ($this->fieldDefs as $def) {
             $fieldName = $def['name'];
-            if ($fieldName === $model->id_field) {
+            if ($fieldName === $model->primaryKey) {
                 continue;
             }
 
@@ -785,10 +785,10 @@ class Multiline extends Form\Control
                 $dummyModel->addExpression($field['name'], ['expr' => $field['expr'], 'type' => $model->getField($field['name'])->type]);
             }
             $values = $dummyModel->tryLoadAny()->get();
-            unset($values[$model->id_field]);
+            unset($values[$model->primaryKey]);
 
             $formatValues = $this->encodeRow($model, $values);
-            
+
 //             foreach ($values as $key => $value) {
 //                 if ($value) {
 //                     $formatValues[$key] = $model->getField($key)->encode($value, $this);
