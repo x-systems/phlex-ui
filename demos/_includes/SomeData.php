@@ -19,8 +19,8 @@ class SomeData extends \Phlex\Data\Model
         $model = $this;
 
         $model->addField('title');
-        $model->addField('name');
-        $model->addField('surname', ['actual' => 'name']);
+        $model->addField('name', ['actual' => 'firstName']);
+        $model->addField('surname', ['actual' => 'lastName']);
         $model->addField('date', ['type' => 'date']);
         $model->addField('salary', ['type' => 'money', 'actual' => 'randomNumber']);
         $model->addField('logo_url');

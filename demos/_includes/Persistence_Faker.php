@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-class Persistence_Faker extends \Phlex\Data\Persistence
+use Phlex\Data\Model;
+
+class Persistence_Faker extends \Phlex\Data\Persistence\Array_
 {
     /** @var \Faker\Generator */
     public $faker;
@@ -17,59 +19,33 @@ class Persistence_Faker extends \Phlex\Data\Persistence
         $this->faker = \Faker\Factory::create();
     }
 
-    public function prepareIterator($model)
+    public function initPersistence(Model $model): Model
     {
-        foreach ($this->export($model) as $row) {
-            yield $row;
-        }
-    }
+        $this->onHook(self::HOOK_AFTER_ADD, function ($persistence, $model) {
+            $data = [];
+            for ($i = 0; $i < $this->count; ++$i) {
+                $row = [];
+                foreach ($model->getFields() as $field) {
+                    $key = $field->getCodec($this)->getKey();
 
-    public function export(\Phlex\Data\Model $model, array $fields = null, bool $decode = true): array
-    {
-        if (!$fields) {
-            foreach ($model->getFields() as $name => $e) {
-                $fields[] = $name;
+                    if ($field->isPrimaryKey()) {
+                        $row[$key] = $i + 1;
+
+                        continue;
+                    }
+
+                    if ($key === 'logo_url') {
+                        $row[$key] = '../images/' . ['default.png', 'logo.png'][random_int(0, 1)]; // one of these
+                    } else {
+                        $row[$key] = $this->faker->{$key}();
+                    }
+                }
+                $data[$i + 1] = $row;
             }
-        }
 
-        $data = [];
-        for ($i = 0; $i < $this->count; ++$i) {
-            $row = [];
-            foreach ($fields as $field) {
-                $type = $field;
+            $this->data = $model->table ? [$model->table => $data] : $data;
+        });
 
-                if ($field === $model->primaryKey) {
-                    $row[$field] = $i + 1;
-
-                    continue;
-                }
-
-                $actual = $model->getField($field)->actual;
-                if ($actual) {
-                    $type = $actual;
-                }
-
-                if ($type === 'logo_url') {
-                    $row[$field] = '../images/' . ['default.png', 'logo.png'][random_int(0, 1)]; // one of these
-                } else {
-                    $row[$field] = $this->faker->{$type};
-                }
-            }
-            $data[] = $row;
-        }
-
-        return array_map(function ($row) use ($model) {
-            return $this->typecastLoadRow($model, $row);
-        }, $data);
-    }
-    
-    public function query(\Phlex\Data\Model $model): \Phlex\Data\Persistence\Query
-    {
-    	
-    }
-    
-    public function lastInsertId(\Phlex\Data\Model $model = null): string
-    {
-    	
+        return $model;
     }
 }
