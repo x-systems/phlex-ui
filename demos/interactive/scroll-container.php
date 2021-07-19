@@ -26,8 +26,7 @@ $listerTemplate = '<div id="{$_id}">{List}<div id="{$_id}" class="ui segment" st
 $listerContainer = \Phlex\Ui\View::addTo($scrollContainer, ['template' => new HtmlTemplate($listerTemplate)]);
 
 $lister = \Phlex\Ui\Lister::addTo($listerContainer, [], ['List']);
-$lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $lister) {
-    $row = Country::assertInstanceOf($lister->current_row);
+$lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $lister, Country $row) {
     $row->iso = mb_strtolower($row->iso);
 });
 $lister->setModel(new Country($app->db));

@@ -56,14 +56,14 @@ class Radio extends Form\Control
             $this->addClass('disabled');
         }
 
-        $this->lister->onHook(Lister::HOOK_BEFORE_ROW, function (Lister $lister) use ($value) {
+        $this->lister->onHook(Lister::HOOK_BEFORE_ROW, function (Lister $lister, $row) use ($value) {
             if ($this->readonly) {
-                $lister->templateRow->set('disabled', $value !== (string) $lister->model->getId() ? 'disabled="disabled"' : '');
+            	$lister->templateRow->set('disabled', $value !== (string) $row->getId() ? 'disabled="disabled"' : '');
             } elseif ($this->disabled) {
                 $lister->templateRow->set('disabled', 'disabled="disabled"');
             }
 
-            $lister->templateRow->set('checked', $value === (string) $lister->model->getId() ? 'checked' : '');
+            $lister->templateRow->set('checked', $value === (string) $row->getId() ? 'checked' : '');
         });
 
         parent::doRender();

@@ -454,7 +454,7 @@ class Table extends Lister
      *
      * @return \Phlex\Data\Model
      */
-    public function setModel(\Phlex\Data\Model $model, $columns = null)
+    public function setModel(Model $model, $columns = null)
     {
         $model->assertIsEntitySet();
 
@@ -499,31 +499,22 @@ class Table extends Lister
         // Iterate data rows
         $this->_rendered_rows_count = 0;
 
-        // TODO we should not iterate using $this->model variable,
-        // then also backup/tryfinally would be not needed
-        // the same in Lister class
-        $modelBackup = $this->model;
-        try {
-            foreach ($this->model as $this->model) {
-                $this->current_row = $this->model;
-                if ($this->hook(self::HOOK_BEFORE_ROW) === false) {
-                    continue;
-                }
-
-                if ($this->totals_plan) {
-                    $this->updateTotals();
-                }
-
-                $this->renderRow();
-
-                ++$this->_rendered_rows_count;
-
-                if ($this->hook(self::HOOK_AFTER_ROW) === false) {
-                    continue;
-                }
+        foreach ($this->model as $entity) {
+            if ($this->hook(self::HOOK_BEFORE_ROW, [$entity]) === false) {
+                continue;
             }
-        } finally {
-            $this->model = $modelBackup;
+
+            if ($this->totals_plan) {
+                $this->updateTotals($entity);
+            }
+
+            $this->renderRow($entity);
+
+            ++$this->_rendered_rows_count;
+
+            if ($this->hook(self::HOOK_AFTER_ROW, [$entity]) === false) {
+                continue;
+            }
         }
 
         // Add totals rows or empty message
@@ -548,15 +539,15 @@ class Table extends Lister
      * Render individual row. Override this method if you want to do more
      * decoration.
      */
-    public function renderRow()
+    public function renderRow(Model $entity)
     {
-        $this->templateRow->set($this->model->encode($this));
+        $this->templateRow->set($entity->encode($this));
 
         if ($this->use_html_tags) {
             // Prepare row-specific HTML tags.
             $html_tags = [];
 
-            foreach ($this->hook(Table\Column::HOOK_GET_HTML_TAGS, [$this->model]) as $ret) {
+            foreach ($this->hook(Table\Column::HOOK_GET_HTML_TAGS, [$entity]) as $ret) {
                 if (is_array($ret)) {
                     $html_tags = array_merge($html_tags, $ret);
                 }
@@ -566,18 +557,18 @@ class Table extends Lister
                 if (!is_array($columns)) {
                     $columns = [$columns];
                 }
-                $field = !is_int($name) && $this->model->hasField($name) ? $this->model->getField($name) : null;
+                $field = !is_int($name) && $entity->hasField($name) ? $entity->getField($name) : null;
                 foreach ($columns as $column) {
                     if (!method_exists($column, 'getHtmlTags')) {
                         continue;
                     }
-                    $html_tags = array_merge($column->getHtmlTags($this->model, $field), $html_tags);
+                    $html_tags = array_merge($column->getHtmlTags($entity, $field), $html_tags);
                 }
             }
 
             // Render row and add to body
             $this->templateRow->dangerouslySetHtml($html_tags);
-            $this->templateRow->set('_id', $this->model->getId());
+            $this->templateRow->set('_id', $entity->getId());
             $this->template->dangerouslyAppendHtml('Body', $this->templateRow->renderToHtml());
             $this->templateRow->del(array_keys($html_tags));
         } else {
@@ -630,7 +621,7 @@ class Table extends Lister
     /**
      * Executed for each row if "totals" are enabled to add up values.
      */
-    public function updateTotals()
+    public function updateTotals(Model $entity)
     {
         foreach ($this->totals_plan as $key => $val) {
             // if value is array, then we treat it as built-in or closure aggregate method
@@ -645,11 +636,11 @@ class Table extends Lister
                 // closure support
                 // arguments - current value, key, \Phlex\Ui\Table object
                 if ($f instanceof \Closure) {
-                    $this->totals[$key] += ($f($this->model->get($key), $key, $this) ?: 0);
+                    $this->totals[$key] += ($f($entity->get($key), $key, $this) ?: 0);
                 } elseif (is_string($f)) { // built-in methods
                     switch ($f) {
                         case 'sum':
-                            $this->totals[$key] += $this->model->get($key);
+                            $this->totals[$key] += $entity->get($key);
 
                             break;
                         case 'count':
@@ -657,14 +648,14 @@ class Table extends Lister
 
                             break;
                         case 'min':
-                            if ($this->model->get($key) < $this->totals[$key]) {
-                                $this->totals[$key] = $this->model->get($key);
+                            if ($entity->get($key) < $this->totals[$key]) {
+                                $this->totals[$key] = $entity->get($key);
                             }
 
                             break;
                         case 'max':
-                            if ($this->model¨->get($key) > $this->totals[$key]) {
-                                $this->totals[$key] = $this->model->get($key);
+                            if ($entity->get($key) > $this->totals[$key]) {
+                                $this->totals[$key] = $entity->get($key);
                             }
 
                             break;
@@ -725,7 +716,7 @@ class Table extends Lister
             if (is_array($this->totals_plan[$name])) {
                 // todo - format
                 $field = $this->model->getField($name);
-                $output[] = $column->getTotalsCellHtml($field, $this->totals[$name]);
+                $output[] = $column->getTotalsCellHtml($field, (string) $this->totals[$name]);
 
                 continue;
             }

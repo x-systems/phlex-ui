@@ -29,15 +29,15 @@ $table->template->dangerouslyAppendHtml('SubHead', '<tr class="center aligned"><
 $table->template->dangerouslyAppendHtml('Body', '<tr class="center aligned"><td colspan=2>This is part of body, goes before other rows</td></tr>');
 
 // Hook can be used to display data before row. You can also inject and format extra rows.
-$table->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (Table $table) {
-    if ($table->current_row->getId() === 2) {
-        $table->template->dangerouslyAppendHtml('Body', '<tr class="center aligned"><td colspan=2>This goes above row with ID=2 (' . $table->current_row->get('action') . ')</th></tr>');
-    } elseif ($table->current_row->get('action') === 'Tax') {
+$table->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (Table $table, \Phlex\Data\Model $row) {
+    if ($row->getId() === 2) {
+        $table->template->dangerouslyAppendHtml('Body', '<tr class="center aligned"><td colspan=2>This goes above row with ID=2 (' . $row->get('action') . ')</th></tr>');
+    } elseif ($row->get('action') === 'Tax') {
         // renders current row
-        $table->renderRow();
+        $table->renderRow($row);
 
         // adjusts data for next render
-        $table->model
+        $row
             ->set('action', 'manually injected row after Tax')
             ->set('amount', -0.02);
     }

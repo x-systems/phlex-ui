@@ -19,8 +19,7 @@ $view = \Phlex\Ui\View::addTo($app, ['template' => new HtmlTemplate(
 )]);
 
 $lister = \Phlex\Ui\Lister::addTo($view, [], ['List']);
-$lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $lister) {
-    $row = Country::assertInstanceOf($lister->current_row);
+$lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $lister, Country $row) {
     $row->iso = mb_strtolower($row->iso);
 });
 $lister->setModel(new Country($app->db))

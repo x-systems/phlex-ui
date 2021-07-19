@@ -47,9 +47,6 @@ class Lister extends View
      */
     public $ipp;
 
-    /** @var Model */
-    public $current_row;
-
     /**
      * Initialization.
      */
@@ -147,23 +144,14 @@ class Lister extends View
         // Iterate data rows
         $this->_rendered_rows_count = 0;
 
-        // TODO we should not iterate using $this->model variable,
-        // then also backup/tryfinally would be not needed
-        // the same in Table class
-        $modelBackup = $this->model;
-        try {
-            foreach ($this->model as $this->model) {
-                $this->current_row = $this->model;
-                if ($this->hook(self::HOOK_BEFORE_ROW) === false) {
-                    continue;
-                }
-
-                $this->renderRow();
-
-                ++$this->_rendered_rows_count;
+        foreach ($this->model as $entity) {
+            if ($this->hook(self::HOOK_BEFORE_ROW, [$entity]) === false) {
+                continue;
             }
-        } finally {
-            $this->model = $modelBackup;
+
+            $this->renderRow($entity);
+
+            ++$this->_rendered_rows_count;
         }
 
         // empty message
@@ -190,13 +178,13 @@ class Lister extends View
      * Render individual row. Override this method if you want to do more
      * decoration.
      */
-    public function renderRow()
+    public function renderRow(Model $entity)
     {
-        $this->templateRow->trySet($this->current_row->encode($this));
+        $this->templateRow->trySet($entity->encode($this));
 
-        $this->templateRow->trySet('_title', $this->model->getTitle());
-        $this->templateRow->trySet('_href', $this->url(['id' => $this->current_row->getId()]));
-        $this->templateRow->trySet('_id', $this->current_row->getId());
+        $this->templateRow->trySet('_title', $entity->getTitle());
+        $this->templateRow->trySet('_href', $this->url(['id' => $entity->getId()]));
+        $this->templateRow->trySet('_id', $entity->getId());
 
         $html = $this->templateRow->renderToHtml();
         if ($this->template->hasTag('rows')) {

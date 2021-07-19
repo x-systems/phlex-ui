@@ -48,8 +48,7 @@ $view = \Phlex\Ui\View::addTo($app);
 $search = \Phlex\Ui\Component\ItemSearch::addTo($view, ['ui' => 'ui compact segment']);
 $lister_container = \Phlex\Ui\View::addTo($view, ['template' => $lister_template]);
 $lister = \Phlex\Ui\Lister::addTo($lister_container, [], ['List']);
-$lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $lister) {
-    $row = Country::assertInstanceOf($lister->current_row);
+$lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $lister, Country $row) {
     $row->iso = mb_strtolower($row->iso);
 
     ++$lister->ipp;
