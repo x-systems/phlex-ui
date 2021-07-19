@@ -17,8 +17,8 @@ $modelColorClass = get_class(new class() extends \Phlex\Data\Model {
 
         $this->addField('name', [
             'type' => 'string',
-            'ui' => [
-                'table' => [
+            'options' => [
+                Table\Column::OPTION_SEED => [
                     Table\Column\Tooltip::class,
                     [
                         'tooltip_field' => 'note',
@@ -30,8 +30,8 @@ $modelColorClass = get_class(new class() extends \Phlex\Data\Model {
 
         $this->addField('value_not_always_present', [
             'type' => 'string',
-            'ui' => [
-                'table' => [
+            'options' => [
+                Table\Column::OPTION_SEED => [
                     Table\Column\NoValue::class,
                     [
                         'displayValue' => ' no value ',
@@ -43,15 +43,15 @@ $modelColorClass = get_class(new class() extends \Phlex\Data\Model {
         $this->addField('key_value', [
             'type' => [
                 'enum',
-                'values' => [
+                'valuesWithLabels' => [
                     1 => '1st val',
                     '2nd val',
                     '3rd val',
                     '4th val',
                 ],
             ],
-            'ui' => [
-                'table' => [
+            'options' => [
+                Table\Column::OPTION_SEED => [
                     Table\Column\KeyValue::class,
                 ],
             ],
@@ -60,15 +60,15 @@ $modelColorClass = get_class(new class() extends \Phlex\Data\Model {
         $this->addField('key_value_string', [
             'type' => [
                 'enum',
-                'values' => [
+                'valuesWithLabels' => [
                     'one' => '1st val',
                     'two' => '2nd val',
                     'three' => '3rd val',
                     'four' => '4th val',
                 ],
             ],
-            'ui' => [
-                'table' => [
+            'options' => [
+                Table\Column::OPTION_SEED => [
                     Table\Column\KeyValue::class,
                 ],
             ],
@@ -76,8 +76,8 @@ $modelColorClass = get_class(new class() extends \Phlex\Data\Model {
 
         $this->addField('interests', [
             'type' => 'string',
-            'ui' => [
-                'table' => [
+            'options' => [
+                Table\Column::OPTION_SEED => [
                     Table\Column\Labels::class,
                 ],
             ],
@@ -85,8 +85,8 @@ $modelColorClass = get_class(new class() extends \Phlex\Data\Model {
 
         $this->addField('rating', [
             'type' => 'float',
-            'ui' => [
-                'table' => [
+            'options' => [
+                Table\Column::OPTION_SEED => [
                     Table\Column\ColorRating::class,
                     [
                         'min' => 1,
