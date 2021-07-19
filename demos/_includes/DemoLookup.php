@@ -44,14 +44,14 @@ class DemoLookup extends \Phlex\Ui\Form\Control\Lookup
 
             $model = clone $this->model;
 
-            $form->setModel($model->onlyFields($this->plus['fields'] ?? []));
+            $form->setModel($model->onlyFields($this->plus['fields'] ?? [])->createEntity());
 
             $form->onSubmit(function (\Phlex\Ui\Form $form) {
                 // Prevent from saving
                 // $form->model->save();
 
                 $ret = [
-                    new \Phlex\Ui\JsToast('Form submit!. Demo can not saved data.'),
+                    new \Phlex\Ui\JsToast('Form submit!. Demo can not save data.'),
                     (new \Phlex\Ui\Jquery('.atk-modal'))->modal('hide'),
                 ];
 
