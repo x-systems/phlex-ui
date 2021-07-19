@@ -27,9 +27,7 @@ class PostTest extends \Phlex\Core\PHPUnit\TestCase
     {
         $p = new \Phlex\Ui\Persistence\Post();
 
-        $m = $this->model;
-        $m->addField('id');
-        $m->persistence = $p;
+        $m = $p->add($this->model);
 
         $m = $m->load(0);
         $m->set('surname', 'DefSurname');

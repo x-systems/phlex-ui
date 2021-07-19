@@ -6,34 +6,34 @@ namespace Phlex\Ui\Persistence;
 
 use Phlex\Data;
 
-class Post extends Data\Persistence
+class Post extends Data\Persistence\Array_
 {
-    public function load(Data\Model $model, $id = 0): array
+    public function add(Data\Model $model, array $defaults = []): Data\Model
     {
-        // carefully copy stuff from $_POST into the model
-        $data = [];
+        $row = [];
+        foreach ($model->getFields() as $field) {
+            $key = $field->getCodec($this)->getKey();
 
-        foreach ($model->getFields() as $field => $def) {
-            if ($def->type === 'boolean') {
-                $data[$field] = isset($_POST[$field]);
+            if ($field->isPrimaryKey()) {
+                $row[$key] = 0;
 
                 continue;
             }
 
-            if (isset($_POST[$field])) {
-                $data[$field] = $_POST[$field];
+            if ($field->getValueType() instanceof Data\Model\Field\Type\Boolean) {
+                $row[$key] = isset($_POST[$field->short_name]);
+
+                continue;
+            }
+
+            if (isset($_POST[$field->short_name])) {
+                $row[$key] = $_POST[$field->short_name];
             }
         }
+        $data = [$row];
 
-//        return array_merge($model->get(), $data);
-        return $data;
-    }
+        $this->data = $model->table ? [$model->table => $data] : $data;
 
-    public function query(Data\Model $model = null): Data\Persistence\Query
-    {
-    }
-
-    public function lastInsertId(Data\Model $model = null): string
-    {
+        return parent::add($model, $defaults);
     }
 }
