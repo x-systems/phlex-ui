@@ -147,7 +147,7 @@ $wizard->addStep('Arguments', function ($page) {
             },
         ]);
 
-        $owner->add(new \Phlex\Ui\Form\Control\Line([
+        $owner->addView(new \Phlex\Ui\Form\Control\Line([
             'action' => $model->getUserAction('greet'),
         ]));
 

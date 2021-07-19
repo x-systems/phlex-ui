@@ -15,7 +15,7 @@ class Delete extends Table\Column
     {
         parent::doInitialize();
 
-        $this->vp = $this->table->add(new \Phlex\Ui\CallbackLater());
+        $this->vp = $this->table->addView(new \Phlex\Ui\CallbackLater());
         $this->vp->set(function () {
             $this->table->model->load($_POST[$this->name])->delete();
 

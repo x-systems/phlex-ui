@@ -94,7 +94,7 @@ class Loader extends View
             if ($this->loadEvent) {
                 $this->js($this->loadEvent, $this->jsLoad());
             }
-            $this->add($this->shim);
+            $this->addView($this->shim);
         }
 
         parent::doRender();

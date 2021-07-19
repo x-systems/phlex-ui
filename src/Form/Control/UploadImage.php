@@ -47,7 +47,7 @@ class UploadImage extends Upload
             $this->thumbnail->setAttribute(['src' => $this->defaultSrc]);
         }
 
-        $this->add($this->thumbnail, $this->thumnailRegion);
+        $this->addView($this->thumbnail, $this->thumnailRegion);
     }
 
     /**

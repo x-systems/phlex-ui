@@ -83,7 +83,7 @@ abstract class AbstractLayout extends \Phlex\Ui\View
 
     protected function doAddControl($decorator, $field)
     {
-        return $this->add($decorator, $this->template->hasTag($field->short_name) ? $field->short_name : null);
+        return $this->addView($decorator, $this->template->hasTag($field->short_name) ? $field->short_name : null);
     }
 
     /**

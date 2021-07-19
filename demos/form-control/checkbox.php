@@ -41,4 +41,4 @@ $form->onSubmit(function ($f) use ($app) {
 View::addTo($app, ['ui' => 'divider']);
 $c = new Form\Control\Checkbox('Selected checkbox by default');
 $c->set(true);
-$app->add($c);
+$app->addView($c);

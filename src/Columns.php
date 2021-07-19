@@ -40,6 +40,8 @@ class Columns extends View
      * Add new vertical column.
      *
      * @param int|array $defaults specify width (1..16) or relative to $width
+     *
+     * @return \Phlex\Ui\View
      */
     public function addColumn($defaults = null)
     {
@@ -51,7 +53,7 @@ class Columns extends View
         unset($defaults[0]);
 
         $column = Factory::factory([\Phlex\Ui\View::class], $defaults);
-        $this->add($column);
+        $this->addView($column);
 
         if ($size && isset($this->sizes[$size])) {
             $column->addClass($this->sizes[$size] . ' wide');

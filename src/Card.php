@@ -90,7 +90,7 @@ class Card extends View
 
         $this->addClass($this->cardCss);
         if ($this->imageContainer) {
-            $this->add($this->imageContainer, 'Image');
+            $this->addView($this->imageContainer, 'Image');
         }
 
         if ($this->description) {
@@ -114,7 +114,7 @@ class Card extends View
     public function getSection()
     {
         if (!$this->section) {
-            $this->section = $this->add([$this->cardSection, 'card' => $this]);
+            $this->section = $this->addView([$this->cardSection, 'card' => $this]);
         }
 
         return $this->section;
@@ -169,7 +169,7 @@ class Card extends View
      */
     public function addContent(View $view)
     {
-        return $this->getSection()->add($view);
+        return $this->getSection()->addView($view);
     }
 
     /**
@@ -355,7 +355,7 @@ class Card extends View
      */
     public function addExtraContent(View $view)
     {
-        return $this->getExtraContainer()->add($view);
+        return $this->getExtraContainer()->addView($view);
     }
 
     /**
@@ -370,7 +370,7 @@ class Card extends View
         if (is_string($img)) {
             $img = Image::addTo($this->getImageContainer(), [$img]);
         } else {
-            $img = $this->getImageContainer()->add($img);
+            $img = $this->getImageContainer()->addView($img);
         }
 
         return $img;
@@ -393,7 +393,7 @@ class Card extends View
             $button = Factory::factory([Button::class], $button);
         }
 
-        $btn = $this->getButtonContainer()->add($button);
+        $btn = $this->getButtonContainer()->addView($button);
         ++$this->btnCount;
 
         if ($this->hasFluidButton && $this->btnCount > 0) {

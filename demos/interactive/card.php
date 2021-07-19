@@ -33,9 +33,9 @@ $card->addExtraContent(new \Phlex\Ui\View(['Copyright notice: Image from Semanti
 
 $card = \Phlex\Ui\Card::addTo($app);
 $content = new \Phlex\Ui\View(['class' => ['content']]);
-$content->add($img = new \Phlex\Ui\Image(['../images/kristy.png']));
+$content->addView($img = new \Phlex\Ui\Image(['../images/kristy.png']));
 $img->addClass('right floated mini ui image');
-$content->add($header = new \Phlex\Ui\Header(['Kristy']));
+$content->addView($header = new \Phlex\Ui\Header(['Kristy']));
 
 $card->addContent($content);
 $card->addDescription('Friend of Bob');

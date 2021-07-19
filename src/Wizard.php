@@ -104,7 +104,7 @@ class Wizard extends View
         ], is_string($name) ? [$name] : $name);
 
         // add tabs menu item
-        $this->steps[] = $this->add($step, 'Step');
+        $this->steps[] = $this->addView($step, 'Step');
 
         if (!$this->stepCallback->isTriggered()) {
             $_GET[$this->stepCallback->getUrlTrigger()] = '0';
@@ -147,9 +147,9 @@ class Wizard extends View
         }
     }
 
-    public function add($seed, $region = null): AbstractView
+    public function addView($seed, $region = null): AbstractView
     {
-        $result = parent::add($seed, $region);
+        $result = parent::addView($seed, $region);
 
         if ($result instanceof Form) {
             // mingle with the button icon

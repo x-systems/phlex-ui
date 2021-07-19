@@ -48,7 +48,7 @@ class Layout extends AbstractLayout
 
     protected function doAddControl($decorator, $field)
     {
-        return $this->add($decorator, ['desired_name' => $field->short_name]);
+        return $this->addView($decorator, ['desired_name' => $field->short_name]);
     }
 
     protected function doInitialize(): void
@@ -69,7 +69,7 @@ class Layout extends AbstractLayout
      */
     public function addButton($seed)
     {
-        return $this->add(Factory::mergeSeeds([\Phlex\Ui\Button::class], $seed), 'Buttons');
+        return $this->addView(Factory::mergeSeeds([\Phlex\Ui\Button::class], $seed), 'Buttons');
     }
 
     /**
@@ -119,7 +119,7 @@ class Layout extends AbstractLayout
      */
     public function addSubLayout($seed = [self::class], $addDivider = true)
     {
-        $v = $this->add(Factory::factory($seed, ['form' => $this->form]));
+        $v = $this->addView(Factory::factory($seed, ['form' => $this->form]));
         if ($v instanceof \Phlex\Ui\Form\Layout\Section) {
             $v = $v->addSection();
         }
@@ -216,7 +216,7 @@ class Layout extends AbstractLayout
                 $hint = Factory::factory($this->defaultHint);
                 $hint->id = $element->id . '_hint';
                 if (is_object($element->hint) || is_array($element->hint)) {
-                    $hint->add($element->hint);
+                    $hint->addView($element->hint);
                 } else {
                     $hint->set($element->hint);
                 }

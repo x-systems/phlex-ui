@@ -25,6 +25,6 @@ class Tabs extends \Phlex\Ui\Tabs
     {
         $tab = parent::addTab($name, $callback, $settings);
 
-        return $tab->add([$this->formLayout, 'form' => $this->form]);
+        return $tab->addView([$this->formLayout, 'form' => $this->form]);
     }
 }

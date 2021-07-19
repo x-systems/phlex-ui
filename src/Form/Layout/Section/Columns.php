@@ -23,6 +23,6 @@ class Columns extends \Phlex\Ui\Columns
     {
         $column = parent::addColumn($defaults);
 
-        return $column->add([$this->formLayout, 'form' => $this->form]);
+        return $column->addView([$this->formLayout, 'form' => $this->form]);
     }
 }

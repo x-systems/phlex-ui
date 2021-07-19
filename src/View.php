@@ -315,7 +315,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
 
         // add default objects
         foreach ($addLaterArgs as [$object, $region]) {
-            $this->add($object, $region);
+            $this->addView($object, $region);
         }
 
         // allow for injecting the model with a seed
@@ -336,7 +336,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
      * @param View              $object
      * @param string|array|null $region
      */
-    public function add($object, $region = null): AbstractView
+    public function addView($object, $region = null): AbstractView
     {
         if (func_num_args() > 2) { // prevent bad usage
             throw new \Error('Too many method arguments');
@@ -373,7 +373,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
         }
 
         // will call doInitialize() of the object
-        parent::add($object, $args);
+        parent::addView($object, $args);
 
         return $object;
     }
@@ -1053,7 +1053,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
             }
 
             // create callback, that will include event as part of the full name
-            $this->add($cb = new JsCallback(), ['desired_name' => $event]);
+            $this->addView($cb = new JsCallback(), ['desired_name' => $event]);
             if ($defaults['apiConfig'] ?? null) {
                 $cb->apiConfig = $defaults['apiConfig'];
             }

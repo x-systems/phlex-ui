@@ -19,6 +19,6 @@ class Section extends \Phlex\Ui\View
      */
     public function addSection()
     {
-        return $this->add([$this->formLayout, 'form' => $this->form]);
+        return $this->addView([$this->formLayout, 'form' => $this->form]);
     }
 }

@@ -8,7 +8,6 @@ use Phlex\Core\AppScopeTrait;
 use Phlex\Core\ContainerTrait;
 use Phlex\Core\DiContainerTrait;
 use Phlex\Core\InitializerTrait;
-use Phlex\Core\StaticAddToTrait;
 use Phlex\Core\TrackableTrait;
 
 /**
@@ -22,12 +21,12 @@ abstract class AbstractView
 {
     use AppScopeTrait;
     use ContainerTrait {
-        add as private doAdd;
+        add as doAdd;
     }
     use DiContainerTrait;
     use InitializerTrait;
-    use StaticAddToTrait;
     use TrackableTrait;
+    use View\StaticAddViewTrait;
 
     /**
      * Default name of the element.
@@ -37,10 +36,10 @@ abstract class AbstractView
     public $defaultName = 'atk';
 
     /**
-     * If add() method is called, but current view is not part of render tree yet,
-     * then arguments to add() are simply stored in this array. When the view is
+     * If addView() method is called, but current view is not part of render tree yet,
+     * then arguments to addView() are simply stored in this array. When the view is
      * initialized by calling doInitialize() or adding into App or another initialized View,
-     * then add() will be re-invoked with the contents of this array.
+     * then addView() will be re-invoked with the contents of this array.
      *
      * @var array
      */
@@ -88,7 +87,7 @@ abstract class AbstractView
 
         // add default objects
         foreach ($this->addLaterArgs as [$object, $args]) {
-            $this->add($object, $args);
+            $this->addView($object, $args);
         }
         $this->addLaterArgs = [];
     }
@@ -96,7 +95,7 @@ abstract class AbstractView
     /**
      * @param AbstractView $object
      */
-    public function add($object, $args = null): self
+    public function addView($object, $args = null): self
     {
         (self::class)::assertInstanceOf($object);
 

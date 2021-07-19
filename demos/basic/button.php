@@ -21,7 +21,7 @@ Button::addTo($app, ['Click me'])->link(['index']);
 
 // Without Seeding
 $b1 = new Button('Click me (no seed)');
-$app->add($b1);
+$app->addView($b1);
 // must be added first
 $b1->link(['index']);
 
@@ -66,7 +66,7 @@ $forkButtonClass = get_class(new class(0) extends Button { // need 0 argument he
 });
 
 $forkButton = new $forkButtonClass(1234 + random_int(1, 100));
-$app->add($forkButton);
+$app->addView($forkButton);
 
 \Phlex\Ui\Header::addTo($app, ['Custom Template', 'size' => 2]);
 

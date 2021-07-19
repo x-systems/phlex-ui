@@ -179,10 +179,10 @@ class ExecutorFactory
                 // very dirty hack, @TODO, attach modals in the standard render tree
                 // but only render the result to a different place/html DOM
                 $executor->viewForUrl = $owner;
-                $executor = $owner->getApp()->html->add($executor, 'Modals'); //->setAction($action);
+                $executor = $owner->getApp()->html->addView($executor, 'Modals'); //->setAction($action);
             }
         } else {
-            $executor = $owner->add($executor);
+            $executor = $owner->addView($executor);
         }
 
         $executor->setAction($action);

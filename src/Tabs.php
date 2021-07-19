@@ -74,7 +74,7 @@ class Tabs extends View
             $tab = new Tab($name);
         }
 
-        $tab = $this->add(Factory::mergeSeeds(['class' => ['item'], 'settings' => $settings], $tab), 'Menu')
+        $tab = $this->addView(Factory::mergeSeeds(['class' => ['item'], 'settings' => $settings], $tab), 'Menu')
             ->setElement('a')
             ->setAttribute('data-tab', $tab->name);
 

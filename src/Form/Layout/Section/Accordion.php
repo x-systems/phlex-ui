@@ -49,7 +49,7 @@ class Accordion extends \Phlex\Ui\Accordion
     {
         $section = parent::addSection($title, $callback, $icon);
 
-        return $section->add([$this->formLayout, 'form' => $this->form]);
+        return $section->addView([$this->formLayout, 'form' => $this->form]);
     }
 
     /**

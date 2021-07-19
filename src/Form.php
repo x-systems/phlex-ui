@@ -193,7 +193,7 @@ class Form extends View
         // set css loader for this form
         $this->setApiConfig(['stateContext' => '#' . $this->name]);
 
-        $this->cb = $this->add(new JsCallback(), ['desired_name' => 'submit']);
+        $this->cb = $this->addView(new JsCallback(), ['desired_name' => 'submit']);
     }
 
     /**
@@ -208,10 +208,10 @@ class Form extends View
 
         if (is_string($this->layout) || is_array($this->layout)) {
             $this->layout = Factory::factory($this->layout, ['form' => $this]);
-            $this->layout = $this->add($this->layout);
+            $this->layout = $this->addView($this->layout);
         } elseif (is_object($this->layout)) {
             $this->layout->form = $this;
-            $this->add($this->layout);
+            $this->addView($this->layout);
         } else {
             throw (new Exception('Unsupported specification of form layout. Can be array, string or object'))
                 ->addMoreInfo('layout', $this->layout);
@@ -487,74 +487,6 @@ class Form extends View
     // }}}
 
     // {{{ Internals
-
-    /**
-     * Provided with a Agile Data Model Field, this method have to decide
-     * and create instance of a View that will act as a form-control. It takes
-     * various input and looks for hints as to which class to use:.
-     *
-     * 1. The $seed argument is evaluated
-     * 2. $f->ui['form'] is evaluated if present
-     * 3. $f->type is converted into seed and evaluated
-     * 4. lastly, falling back to Line, Dropdown (based on $reference and $enum)
-     *
-     * @param array $seed Defaults to pass to Factory::factory() when control object is initialized
-     */
-    public function controlFactory(Model\Field $field, array $seed = []): Form\Control
-    {
-        $fallbackSeed = [Form\Control\Line::class];
-
-        if ($field->type === 'array' && $field->getReference() !== null) {
-            $limit = ($field->getReference() instanceof Model\Reference\ContainsMany) ? 0 : 1;
-            $model = $field->getReference()->refModel();
-            $fallbackSeed = [Form\Control\Multiline::class, 'model' => $model, 'rowLimit' => $limit, 'caption' => $model->getCaption()];
-        } elseif ($field->type !== 'boolean') {
-            if ($field->getValueType() instanceof Model\Field\Type\Selectable) {
-                $fallbackSeed = [Form\Control\Dropdown::class, 'values' => $field->getValueType()->values];
-            } elseif ($field->getReference() !== null) {
-                $fallbackSeed = [Form\Control\Lookup::class, 'model' => $field->getReference()->refModel()];
-            }
-        }
-
-        if (isset($field->ui['hint'])) {
-            $fallbackSeed['hint'] = $field->ui['hint'];
-        }
-
-        if (isset($field->ui['placeholder'])) {
-            $fallbackSeed['placeholder'] = $field->ui['placeholder'];
-        }
-
-        $seed = Factory::mergeSeeds(
-            $seed,
-            $field->ui['form'] ?? null,
-            $this->typeToControl[$field->type] ?? null,
-            $fallbackSeed
-        );
-
-        $defaults = [
-            'form' => $this,
-            'field' => $field,
-            'short_name' => $field->short_name,
-        ];
-
-        return Factory::factory($seed, $defaults);
-    }
-
-    /**
-     * Provides control seeds for most common types.
-     *
-     * @var array Describes how factory converts type to control seed
-     */
-    protected $typeToControl = [
-        'boolean' => [Form\Control\Checkbox::class],
-        'text' => [Form\Control\Textarea::class],
-        'string' => [Form\Control\Line::class],
-        'password' => [Form\Control\Password::class],
-        'datetime' => [Form\Control\Calendar::class, ['type' => 'datetime']],
-        'date' => [Form\Control\Calendar::class, ['type' => 'date']],
-        'time' => [Form\Control\Calendar::class, ['type' => 'time']],
-        'money' => [Form\Control\Money::class],
-    ];
 
     /**
      * Looks inside the POST of the request and loads it into a current model.

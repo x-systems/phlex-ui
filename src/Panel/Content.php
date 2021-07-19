@@ -35,7 +35,7 @@ class Content extends View implements LoadableContent
      */
     public function setCb(Callback $cb): void
     {
-        $this->cb = $this->add($cb);
+        $this->cb = $this->addView($cb);
     }
 
     /**

@@ -34,6 +34,6 @@ class Custom extends AbstractLayout
      */
     public function addButton($seed)
     {
-        return $this->add(Factory::mergeSeeds([\Phlex\Ui\Button::class], $seed), 'Buttons');
+        return $this->addView(Factory::mergeSeeds([\Phlex\Ui\Button::class], $seed), 'Buttons');
     }
 }

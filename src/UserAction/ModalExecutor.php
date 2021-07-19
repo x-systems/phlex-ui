@@ -163,7 +163,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
         if ($this->steps = $this->getSteps($action)) {
             $this->title = $this->title ?? $action->getDescription();
 
-            $this->btns->add($this->execActionBtn = $this->getExecutorFactory()->createTrigger($action, $this->getExecutorFactory()::MODAL_BUTTON));
+            $this->btns->addView($this->execActionBtn = $this->getExecutorFactory()->createTrigger($action, $this->getExecutorFactory()::MODAL_BUTTON));
 
             // get current step.
             $this->step = $this->stickyGet('step') ?? $this->steps[0];
@@ -665,7 +665,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
      */
     protected function addFormTo(View $view): Form
     {
-        $f = $view->add($this->form);
+        $f = $view->addView($this->form);
         $f->buttonSave->destroy();
 
         return $f;
@@ -677,7 +677,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
     private function _addStepTitle(View $view, string $step)
     {
         if ($title = $this->stepTitle[$step] ?? null) {
-            $view->add($title);
+            $view->addView($title);
         }
     }
 

@@ -18,14 +18,14 @@ require_once __DIR__ . '/../init-app.php';
 
 $m = (new CountryLock($app->db))->setLimit(5);
 
-$vp = $app->add(new \Phlex\Ui\VirtualPage());
+$vp = $app->addView(new \Phlex\Ui\VirtualPage());
 $vp->cb->triggerOnReload = false;
 
 $form = Form::addTo($vp);
 $form->setModel($m->tryLoadAny(), [$m->key()->name]);
 $form->getControl($m->key()->name)->caption = 'TestName';
 
-$table = $app->add(new \Phlex\Ui\Table());
+$table = $app->addView(new \Phlex\Ui\Table());
 $table->setModel($m);
 
 $button = Button::addTo($app, ['First', ['ui' => 'atk-test']]);

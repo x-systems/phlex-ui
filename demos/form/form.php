@@ -116,7 +116,7 @@ $form->onSubmit(function (Form $form) {
     $view->text->addParagraph('some text ' . random_int(1, 100));
 
     $modal = new \Phlex\Ui\Modal(['title' => 'Something happen', 'ui' => 'ui modal tiny']);
-    $modal->add($view);
+    $modal->addView($view);
 
     return $modal;
 });

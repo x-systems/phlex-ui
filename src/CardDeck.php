@@ -93,13 +93,13 @@ class CardDeck extends View
     protected function doInitialize(): void
     {
         parent::doInitialize();
-        $this->container = $this->add($this->container);
+        $this->container = $this->addView($this->container);
 
         if ($this->menu !== false) {
             $this->addMenuBar();
         }
 
-        $this->cardHolder = $this->container->add($this->cardHolder);
+        $this->cardHolder = $this->container->addView($this->cardHolder);
 
         if ($this->paginator !== false) {
             $this->addPaginator();
@@ -111,14 +111,14 @@ class CardDeck extends View
      */
     protected function addMenuBar()
     {
-        $this->menu = $this->add(Factory::factory($this->menu), 'Menu');
+        $this->menu = $this->addView(Factory::factory($this->menu), 'Menu');
 
         $left = View::addTo($this->menu, ['ui' => $this->search !== false ? 'twelve wide column' : 'sixteen wide column']);
         $this->btns = View::addTo($left, ['ui' => 'buttons']);
 
         if ($this->search !== false) {
             $right = View::addTo($this->menu, ['ui' => 'four wide column']);
-            $this->search = $right->add(Factory::factory($this->search, ['context' => '#' . $this->container->name]));
+            $this->search = $right->addView(Factory::factory($this->search, ['context' => '#' . $this->container->name]));
             $this->search->reload = $this->container;
             $this->query = $this->getApp()->stickyGet($this->search->queryArg);
         }
@@ -130,7 +130,7 @@ class CardDeck extends View
     protected function addPaginator()
     {
         $seg = View::addTo($this->container, ['ui' => 'basic segment'])->addStyle('text-align', 'center');
-        $this->paginator = $seg->add(Factory::factory($this->paginator, ['reload' => $this->container]));
+        $this->paginator = $seg->addView(Factory::factory($this->paginator, ['reload' => $this->container]));
     }
 
     public function setModel(Model $model, array $fields = null, array $extra = null): Model
@@ -143,7 +143,7 @@ class CardDeck extends View
 
         if ($count = $this->initPaginator()) {
             $this->model->each(function ($m) use ($fields, $extra) {
-                $c = $this->cardHolder->add(Factory::factory($this->card, ['useLabel' => $this->useLabel, 'useTable' => $this->useTable]))->addClass('segment');
+                $c = $this->cardHolder->addView(Factory::factory($this->card, ['useLabel' => $this->useLabel, 'useTable' => $this->useTable]))->addClass('segment');
                 $c->setModel($m, $fields);
                 if ($extra) {
                     $c->addExtraFields($m, $extra, $this->extraGlue);
@@ -158,7 +158,7 @@ class CardDeck extends View
                 }
             });
         } else {
-            $this->cardHolder->addClass('centered')->add(Factory::factory($this->noRecordDisplay));
+            $this->cardHolder->addClass('centered')->addView(Factory::factory($this->noRecordDisplay));
         }
 
         // add no record scope action to menu
@@ -326,7 +326,7 @@ class CardDeck extends View
             $defaults['args'] = $args;
         }
 
-        $btn = $this->btns->add($this->getExecutorFactory()->createTrigger($executor->getAction(), $this->getExecutorFactory()::CARD_BUTTON));
+        $btn = $this->btns->addView($this->getExecutorFactory()->createTrigger($executor->getAction(), $this->getExecutorFactory()::CARD_BUTTON));
         if ($executor->getAction()->enabled === false) {
             $btn->addClass('disabled');
         }
@@ -372,7 +372,7 @@ class CardDeck extends View
             $button->addClass('disabled');
         }
 
-        $btn = $this->btns->add($button);
+        $btn = $this->btns->addView($button);
         $btn->on('click', $callback, $defaults);
 
         return $btn;

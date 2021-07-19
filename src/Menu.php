@@ -47,7 +47,7 @@ class Menu extends View
             array_unshift($item, Item::class);
         }
 
-        $item = $this->add($item)->setElement('a');
+        $item = $this->addView($item)->setElement('a');
 
         if (is_string($action) || is_array($action)) {
             $action = $this->url($action);
@@ -152,9 +152,9 @@ class Menu extends View
      * @param View|string|array $seed   New object to add
      * @param string|array|null $region
      */
-    public function add($seed, $region = null): AbstractView
+    public function addView($seed, $region = null): AbstractView
     {
-        return parent::add($seed, $region)->addClass('item');
+        return parent::addView($seed, $region)->addClass('item');
     }
 
     /**
@@ -164,7 +164,7 @@ class Menu extends View
      */
     public function addDivider()
     {
-        return parent::add([View::class, 'class' => ['divider']]);
+        return parent::addView([View::class, 'class' => ['divider']]);
     }
 
     public function getHtml()

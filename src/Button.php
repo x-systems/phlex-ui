@@ -34,7 +34,7 @@ class Button extends View
                 $this->icon = new Icon($this->icon);
             }
 
-            $this->add($this->icon, 'LeftIcon');
+            $this->addView($this->icon, 'LeftIcon');
 
             if ($this->content) {
                 $this->addClass('labeled');
@@ -54,7 +54,7 @@ class Button extends View
                 $this->iconRight = new Icon($this->iconRight);
             }
 
-            $this->add($this->iconRight, 'RightIcon');
+            $this->addView($this->iconRight, 'RightIcon');
 
             if ($this->content) {
                 $this->addClass('right labeled');

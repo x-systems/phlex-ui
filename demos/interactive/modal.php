@@ -150,8 +150,8 @@ $action = new \Phlex\Ui\View(['ui' => 'buttons']);
 $prevAction = new \Phlex\Ui\Button(['Prev', 'labeled', 'icon' => 'left arrow']);
 $nextAction = new \Phlex\Ui\Button(['Next', 'iconRight' => 'right arrow']);
 
-$action->add($prevAction);
-$action->add($nextAction);
+$action->addView($prevAction);
+$action->addView($nextAction);
 
 $stepModal->addButtonAction($action);
 

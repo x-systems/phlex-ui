@@ -265,7 +265,7 @@ class Modal extends View
      */
     public function addButtonAction($button)
     {
-        $this->add($button, 'actions');
+        $this->addView($button, 'actions');
         $this->showActions = true;
 
         return $this;

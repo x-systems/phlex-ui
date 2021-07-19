@@ -76,7 +76,7 @@ class ConfirmationExecutor extends Modal implements JsExecutorInterface
         $btns = (new View())->addStyle(['min-height' => '24px']);
         $this->ok = Button::addTo($btns, ['Ok', 'blue']);
         $this->cancel = Button::addTo($btns, ['Cancel']);
-        $this->add($btns, 'actions');
+        $this->addView($btns, 'actions');
         $this->showActions = true;
 
         $this->loader = Loader::addTo($this, ['ui' => $this->loaderUi, 'shim' => $this->loaderShim]);

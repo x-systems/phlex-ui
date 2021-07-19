@@ -462,7 +462,7 @@ class App
             $this->html->initialize();
         }
 
-        $this->layout = $this->html->add($layout);
+        $this->layout = $this->html->addView($layout);
 
         $this->initIncludes();
 
@@ -519,14 +519,14 @@ class App
      * @param View|string|array $seed   New object to add
      * @param string|array|null $region
      */
-    public function add($seed, $region = null): AbstractView
+    public function addView($seed, $region = null): AbstractView
     {
         if (!$this->layout) {
             throw (new Exception('App layout is missing'))
-                ->addSolution('If you use $app->add() you should first call $app->initLayout()');
+                ->addSolution('If you use $app->addView() you should first call $app->initLayout()');
         }
 
-        return $this->layout->add($seed, $region);
+        return $this->layout->addView($seed, $region);
     }
 
     /**

@@ -134,7 +134,7 @@ class Input extends Form\Control
             $label = Label::addTo($this, [], [$spot])
                 ->set($label);
         } else {
-            $this->add($label, $spot);
+            $this->addView($label, $spot);
         }
 
         if ($label->ui !== 'label') {
@@ -161,7 +161,7 @@ class Input extends Form\Control
             $executor = ($button instanceof UserAction)
                 ? $this->getExecutorFactory()->create($button, $this, $this->getExecutorFactory()::JS_EXECUTOR)
                 : $button;
-            $button = $this->add($this->getExecutorFactory()->createTrigger($executor->getAction()), $spot);
+            $button = $this->addView($this->getExecutorFactory()->createTrigger($executor->getAction()), $spot);
             $this->addClass('action');
             if ($executor->getAction()->args) {
                 $val_as_arg = array_keys($executor->getAction()->args)[0];
@@ -172,7 +172,7 @@ class Input extends Form\Control
             }
         }
         if (!$button->isInitialized()) {
-            $this->add($button, $spot);
+            $this->addView($button, $spot);
             $this->addClass('action');
         }
 

@@ -66,9 +66,9 @@ Line::addTo($app, ['action' => $country->getUserAction('greet')]);
 // Card component.
 $card = \Phlex\Ui\Card::addTo($app);
 $content = new \Phlex\Ui\View(['class' => ['content']]);
-$content->add($img = new \Phlex\Ui\Image(['../images/kristy.png']));
+$content->addView($img = new \Phlex\Ui\Image(['../images/kristy.png']));
 $img->addClass('right floated mini ui image');
-$content->add(new \Phlex\Ui\Header(['Kristy']));
+$content->addView(new \Phlex\Ui\Header(['Kristy']));
 
 $card->addContent($content);
 $card->addDescription('Kristy is a friend of Mully.');

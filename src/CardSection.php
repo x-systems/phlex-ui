@@ -39,7 +39,7 @@ class CardSection extends View
         if (is_scalar($description)) {
             $view = View::addTo($this, [$description, 'class' => ['description']]);
         } elseif ($description instanceof View) {
-            $view = $this->add($description)->addClass('description');
+            $view = $this->addView($description)->addClass('description');
         }
 
         return $view;
