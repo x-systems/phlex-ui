@@ -53,8 +53,11 @@ class Multiformat extends Table\Column
         $html_tags = [];
         foreach ($decorators as $c) {
             if (!is_object($c)) {
-                $c = $this->getOwner()->decoratorFactory($field, $c);
+                $c = Table\Column::factory($field, $c);
             }
+            
+            $c->table = $this->table;
+            $c->setApp($this->getApp());
 
             if (--$cnt) {
                 $html = $c->getDataCellTemplate($field);
@@ -82,7 +85,7 @@ class Multiformat extends Table\Column
 
         $template = new HtmlTemplate($cell);
         $template->setApp($this->getApp());
-        $template->set($row);
+        $template->set($row->get());
         $template->dangerouslySetHtml($html_tags);
 
         $val = $template->renderToHtml();

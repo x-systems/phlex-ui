@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Phlex\Ui\Table\Column;
 
 use Phlex\Data\Model;
-use Phlex\Ui\Exception;
 use Phlex\Ui\Table;
 
 /**
@@ -27,28 +26,26 @@ use Phlex\Ui\Table;
  * need to be defined in field like this :
  *
  * $this->addField('course_payment_status', [
- *  'caption' => __('Payment Status'),
- *  'default' => 0,
- *  'values' => [
- *      0 => __('not invoiceable'),
- *      1 => __('ready to invoice'),
- *      2 => __('invoiced'),
- *      3 => __('paid'),
- *  ],
- *  'ui'      => [
- *      'form' => [\Phlex\Ui\Form\Control\Dropdown::class],
- *      'table' => ['KeyValue'],
- *  ],
+ *  	'caption' => __('Payment Status'),
+ *  	'default' => 0,
+ *  	'type' => [
+ *  		'enum',
+ *  		'values' => [
+ *      		0 => __('not invoiceable'),
+ *      		1 => __('ready to invoice'),
+ *      		2 => __('invoiced'),
+ *      		3 => __('paid'),
+ *  		],
+ *  	],
+ *  	'options' => [
+ *      	Form\Control::OPTION_SEED => [\Phlex\Ui\Form\Control\Dropdown::class],
+ *      	Table\Column::OPTION_SEED => [\Phlex\Ui\Table\Column\KeyValue::class],
+ *  	],
  * ]);
  */
 class KeyValue extends Table\Column
 {
     public $values = [];
-
-    protected function doInitialize(): void
-    {
-        parent::doInitialize();
-    }
 
     /**
      * @param Model\Field|null $field
@@ -57,19 +54,6 @@ class KeyValue extends Table\Column
      */
     public function getHtmlTags(Model $row, $field)
     {
-        $values = $field->values;
-
-        if (!is_array($values)) {
-            throw new Exception('KeyValues Column need values in field definition');
-        }
-
-        if (count($values) === 0) {
-            throw new Exception('KeyValues Column values must have elements');
-        }
-
-        $key = $field->get();
-        $value = $values[$key] ?? '';
-
-        return [$field->short_name => $value];
+        return [$field->short_name => $field->getValueType()->getLabel($field->get())];
     }
 }

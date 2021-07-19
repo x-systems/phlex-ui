@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui;
 
 use Phlex\Core\Factory;
+use Phlex\Data\Model;
 
 class Table extends Lister
 {
@@ -180,7 +181,7 @@ class Table extends Lister
      *
      * @return Table\Column
      */
-    public function addColumn(?string $name, $columnDecorator = null, $field = null)
+    public function addColumn(?string $name, $columnSeed = null, $field = null)
     {
         if (!$this->isInitialized()) {
             throw new Exception\NoRenderTree($this, 'addColumn()');
@@ -216,30 +217,27 @@ class Table extends Lister
             }
         }
 
-        if ($field === null) {
-            // column is not associated with any model field
-            $columnDecorator = $this->_addUnchecked(Table\Column::fromSeed($columnDecorator, ['table' => $this]));
-        } elseif (is_array($columnDecorator) || is_string($columnDecorator)) {
-            $columnDecorator = $this->decoratorFactory($field, array_merge(['columnData' => $name], is_string($columnDecorator) ? [$columnDecorator] : $columnDecorator));
-        } elseif (!$columnDecorator) {
-            $columnDecorator = $this->decoratorFactory($field, ['columnData' => $name]);
-        } elseif (is_object($columnDecorator)) {
-            if (!$columnDecorator instanceof Table\Column) {
-                throw (new Exception('Column decorator must descend from ' . Table\Column::class))
-                    ->addMoreInfo('columnDecorator', $columnDecorator);
+        if ($field !== null) {
+            if (is_array($columnSeed) || is_string($columnSeed) || $columnSeed === null) {
+                $columnSeed = Table\Column::factory($field, array_merge(['columnData' => $name], (array) $columnSeed));
+            } elseif (is_object($columnSeed)) {
+                if (!$columnSeed instanceof Table\Column) {
+                    throw (new Exception('Column seed object must descend from ' . Table\Column::class))
+                        ->addMoreInfo('columnSeed', $columnSeed);
+                }
+                if (!$columnSeed->columnData) {
+                    $columnSeed->columnData = $name;
+                }
+            } else {
+                throw (new Exception('Value of $columnSeed argument is incorrect'))
+                    ->addMoreInfo('columnSeed', $columnSeed);
             }
-            $columnDecorator->table = $this;
-            if (!$columnDecorator->columnData) {
-                $columnDecorator->columnData = $name;
-            }
-            $this->_addUnchecked($columnDecorator);
-        } else {
-            throw (new Exception('Value of $columnDecorator argument is incorrect'))
-                ->addMoreInfo('columnDecorator', $columnDecorator);
         }
 
+        $column = $this->_addUnchecked(Table\Column::fromSeed($columnSeed, ['table' => $this]));
+
         if ($name === null) {
-            $this->columns[] = $columnDecorator;
+            $this->columns[] = $column;
         } elseif (!is_string($name)) {
             throw (new Exception('Name must be a string'))
                 ->addMoreInfo('name', $name);
@@ -247,14 +245,14 @@ class Table extends Lister
             throw (new Exception('Table already has column with $name. Try using addDecorator()'))
                 ->addMoreInfo('name', $name);
         } else {
-            $this->columns[$name] = $columnDecorator;
+            $this->columns[$name] = $column;
         }
 
-        return $columnDecorator;
+        return $column;
     }
 
     // TODO do not use elements/add(), elements are only for View based objects
-    private function _addUnchecked(Table\Column $column): Table\Column
+    protected function _addUnchecked(Table\Column $column): Table\Column
     {
         return \Closure::bind(function () use ($column) {
             return $this->doAdd($column);
@@ -341,34 +339,6 @@ class Table extends Lister
         // This is enough for fixing this issue right now. We can work on unifying decorator API in a separate PR.
         return is_array($this->columns[$name]) ? $this->columns[$name][0] : $this->columns[$name];
     }
-
-    /**
-     * Will come up with a column object based on the field object supplied.
-     * By default will use default column.
-     *
-     * @param \Phlex\Data\Model\Field $field Data model field
-     * @param mixed                   $seed  Defaults to pass to Factory::factory() when decorator is initialized
-     *
-     * @return Table\Column
-     */
-    public function decoratorFactory(\Phlex\Data\Model\Field $field, $seed = [])
-    {
-        $seed = Factory::mergeSeeds(
-            $seed,
-            $field->ui['table'] ?? null,
-            $this->typeToDecorator[$field->type] ?? null,
-            [$this->default_column ? $this->default_column : Table\Column::class]
-        );
-
-        return $this->_addUnchecked(Table\Column::fromSeed($seed, ['table' => $this]));
-    }
-
-    protected $typeToDecorator = [
-        'password' => [Table\Column\Password::class],
-        'money' => [Table\Column\Money::class],
-        'text' => [Table\Column\Text::class],
-        'boolean' => [Table\Column\Status::class, ['positive' => [true], 'negative' => [false]]],
-    ];
 
     /**
      * Make columns resizable by dragging column header.

@@ -26,10 +26,10 @@ class Control extends View
         Model\Field\Type\Text::class => [Form\Control\Textarea::class],
     ];
 
-    public const OPTION_PLACEHOLDER = self::class . '@placeholder';
-
-    public const OPTION_HINT = self::class . '@hint';
-
+    /**
+     * Provides a name for an option to be used with Model\Field.
+     * This option is for custom Control seed to be set with Model\Field definition.
+     */
     public const OPTION_SEED = self::class . '@seed';
 
     /**
@@ -220,16 +220,14 @@ class Control extends View
      * various input and looks for hints as to which class to use:.
      *
      * 1. The $seed argument is evaluated
-     * 2. $f->ui['form'] is evaluated if present
-     * 3. $f->type is converted into seed and evaluated
+     * 2. $field option Control::OPTION_SEED is evaluated if present
+     * 3. $field value type is resolved into seed based on Control::$fieldControls registry
      * 4. lastly, falling back to Line, Dropdown (based on $reference and $enum)
      *
      * @param array $seed Defaults to pass to Factory::factory() when control object is initialized
      */
-    public static function factory(Model\Field $field, array $seed = []): Form\Control
+    public static function factory(Model\Field $field, array $seed = [], $fallbackSeed = [Form\Control\Line::class]): Form\Control
     {
-        $fallbackSeed = [Form\Control\Line::class];
-
         $valueType = $field->getValueType();
 
         if ($valueType instanceof Model\Field\Type\Array_ && $field->getReference() !== null) {
@@ -254,8 +252,8 @@ class Control extends View
 
         $seed = Factory::mergeSeeds(
             $seed,
-//     			$field->getOption(self::OPTION_SEED),
-                self::$fieldControls[get_class($field->getValueType())] ?? self::$fieldControls[0],
+            $field->getOption(self::OPTION_SEED),
+            $field->getValueType()->resolveFromRegistry(self::$fieldControls),
             $fallbackSeed
         );
 

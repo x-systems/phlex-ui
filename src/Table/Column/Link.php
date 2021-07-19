@@ -154,7 +154,6 @@ class Link extends Table\Column
         // Decide on the content
         if ($this->url) {
             $rowValues = $row->encode($this->table);
-            // $rowValues = $this->getApp()->ui_persistence ? $this->getApp()->ui_persistence->typecastSaveRow($row, $row->get()) : $row->get();
 
             return ['c_' . $this->short_name => $this->url->set($rowValues)->renderToHtml()];
         }

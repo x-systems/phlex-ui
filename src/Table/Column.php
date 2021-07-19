@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Table;
 
+use Phlex\Core\Factory;
 use Phlex\Data\Model;
 use Phlex\Ui\Exception;
 use Phlex\Ui\Jquery;
@@ -26,6 +27,20 @@ class Column
     public const HOOK_GET_HTML_TAGS = self::class . '@getHtmlTags';
     /** @const string */
     public const HOOK_GET_HEADER_CELL_HTML = self::class . '@getHeaderCellHtml';
+
+    /**
+     * Provides a name for an option to be used with Model\Field.
+     * This option is for custom Column seed to be set with Model\Field definition.
+     */
+    public const OPTION_SEED = self::class . '@seed';
+
+    protected static $fieldColumns = [
+        [self::class],
+        Model\Field\Type\Password::class => [Column\Password::class],
+        Model\Field\Type\Money::class => [Column\Money::class],
+        Model\Field\Type\Text::class => [Column\Text::class],
+        Model\Field\Type\Boolean::class => [Column\Status::class, ['positive' => [true], 'negative' => [false]]],
+    ];
 
     /**
      * Link back to the table, where column is used.
@@ -413,5 +428,24 @@ class Column
     public function getHtmlTags(Model $row, $field)
     {
         return [];
+    }
+
+    /**
+     * Will come up with a column object based on the field object supplied.
+     * By default will use fallbackSeed column.
+     *
+     * @param \Phlex\Data\Model\Field $field Data model field
+     * @param mixed                   $seed  Defaults to pass to Factory::factory() when decorator is initialized
+     *
+     * @return self
+     */
+    public static function factory(Model\Field $field, $seed = [], $fallbackSeed = [self::class])
+    {
+        return self::fromSeed(Factory::mergeSeeds(
+            $seed,
+            $field->getOption(self::OPTION_SEED),
+            $field->getValueType()->resolveFromRegistry(self::$fieldColumns),
+            $fallbackSeed
+        ));
     }
 }

@@ -8,6 +8,7 @@ use Phlex\Core\NameTrait;
 use Phlex\Core\SessionTrait;
 use Phlex\Data\Model;
 use Phlex\Data\Persistence;
+use Phlex\Ui\Form;
 
 /**
  * Implement a generic filter model for filtering column data.
@@ -20,14 +21,14 @@ class FilterModel extends Model
     /**
      * The operator for defining a condition on a field.
      *
-     * @var Field
+     * @var Model\Field
      */
     public $op;
 
     /**
      * The value for defining a condition on a field.
      *
-     * @var Field
+     * @var Model\Field
      */
     public $value;
 
@@ -76,10 +77,18 @@ class FilterModel extends Model
     protected function doInitialize(): void
     {
         parent::doInitialize();
-        $this->op = $this->addField('op', ['ui' => ['caption' => '']]);
+        $this->op = $this->addField('op', [
+            'options' => [
+                Form\Control::OPTION_SEED => ['caption' => ''],
+            ],
+        ]);
 
         if (!$this->noValueField) {
-            $this->value = $this->addField('value', ['ui' => ['caption' => '']]);
+            $this->value = $this->addField('value', [
+                'options' => [
+                    Form\Control::OPTION_SEED => ['caption' => ''],
+                ],
+            ]);
         }
 
         $this->afterInit();
