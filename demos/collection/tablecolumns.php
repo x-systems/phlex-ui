@@ -34,7 +34,7 @@ $modelColorClass = get_class(new class() extends \Phlex\Data\Model {
                 'table' => [
                     Table\Column\NoValue::class,
                     [
-                        'no_value' => ' no value ',
+                        'displayValue' => ' no value ',
                     ],
                 ],
             ],

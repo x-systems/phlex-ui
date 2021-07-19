@@ -267,7 +267,7 @@ class TableColumnLinkTest extends \Phlex\Core\PHPUnit\TestCase
         $this->table->initialize();
         $this->table->setModel($m, ['name', 'ref']);
 
-        $this->table->addDecorator('name', [Table\Column\NoValue::class, ['no_value' => ' --- ']]);
+        $this->table->addDecorator('name', [Table\Column\NoValue::class, ['displayValue' => ' --- ']]);
 
         $this->assertSame(
             '<tr data-id="1"><td> --- </td><td>ref123</td></tr>',

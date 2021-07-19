@@ -19,10 +19,10 @@ use Phlex\Ui\Table;
  *
  * $this->addField('field', [
  *  [...]
- *  'ui' => [
+ *  'options' => [
  *          [...]
- *          'table' => [
- *              'NoValue', ' if empty display this value '
+ *          \Phlex\Ui\Table\Column::OPTION_SEED => [
+ *              \Phlex\Ui\Table\Column\NoValue::class, ' if empty display this value '
  *          ]
  *      ]
  * ]);
@@ -30,14 +30,14 @@ use Phlex\Ui\Table;
 class NoValue extends Table\Column
 {
     /** @var string */
-    public $no_value = ' --- ';
+    public $displayValue = ' --- ';
 
     public function getHtmlTags(Model $row, $field)
     {
         $actualValue = $field->get();
 
         if (empty($actualValue) || $actualValue === null) {
-            return [$field->short_name => $this->no_value];
+            return [$field->short_name => $this->displayValue];
         }
 
         return parent::getHtmlTags($row, $field);
