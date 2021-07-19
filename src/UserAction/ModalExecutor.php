@@ -429,7 +429,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
     protected function jsGetExecute($obj, $id)
     {
         $success = $this->jsSuccess instanceof \Closure
-            ? ($this->jsSuccess)($this, $this->action->getModel(), $id, $obj)
+            ? ($this->jsSuccess)($this, $this->action->getEntitySet(), $id, $obj)
             : $this->jsSuccess;
 
         return [

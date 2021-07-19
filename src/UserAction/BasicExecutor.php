@@ -154,7 +154,7 @@ class BasicExecutor extends \Phlex\Ui\View implements ExecutorInterface
         $return = $this->action->execute(...$args);
 
         $success = $this->jsSuccess instanceof \Closure
-            ? ($this->jsSuccess)($this, $this->action->getModel())
+            ? ($this->jsSuccess)($this, $this->action->getEntitySet())
             : $this->jsSuccess;
 
         return ($this->hook(self::HOOK_AFTER_EXECUTE, [$return]) ?: $success) ?: new JsToast('Success' . (is_string($return) ? (': ' . $return) : ''));
