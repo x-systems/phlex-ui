@@ -128,7 +128,7 @@ class Country extends ModelWithPrefixedFields
         }
 
         // look if name is unique
-        $c = $this->getModel()->tryLoadBy($this->key()->name, $this->name);
+        $c = $this->getEntitySet()->tryLoadBy($this->key()->name, $this->name);
         if ($c->isLoaded() && $c->getId() !== $this->getId()) {
             $errors[$this->key()->name] = 'Country name must be unique';
         }
@@ -293,7 +293,7 @@ class File extends ModelWithPrefixedFields
             }
 
             if ($name === 'src' || $name === 'demos' || $isSub) {
-                $entity = $this->getModel(true)->createEntity();
+                $entity = $this->getEntitySet(true)->createEntity();
 
                 /*
                 // Disabling saving file in db

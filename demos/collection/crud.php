@@ -79,7 +79,7 @@ $myExecutorClass = get_class(new class() extends \Phlex\Ui\UserAction\ModalExecu
 
         $result = parent::addFormTo($left);
 
-        if ($this->action->getModel()->get(File::hint()->key()->is_folder)) {
+        if ($this->action->getEntity()->get(File::hint()->key()->is_folder)) {
             \Phlex\Ui\Grid::addTo($right, ['menu' => false, 'ipp' => 5])
                 ->setModel(File::assertInstanceOf($this->action->getModel())->SubFolder);
         } else {
