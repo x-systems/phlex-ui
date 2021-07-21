@@ -68,7 +68,6 @@ abstract class AbstractView
             'always_run' => false,
             'catch_runaway_callbacks' => false,
         ]));
-        $this->getApp()->initialize();
     }
 
     /**

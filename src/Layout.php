@@ -11,6 +11,6 @@ class Layout extends View
      */
     public function addRightPanel(Panel\Loadable $panel): Panel\Loadable
     {
-        return $this->getOwner()->addView($panel, 'RightPanel');
+        return $this->getOwner()->addWebpageView($panel, 'RightPanel');
     }
 }

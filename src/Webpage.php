@@ -4,25 +4,19 @@ declare(strict_types=1);
 
 namespace Phlex\Ui;
 
-use Phlex\Core\AppScopeTrait;
-use Phlex\Core\DiContainerTrait;
 use Phlex\Core\DynamicMethodTrait;
 use Phlex\Core\Factory;
 use Phlex\Core\HookTrait;
-use Phlex\Core\InitializerTrait;
 use Phlex\Data\Persistence;
 use Phlex\Ui\Exception\ExitApplicationException;
 use Phlex\Ui\Persistence\Ui as UiPersistence;
 use Phlex\Ui\UserAction\ExecutorFactory;
 use Psr\Log\LoggerInterface;
 
-class Webpage
+class Webpage extends View
 {
-    use AppScopeTrait;
-    use DiContainerTrait;
     use DynamicMethodTrait;
     use HookTrait;
-    use InitializerTrait;
 
     /** @const string */
     public const HOOK_BEFORE_EXIT = self::class . '@beforeExit';
@@ -43,8 +37,7 @@ class Webpage
         'flatpickr' => 'https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.6',
     ];
 
-    /** @var ExecutorFactory App wide executor factory object for Model user action. */
-    protected $executorFactory;
+    public $defaultTemplate = 'webpage.html';
 
     /** @var string Version of Phlex UI */
     public $version = '3.0-dev';
@@ -108,9 +101,6 @@ class Webpage
     /** @var UiPersistence */
     public $ui_persistence;
 
-    /** @var View For internal use */
-    public $html;
-
     /** @var LoggerInterface|null Target for objects with DebugTrait */
     public $logger;
 
@@ -150,7 +140,7 @@ class Webpage
     /**
      * @var array global sticky arguments
      */
-    protected $sticky_get_arguments = [
+    public $stickyArgs = [
         '__atk_json' => false,
         '__atk_tab' => false,
     ];
@@ -218,6 +208,8 @@ class Webpage
 
         // setting up default executor factory.
         $this->executorFactory = Factory::factory([ExecutorFactory::class]);
+
+        $this->initialize();
     }
 
     public function setExecutorFactory(ExecutorFactory $factory)
@@ -278,7 +270,7 @@ class Webpage
 
         // just replace layout to avoid any extended App->_construct problems
         // it will maintain everything as in the original app StickyGet, logger, Events
-        $this->html = null;
+        $this->elements = [];
         $this->initLayout([Layout\Centered::class]);
 
         $this->layout->template->dangerouslySetHtml('Content', $this->renderExceptionHtml($exception));
@@ -453,16 +445,7 @@ class Webpage
      */
     public function initLayout($seed)
     {
-        $layout = Layout::fromSeed($seed);
-        $layout->setApp($this);
-
-        if (!$this->html) {
-            $this->html = new View(['defaultTemplate' => 'webpage.html']);
-            $this->html->setApp($this);
-            $this->html->initialize();
-        }
-
-        $this->layout = $this->html->addView($layout);
+        $this->layout = static::addWebpageView(Layout::fromSeed($seed)->setApp($this));
 
         $this->initIncludes();
 
@@ -493,7 +476,7 @@ class Webpage
         $this->requireCss($this->cdn['atk'] . '/agileui.css');
 
         // Set js bundle dynamic loading path.
-        $this->html->template->tryDangerouslySetHtml(
+        $this->template->tryDangerouslySetHtml(
             'InitJsBundle',
             (new JsExpression('window.__atkBundlePublicPath = [];', [$this->cdn['atk']]))->jsRender()
         );
@@ -505,16 +488,13 @@ class Webpage
      *
      * @param string $style CSS rules, like ".foo { background: red }".
      */
-    public function addStyle($style)
+    public function addCss($style)
     {
-        if (!$this->html) {
-            throw new Exception('App does not know how to add style');
-        }
-        $this->html->template->dangerouslyAppendHtml('HEAD', $this->getTag('style', $style));
+        $this->template->dangerouslyAppendHtml('HEAD', $this->getTag('style', $style));
     }
 
     /**
-     * Add a new object into the app. You will need to have Layout first.
+     * Adding view is used by default to ad new object into the webpage body. You will need to have Webpage::$body first.
      *
      * @param View|string|array $seed   New object to add
      * @param string|array|null $region
@@ -522,11 +502,22 @@ class Webpage
     public function addView($seed, $region = null): AbstractView
     {
         if (!$this->layout) {
-            throw (new Exception('App layout is missing'))
+            throw (new Exception('Webpage layout is missing'))
                 ->addSolution('If you use $webpage->addView() you should first call $webpage->initLayout()');
         }
 
         return $this->layout->addView($seed, $region);
+    }
+
+    /**
+     * Adding view to the webpage.
+     *
+     * @param View|string|array $seed   New object to add
+     * @param string|array|null $region
+     */
+    public function addWebpageView($seed, $region = null): AbstractView
+    {
+        return parent::addView($seed, $region);
     }
 
     /**
@@ -540,14 +531,9 @@ class Webpage
             $this->hook(self::HOOK_BEFORE_RENDER);
             $this->is_rendering = true;
 
-            // if no App layout set
-            if (!isset($this->html)) {
-                throw new Exception('App layout should be set.');
-            }
-
-            $this->html->template->set('title', $this->title);
-            $this->html->renderAll();
-            $this->html->template->dangerouslyAppendHtml('HEAD', $this->html->getJs());
+            $this->template->set('title', $this->title);
+            $this->renderAll();
+            $this->template->dangerouslyAppendHtml('HEAD', $this->getJs());
             $this->is_rendering = false;
             $this->hook(self::HOOK_BEFORE_OUTPUT);
 
@@ -555,7 +541,7 @@ class Webpage
                 throw new Exception('Callback requested, but never reached. You may be missing some arguments in request URL.');
             }
 
-            $output = $this->html->template->renderToHtml();
+            $output = $this->template->renderToHtml();
         } catch (ExitApplicationException $e) {
             $output = '';
             $isExitException = true;
@@ -572,13 +558,6 @@ class Webpage
         if ($isExitException) {
             $this->callExit();
         }
-    }
-
-    /**
-     * Initialize app.
-     */
-    protected function doInitialize(): void
-    {
     }
 
     /**
@@ -627,21 +606,11 @@ class Webpage
     }
 
     /**
-     * Make current get argument with specified name automatically appended to all generated URLs.
-     */
-    public function stickyGet(string $name, bool $isDeleting = false): ?string
-    {
-        $this->sticky_get_arguments[$name] = !$isDeleting;
-
-        return $_GET[$name] ?? null;
-    }
-
-    /**
      * Remove sticky GET which was set by stickyGet.
      */
     public function stickyForget(string $name)
     {
-        unset($this->sticky_get_arguments[$name]);
+        unset($this->stickyArgs[$name]);
     }
 
     /**
@@ -684,7 +653,7 @@ class Webpage
         $args = $extraRequestUriArgs;
 
         // add sticky arguments
-        foreach ($this->sticky_get_arguments as $k => $v) {
+        foreach ($this->stickyArgs as $k => $v) {
             if ($v && isset($_GET[$k])) {
                 $args[$k] = $_GET[$k];
             } else {
@@ -745,7 +714,7 @@ class Webpage
      */
     public function requireJs($url, $isAsync = false, $isDefer = false)
     {
-        $this->html->template->dangerouslyAppendHtml('HEAD', $this->getTag('script', ['src' => $url, 'defer' => $isDefer, 'async' => $isAsync], '') . "\n");
+        $this->template->dangerouslyAppendHtml('HEAD', $this->getTag('script', ['src' => $url, 'defer' => $isDefer, 'async' => $isAsync], '') . "\n");
 
         return $this;
     }
@@ -759,7 +728,7 @@ class Webpage
      */
     public function requireCss($url)
     {
-        $this->html->template->dangerouslyAppendHtml('HEAD', $this->getTag('link/', ['rel' => 'stylesheet', 'type' => 'text/css', 'href' => $url]) . "\n");
+        $this->template->dangerouslyAppendHtml('HEAD', $this->getTag('link/', ['rel' => 'stylesheet', 'type' => 'text/css', 'href' => $url]) . "\n");
 
         return $this;
     }
@@ -1125,11 +1094,11 @@ class Webpage
      */
     public function getRenderedModals(): array
     {
-        // prevent looping (calling App::terminateJson() recursively) if JsReload is used in Modal
+        // prevent looping (calling Webpage::terminateJson() recursively) if JsReload is used in Modal
         unset($_GET['__atk_reload']);
 
         $modals = [];
-        foreach ($this->html !== null ? $this->html->elements : [] as $view) {
+        foreach ($this->elements as $view) {
             if ($view instanceof Modal) {
                 $modals[$view->name]['html'] = $view->getHtml();
                 $modals[$view->name]['js'] = $view->getJsRenderActions();

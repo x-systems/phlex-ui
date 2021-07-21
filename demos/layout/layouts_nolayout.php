@@ -11,7 +11,6 @@ require_once __DIR__ . '/../init-app.php';
 $a = new \Phlex\Ui\LoremIpsum();
 $text = $a->generateLorem(150);
 
-$webpage->html = null;
 $webpage->initLayout([\Phlex\Ui\Layout::class]);
 
 \Phlex\Ui\Text::addTo($webpage->layout)->addParagraph($text);

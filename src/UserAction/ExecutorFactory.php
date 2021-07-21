@@ -175,11 +175,11 @@ class ExecutorFactory
         $executor = Factory::factory($seed);
         if ($executor instanceof Modal) {
             // add modal to app->html for proper rendering on callback.
-            if (!isset($owner->getApp()->html->elements[$executor->short_name])) {
+            if (!isset($owner->getApp()->elements[$executor->short_name])) {
                 // very dirty hack, @TODO, attach modals in the standard render tree
                 // but only render the result to a different place/html DOM
                 $executor->viewForUrl = $owner;
-                $executor = $owner->getApp()->html->addView($executor, 'Modals'); //->setAction($action);
+                $executor = $owner->getApp()->addWebpageView($executor, 'Modals'); //->setAction($action);
             }
         } else {
             $executor = $owner->addView($executor);
