@@ -7,12 +7,12 @@ namespace Phlex\Ui\Demos;
 /**
  * Testing Columns.
  */
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // some custom style needed for our "highlight" to work. You don't need this on
 // your page and it's bad style to include CSS like this!
-$app->addStyle('
+$webpage->addStyle('
 #example .highlight.grid .column:not(.row):not(.grid):after {
     background-color: rgba(86, 61, 124, .1);
     -webkit-box-shadow: 0px 0px 0px 1px rgba(86, 61, 124, 0.2) inset;
@@ -23,7 +23,7 @@ $app->addStyle('
 }
 ');
 
-$page = \Phlex\Ui\View::addTo($app, ['id' => 'example']);
+$page = \Phlex\Ui\View::addTo($webpage, ['id' => 'example']);
 
 \Phlex\Ui\Header::addTo($page, ['Basic Usage']);
 

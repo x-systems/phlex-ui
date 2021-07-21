@@ -10,29 +10,29 @@ use Phlex\Ui\JsExpression;
 use Phlex\Ui\JsFunction;
 use Phlex\Ui\JsToast;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$layout = GridLayout::addTo($app, ['rows' => 1, 'columns' => 2]);
+$layout = GridLayout::addTo($webpage, ['rows' => 1, 'columns' => 2]);
 
 $form = Form::addTo($layout, [], ['r1c1']);
 
-$app->ui_persistence->date_format = 'Y-m-d';
+$webpage->ui_persistence->date_format = 'Y-m-d';
 $form->addControl('date_y_m_d', [Form\Control\Calendar::class, 'type' => 'date', 'caption' => 'Date (Y-m-d)'])
     ->set(date('Y-m-d'));
 
-$app->ui_persistence->time_format = 'G:i A';
+$webpage->ui_persistence->time_format = 'G:i A';
 $form->addControl('time_g_i_a', [Form\Control\Calendar::class, 'type' => 'time', 'caption' => 'Time using am/pm'])
     ->set(date('G:i A'));
 
-$app->ui_persistence->time_format = 'H:i:s';
+$webpage->ui_persistence->time_format = 'H:i:s';
 $form->addControl('time_h_i_s', [Form\Control\Calendar::class, 'type' => 'time', 'caption' => 'Time using 24 hrs with seconds picker'])
     ->set(date('H:i:s'));
 
 $form->addControl('datetime', [Form\Control\Calendar::class, 'type' => 'datetime', 'caption' => 'Datetime (M d, Y H:i:s)'])
-    ->set(date($app->ui_persistence->datetime_format));
+    ->set(date($webpage->ui_persistence->datetime_format));
 
-$app->ui_persistence->date_format = 'F d, Y';
+$webpage->ui_persistence->date_format = 'F d, Y';
 $form->addControl('date_f_d_y', [
     Form\Control\Calendar::class,
     'type' => 'date',
@@ -40,7 +40,7 @@ $form->addControl('date_f_d_y', [
     'options' => ['allowInput' => true],
 ])->set(date('F d, Y'));
 
-$app->ui_persistence->date_format = 'Y-m-d';
+$webpage->ui_persistence->date_format = 'Y-m-d';
 $form->addControl('date_js_format', [
     Form\Control\Calendar::class,
     'type' => 'date',
@@ -74,6 +74,6 @@ $control->addAction(['Today', 'icon' => 'calendar day'])->on('click', $control->
 $control->addAction(['Select...', 'icon' => 'calendar'])->on('click', $control->getJsInstance()->open());
 $control->addAction(['Clear', 'icon' => 'times red'])->on('click', $control->getJsInstance()->clear());
 
-$form->onSubmit(function ($f) use ($app) {
-    return new JsToast($app->encodeJson($f->model->get()));
+$form->onSubmit(function ($f) use ($webpage) {
+    return new JsToast($webpage->encodeJson($f->model->get()));
 });

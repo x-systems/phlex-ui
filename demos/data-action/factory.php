@@ -9,14 +9,14 @@ use Phlex\Ui\CardDeck;
 use Phlex\Ui\UserAction\ExecutorFactory;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-Button::addTo($app, ['Executor Factory in View Instance', 'small right floated basic blue', 'iconRight' => 'right arrow'])
+Button::addTo($webpage, ['Executor Factory in View Instance', 'small right floated basic blue', 'iconRight' => 'right arrow'])
     ->link(['factory-view']);
-View::addTo($app, ['ui' => 'ui clearing divider']);
+View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
-$msg = \Phlex\Ui\Message::addTo($app, [
+$msg = \Phlex\Ui\Message::addTo($webpage, [
     'Customizing action trigger by Overriding Executor Factory',
 ]);
 $msg->text->addParagraph('');
@@ -47,14 +47,14 @@ $myFactory = get_class(new class() extends ExecutorFactory {
 });
 
 // Set new executor factory globally.
-$app->setExecutorFactory(new $myFactory());
+$webpage->setExecutorFactory(new $myFactory());
 
-$country = new CountryLock($app->db);
+$country = new CountryLock($webpage->db);
 
-$crud = \Phlex\Ui\Crud::addTo($app, ['ipp' => 5]);
+$crud = \Phlex\Ui\Crud::addTo($webpage, ['ipp' => 5]);
 $crud->setModel($country);
 
-View::addTo($app, ['class' => ['ui divider']]);
+View::addTo($webpage, ['class' => ['ui divider']]);
 
-$deck = CardDeck::addTo($app, ['menu' => false, 'search' => false, 'paginator' => false, 'useTable' => true]);
+$deck = CardDeck::addTo($webpage, ['menu' => false, 'search' => false, 'paginator' => false, 'useTable' => true]);
 $deck->setModel($country->setLimit(3), [$country->key()->iso, $country->key()->iso3]);

@@ -7,7 +7,7 @@ namespace Phlex\Ui\Tests;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Phlex\Data\Persistence;
-use Phlex\Ui\App;
+use Phlex\Ui\Webpage;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -49,20 +49,20 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
             $initVars = get_defined_vars();
             $this->setSuperglobalsFromRequest(new Request('GET', 'http://localhost/demos/?APP_CALL_EXIT=0&APP_CATCH_EXCEPTIONS=0&APP_ALWAYS_RUN=0'));
 
-            /** @var App $app */
+            /** @var Webpage $webpage */
             require_once static::DEMOS_DIR . '/init-app.php';
             $initVars = array_diff_key(get_defined_vars(), $initVars + ['initVars' => true]);
 
-            if (array_keys($initVars) !== ['app']) {
-                throw new \Phlex\Ui\Exception('Demos init must setup only $app variable');
+            if (array_keys($initVars) !== ['webpage']) {
+                throw new \Phlex\Ui\Exception('Demos init must setup only $webpage variable');
             }
 
             // @phpstan-ignore-next-line remove once https://github.com/phpstan/phpstan/issues/4155 is resolved
-            self::$_db = $app->db;
+            self::$_db = $webpage->db;
 
             // prevent $app to run on shutdown
             // @phpstan-ignore-next-line remove once https://github.com/phpstan/phpstan/issues/4155 is resolved
-            $app->run_called = true;
+            $webpage->run_called = true;
         }
     }
 
@@ -112,24 +112,24 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
         $_SESSION = [];
 
         \Closure::bind(function () {
-            App::$_sentHeaders = [];
-        }, null, App::class)();
+            Webpage::$_sentHeaders = [];
+        }, null, Webpage::class)();
     }
 
-    protected function createTestingApp(): App
+    protected function createTestingWebpage(): Webpage
     {
-        $app = new class(['call_exit' => false, 'catch_exceptions' => false, 'always_run' => false]) extends App {
+        $webpage = new class(['call_exit' => false, 'catch_exceptions' => false, 'always_run' => false]) extends Webpage {
             public function callExit(): void
             {
                 throw new DemosTestExitException();
             }
         };
-        $app->initLayout([\Phlex\Ui\Layout\Maestro::class]);
+        $webpage->initBody([\Phlex\Ui\Layout\Maestro::class]);
 
         // clone DB (mainly because all Models remains attached now, TODO can be removed once they are GCed)
-        $app->db = clone self::$_db;
+        $webpage->db = clone self::$_db;
 
-        return $app;
+        return $webpage;
     }
 
     protected function getClient(): Client
@@ -141,11 +141,11 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
 
             ob_start();
             try {
-                $app = $this->createTestingApp();
+                $webpage = $this->createTestingWebpage();
                 require $localPath;
 
-                if (!$app->run_called) {
-                    $app->run();
+                if (!$webpage->run_called) {
+                    $webpage->run();
                 }
             } catch (\Throwable $e) {
                 // session_start() or ini_set() functions can be used only with native HTTP tests
@@ -163,14 +163,14 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
 
             [$statusCode, $headers] = \Closure::bind(function () {
                 $statusCode = 200;
-                $headers = App::$_sentHeaders;
-                if (isset($headers[App::HEADER_STATUS_CODE])) {
-                    $statusCode = $headers[App::HEADER_STATUS_CODE];
-                    unset($headers[App::HEADER_STATUS_CODE]);
+                $headers = Webpage::$_sentHeaders;
+                if (isset($headers[Webpage::HEADER_STATUS_CODE])) {
+                    $statusCode = $headers[Webpage];
+                    unset($headers[Webpage::HEADER_STATUS_CODE]);
                 }
 
                 return [$statusCode, $headers];
-            }, null, App::class)();
+            }, null, Webpage::class)();
 
             // Attach a response to the easy handle with the parsed headers.
             $response = new \GuzzleHttp\Psr7\Response(
@@ -370,7 +370,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
 
         $response = $this->getResponseFromRequest($uri);
         $this->assertSame(200, $response->getStatusCode(), ' Status error on ' . $uri);
-        if (!($this instanceof DemosHttpNoExitTest)) { // content type is not set when App->call_exit equals to true
+        if (!($this instanceof DemosHttpNoExitTest)) { // content type is not set when Webpage->call_exit equals to true
             $this->assertSame('application/json', preg_replace('~;\s*charset=.+$~', '', $response->getHeaderLine('Content-Type')), ' Content type error on ' . $uri);
         }
         $this->assertMatchesRegularExpression($this->regexJson, $response->getBody()->getContents(), ' RegExp error on ' . $uri);
@@ -384,7 +384,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
         $files = [];
         $files[] = ['_unit-test/sse.php?see_test=ajax&__atk_callback=1&__atk_sse=1'];
         $files[] = ['_unit-test/console.php?console_test=ajax&__atk_callback=1&__atk_sse=1'];
-        if (!($this instanceof DemosHttpNoExitTest)) { // ignore content type mismatch when App->call_exit equals to true
+        if (!($this instanceof DemosHttpNoExitTest)) { // ignore content type mismatch when Webpage->call_exit equals to true
             $files[] = ['_unit-test/console_run.php?console_test=ajax&__atk_callback=1&__atk_sse=1'];
             $files[] = ['_unit-test/console_exec.php?console_test=ajax&__atk_callback=1&__atk_sse=1'];
         }

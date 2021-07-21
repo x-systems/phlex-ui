@@ -6,7 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Table;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $data = [
@@ -18,9 +18,9 @@ $data = [
 $model = new \Phlex\Data\Model(new \Phlex\Data\Persistence\Static_($data));
 $model->getField('amount')->type = 'money';
 
-\Phlex\Ui\Header::addTo($app, ['Table with various headers', 'subHeader' => 'Demonstrates how you can add subheaders, footnotes and other insertions into your data table', 'icon' => 'table']);
+\Phlex\Ui\Header::addTo($webpage, ['Table with various headers', 'subHeader' => 'Demonstrates how you can add subheaders, footnotes and other insertions into your data table', 'icon' => 'table']);
 
-$table = \Phlex\Ui\Table::addTo($app);
+$table = \Phlex\Ui\Table::addTo($webpage);
 $table->setModel($model, ['action']);
 $table->addColumn('amount', [Table\Column\Money::class]);
 
@@ -46,9 +46,9 @@ $table->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (Table $table, \Phlex
 $table->template->dangerouslyAppendHtml('Foot', '<tr class="center aligned"><td colspan=2>This will appear above totals</th></tr>');
 $table->addTotals(['action' => 'Totals:', 'amount' => ['sum']]);
 
-\Phlex\Ui\Header::addTo($app, ['Columns with multiple formats', 'subHeader' => 'Single column can use logic to swap out formatters', 'icon' => 'table']);
+\Phlex\Ui\Header::addTo($webpage, ['Columns with multiple formats', 'subHeader' => 'Single column can use logic to swap out formatters', 'icon' => 'table']);
 
-$table = \Phlex\Ui\Table::addTo($app);
+$table = \Phlex\Ui\Table::addTo($webpage);
 $table->setModel($model, ['action']);
 
 // copy of amount through a PHP callback
@@ -78,8 +78,8 @@ $table->addColumn('amount_copy', [Table\Column\Multiformat::class, function ($a,
     return Table\Column\Money::class;
 }, 'attr' => ['all' => ['class' => ['right aligned singel line']]]]);
 
-\Phlex\Ui\Header::addTo($app, ['Table with resizable columns', 'subHeader' => 'Just drag column header to resize', 'icon' => 'table']);
+\Phlex\Ui\Header::addTo($webpage, ['Table with resizable columns', 'subHeader' => 'Just drag column header to resize', 'icon' => 'table']);
 
-$table = \Phlex\Ui\Table::addTo($app);
+$table = \Phlex\Ui\Table::addTo($webpage);
 $table->setModel($model);
 $table->addClass('celled')->resizableColumn();

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
-use Phlex\Ui\App;
 use Phlex\Ui\HtmlTemplate;
+use Phlex\Ui\Webpage;
 
-class AppTest extends \Phlex\Core\PHPUnit\TestCase
+class WebpageTest extends \Phlex\Core\PHPUnit\TestCase
 {
     protected function getApp()
     {
-        return new App([
+        return new Webpage([
             'catch_exceptions' => false,
             'always_run' => false,
         ]);
@@ -19,11 +19,9 @@ class AppTest extends \Phlex\Core\PHPUnit\TestCase
 
     public function testTemplateClassDefault(): void
     {
-        $app = $this->getApp();
-
         $this->assertInstanceOf(
             HtmlTemplate::class,
-            $app->loadTemplate('html.html')
+            $this->getApp()->loadTemplate('webpage.html')
         );
     }
 
@@ -32,12 +30,12 @@ class AppTest extends \Phlex\Core\PHPUnit\TestCase
         $anotherTemplateClass = new class() extends HtmlTemplate {
         };
 
-        $app = $this->getApp();
-        $app->templateClass = get_class($anotherTemplateClass);
+        $webpage = $this->getApp();
+        $webpage->templateClass = get_class($anotherTemplateClass);
 
         $this->assertInstanceOf(
             get_class($anotherTemplateClass),
-            $app->loadTemplate('html.html')
+            $webpage->loadTemplate('webpage.html')
         );
     }
 }

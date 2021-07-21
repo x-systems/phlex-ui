@@ -6,10 +6,10 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$form = Form::addTo($app);
+$form = Form::addTo($webpage);
 $img = $form->addControl('img', [Form\Control\UploadImage::class, ['defaultSrc' => '../images/default.png', 'placeholder' => 'Click to add an image.']]);
 $img->cb->appSticky = true;
 //$img->set('a_new_token', 'an-img-file-name');

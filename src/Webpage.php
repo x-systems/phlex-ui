@@ -4,25 +4,19 @@ declare(strict_types=1);
 
 namespace Phlex\Ui;
 
-use Phlex\Core\AppScopeTrait;
-use Phlex\Core\DiContainerTrait;
 use Phlex\Core\DynamicMethodTrait;
 use Phlex\Core\Factory;
 use Phlex\Core\HookTrait;
-use Phlex\Core\InitializerTrait;
 use Phlex\Data\Persistence;
 use Phlex\Ui\Exception\ExitApplicationException;
 use Phlex\Ui\Persistence\Ui as UiPersistence;
 use Phlex\Ui\UserAction\ExecutorFactory;
 use Psr\Log\LoggerInterface;
 
-class App
+class Webpage extends View
 {
-    use AppScopeTrait;
-    use DiContainerTrait;
     use DynamicMethodTrait;
     use HookTrait;
-    use InitializerTrait;
 
     /** @const string */
     public const HOOK_BEFORE_EXIT = self::class . '@beforeExit';
@@ -43,8 +37,7 @@ class App
         'flatpickr' => 'https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.6',
     ];
 
-    /** @var ExecutorFactory App wide executor factory object for Model user action. */
-    protected $executorFactory;
+    public $defaultTemplate = 'webpage.html';
 
     /** @var string Version of Phlex UI */
     public $version = '3.0-dev';
@@ -53,7 +46,7 @@ class App
     public $title = 'Phlex UI - Untitled Application';
 
     /** @var Layout */
-    public $layout; // the top-most view object
+    public $body; // the top-most view object rendered in the webpage body
 
     /**
      * Set one or more directories where templates should reside.
@@ -108,9 +101,6 @@ class App
     /** @var UiPersistence */
     public $ui_persistence;
 
-    /** @var View For internal use */
-    public $html;
-
     /** @var LoggerInterface|null Target for objects with DebugTrait */
     public $logger;
 
@@ -150,7 +140,7 @@ class App
     /**
      * @var array global sticky arguments
      */
-    protected $sticky_get_arguments = [
+    public $stickyArgs = [
         '__atk_json' => false,
         '__atk_tab' => false,
     ];
@@ -218,6 +208,61 @@ class App
 
         // setting up default executor factory.
         $this->executorFactory = Factory::factory([ExecutorFactory::class]);
+
+        $this->initialize();
+    }
+
+    protected function doInitialize(): void
+    {
+        parent::doInitialize();
+
+        $this->initHead();
+
+        $this->initBody();
+    }
+
+    /**
+     * Initialize JS and CSS includes.
+     */
+    protected function initHead()
+    {
+        // jQuery
+        $this->requireJs($this->cdn['jquery'] . '/jquery.min.js');
+
+        // Semantic UI
+        $this->requireJs($this->cdn['semantic-ui'] . '/semantic.min.js');
+        $this->requireCss($this->cdn['semantic-ui'] . '/semantic.min.css');
+
+        // Serialize Object
+        $this->requireJs($this->cdn['serialize-object'] . '/jquery.serialize-object.min.js');
+
+        // flatpickr
+        $this->requireJs($this->cdn['flatpickr'] . '/flatpickr.min.js');
+        $this->requireCss($this->cdn['flatpickr'] . '/flatpickr.min.css');
+
+        // Agile UI
+        $this->requireJs($this->cdn['atk'] . '/atkjs-ui.min.js');
+        $this->requireCss($this->cdn['atk'] . '/agileui.css');
+
+        // Set js bundle dynamic loading path.
+        $this->template->tryDangerouslySetHtml(
+            'InitJsBundle',
+            (new JsExpression('window.__atkBundlePublicPath = [];', [$this->cdn['atk']]))->jsRender()
+        );
+    }
+
+    public function initBody($seed = null): void
+    {
+        if (!$seed && $this->body instanceof View) {
+            return;
+        }
+
+        $seed = Factory::mergeSeeds(
+            $seed ?? $this->body,
+            [Layout::class]
+        );
+
+        $this->body = parent::addView(Layout::fromSeed($seed));
     }
 
     public function setExecutorFactory(ExecutorFactory $factory)
@@ -274,32 +319,38 @@ class App
      */
     public function caughtException(\Throwable $exception): void
     {
-        $this->catch_runaway_callbacks = false;
+        try {
+            $this->catch_runaway_callbacks = false;
 
-        // just replace layout to avoid any extended App->_construct problems
-        // it will maintain everything as in the original app StickyGet, logger, Events
-        $this->html = null;
-        $this->initLayout([Layout\Centered::class]);
+            // just replace body to avoid any extended Webpage->_construct problems
+            // it will maintain everything as in the original webpage StickyGet, logger, Events
+            $this->elements = [];
+            $this->initBody([Layout\Centered::class]);
 
-        $this->layout->template->dangerouslySetHtml('Content', $this->renderExceptionHtml($exception));
+            $this->body->template->dangerouslySetHtml('Content', $this->renderExceptionHtml($exception));
 
-        // remove header
-        $this->layout->template->tryDel('Header');
+            // remove header
+            $this->body->template->tryDel('Header');
 
-        if (($this->isJsUrlRequest() || strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'xmlhttprequest')
-                && !isset($_GET['__atk_tab'])) {
-            $this->outputResponseJson([
-                'success' => false,
-                'message' => $this->layout->getHtml(),
-            ]);
-        } else {
-            $this->setResponseStatusCode(500);
-            $this->run();
+            if (($this->isJsUrlRequest() || strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'xmlhttprequest')
+                    && !isset($_GET['__atk_tab'])) {
+                $this->outputResponseJson([
+                    'success' => false,
+                    'message' => $this->body->getHtml(),
+                ]);
+            } else {
+                $this->setResponseStatusCode(500);
+                $this->run();
+            }
+
+            // Process is already in shutdown/stop
+            // no need of call exit function
+            $this->callBeforeExit();
+        } catch (\Exception $e) {
+            print_r($e->getMessage() . $e->getTraceAsString());
+
+            print_r($exception->getMessage() . $exception->getTraceAsString());
         }
-
-        // Process is already in shutdown/stop
-        // no need of call exit function
-        $this->callBeforeExit();
     }
 
     /**
@@ -445,88 +496,45 @@ class App
     }
 
     /**
-     * Initializes layout.
-     *
-     * @param Layout|array $seed
-     *
-     * @return $this
-     */
-    public function initLayout($seed)
-    {
-        $layout = Layout::fromSeed($seed);
-        $layout->setApp($this);
-
-        if (!$this->html) {
-            $this->html = new View(['defaultTemplate' => 'html.html']);
-            $this->html->setApp($this);
-            $this->html->initialize();
-        }
-
-        $this->layout = $this->html->addView($layout);
-
-        $this->initIncludes();
-
-        return $this;
-    }
-
-    /**
-     * Initialize JS and CSS includes.
-     */
-    public function initIncludes()
-    {
-        // jQuery
-        $this->requireJs($this->cdn['jquery'] . '/jquery.min.js');
-
-        // Semantic UI
-        $this->requireJs($this->cdn['semantic-ui'] . '/semantic.min.js');
-        $this->requireCss($this->cdn['semantic-ui'] . '/semantic.min.css');
-
-        // Serialize Object
-        $this->requireJs($this->cdn['serialize-object'] . '/jquery.serialize-object.min.js');
-
-        // flatpickr
-        $this->requireJs($this->cdn['flatpickr'] . '/flatpickr.min.js');
-        $this->requireCss($this->cdn['flatpickr'] . '/flatpickr.min.css');
-
-        // Agile UI
-        $this->requireJs($this->cdn['atk'] . '/atkjs-ui.min.js');
-        $this->requireCss($this->cdn['atk'] . '/agileui.css');
-
-        // Set js bundle dynamic loading path.
-        $this->html->template->tryDangerouslySetHtml(
-            'InitJsBundle',
-            (new JsExpression('window.__atkBundlePublicPath = [];', [$this->cdn['atk']]))->jsRender()
-        );
-    }
-
-    /**
      * Adds a <style> block to the HTML Header. Not escaped. Try to avoid
      * and use file include instead.
      *
      * @param string $style CSS rules, like ".foo { background: red }".
      */
-    public function addStyle($style)
+    public function addCss($style)
     {
-        if (!$this->html) {
-            throw new Exception('App does not know how to add style');
-        }
-        $this->html->template->dangerouslyAppendHtml('HEAD', $this->getTag('style', $style));
+        $this->template->dangerouslyAppendHtml('HEAD', self::getTag('style', $style));
     }
 
     /**
-     * Add a new object into the app. You will need to have Layout first.
+     * Adding view is used by default to ad new object into the webpage body. You will need to have Webpage::$body first.
      *
      * @param View|string|array $seed   New object to add
      * @param string|array|null $region
      */
     public function addView($seed, $region = null): AbstractView
     {
-        if (!$this->layout) {
-            throw (new Exception('App layout is missing'))
-                ->addSolution('If you use $app->addView() you should first call $app->initLayout()');
+        // if region exists in the Webpage add it there
+        // otherwise add it to the body
+        // @todo accept objects only should make below simpler
+        if ($region !== null || (is_object($seed) && ($seed->region ?? false))) {
+            $checkRegion = (is_array($region) ? ($region['region'] ?? null) : $region);
+
+            if (!$checkRegion && is_object($seed)) {
+                $checkRegion = $seed->region;
+            }
+
+            if ($this->template->hasTag($checkRegion)) {
+                return parent::addView($seed, $region);
+            }
         }
 
-        return $this->layout->addView($seed, $region);
+        if (!$this->body) {
+            throw (new Exception('Webpage body is missing'))
+                ->addSolution('If you use $webpage->addView() you should first call $webpage->initBody()');
+        }
+
+        return $this->body->addView($seed, $region);
     }
 
     /**
@@ -540,14 +548,9 @@ class App
             $this->hook(self::HOOK_BEFORE_RENDER);
             $this->is_rendering = true;
 
-            // if no App layout set
-            if (!isset($this->html)) {
-                throw new Exception('App layout should be set.');
-            }
-
-            $this->html->template->set('title', $this->title);
-            $this->html->renderAll();
-            $this->html->template->dangerouslyAppendHtml('HEAD', $this->html->getJs());
+            $this->template->set('title', $this->title);
+            $this->renderAll();
+            $this->template->dangerouslyAppendHtml('HEAD', $this->getJs());
             $this->is_rendering = false;
             $this->hook(self::HOOK_BEFORE_OUTPUT);
 
@@ -555,7 +558,7 @@ class App
                 throw new Exception('Callback requested, but never reached. You may be missing some arguments in request URL.');
             }
 
-            $output = $this->html->template->renderToHtml();
+            $output = $this->template->renderToHtml();
         } catch (ExitApplicationException $e) {
             $output = '';
             $isExitException = true;
@@ -572,13 +575,6 @@ class App
         if ($isExitException) {
             $this->callExit();
         }
-    }
-
-    /**
-     * Initialize app.
-     */
-    protected function doInitialize(): void
-    {
     }
 
     /**
@@ -627,21 +623,11 @@ class App
     }
 
     /**
-     * Make current get argument with specified name automatically appended to all generated URLs.
-     */
-    public function stickyGet(string $name, bool $isDeleting = false): ?string
-    {
-        $this->sticky_get_arguments[$name] = !$isDeleting;
-
-        return $_GET[$name] ?? null;
-    }
-
-    /**
      * Remove sticky GET which was set by stickyGet.
      */
     public function stickyForget(string $name)
     {
-        unset($this->sticky_get_arguments[$name]);
+        unset($this->stickyArgs[$name]);
     }
 
     /**
@@ -684,7 +670,7 @@ class App
         $args = $extraRequestUriArgs;
 
         // add sticky arguments
-        foreach ($this->sticky_get_arguments as $k => $v) {
+        foreach ($this->stickyArgs as $k => $v) {
             if ($v && isset($_GET[$k])) {
                 $args[$k] = $_GET[$k];
             } else {
@@ -745,7 +731,7 @@ class App
      */
     public function requireJs($url, $isAsync = false, $isDefer = false)
     {
-        $this->html->template->dangerouslyAppendHtml('HEAD', $this->getTag('script', ['src' => $url, 'defer' => $isDefer, 'async' => $isAsync], '') . "\n");
+        $this->template->dangerouslyAppendHtml('HEAD', self::getTag('script', ['src' => $url, 'defer' => $isDefer, 'async' => $isAsync], '') . "\n");
 
         return $this;
     }
@@ -759,7 +745,7 @@ class App
      */
     public function requireCss($url)
     {
-        $this->html->template->dangerouslyAppendHtml('HEAD', $this->getTag('link/', ['rel' => 'stylesheet', 'type' => 'text/css', 'href' => $url]) . "\n");
+        $this->template->dangerouslyAppendHtml('HEAD', self::getTag('link/', ['rel' => 'stylesheet', 'type' => 'text/css', 'href' => $url]) . "\n");
 
         return $this;
     }
@@ -850,7 +836,7 @@ class App
      * @param string|array $attr
      * @param string|array $value
      */
-    public function getTag($tag = null, $attr = null, $value = null): string
+    public static function getTag($tag = null, $attr = null, $value = null): string
     {
         if ($tag === null) {
             $tag = 'div';
@@ -864,7 +850,7 @@ class App
                     // OH a bunch of tags
                     $output = '';
                     foreach ($tmp as $subtag) {
-                        $output .= $this->getTag($subtag);
+                        $output .= self::getTag($subtag);
                     }
 
                     return $output;
@@ -899,14 +885,14 @@ class App
             $result = [];
             foreach ((array) $value as $v) {
                 if (is_array($v)) {
-                    $result[] = $this->getTag(...$v);
+                    $result[] = self::getTag(...$v);
                 } elseif (in_array($tag, ['script', 'style'], true)) {
                     // see https://mathiasbynens.be/notes/etago
                     $result[] = preg_replace('~(?<=<)(?=/\s*' . preg_quote($tag, '~') . '|!--)~', '\\\\', $v);
                 } elseif (is_array($value)) { // todo, remove later and fix wrong usages, this is the original behaviour, only directly passed strings were escaped
                     $result[] = $v;
                 } else {
-                    $result[] = $this->encodeHtml($v);
+                    $result[] = self::encodeHtml($v);
                 }
             }
             $value = implode('', $result);
@@ -933,7 +919,7 @@ class App
             } elseif ($key === 0) {
                 $tag = $val;
             } else {
-                $tmp[] = $key . '="' . $this->encodeAttribute($val) . '"';
+                $tmp[] = $key . '="' . self::encodeAttribute($val) . '"';
             }
         }
 
@@ -947,7 +933,7 @@ class App
      *
      * @return string
      */
-    public function encodeAttribute($val)
+    public static function encodeAttribute($val)
     {
         return htmlspecialchars((string) $val);
     }
@@ -955,19 +941,17 @@ class App
     /**
      * Encodes string - removes HTML entities.
      */
-    public function encodeHtml(string $val): string
+    public static function encodeHtml(string $val): string
     {
         return htmlentities($val);
     }
 
-    public function decodeJson(string $json)
+    public static function decodeJson(string $json)
     {
-        $data = json_decode($json, true, 512, \JSON_BIGINT_AS_STRING | \JSON_THROW_ON_ERROR);
-
-        return $data;
+        return json_decode($json, true, 512, \JSON_BIGINT_AS_STRING | \JSON_THROW_ON_ERROR);
     }
 
-    public function encodeJson($data, bool $forceObject = false): string
+    public static function encodeJson($data, bool $forceObject = false): string
     {
         $options = \JSON_UNESCAPED_SLASHES | \JSON_PRESERVE_ZERO_FRACTION | \JSON_UNESCAPED_UNICODE | \JSON_PRETTY_PRINT;
         if ($forceObject) {
@@ -994,11 +978,11 @@ class App
      * Return exception message using HTML block and Semantic UI formatting. It's your job
      * to put it inside boilerplate HTML and output, e.g:.
      *
-     *   $app = new \Phlex\Ui\App();
-     *   $app->initLayout([\Phlex\Ui\Layout\Centered::class]);
-     *   $app->layout->template->dangerouslySetHtml('Content', $e->getHtml());
-     *   $app->run();
-     *   $app->callBeforeExit();
+     *   $webpage = new \Phlex\Ui\Webpage();
+     *   $webpage->initBody([\Phlex\Ui\Layout\Centered::class]);
+     *   $webpage->body->template->dangerouslySetHtml('Content', $e->getHtml());
+     *   $webpage->run();
+     *   $webpage->callBeforeExit();
      */
     public function renderExceptionHtml(\Throwable $exception): string
     {
@@ -1125,11 +1109,11 @@ class App
      */
     public function getRenderedModals(): array
     {
-        // prevent looping (calling App::terminateJson() recursively) if JsReload is used in Modal
+        // prevent looping (calling Webpage::terminateJson() recursively) if JsReload is used in Modal
         unset($_GET['__atk_reload']);
 
         $modals = [];
-        foreach ($this->html !== null ? $this->html->elements : [] as $view) {
+        foreach ($this->elements as $view) {
             if ($view instanceof Modal) {
                 $modals[$view->name]['html'] = $view->getHtml();
                 $modals[$view->name]['js'] = $view->getJsRenderActions();

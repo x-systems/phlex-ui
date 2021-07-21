@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Phlex\Ui\Tests;
 
 use Phlex\Data\Model;
-use Phlex\Ui\App;
 use Phlex\Ui\Form;
+use Phlex\Ui\Webpage;
 
 class FormTest extends \Phlex\Core\PHPUnit\TestCase
 {
@@ -173,7 +173,7 @@ class FormTest extends \Phlex\Core\PHPUnit\TestCase
     }
 }
 
-class AppFormTestMock extends App
+class AppFormTestMock extends Webpage
 {
     public $output;
 

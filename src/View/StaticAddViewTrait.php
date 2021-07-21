@@ -22,9 +22,9 @@ trait StaticAddViewTrait
      * The best, typehinting-friendly, way to create an object if it should be immediately
      * added to a parent (otherwise use fromSeed() method).
      *
-     * $crud = Crud::addTo($app, ['displayFields' => ['name']]);
+     * $crud = Crud::addTo($webpage, ['displayFields' => ['name']]);
      *   is equivalent to
-     * $crud = $app->add(['Crud', 'displayFields' => ['name']]);
+     * $crud = $webpage->add(['Crud', 'displayFields' => ['name']]);
      *   but the first one design pattern is strongly recommended as it supports refactoring.
      *
      * @param array $seed

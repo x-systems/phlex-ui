@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /** @var \Phlex\Ui\View $mySwitcherClass */
@@ -39,6 +39,6 @@ $mySwitcherClass = get_class(new class() extends \Phlex\Ui\View {
     }
 });
 
-$view = \Phlex\Ui\View::addTo($app, ['ui' => 'segment']);
+$view = \Phlex\Ui\View::addTo($webpage, ['ui' => 'segment']);
 
 $mySwitcherClass::addTo($view);

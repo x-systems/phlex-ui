@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // create layout
-$gridLayout = \Phlex\Ui\GridLayout::addTo($app, ['columns' => 4, 'rows' => 2]);
+$gridLayout = \Phlex\Ui\GridLayout::addTo($webpage, ['columns' => 4, 'rows' => 2]);
 
 // add other views in layout spots
 \Phlex\Ui\LoremIpsum::addTo($gridLayout, ['words' => 4], ['r1c1']); // row 1, col 1

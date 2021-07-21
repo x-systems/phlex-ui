@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $layout = new \Phlex\Ui\Layout(['defaultTemplate' => __DIR__ . '/templates/layout1.html']);
@@ -12,7 +12,6 @@ $layout = new \Phlex\Ui\Layout(['defaultTemplate' => __DIR__ . '/templates/layou
 \Phlex\Ui\Lister::addTo($layout, [], ['Report'])
     ->setModel(new SomeData());
 
-$app->html = null;
-$app->initLayout([\Phlex\Ui\Layout::class]);
+$webpage->initBody([\Phlex\Ui\Layout::class]);
 
-\Phlex\Ui\Text::addTo($app->layout)->addHtml($layout->render());
+\Phlex\Ui\Text::addTo($webpage)->addHtml($layout->render());

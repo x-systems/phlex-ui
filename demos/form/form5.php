@@ -7,19 +7,19 @@ namespace Phlex\Ui\Demos;
 use Phlex\Ui\Form;
 use Phlex\Ui\JsToast;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\View::addTo($app, [
+\Phlex\Ui\View::addTo($webpage, [
     'Forms below focus on Data integration and automated layouts',
     'ui' => 'ignored warning message',
 ]);
 
-$formSubmit = function ($f) use ($app) {
-    return new JsToast($app->encodeJson($f->model->get()));
+$formSubmit = function ($f) use ($webpage) {
+    return new JsToast($webpage->encodeJson($f->model->get()));
 };
 
-$cc = \Phlex\Ui\Columns::addTo($app);
+$cc = \Phlex\Ui\Columns::addTo($webpage);
 $form = Form::addTo($cc->addColumn());
 
 // adding field without model creates a regular line

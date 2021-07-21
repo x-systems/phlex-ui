@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /** @var \Phlex\Data\Model $modelClass */
@@ -43,6 +43,6 @@ $p = new \Phlex\Data\Persistence\Array_($data);
 $model = new $modelClass($p);
 
 // add Crud
-\Phlex\Ui\Header::addTo($app, ['Crud with Array Persistence']);
-$c = \Phlex\Ui\Crud::addTo($app, ['ipp' => 5]);
+\Phlex\Ui\Header::addTo($webpage, ['Crud with Array Persistence']);
+$c = \Phlex\Ui\Crud::addTo($webpage, ['ipp' => 5]);
 $c->setModel($model);

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Form\Control;
 
+use Phlex\Ui\Webpage;
+
 /**
  * Input element for a form control.
  */
@@ -19,7 +21,7 @@ class Textarea extends Input
      */
     public function getInput()
     {
-        return $this->getApp()->getTag(
+        return Webpage::getTag(
             'textarea',
             array_merge([
                 'name' => $this->short_name,

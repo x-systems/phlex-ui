@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Form\Control;
 
-use Phlex\Ui\App;
 use Phlex\Ui\Jquery;
 use Phlex\Ui\JsChain;
 use Phlex\Ui\JsExpression;
+use Phlex\Ui\Webpage;
 
 /**
  * Date/Time picker attached to a form control.
@@ -36,38 +36,38 @@ class Calendar extends Input
     /**
      * Set first day of week globally.
      */
-    public static function setFirstDayOfWeek(App $app, int $day)
+    public static function setFirstDayOfWeek(Webpage $webpage, int $day)
     {
-        $app->html->js(true, (new JsExpression('flatpickr.l10ns.default.firstDayOfWeek = [day]', ['day' => $day])));
+        $webpage->html->js(true, (new JsExpression('flatpickr.l10ns.default.firstDayOfWeek = [day]', ['day' => $day])));
     }
 
     /**
      * Load flatpickr locale file.
      * Pass it has an option when adding Calendar input.
-     *  Form\Control\Calendar::requireLocale($app, 'fr');
+     *  Form\Control\Calendar::requireLocale($webpage, 'fr');
      *  $form->getControl('date')->options['locale'] = 'fr';.
      */
-    public static function requireLocale(App $app, string $locale)
+    public static function requireLocale(Webpage $webpage, string $locale)
     {
-        $app->requireJs($app->cdn['flatpickr'] . '/l10n/' . $locale . '.js');
+        $webpage->requireJs($webpage->cdn['flatpickr'] . '/l10n/' . $locale . '.js');
     }
 
     /**
      * Apply locale globally to all flatpickr instance.
      */
-    public static function setLocale(App $app, string $locale)
+    public static function setLocale(Webpage $webpage, string $locale)
     {
-        self::requireLocale($app, $locale);
-        $app->html->js(true, (new JsChain('flatpickr'))->localize((new JsChain('flatpickr'))->l10ns->{$locale}));
+        self::requireLocale($webpage, $locale);
+        $webpage->html->js(true, (new JsChain('flatpickr'))->localize((new JsChain('flatpickr'))->l10ns->{$locale}));
     }
 
     /**
      * Set first day of week for calendar display.
      * Applied globally to all flatpickr instance.
      */
-    public static function setDayOfWeek(App $app, int $day)
+    public static function setDayOfWeek(Webpage $webpage, int $day)
     {
-        $app->html->js(true, (new JsExpression('flatpickr.l10ns.default.firstDayOfWeek = [day]', ['day' => $day])));
+        $webpage->html->js(true, (new JsExpression('flatpickr.l10ns.default.firstDayOfWeek = [day]', ['day' => $day])));
     }
 
     protected function doInitialize(): void

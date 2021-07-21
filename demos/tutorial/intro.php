@@ -9,10 +9,10 @@ use Phlex\Ui\JsToast;
 use Phlex\Ui\Message;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$wizard = \Phlex\Ui\Wizard::addTo($app);
+$wizard = \Phlex\Ui\Wizard::addTo($webpage);
 
 $wizard->addStep('User Interface', function ($page) {
     $t = \Phlex\Ui\Text::addTo($page);

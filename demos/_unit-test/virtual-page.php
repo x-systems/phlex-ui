@@ -13,10 +13,10 @@ use Phlex\Ui\JsToast;
 use Phlex\Ui\View;
 use Phlex\Ui\VirtualPage;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$vp = VirtualPage::addTo($app);
+$vp = VirtualPage::addTo($webpage);
 
 $vp->set(function ($firstPage) {
     $secondVp = VirtualPage::addTo($firstPage);
@@ -39,4 +39,4 @@ $vp->set(function ($firstPage) {
     Button::addTo($firstPage, ['Open Second'])->link($secondVp->getUrl());
 });
 
-Button::addTo($app, ['Open First'])->link($vp->getUrl());
+Button::addTo($webpage, ['Open First'])->link($vp->getUrl());

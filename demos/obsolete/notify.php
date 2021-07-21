@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Button::addTo($app, ['Notify Examples - Page 2', 'small right floated basic blue', 'iconRight' => 'right arrow'])
+\Phlex\Ui\Button::addTo($webpage, ['Notify Examples - Page 2', 'small right floated basic blue', 'iconRight' => 'right arrow'])
     ->link(['notify2']);
 
-\Phlex\Ui\Button::addTo($app, ['Test'])->on('click', (new \Phlex\Ui\JsNotify('Not yet implemented'))->setColor('red'));
+\Phlex\Ui\Button::addTo($webpage, ['Test'])->on('click', (new \Phlex\Ui\JsNotify('Not yet implemented'))->setColor('red'));
 
-$modal = \Phlex\Ui\Modal::addTo($app, ['Modal Title']);
+$modal = \Phlex\Ui\Modal::addTo($webpage, ['Modal Title']);
 
 $modal->set(function ($p) use ($modal) {
     $form = \Phlex\Ui\Form::addTo($p);
@@ -30,4 +30,4 @@ $modal->set(function ($p) use ($modal) {
     });
 });
 
-\Phlex\Ui\Button::addTo($app, ['Open Modal'])->on('click', $modal->show());
+\Phlex\Ui\Button::addTo($webpage, ['Open Modal'])->on('click', $modal->show());

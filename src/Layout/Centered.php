@@ -18,7 +18,7 @@ class Centered extends \Phlex\Ui\Layout
     public $defaultTemplate = 'layout/centered.html';
 
     /**
-     * @see \Phlex\Ui\App::$cdn
+     * @see \Phlex\Ui\Webpage::$cdn
      *
      * @var string|null
      */

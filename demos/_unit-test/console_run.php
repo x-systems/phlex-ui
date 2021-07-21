@@ -6,7 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\JsSse;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /** @var \Phlex\Ui\View $testRunClass */
@@ -29,8 +29,8 @@ $testRunClass = get_class(new class() extends \Phlex\Ui\View {
     }
 });
 
-$sse = JsSse::addTo($app);
+$sse = JsSse::addTo($webpage);
 $sse->setUrlTrigger('console_test');
 
-$console = \Phlex\Ui\Console::addTo($app, ['sse' => $sse]);
-$console->runMethod($testRunClass::addTo($app), 'test');
+$console = \Phlex\Ui\Console::addTo($webpage, ['sse' => $sse]);
+$console->runMethod($testRunClass::addTo($webpage), 'test');

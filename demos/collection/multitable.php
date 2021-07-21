@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Re-usable component implementing counter
@@ -72,21 +72,21 @@ $finderClass = get_class(new class() extends \Phlex\Ui\Columns {
     }
 });
 
-$model = new File($app->db);
+$model = new File($webpage->db);
 $model->addCondition($model->key()->parent_folder_id, null);
 $model->setOrder([$model->key()->is_folder => 'desc', $model->key()->name]);
 
-\Phlex\Ui\Header::addTo($app, ['MacOS File Finder', 'subHeader' => 'Component built around Table, Columns and JsReload']);
+\Phlex\Ui\Header::addTo($webpage, ['MacOS File Finder', 'subHeader' => 'Component built around Table, Columns and JsReload']);
 
-$vp = \Phlex\Ui\VirtualPage::addTo($app)->set(function ($vp) use ($model) {
+$vp = \Phlex\Ui\VirtualPage::addTo($webpage)->set(function ($vp) use ($model) {
     $model->persistence->query($model)->delete()->execute();
     $model->importFromFilesystem('.');
     \Phlex\Ui\Button::addTo($vp, ['Import Complete', 'big green fluid'])->link('multitable.php');
     $vp->js(true)->closest('.modal')->find('.header')->remove();
 });
 
-\Phlex\Ui\Button::addTo($app, ['Re-Import From Filesystem', 'top attached'])->on('click', new \Phlex\Ui\JsModal('Now importing ... ', $vp));
+\Phlex\Ui\Button::addTo($webpage, ['Re-Import From Filesystem', 'top attached'])->on('click', new \Phlex\Ui\JsModal('Now importing ... ', $vp));
 
-$finderClass::addTo($app, ['bottom attached'])
+$finderClass::addTo($webpage, ['bottom attached'])
     ->addClass('top attached segment')
     ->setModel($model->setLimit(5), [$model->key()->SubFolder]);

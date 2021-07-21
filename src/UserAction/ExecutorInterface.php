@@ -10,7 +10,7 @@ use Phlex\Data\Model\UserAction;
  * ExecutorInterface can be implemented by a View that can be displayed on a page or in a modal window
  * and it would have an interaction with the user before invoking Action's callback.
  *
- * SomeExecutor::addTo($app)->setAction($model, 'action_name');
+ * SomeExecutor::addTo($webpage)->setAction($model, 'action_name');
  *
  * Here are some suggested implementation for ExecutorInterface:
  *

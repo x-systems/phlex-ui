@@ -7,38 +7,38 @@ namespace Phlex\Ui\Demos;
 use Phlex\Ui\Form;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Testing fields.
 
-\Phlex\Ui\Header::addTo($app, ['CheckBoxes', 'size' => 2]);
+\Phlex\Ui\Header::addTo($webpage, ['CheckBoxes', 'size' => 2]);
 
-Form\Control\Checkbox::addTo($app, ['Make my profile visible']);
-Form\Control\Checkbox::addTo($app, ['Make my profile visible ticked'])->set(true);
+Form\Control\Checkbox::addTo($webpage, ['Make my profile visible']);
+Form\Control\Checkbox::addTo($webpage, ['Make my profile visible ticked'])->set(true);
 
-View::addTo($app, ['ui' => 'divider']);
-Form\Control\Checkbox::addTo($app, ['Accept terms and conditions', 'slider']);
+View::addTo($webpage, ['ui' => 'divider']);
+Form\Control\Checkbox::addTo($webpage, ['Accept terms and conditions', 'slider']);
 
-View::addTo($app, ['ui' => 'divider']);
-Form\Control\Checkbox::addTo($app, ['Subscribe to weekly newsletter', 'toggle']);
-View::addTo($app, ['ui' => 'divider']);
-Form\Control\Checkbox::addTo($app, ['Look for the clues', 'disabled toggle'])->set(true);
+View::addTo($webpage, ['ui' => 'divider']);
+Form\Control\Checkbox::addTo($webpage, ['Subscribe to weekly newsletter', 'toggle']);
+View::addTo($webpage, ['ui' => 'divider']);
+Form\Control\Checkbox::addTo($webpage, ['Look for the clues', 'disabled toggle'])->set(true);
 
-View::addTo($app, ['ui' => 'divider']);
-Form\Control\Checkbox::addTo($app, ['Custom setting?'])->js(true)->checkbox('set indeterminate');
+View::addTo($webpage, ['ui' => 'divider']);
+Form\Control\Checkbox::addTo($webpage, ['Custom setting?'])->js(true)->checkbox('set indeterminate');
 
-\Phlex\Ui\Header::addTo($app, ['CheckBoxes in a form', 'size' => 2]);
-$form = Form::addTo($app);
+\Phlex\Ui\Header::addTo($webpage, ['CheckBoxes in a form', 'size' => 2]);
+$form = Form::addTo($webpage);
 $form->addControl('test', [Form\Control\Checkbox::class]);
 $form->addControl('test_checked', [Form\Control\Checkbox::class])->set(true);
 $form->addControl('also_checked', 'Hello World', 'boolean')->set(true);
 
-$form->onSubmit(function ($f) use ($app) {
-    return new \Phlex\Ui\JsToast($app->encodeJson($f->model->get()));
+$form->onSubmit(function ($f) use ($webpage) {
+    return new \Phlex\Ui\JsToast($webpage->encodeJson($f->model->get()));
 });
 
-View::addTo($app, ['ui' => 'divider']);
+View::addTo($webpage, ['ui' => 'divider']);
 $c = new Form\Control\Checkbox('Selected checkbox by default');
 $c->set(true);
-$app->addView($c);
+$webpage->addView($c);

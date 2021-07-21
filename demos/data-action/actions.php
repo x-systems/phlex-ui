@@ -10,10 +10,10 @@ use Phlex\Ui\Header;
 use Phlex\Ui\UserAction;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$files = new FileLock($app->db);
+$files = new FileLock($webpage->db);
 
 // Actions can be added easily to the model via the Model::addUserAction($name, $properties) method.
 $action = $files->addUserAction(
@@ -42,14 +42,14 @@ $action = $files->addUserAction(
     ]
 );
 
-Header::addTo($app, [
+Header::addTo($webpage, [
     'Extensions to ATK Data Actions',
     'subHeader' => 'Showing different UserAction executors that can execute Phlex\Data model action.',
 ]);
 
-View::addTo($app, ['ui' => 'hidden divider']);
+View::addTo($webpage, ['ui' => 'hidden divider']);
 
-$columns = Columns::addTo($app, ['width' => 2]);
+$columns = Columns::addTo($webpage, ['width' => 2]);
 $rightColumn = $columns->addColumn();
 $leftColumn = $columns->addColumn();
 

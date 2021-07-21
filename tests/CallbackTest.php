@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
-class AppMock extends \Phlex\Ui\App
+class WebpageMock extends \Phlex\Ui\Webpage
 {
     public $terminated = false;
 
@@ -27,13 +27,13 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
     /** @var string */
     private $htmlDoctypeRegex = '~^<!DOCTYPE~';
 
-    /** @var \Phlex\Ui\App */
+    /** @var \Phlex\Ui\Webpage */
     public $app;
 
     protected function setUp(): void
     {
-        $this->app = new AppMock(['always_run' => false, 'catch_exceptions' => false]);
-        $this->app->initLayout([\Phlex\Ui\Layout\Centered::class]);
+        $this->app = new WebpageMock(['always_run' => false, 'catch_exceptions' => false]);
+        $this->app->initBody([\Phlex\Ui\Layout\Centered::class]);
 
         // reset var, between tests
         $_GET = [];
@@ -101,9 +101,9 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
         $_GET[$cb->name] = '1';
         $_GET[$cb->name . '_2'] = '1';
 
-        $app = $this->app;
-        $cb->set(function ($x) use (&$var, $app, &$cbname) {
-            $cb2 = \Phlex\Ui\CallbackLater::addTo($app);
+        $webpage = $this->app;
+        $cb->set(function ($x) use (&$var, $webpage, &$cbname) {
+            $cb2 = \Phlex\Ui\CallbackLater::addTo($webpage);
             $cbname = $cb2->name;
             $cb2->set(function ($y) use (&$var) {
                 $var = $y;

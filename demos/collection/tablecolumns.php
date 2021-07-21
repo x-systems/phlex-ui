@@ -6,7 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Table;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /** @var \Phlex\Data\Model $modelColorClass */
@@ -113,7 +113,7 @@ $keyValueString = [
     'four',
 ];
 
-\Phlex\Ui\Header::addTo($app, ['Table column', 'subHeader' => 'Table column decorator can be set from your model.']);
+\Phlex\Ui\Header::addTo($webpage, ['Table column', 'subHeader' => 'Table column decorator can be set from your model.']);
 
 $model = new $modelColorClass(new \Phlex\Data\Persistence\Static_([]));
 
@@ -132,5 +132,5 @@ foreach (range(1, 10) as $id) {
     ]);
 }
 
-$table = \Phlex\Ui\Table::addTo($app);
+$table = \Phlex\Ui\Table::addTo($webpage);
 $table->setModel($model);

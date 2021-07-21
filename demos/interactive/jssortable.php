@@ -6,10 +6,10 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\HtmlTemplate;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$view = \Phlex\Ui\View::addTo($app, ['template' => new HtmlTemplate(
+$view = \Phlex\Ui\View::addTo($webpage, ['template' => new HtmlTemplate(
     '<div class="ui header">Click and drag country to reorder</div>
     <div id="{$_id}" style="cursor: pointer">
         <ul>
@@ -22,7 +22,7 @@ $lister = \Phlex\Ui\Lister::addTo($view, [], ['List']);
 $lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $lister, Country $row) {
     $row->iso = mb_strtolower($row->iso);
 });
-$lister->setModel(new Country($app->db))
+$lister->setModel(new Country($webpage->db))
     ->setLimit(20);
 
 $sortable = \Phlex\Ui\JsSortable::addTo($view, ['container' => 'ul', 'draggable' => 'li', 'dataLabel' => 'name']);
@@ -35,15 +35,15 @@ $sortable->onReorder(function ($order, $src, $pos, $oldPos) {
     return new \Phlex\Ui\JsToast($src . ' moved from position ' . $oldPos . ' to ' . $pos);
 });
 
-$button = \Phlex\Ui\Button::addTo($app)->set('Get countries order');
+$button = \Phlex\Ui\Button::addTo($webpage)->set('Get countries order');
 $button->js('click', $sortable->jsGetOrders(['btn' => '1']));
 
 //////////////////////////////////////////////////////////////////////////////////////////
-\Phlex\Ui\View::addTo($app, ['ui' => 'divider']);
-\Phlex\Ui\Header::addTo($app, ['Add Drag n drop to Grid']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
+\Phlex\Ui\Header::addTo($webpage, ['Add Drag n drop to Grid']);
 
-$grid = \Phlex\Ui\Grid::addTo($app, ['paginator' => false]);
-$grid->setModel((new Country($app->db))->setLimit(6));
+$grid = \Phlex\Ui\Grid::addTo($webpage, ['paginator' => false]);
+$grid->setModel((new Country($webpage->db))->setLimit(6));
 
 $dragHandler = $grid->addDragHandler();
 $dragHandler->onReorder(function ($order) {

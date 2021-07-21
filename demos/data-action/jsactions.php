@@ -8,16 +8,16 @@ use Phlex\Data\Model\UserAction;
 use Phlex\Ui\Form\Control\Line;
 use Phlex\Ui\UserAction\JsCallbackExecutor;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Header::addTo($app, [
+\Phlex\Ui\Header::addTo($webpage, [
     'Extensions to ATK Data Actions',
     'subHeader' => 'Model action can be trigger in various ways.',
 ]);
 
 // Model action setup.
-$country = new Country($app->db);
+$country = new Country($webpage->db);
 
 $sendEmailAction = $country->addUserAction('Email', [
     'confirmation' => 'Are you sure you wish to send an email?',
@@ -28,9 +28,9 @@ $sendEmailAction = $country->addUserAction('Email', [
 
 ///////////////////////////////////////////
 
-\Phlex\Ui\View::addTo($app, ['ui' => 'ui clearing divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
-\Phlex\Ui\Header::addTo($app, [
+\Phlex\Ui\Header::addTo($webpage, [
     'Using Input button',
     'size' => 4,
     'subHeader' => 'Action can be triggered via a button attached to an input. The data action argument value is set to the input value.',
@@ -51,20 +51,20 @@ $country->addUserAction('greet', [
 ]);
 
 // Set the action property for the Line Form Control.
-Line::addTo($app, ['action' => $country->getUserAction('greet')]);
+Line::addTo($webpage, ['action' => $country->getUserAction('greet')]);
 
 ///////////////////////////////////////////
 
-\Phlex\Ui\View::addTo($app, ['ui' => 'ui clearing divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
-\Phlex\Ui\Header::addTo($app, [
+\Phlex\Ui\Header::addTo($webpage, [
     'Using buttons in a Card component',
     'size' => 4,
     'subHeader' => 'Easily trigger a data action using a Card component.',
 ]);
 
 // Card component.
-$card = \Phlex\Ui\Card::addTo($app);
+$card = \Phlex\Ui\Card::addTo($webpage);
 $content = new \Phlex\Ui\View(['class' => ['content']]);
 $content->addView($img = new \Phlex\Ui\Image(['../images/kristy.png']));
 $img->addClass('right floated mini ui image');

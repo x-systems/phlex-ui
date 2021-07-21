@@ -14,17 +14,17 @@ use Phlex\Ui\Header;
 use Phlex\Ui\Loader;
 use Phlex\Ui\UserAction\ExecutorFactory;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$m = (new CountryLock($app->db))->setLimit(5);
-$app->getExecutorFactory()->registerTrigger(
+$m = (new CountryLock($webpage->db))->setLimit(5);
+$webpage->getExecutorFactory()->registerTrigger(
     ExecutorFactory::TABLE_BUTTON,
     [Button::class, 'ui' => 'atk-test button', 'icon' => 'pencil'],
     $m->getUserAction('edit')
 );
 
-$loader = Loader::addTo($app);
+$loader = Loader::addTo($webpage);
 $loader->loadEvent = false;
 
 $loader->set(function ($p) use ($m) {
@@ -47,4 +47,4 @@ $loader->set(function ($p) use ($m) {
     \Phlex\Ui\Button::addTo($p, ['Load2'])->js('click', $loader_1->jsLoad());
 });
 
-\Phlex\Ui\Button::addTo($app, ['Load1'])->js('click', $loader->jsLoad());
+\Phlex\Ui\Button::addTo($webpage, ['Load1'])->js('click', $loader->jsLoad());

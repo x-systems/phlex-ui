@@ -6,7 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form\Control\Multiline;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // This demo require specific Database setup.
@@ -52,4 +52,4 @@ if (!class_exists(Client::class)) {
     }
 }
 
-\Phlex\Ui\Crud::addTo($app)->setModel(new Client($app->db));
+\Phlex\Ui\Crud::addTo($webpage)->setModel(new Client($webpage->db));

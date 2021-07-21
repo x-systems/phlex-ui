@@ -10,12 +10,12 @@ use Phlex\Ui\Header;
 use Phlex\Ui\UserAction\ExecutorFactory;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-Button::addTo($app, ['Executor Factory in App instance', 'small left floated basic blue', 'icon' => 'left arrow'])
+Button::addTo($webpage, ['Executor Factory in App instance', 'small left floated basic blue', 'icon' => 'left arrow'])
     ->link(['factory']);
-View::addTo($app, ['ui' => 'ui clearing divider']);
+View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
 // Overriding basic ExecutorFactory in order to change Card button.
 $myFactory = get_class(new class() extends ExecutorFactory {
@@ -46,12 +46,12 @@ $myFactory = get_class(new class() extends ExecutorFactory {
     }
 });
 
-Header::addTo($app, ['Executor Factory set for this Card View only.']);
+Header::addTo($webpage, ['Executor Factory set for this Card View only.']);
 
-DemoActionsUtil::setupDemoActions($country = new CountryLock($app->db));
+DemoActionsUtil::setupDemoActions($country = new CountryLock($webpage->db));
 $country = $country->loadAny();
 
-$cardActions = Card::addTo($app, ['useLabel' => true, 'executorFactory' => new $myFactory()]);
+$cardActions = Card::addTo($webpage, ['useLabel' => true, 'executorFactory' => new $myFactory()]);
 $cardActions->setModel($country);
 foreach ($country->getUserActions() as $action) {
     $showActions = ['callback', 'preview', 'edit_argument', 'edit_argument_prev', 'edit_iso', 'confirm', 'multi_step'];
@@ -62,12 +62,12 @@ foreach ($country->getUserActions() as $action) {
 
 ////////////////////////
 
-Header::addTo($app, ['Card View using global Executor Factory']);
+Header::addTo($webpage, ['Card View using global Executor Factory']);
 
-$model = new CountryLock($app->db);
+$model = new CountryLock($webpage->db);
 $model = $model->loadAny();
 
-$card = Card::addTo($app, ['useLabel' => true]);
+$card = Card::addTo($webpage, ['useLabel' => true]);
 $card->setModel($model);
 $card->addClickAction($model->getUserAction('edit'));
 $card->addClickAction($model->getUserAction('delete'));

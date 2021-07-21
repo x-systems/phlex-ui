@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Header::addTo($app, ['SSE with ProgressBar']);
+\Phlex\Ui\Header::addTo($webpage, ['SSE with ProgressBar']);
 
-$bar = \Phlex\Ui\ProgressBar::addTo($app);
+$bar = \Phlex\Ui\ProgressBar::addTo($webpage);
 
-$button = \Phlex\Ui\Button::addTo($app, ['Turn On']);
-$buttonStop = \Phlex\Ui\Button::addTo($app, ['Turn Off']);
+$button = \Phlex\Ui\Button::addTo($webpage, ['Turn On']);
+$buttonStop = \Phlex\Ui\Button::addTo($webpage, ['Turn Off']);
 // non-SSE way
 //$button->on('click', $bar->js()->progress(['percent'=> 40]));
 
-$sse = \Phlex\Ui\JsSse::addTo($app, ['showLoader' => true]);
+$sse = \Phlex\Ui\JsSse::addTo($webpage, ['showLoader' => true]);
 
 $button->on('click', $sse->set(function () use ($button, $sse, $bar) {
     $sse->send($button->js()->addClass('disabled'));
@@ -39,11 +39,11 @@ $button->on('click', $sse->set(function () use ($button, $sse, $bar) {
 
 $buttonStop->on('click', [$button->js()->atkServerEvent('stop'), $button->js()->removeClass('disabled')]);
 
-\Phlex\Ui\View::addTo($app, ['ui' => 'divider']);
-\Phlex\Ui\Header::addTo($app, ['SSE operation with user confirmation']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
+\Phlex\Ui\Header::addTo($webpage, ['SSE operation with user confirmation']);
 
-$sse = \Phlex\Ui\JsSse::addTo($app);
-$button = \Phlex\Ui\Button::addTo($app, ['Click me to change my text']);
+$sse = \Phlex\Ui\JsSse::addTo($webpage);
+$button = \Phlex\Ui\Button::addTo($webpage, ['Click me to change my text']);
 
 $button->on('click', $sse->set(function ($jsChain) use ($sse, $button) {
     $sse->send($button->js()->text('Please wait for 2 seconds...'));

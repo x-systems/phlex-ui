@@ -7,7 +7,7 @@ declare(strict_types=1);
  *
  * Using hasMany reference will required to save reference data using Multiline::saveRows() method.
  *
- * $form = Form::addTo($app);
+ * $form = Form::addTo($webpage);
  * $form->setModel($invoice, false);
  *
  * // Add Multiline form control and set model for Invoice items.
@@ -51,7 +51,7 @@ declare(strict_types=1);
  * model. Be aware that in the example below all User records will be displayed.
  * If your model contains a lot of records, you should handle their limit somehow.
  *
- * $form = Form::addTo($app);
+ * $form = Form::addTo($webpage);
  * $ml = $form->addControl('ml', [Form\Control\Multiline::class]);
  * $ml->setModel($user, ['name','is_vip']);
  *

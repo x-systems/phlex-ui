@@ -7,13 +7,13 @@ namespace Phlex\Ui\Demos;
 use Phlex\Ui\Callback;
 use Phlex\Ui\Wizard;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /**
  * Demonstrates how to use a wizard.
  */
-$wizard = Wizard::addTo($app, ['stepCallback' => Callback::addTo($app, ['urlTrigger' => 'demo_wizard'])]);
+$wizard = Wizard::addTo($webpage, ['stepCallback' => Callback::addTo($webpage, ['urlTrigger' => 'demo_wizard'])]);
 // First step will automatcally be active when you open page first. It
 // will contain the 'Next' button with a link.
 $wizard->addStep('Welcome', function (Wizard $wizard) {

@@ -13,10 +13,10 @@ use Phlex\Data\Model\Scope\Condition;
 use Phlex\Ui\Header;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$model = new Stat($app->db, ['caption' => 'Demo Stat']);
+$model = new Stat($webpage->db, ['caption' => 'Demo Stat']);
 
 $project = new Condition($model->key()->project_name, Condition::OPERATOR_REGEXP, '[a-zA-Z]');
 $brazil = new Condition($model->key()->client_country_iso, '=', 'BR');
@@ -33,7 +33,7 @@ $model->addCondition($budget);
 $model->scope()->add($scope);
 $model->scope()->add($orScope);
 
-$form = \Phlex\Ui\Form::addTo($app);
+$form = \Phlex\Ui\Form::addTo($webpage);
 
 $form->addControl('qb', [\Phlex\Ui\Form\Control\ScopeBuilder::class, 'model' => $model]);
 
@@ -145,8 +145,8 @@ $expectedInput = <<< 'EOF'
     }
     EOF;
 
-Header::addTo($app, ['Word:']);
-View::addTo($app, ['element' => 'p', 'content' => $expectedWord])->addClass('atk-expected-word-result');
+Header::addTo($webpage, ['Word:']);
+View::addTo($webpage, ['element' => 'p', 'content' => $expectedWord])->addClass('atk-expected-word-result');
 
-Header::addTo($app, ['Input:']);
-View::addTo($app, ['element' => 'p', 'content' => $expectedInput])->addClass('atk-expected-input-result');
+Header::addTo($webpage, ['Input:']);
+View::addTo($webpage, ['element' => 'p', 'content' => $expectedInput])->addClass('atk-expected-input-result');

@@ -124,7 +124,7 @@ class VirtualPage extends View
             }
 
             // Remove all elements from inside the Content
-            foreach ($this->getApp()->layout->elements as $key => $view) {
+            foreach ($this->getApp()->body->elements as $key => $view) {
                 if ($view instanceof View && $view->region === 'Content') {
                     unset($this->getApp()->layout->elements[$key]);
                 }
@@ -132,22 +132,22 @@ class VirtualPage extends View
 
             // Prepare modals in order to include them in VirtualPage.
             $modalHtml = '';
-            foreach ($this->getApp()->html !== null ? $this->getApp()->html->elements : [] as $view) {
+            foreach ($this->getApp()->elements as $view) {
                 if ($view instanceof Modal) {
                     $modalHtml .= $view->getHtml();
-                    $this->getApp()->layout->_js_actions = array_merge($this->getApp()->layout->_js_actions, $view->_js_actions);
+                    $this->getApp()->body->_js_actions = array_merge($this->getApp()->body->_js_actions, $view->_js_actions);
                 }
             }
 
-            $this->getApp()->layout->template->dangerouslySetHtml('Content', parent::getHtml());
-            $this->getApp()->layout->_js_actions = array_merge($this->getApp()->layout->_js_actions, $this->_js_actions);
+            $this->getApp()->body->template->dangerouslySetHtml('Content', parent::getHtml());
+            $this->getApp()->body->_js_actions = array_merge($this->getApp()->body->_js_actions, $this->_js_actions);
 
-            $this->getApp()->html->template->dangerouslySetHtml('Content', $this->getApp()->layout->template->renderToHtml());
-            $this->getApp()->html->template->dangerouslySetHtml('Modals', $modalHtml);
+            $this->getApp()->template->dangerouslySetHtml('Content', $this->getApp()->body->template->renderToHtml());
+            $this->getApp()->template->dangerouslySetHtml('Modals', $modalHtml);
 
-            $this->getApp()->html->template->dangerouslyAppendHtml('HEAD', $this->getApp()->layout->getJs());
+            $this->getApp()->template->dangerouslyAppendHtml('HEAD', $this->getApp()->body->getJs());
 
-            $this->getApp()->terminateHtml($this->getApp()->html->template);
+            $this->getApp()->terminateHtml($this->getApp()->template);
         }
     }
 

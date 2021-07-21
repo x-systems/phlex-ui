@@ -13,12 +13,12 @@ use Phlex\Ui\JsModal;
 use Phlex\Ui\JsToast;
 use Phlex\Ui\VirtualPage;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$product = new ProductLock($app->db);
+$product = new ProductLock($webpage->db);
 
-$vp = VirtualPage::addTo($app);
+$vp = VirtualPage::addTo($webpage);
 
 $vp->set(function ($page) {
     $form = Form::addTo($page);
@@ -30,7 +30,7 @@ $vp->set(function ($page) {
     });
 });
 
-$g = Grid::addTo($app, ['menu' => ['class' => ['atk-grid-menu']]]);
+$g = Grid::addTo($webpage, ['menu' => ['class' => ['atk-grid-menu']]]);
 $g->setModel($product);
 
 $g->menu->addItem(

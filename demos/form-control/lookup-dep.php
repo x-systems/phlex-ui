@@ -6,12 +6,12 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Header::addTo($app, ['Lookup dependency']);
+\Phlex\Ui\Header::addTo($webpage, ['Lookup dependency']);
 
-$form = Form::addTo($app, ['segment']);
+$form = Form::addTo($webpage, ['segment']);
 \Phlex\Ui\Label::addTo($form, ['Input information here', 'top attached'], ['AboveControls']);
 
 $form->addControl('starts_with', [
@@ -34,7 +34,7 @@ $form->addControl('contains', [
 
 $lookup = $form->addControl('country', [
     Form\Control\Lookup::class,
-    'model' => new Country($app->db),
+    'model' => new Country($webpage->db),
     'dependency' => function (Country $model, $data) {
         foreach (explode(',', $data['starts_with'] ?? '') as $letter) {
             $model->addCondition($model->key()->name, 'like', $letter . '%');
@@ -50,9 +50,9 @@ $form->onSubmit(function (Form $form) {
     return 'Submitted: ' . print_r($form->model->get(), true);
 });
 
-\Phlex\Ui\Header::addTo($app, ['Lookup multiple values']);
+\Phlex\Ui\Header::addTo($webpage, ['Lookup multiple values']);
 
-$form = Form::addTo($app, ['segment']);
+$form = Form::addTo($webpage, ['segment']);
 \Phlex\Ui\Label::addTo($form, ['Input information here', 'top attached'], ['AboveControls']);
 
 $form->addControl('ends_with', [
@@ -68,7 +68,7 @@ $form->addControl('ends_with', [
 
 $lookup = $form->addControl('country', [
     Form\Control\Lookup::class,
-    'model' => new Country($app->db),
+    'model' => new Country($webpage->db),
     'dependency' => function (Country $model, $data) {
         isset($data['ends_with']) ? $model->addCondition($model->key()->name, 'like', '%' . $data['ends_with']) : null;
     },

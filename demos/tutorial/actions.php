@@ -8,11 +8,11 @@ use Phlex\Ui\Button;
 use Phlex\Ui\UserAction\ExecutorFactory;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$wizard = \Phlex\Ui\Wizard::addTo($app);
-$app->stickyGet($wizard->name);
+$wizard = \Phlex\Ui\Wizard::addTo($webpage);
+$webpage->stickyGet($wizard->name);
 
 $wizard->addStep('Define User Action', function ($page) {
     \Phlex\Ui\Header::addTo($page, ['What are User Actions?']);

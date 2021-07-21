@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Button::addTo($app, ['Loader Example - page 1', 'small left floated basic blue', 'icon' => 'left arrow'])
+\Phlex\Ui\Button::addTo($webpage, ['Loader Example - page 1', 'small left floated basic blue', 'icon' => 'left arrow'])
     ->link(['loader']);
-\Phlex\Ui\View::addTo($app, ['ui' => 'ui clearing divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
-$c = \Phlex\Ui\Columns::addTo($app);
+$c = \Phlex\Ui\Columns::addTo($webpage);
 
 $grid = \Phlex\Ui\Grid::addTo($c->addColumn(), ['ipp' => 10, 'menu' => false]);
-$grid->setModel(new Country($app->db), [Country::hint()->key()->name]);
+$grid->setModel(new Country($webpage->db), [Country::hint()->key()->name]);
 
 $countryLoader = \Phlex\Ui\Loader::addTo($c->addColumn(), ['loadEvent' => false, 'shim' => [\Phlex\Ui\Text::class, 'Select country on your left']]);
 

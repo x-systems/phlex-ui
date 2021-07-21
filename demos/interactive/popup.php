@@ -6,7 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /**
@@ -134,8 +134,8 @@ $itemShelfClass = get_class(new class() extends \Phlex\Ui\View {
     }
 });
 
-\Phlex\Ui\Header::addTo($app)->set('Menu popup');
-$menu = \Phlex\Ui\Menu::addTo($app);
+\Phlex\Ui\Header::addTo($webpage)->set('Menu popup');
+$menu = \Phlex\Ui\Menu::addTo($webpage);
 
 // You may add popup on top of menu items or dropdowns. Dropdowns have a slightly different
 // look, with that triangle on the right. You don't have to add pop-up right away, it can be
@@ -145,11 +145,11 @@ $browse = \Phlex\Ui\Dropdown::addTo($menu, ['Browse']);
 // Add cart item into the menu, with a popup inside
 $cartItem = $menu->addItem([$cartClass, 'icon' => 'cart'])->set('Cart');
 
-$cartPopup = \Phlex\Ui\Popup::addTo($app, [$cartItem, 'position' => 'bottom left']);
+$cartPopup = \Phlex\Ui\Popup::addTo($webpage, [$cartItem, 'position' => 'bottom left']);
 // Popup won't dissapear as you hover over it.
 $cartPopup->setHoverable();
 
-$shelf = $itemShelfClass::addTo($app);
+$shelf = $itemShelfClass::addTo($webpage);
 
 // Here we are facing a pretty interesting problem. If you attempt to put "Cart" object inside a popup directly,
 // it won't work, because it will be located inside the menu item's DOM tree and, although hidden, will be
@@ -169,7 +169,7 @@ $shelf = $itemShelfClass::addTo($app);
 // as i would be in the application. That's also impacts under which key 'memorize' is storing data - having
 // two different objects won't work, since they won't share session data.
 
-$cart = $cartClass::addTo($app);
+$cart = $cartClass::addTo($webpage);
 
 // Next I am calling destroy. This won't actually destroy the cart, but it will remove it from the application.
 // If i add unset($cart) afterwards, garbage collector will trigger destructor. Instead I'm passing $cart
@@ -206,7 +206,7 @@ $shelf->linkCart($cart, [
 
 // label placed on top of menu item, not in the popup
 
-$pop = \Phlex\Ui\Popup::addTo($app, [$browse, 'position' => 'bottom left', 'minWidth' => '500px'])
+$pop = \Phlex\Ui\Popup::addTo($webpage, [$browse, 'position' => 'bottom left', 'minWidth' => '500px'])
     ->setHoverable()
     ->setOption('delay', ['show' => 100, 'hide' => 400]);
 $shelf2 = $itemShelfClass::addTo($pop);
@@ -220,7 +220,7 @@ $rightMenu = $userMenu->addMenu(['', 'icon' => 'user']);
 
 // If you add popup right inside the view, it will link itself with the element. If you are adding it into other container,
 // you can still manually link it and specify an event.
-$signup = \Phlex\Ui\Popup::addTo($app, [$rightMenu, 'position' => 'bottom right'])->setHoverable();
+$signup = \Phlex\Ui\Popup::addTo($webpage, [$rightMenu, 'position' => 'bottom right'])->setHoverable();
 
 // This popup will be dynamically loaded.
 $signup->stickyGet('logged');
@@ -252,21 +252,21 @@ $signup->set(function ($pop) {
 
 //////////////////////////////////////////////////////////////////////////////
 
-\Phlex\Ui\Header::addTo($app)->set('Specifying trigger');
+\Phlex\Ui\Header::addTo($webpage)->set('Specifying trigger');
 
-$button = \Phlex\Ui\Button::addTo($app, ['Click Me', 'primary']);
+$button = \Phlex\Ui\Button::addTo($webpage, ['Click Me', 'primary']);
 
-$buttonPopup = \Phlex\Ui\Popup::addTo($app, [$button]);
+$buttonPopup = \Phlex\Ui\Popup::addTo($webpage, [$button]);
 
 \Phlex\Ui\Header::addTo($buttonPopup)->set('Using click events');
 \Phlex\Ui\View::addTo($buttonPopup)->set('Adding popup into button activates on click by default. Clicked popups will close if you click away.');
 
-$input = Form\Control\Line::addTo($app, ['placeholder' => 'Search users', 'icon' => 'circular search link']);
+$input = Form\Control\Line::addTo($webpage, ['placeholder' => 'Search users', 'icon' => 'circular search link']);
 
-$inputPopup = \Phlex\Ui\Popup::addTo($app, [$input, 'triggerOn' => 'focus']);
+$inputPopup = \Phlex\Ui\Popup::addTo($webpage, [$input, 'triggerOn' => 'focus']);
 \Phlex\Ui\View::addTo($inputPopup)->set('You can use this field to search data.');
 
-$button = \Phlex\Ui\Button::addTo($app, [null, 'icon' => 'volume down']);
-$buttonPopup = \Phlex\Ui\Popup::addTo($app, [$button, 'triggerOn' => 'hover'])->setHoverable();
+$button = \Phlex\Ui\Button::addTo($webpage, [null, 'icon' => 'volume down']);
+$buttonPopup = \Phlex\Ui\Popup::addTo($webpage, [$button, 'triggerOn' => 'hover'])->setHoverable();
 
 Form\Control\Checkbox::addTo($buttonPopup, ['Just On/Off', 'slider'])->on('change', $button->js()->find('.icon')->toggleClass('up down'));

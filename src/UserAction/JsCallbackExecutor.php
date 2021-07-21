@@ -22,7 +22,7 @@ use Phlex\Ui\View;
  *
  * Manual setup.
  * $action = $model->getUserAction('delete')
- * $ex = JsCallbackExecutor::addTo($app)->setAction($action, [4])
+ * $ex = JsCallbackExecutor::addTo($webpage)->setAction($action, [4])
  * $btn->on('click', $ex, ['confirm'=> 'This will delete record with id 4. Are you sure?']);
  */
 class JsCallbackExecutor extends JsCallback implements ExecutorInterface
@@ -77,7 +77,7 @@ class JsCallbackExecutor extends JsCallback implements ExecutorInterface
 
                 $return = $this->action->execute(...$args);
                 $success = $this->jsSuccess instanceof \Closure
-                	? ($this->jsSuccess)($this, $this->action->getEntitySet(), $id, $return)
+                    ? ($this->jsSuccess)($this, $this->action->getEntitySet(), $id, $return)
                     : $this->jsSuccess;
 
                 $js = $this->hook(BasicExecutor::HOOK_AFTER_EXECUTE, [$return, $id]) ?: $success ?: new JsToast('Success' . (is_string($return) ? (': ' . $return) : ''));

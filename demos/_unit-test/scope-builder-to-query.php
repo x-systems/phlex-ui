@@ -11,7 +11,7 @@ namespace Phlex\Ui\Demos;
 use Phlex\Ui\Form\Control\ScopeBuilder;
 use Phlex\Ui\Grid;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $query = <<<'EOF'
@@ -40,10 +40,10 @@ $query = <<<'EOF'
     }
     EOF;
 
-$q = $app->decodeJson($query);
+$q = $webpage->decodeJson($query);
 $scope = ScopeBuilder::queryToScope($q);
 
-$product = new Product($app->db);
+$product = new Product($webpage->db);
 
-$g = Grid::addTo($app);
+$g = Grid::addTo($webpage);
 $g->setModel($product->addCondition($scope));
