@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
-class AppMock extends \Phlex\Ui\App
+class WebpageMock extends \Phlex\Ui\Webpage
 {
     public $terminated = false;
 
@@ -32,7 +32,7 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
 
     protected function setUp(): void
     {
-        $this->app = new AppMock(['always_run' => false, 'catch_exceptions' => false]);
+        $this->app = new WebpageMock(['always_run' => false, 'catch_exceptions' => false]);
         $this->app->initLayout([\Phlex\Ui\Layout\Centered::class]);
 
         // reset var, between tests

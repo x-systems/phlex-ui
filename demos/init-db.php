@@ -238,10 +238,10 @@ class Stat extends ModelWithPrefixedFields
     }
 }
 
-class Percent extends \Phlex\Data\Model\Field
-{
-    public $type = 'float'; // will need to be able to affect rendering and storage
-}
+// class Percent extends \Phlex\Data\Model\Field
+// {
+//     public $type = 'float'; // will need to be able to affect rendering and storage
+// }
 
 /**
  * @property string $name             @Phlex\Field()

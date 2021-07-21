@@ -43,7 +43,7 @@ class JsTest extends \Phlex\Core\PHPUnit\TestCase
 
             // test JSON renderer in App too
             // test extensively because of (possibly fragile) custom regex impl
-            $app = (new \ReflectionClass(\Phlex\Ui\App::class))->newInstanceWithoutConstructor();
+            $app = (new \ReflectionClass(\Phlex\Ui\Webpage::class))->newInstanceWithoutConstructor();
             $expectedRaw = json_decode($expected);
             foreach ([
                 [$expectedRaw, $in], // direct value

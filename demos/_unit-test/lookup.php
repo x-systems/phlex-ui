@@ -9,7 +9,7 @@ use Phlex\Ui\UserAction\ExecutorFactory;
 
 // Test for hasOne Lookup as dropdown control.
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 $model = new ProductLock($app->db);

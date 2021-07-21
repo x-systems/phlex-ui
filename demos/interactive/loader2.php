@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 \Phlex\Ui\Button::addTo($app, ['Loader Example - page 1', 'small left floated basic blue', 'icon' => 'left arrow'])

@@ -7,7 +7,7 @@ namespace Phlex\Ui\Demos;
 /**
  * Testing Columns.
  */
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 // some custom style needed for our "highlight" to work. You don't need this on

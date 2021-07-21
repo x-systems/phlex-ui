@@ -8,7 +8,7 @@ use Phlex\Data\Model\UserAction;
 use Phlex\Ui\Form\Control\Line;
 use Phlex\Ui\UserAction\JsCallbackExecutor;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 \Phlex\Ui\Header::addTo($app, [

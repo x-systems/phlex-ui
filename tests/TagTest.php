@@ -8,7 +8,7 @@ class TagTest extends \Phlex\Core\PHPUnit\TestCase
 {
     public function getApp()
     {
-        return new \Phlex\Ui\App(['catch_exceptions' => false, 'always_run' => false]);
+        return new \Phlex\Ui\Webpage(['catch_exceptions' => false, 'always_run' => false]);
     }
 
     public function assertTagRender($html, $args)

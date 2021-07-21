@@ -7,7 +7,7 @@ namespace Phlex\Ui\Demos;
 /**
  * Demonstrates how to use menu.
  */
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 $menu = \Phlex\Ui\Menu::addTo($app);

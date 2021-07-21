@@ -9,7 +9,7 @@ use Phlex\Ui\Form;
 /**
  * Testing fields.
  */
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 \Phlex\Ui\Header::addTo($app, ['Types', 'size' => 2]);

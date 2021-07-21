@@ -10,7 +10,7 @@ use Phlex\Ui\Header;
 use Phlex\Ui\Tabs;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 Header::addTo($app, ['Display form using Html template', 'subHeader' => 'Fully control how to display fields.']);

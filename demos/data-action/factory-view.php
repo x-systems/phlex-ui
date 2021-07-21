@@ -10,7 +10,7 @@ use Phlex\Ui\Header;
 use Phlex\Ui\UserAction\ExecutorFactory;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 Button::addTo($app, ['Executor Factory in App instance', 'small left floated basic blue', 'icon' => 'left arrow'])

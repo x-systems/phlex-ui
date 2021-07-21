@@ -11,7 +11,7 @@ use Phlex\Ui\HtmlTemplate;
 /**
  * Demonstrates how to use fields with form.
  */
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 \Phlex\Ui\Header::addTo($app, ['Disabled and read only form controls (normal / readonly / disabled)']);

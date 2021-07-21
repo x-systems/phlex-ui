@@ -12,7 +12,7 @@ use Phlex\Ui\Header;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\JsFunction;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 Header::addTo($app, ['Multiline form control', 'icon' => 'database', 'subHeader' => 'Collect/Edit multiple rows of table record.']);

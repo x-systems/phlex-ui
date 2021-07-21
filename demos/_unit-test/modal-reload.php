@@ -8,7 +8,7 @@ use Phlex\Ui\Button;
 use Phlex\Ui\Header;
 use Phlex\Ui\Modal;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 // Simulating ModalExecutor reload for Behat test.

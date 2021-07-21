@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 // For popup positioning to work correctly, table need to be inside a view segment.

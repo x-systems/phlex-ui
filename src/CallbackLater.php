@@ -29,7 +29,7 @@ class CallbackLater extends Callback
             return parent::set($fx, $args);
         }
 
-        $this->getApp()->onHook(App::HOOK_BEFORE_RENDER, function () use ($fx, $args) {
+        $this->getApp()->onHook(Webpage::HOOK_BEFORE_RENDER, function () use ($fx, $args) {
             return parent::set($fx, $args);
         });
     }

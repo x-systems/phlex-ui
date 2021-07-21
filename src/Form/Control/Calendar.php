@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Form\Control;
 
-use Phlex\Ui\App;
+use Phlex\Ui\Webpage;
 use Phlex\Ui\Jquery;
 use Phlex\Ui\JsChain;
 use Phlex\Ui\JsExpression;
@@ -36,7 +36,7 @@ class Calendar extends Input
     /**
      * Set first day of week globally.
      */
-    public static function setFirstDayOfWeek(App $app, int $day)
+    public static function setFirstDayOfWeek(Webpage $app, int $day)
     {
         $app->html->js(true, (new JsExpression('flatpickr.l10ns.default.firstDayOfWeek = [day]', ['day' => $day])));
     }
@@ -47,7 +47,7 @@ class Calendar extends Input
      *  Form\Control\Calendar::requireLocale($app, 'fr');
      *  $form->getControl('date')->options['locale'] = 'fr';.
      */
-    public static function requireLocale(App $app, string $locale)
+    public static function requireLocale(Webpage $app, string $locale)
     {
         $app->requireJs($app->cdn['flatpickr'] . '/l10n/' . $locale . '.js');
     }
@@ -55,7 +55,7 @@ class Calendar extends Input
     /**
      * Apply locale globally to all flatpickr instance.
      */
-    public static function setLocale(App $app, string $locale)
+    public static function setLocale(Webpage $app, string $locale)
     {
         self::requireLocale($app, $locale);
         $app->html->js(true, (new JsChain('flatpickr'))->localize((new JsChain('flatpickr'))->l10ns->{$locale}));
@@ -65,7 +65,7 @@ class Calendar extends Input
      * Set first day of week for calendar display.
      * Applied globally to all flatpickr instance.
      */
-    public static function setDayOfWeek(App $app, int $day)
+    public static function setDayOfWeek(Webpage $app, int $day)
     {
         $app->html->js(true, (new JsExpression('flatpickr.l10ns.default.firstDayOfWeek = [day]', ['day' => $day])));
     }

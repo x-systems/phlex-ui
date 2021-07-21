@@ -13,7 +13,7 @@ use Phlex\Ui\JsToast;
 use Phlex\Ui\View;
 use Phlex\Ui\VirtualPage;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 $vp = VirtualPage::addTo($app);

@@ -7,7 +7,7 @@ namespace Phlex\Ui\Demos;
 use Phlex\Ui\Button;
 use Phlex\Ui\Header;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 // Demonstrates how to use interractive buttons.

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-class GetAssets extends \Phlex\Ui\App
+class GetAssets extends \Phlex\Ui\Webpage
 {
     public $always_run = false;
     public $catch_exceptions = false;

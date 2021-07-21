@@ -6,7 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\HtmlTemplate;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 \Phlex\Ui\Header::addTo($app, ['Component', 'size' => 2, 'icon' => 'vuejs', 'subHeader' => 'UI view handle by Vue.js']);

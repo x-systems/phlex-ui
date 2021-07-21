@@ -7,7 +7,7 @@ namespace Phlex\Ui\Demos;
 use Phlex\Ui\Form;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 $output = function (string $date) {

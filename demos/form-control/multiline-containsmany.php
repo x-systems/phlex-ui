@@ -6,7 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form\Control\Multiline;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 // This demo require specific Database setup.

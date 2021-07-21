@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 $img = 'https://raw.githubusercontent.com/atk4/ui/2.0.4/public/logo.png';

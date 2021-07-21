@@ -7,7 +7,7 @@ namespace Phlex\Ui\Form\Control;
 use Phlex\Core\Factory;
 use Phlex\Core\HookTrait;
 use Phlex\Data\Model;
-use Phlex\Ui\App;
+use Phlex\Ui\Webpage;
 use Phlex\Ui\Jquery;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\JsFunction;
@@ -156,7 +156,7 @@ class Lookup extends Input
 
         $this->callback = \Phlex\Ui\Callback::addTo($this);
 
-        $this->getApp()->onHook(App::HOOK_BEFORE_RENDER, function () {
+        $this->getApp()->onHook(Webpage::HOOK_BEFORE_RENDER, function () {
             $this->callback->set(\Closure::fromCallable([$this, 'outputApiResponse']));
         });
     }

@@ -14,7 +14,7 @@ if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(\PHPUnit\Framewo
     \CoverageUtil::start();
 }
 
-$app = new \Phlex\Ui\App([
+$app = new \Phlex\Ui\Webpage([
     'call_exit' => (bool) ($_GET['APP_CALL_EXIT'] ?? true),
     'catch_exceptions' => (bool) ($_GET['APP_CATCH_EXCEPTIONS'] ?? true),
     'always_run' => (bool) ($_GET['APP_ALWAYS_RUN'] ?? true),
@@ -31,7 +31,7 @@ if ($app->catch_exceptions !== true) {
 
 // collect coverage for HTTP tests 2/2
 if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(\PHPUnit\Framework\TestCase::class, false)) {
-    $app->onHook(\Phlex\Ui\App::HOOK_BEFORE_EXIT, function () {
+    $app->onHook(\Phlex\Ui\Webpage::HOOK_BEFORE_EXIT, function () {
         \CoverageUtil::saveData();
     });
 }

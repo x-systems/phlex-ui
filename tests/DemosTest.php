@@ -7,7 +7,7 @@ namespace Phlex\Ui\Tests;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Phlex\Data\Persistence;
-use Phlex\Ui\App;
+use Phlex\Ui\Webpage;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 

@@ -16,7 +16,7 @@ use Phlex\Ui\Persistence\Ui as UiPersistence;
 use Phlex\Ui\UserAction\ExecutorFactory;
 use Psr\Log\LoggerInterface;
 
-class App
+class Webpage
 {
     use AppScopeTrait;
     use DiContainerTrait;
@@ -457,7 +457,7 @@ class App
         $layout->setApp($this);
 
         if (!$this->html) {
-            $this->html = new View(['defaultTemplate' => 'html.html']);
+            $this->html = new View(['defaultTemplate' => 'webpage.html']);
             $this->html->setApp($this);
             $this->html->initialize();
         }
@@ -994,7 +994,7 @@ class App
      * Return exception message using HTML block and Semantic UI formatting. It's your job
      * to put it inside boilerplate HTML and output, e.g:.
      *
-     *   $app = new \Phlex\Ui\App();
+     *   $app = new \Phlex\Ui\Webpage();
      *   $app->initLayout([\Phlex\Ui\Layout\Centered::class]);
      *   $app->layout->template->dangerouslySetHtml('Content', $e->getHtml());
      *   $app->run();

@@ -6,7 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\CallbackLater;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 // JUST TO TEST Exceptions and Error throws

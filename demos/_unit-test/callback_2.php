@@ -14,7 +14,7 @@ use Phlex\Ui\Header;
 use Phlex\Ui\Loader;
 use Phlex\Ui\UserAction\ExecutorFactory;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 $m = (new CountryLock($app->db))->setLimit(5);

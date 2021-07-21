@@ -7,7 +7,7 @@ namespace Phlex\Ui\Demos;
 /**
  * Demonstrates how to use tabs.
  */
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 $p = \Phlex\Ui\ProgressBar::addTo($app, [20]);

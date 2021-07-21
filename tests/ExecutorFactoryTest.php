@@ -6,7 +6,7 @@ namespace Phlex\Ui\Tests;
 
 use Phlex\Data\Model;
 use Phlex\Data\Persistence\Array_;
-use Phlex\Ui\App;
+use Phlex\Ui\Webpage;
 use Phlex\Ui\Button;
 use Phlex\Ui\Item;
 use Phlex\Ui\UserAction\BasicExecutor;
@@ -52,7 +52,7 @@ class ExecutorFactoryTest extends \Phlex\Core\PHPUnit\TestCase
 
     protected function getApp()
     {
-        return new App([
+        return new Webpage([
             'catch_exceptions' => false,
             'always_run' => false,
         ]);

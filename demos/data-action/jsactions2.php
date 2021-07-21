@@ -6,7 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Message;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 // Demo for Model action

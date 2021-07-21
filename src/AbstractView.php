@@ -62,7 +62,7 @@ abstract class AbstractView
      */
     protected function initDefaultApp()
     {
-        $this->setApp(new App([
+        $this->setApp(new Webpage([
             'skin' => $this->skin,
             'catch_exceptions' => false,
             'always_run' => false,

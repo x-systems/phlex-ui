@@ -9,7 +9,7 @@ use Phlex\Ui\HtmlTemplate;
 use Phlex\Ui\Icon;
 use Phlex\Ui\Label;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 // Demonstrates how to use buttons.

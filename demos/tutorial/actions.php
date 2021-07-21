@@ -8,7 +8,7 @@ use Phlex\Ui\Button;
 use Phlex\Ui\UserAction\ExecutorFactory;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 $wizard = \Phlex\Ui\Wizard::addTo($app);

@@ -9,7 +9,7 @@ use Phlex\Ui\Jquery;
 use Phlex\Ui\JsToast;
 use Phlex\Ui\UserAction\BasicExecutor;
 
-/** @var \Phlex\Ui\App $app */
+/** @var \Phlex\Ui\Webpage $app */
 require_once __DIR__ . '/../init-app.php';
 
 $grid = \Phlex\Ui\Grid::addTo($app);
