@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
-use Phlex\Ui\View;
 
 /** @var \Phlex\Ui\App $app */
 require_once __DIR__ . '/../init-app.php';
@@ -35,7 +34,7 @@ $cartClass = get_class(new class() extends \Phlex\Ui\Lister {
 
         // Set default description for our row template. Normally this is replaced by the 'descr' field
         // of a model, but we don't have it, so it will stay like this.
-        $this->t_row->set('descr', 'click on link to remove item');
+        $this->templateRow->set('descr', 'click on link to remove item');
 
         // We link to ourselves with this special GET argument to indicate that item must be removed.
         if (isset($_GET[$this->name . '_remove'])) {
