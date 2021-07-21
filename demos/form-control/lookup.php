@@ -41,7 +41,7 @@ $form->addControl('country3', [
 $form->onSubmit(function (Form $form) {
     $str = $form->model->ref('country1')->get('name') . ' ' . $form->model->ref('country2')->get('name') . ' ' . (new Country($form->getApp()->db))->tryLoad($form->model->get('country3'))->get('name');
     $view = new \Phlex\Ui\Message('Select:'); // need in behat test.
-    $view->invokeInit();
+    $view->initialize();
     $view->text->addParagraph($str);
 
     return $view;

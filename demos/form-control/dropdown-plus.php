@@ -27,7 +27,7 @@ $form->onSubmit(function (Form $form) use ($app) {
     $message = $app->encodeJson($form->model->get());
 
     $view = new \Phlex\Ui\Message('Values: ');
-    $view->invokeInit();
+    $view->initialize();
     $view->text->addParagraph($message);
 
     return $view;
@@ -122,7 +122,7 @@ $form->onSubmit(function (Form $form) use ($app) {
     $message = $app->encodeJson($form->model->get());
 
     $view = new \Phlex\Ui\Message('Values: ');
-    $view->invokeInit();
+    $view->initialize();
     $view->text->addParagraph($message);
 
     return $view;

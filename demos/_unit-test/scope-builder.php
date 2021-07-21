@@ -40,7 +40,7 @@ $form->addControl('qb', [\Phlex\Ui\Form\Control\ScopeBuilder::class, 'model' => 
 $form->onSubmit(function ($form) use ($model) {
     $message = $form->model->get('qb')->toWords($model);
     $view = (new \Phlex\Ui\View(['id' => false]))->addClass('atk-scope-builder-response');
-    $view->invokeInit();
+    $view->initialize();
 
     $view->set($message);
 

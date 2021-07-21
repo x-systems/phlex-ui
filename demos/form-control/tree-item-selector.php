@@ -59,7 +59,7 @@ $form->onSubmit(function (Form $form) use ($app) {
     ];
 
     $view = new \Phlex\Ui\Message('Items: ');
-    $view->invokeInit();
+    $view->initialize();
     $view->text->addParagraph($app->encodeJson($response));
 
     return $view;

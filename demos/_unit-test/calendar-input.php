@@ -12,7 +12,7 @@ require_once __DIR__ . '/../init-app.php';
 
 $output = function (string $date) {
     $view = new \Phlex\Ui\Message();
-    $view->invokeInit();
+    $view->initialize();
     $view->text->addHtml($date);
 
     return $view;

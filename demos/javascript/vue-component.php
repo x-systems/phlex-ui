@@ -26,7 +26,7 @@ $inline_edit->setModel($model);
 
 $inline_edit->onChange(function ($value) {
     $view = new \Phlex\Ui\Message();
-    $view->invokeInit();
+    $view->initialize();
     $view->text->addParagraph('new value: ' . $value);
 
     return $view;
