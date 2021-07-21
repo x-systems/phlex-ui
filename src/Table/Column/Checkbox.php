@@ -8,6 +8,7 @@ use Phlex\Data\Model;
 use Phlex\Ui\Exception;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\Table;
+use Phlex\Ui\Webpage;
 
 /**
  * Implements Checkbox column for selecting rows.
@@ -48,6 +49,6 @@ class Checkbox extends Table\Column
 
     public function getDataCellTemplate(Model\Field $field = null)
     {
-        return $this->getApp()->getTag('div', ['class' => 'ui checkbox ' . $this->class], [['input', ['type' => 'checkbox']]]);
+        return Webpage::getTag('div', ['class' => 'ui checkbox ' . $this->class], [['input', ['type' => 'checkbox']]]);
     }
 }

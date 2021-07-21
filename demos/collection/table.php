@@ -49,7 +49,7 @@ break;
     }
     if ($color) {
         return [
-            'name' => $table->getApp()->getTag('div', ['class' => 'ui ribbon ' . $color . ' label'], $row->get('name')),
+            'name' => \Phlex\Ui\Webpage::getTag('div', ['class' => 'ui ribbon ' . $color . ' label'], $row->get('name')),
         ];
     }
 });

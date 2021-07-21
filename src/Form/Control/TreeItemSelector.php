@@ -19,6 +19,7 @@ namespace Phlex\Ui\Form\Control;
 use Phlex\Ui\Form;
 use Phlex\Ui\HtmlTemplate;
 use Phlex\Ui\JsCallback;
+use Phlex\Ui\Webpage;
 
 class TreeItemSelector extends Form\Control
 {
@@ -129,7 +130,7 @@ class TreeItemSelector extends Form\Control
      */
     public function getInput()
     {
-        return $this->getApp()->getTag('input', [
+        return Webpage::getTag('input', [
             'name' => $this->short_name,
             'type' => 'hidden',
             'value' => $this->getValue(),

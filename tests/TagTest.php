@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Ui\Webpage;
+
 class TagTest extends \Phlex\Core\PHPUnit\TestCase
 {
-    public function getApp()
-    {
-        return new \Phlex\Ui\Webpage(['catch_exceptions' => false, 'always_run' => false]);
-    }
-
     public function assertTagRender($html, $args)
     {
-        $this->assertSame($html, $this->getApp()->getTag(...$args));
+        $this->assertSame($html, Webpage::getTag(...$args));
     }
 
     public function testBasic(): void
@@ -71,7 +68,7 @@ class TagTest extends \Phlex\Core\PHPUnit\TestCase
         // this way it doesn't work, because $value of getTag is always encoded if it is a string
         $this->assertSame(
             '<a href="hello">click <i>italic</i> text</a>',
-            $this->getApp()->getTag('a', ['href' => 'hello'], ['click ', ['i', 'italic'], ' text'])
+            Webpage::getTag('a', ['href' => 'hello'], ['click ', ['i', 'italic'], ' text'])
         );
     }
 }

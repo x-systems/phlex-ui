@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Table\Column;
 
 use Phlex\Ui\Table;
+use Phlex\Ui\Webpage;
 
 /**
  * Implement drag handler column for sorting table.
@@ -36,6 +37,6 @@ class DragHandler extends Table\Column
 
     public function getDataCellTemplate(\Phlex\Data\Model\Field $field = null)
     {
-        return $this->getApp()->getTag($this->tag, ['class' => $this->class . ' atk-handle', 'style' => 'cursor:pointer; color: #bcbdbd']);
+        return Webpage::getTag($this->tag, ['class' => $this->class . ' atk-handle', 'style' => 'cursor:pointer; color: #bcbdbd']);
     }
 }

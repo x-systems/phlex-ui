@@ -10,6 +10,7 @@ use Phlex\Ui\Form;
 use Phlex\Ui\Icon;
 use Phlex\Ui\Label;
 use Phlex\Ui\UserAction\JsCallbackExecutor;
+use Phlex\Ui\Webpage;
 
 /**
  * Input element for a form control.
@@ -109,7 +110,7 @@ class Input extends Form\Control
      */
     public function getInput()
     {
-        return $this->getApp()->getTag('input', array_merge([
+        return Webpage::getTag('input', array_merge([
             'name' => $this->short_name,
             'type' => $this->inputType,
             'placeholder' => $this->placeholder,

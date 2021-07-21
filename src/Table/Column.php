@@ -10,6 +10,7 @@ use Phlex\Ui\Exception;
 use Phlex\Ui\Jquery;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\Popup;
+use Phlex\Ui\Webpage;
 
 /**
  * Implements Column helper for table.
@@ -296,7 +297,7 @@ class Column
             $attr['class'] = implode(' ', $attr['class']);
         }
 
-        return $this->getApp()->getTag($position === 'body' ? 'td' : 'th', $attr, $value);
+        return Webpage::getTag($position === 'body' ? 'td' : 'th', $attr, $value);
     }
 
     /**

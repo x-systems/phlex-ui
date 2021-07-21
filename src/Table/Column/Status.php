@@ -6,6 +6,7 @@ namespace Phlex\Ui\Table\Column;
 
 use Phlex\Data\Model;
 use Phlex\Ui\Table;
+use Phlex\Ui\Webpage;
 
 /**
  * Implements Column helper for grid.
@@ -45,10 +46,10 @@ class Status extends Table\Column
             $extra_tags['class'] = implode(' ', $extra_tags['class']);
         }
 
-        return $this->getApp()->getTag(
+        return Webpage::getTag(
             'td',
             $extra_tags,
-            [$this->getApp()->getTag('i', ['class' => 'icon {$_' . $field->short_name . '_icon}'], '') .
+            [Webpage::getTag('i', ['class' => 'icon {$_' . $field->short_name . '_icon}'], '') .
             ' {$' . $field->short_name . '}', ]
         );
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Table\Column;
 
 use Phlex\Ui\Table;
+use Phlex\Ui\Webpage;
 
 /**
  * Formatting action buttons column.
@@ -32,7 +33,7 @@ class Delete extends Table\Column
             'uri_options' => [$this->name => $this->table->jsRow()->data('id')],
         ]);
 
-        return $this->getApp()->getTag(
+        return Webpage::getTag(
             'a',
             ['href' => '#', 'title' => 'Delete {$' . $this->table->model->titleKey . '}?', 'class' => $this->short_name],
             [

@@ -8,6 +8,7 @@ use Phlex\Data\Model;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\JsExpressionable;
 use Phlex\Ui\JsFunction;
+use Phlex\Ui\Webpage;
 
 /**
  * Input element for a form control.
@@ -170,7 +171,7 @@ class Dropdown extends Input
      */
     public function getInput()
     {
-        return $this->getApp()->getTag('input', array_merge([
+        return Webpage::getTag('input', array_merge([
             'name' => $this->short_name,
             'type' => $this->inputType,
             'id' => $this->id . '_input',

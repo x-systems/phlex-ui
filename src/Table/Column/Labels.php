@@ -6,6 +6,7 @@ namespace Phlex\Ui\Table\Column;
 
 use Phlex\Data\Model;
 use Phlex\Ui\Table;
+use Phlex\Ui\Webpage;
 
 /**
  * Class Labels.
@@ -40,7 +41,7 @@ class Labels extends Table\Column
             $id = $values[$id] ?? $id;
 
             if (!empty($id)) {
-                $labels[] = $this->getApp()->getTag('div', ['class' => 'ui label'], $id);
+                $labels[] = Webpage::getTag('div', ['class' => 'ui label'], $id);
             }
         }
 
