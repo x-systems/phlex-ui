@@ -19,7 +19,7 @@ $app = new \Phlex\Ui\App([
     'catch_exceptions' => (bool) ($_GET['APP_CATCH_EXCEPTIONS'] ?? true),
     'always_run' => (bool) ($_GET['APP_ALWAYS_RUN'] ?? true),
 ]);
-$app->title = 'Agile UI Demo v' . $app->version;
+$app->title = 'Phlex UI Demo v' . $app->version;
 
 if ($app->call_exit !== true) {
     $app->stickyGet('APP_CALL_EXIT');

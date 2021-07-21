@@ -46,11 +46,11 @@ class App
     /** @var ExecutorFactory App wide executor factory object for Model user action. */
     protected $executorFactory;
 
-    /** @var string Version of Agile UI */
-    public $version = '3.1-dev';
+    /** @var string Version of Phlex UI */
+    public $version = '3.0-dev';
 
     /** @var string Name of application */
-    public $title = 'Agile UI - Untitled Application';
+    public $title = 'Phlex UI - Untitled Application';
 
     /** @var Layout */
     public $layout; // the top-most view object
