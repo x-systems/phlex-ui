@@ -6,6 +6,7 @@ namespace Phlex\Ui\Form\Control;
 
 use Phlex\Ui\Form;
 use Phlex\Ui\Lister;
+use Phlex\Data\Model;
 
 /**
  * Input element for a form control.
@@ -58,15 +59,26 @@ class Radio extends Form\Control
 
         $this->lister->onHook(Lister::HOOK_BEFORE_ROW, function (Lister $lister, $row) use ($value) {
             if ($this->readonly) {
-            	$lister->templateRow->set('disabled', $value !== (string) $row->getId() ? 'disabled="disabled"' : '');
+            	$lister->templateRow->set('disabled', $value !== $row->getId() ? 'disabled="disabled"' : '');
             } elseif ($this->disabled) {
                 $lister->templateRow->set('disabled', 'disabled="disabled"');
             }
 
-            $lister->templateRow->set('checked', $value === (string) $row->getId() ? 'checked' : '');
+            $lister->templateRow->set('checked', $value === $row->getId() ? 'checked' : '');
         });
 
         parent::doRender();
+    }
+    
+    public function setField(Model\Field $field)
+    {
+    	$fieldType = $field->getValueType();
+    	
+    	if ($fieldType instanceof Model\Field\Type\Selectable) {
+    		$this->values = $fieldType->getValuesWithLabels();
+    	}
+    	
+    	return parent::setField($field);
     }
 
     /**
