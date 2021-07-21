@@ -215,7 +215,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
         }
 
         $this->setModel(new Model(new Static_($data)), $fields); // @phpstan-ignore-line
-        $this->model->getField($this->model->primaryKey)->type = null; // TODO probably unwanted
+        $this->model->getPrimaryKeyField()->type = null; // TODO probably unwanted
 
         return $this->model;
     }
