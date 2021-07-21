@@ -13,8 +13,7 @@ class TagTest extends \Phlex\Core\PHPUnit\TestCase
 
     public function assertTagRender($html, $args)
     {
-        $app = $this->getApp();
-        $this->assertSame($html, $app->getTag(...$args));
+        $this->assertSame($html, $this->getApp()->getTag(...$args));
     }
 
     public function testBasic(): void
@@ -70,10 +69,9 @@ class TagTest extends \Phlex\Core\PHPUnit\TestCase
         );
 
         // this way it doesn't work, because $value of getTag is always encoded if it is a string
-        $app = $this->getApp();
         $this->assertSame(
             '<a href="hello">click <i>italic</i> text</a>',
-            $app->getTag('a', ['href' => 'hello'], ['click ', ['i', 'italic'], ' text'])
+            $this->getApp()->getTag('a', ['href' => 'hello'], ['click ', ['i', 'italic'], ' text'])
         );
     }
 }

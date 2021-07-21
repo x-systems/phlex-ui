@@ -27,7 +27,7 @@ class Labels extends Table\Column
      */
     public function getHtmlTags(Model $row, $field)
     {
-        $values = $this->values;// ?? $field->values;
+        $values = $this->values; // ?? $field->values;
 
         $v = $field->get();
         $v = is_string($v) ? explode(',', $v) : $v;

@@ -6,14 +6,14 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Button::addTo($app, ['Accordion in Form', 'small right floated basic blue', 'iconRight' => 'right arrow'])
+\Phlex\Ui\Button::addTo($webpage, ['Accordion in Form', 'small right floated basic blue', 'iconRight' => 'right arrow'])
     ->link(['form-section-accordion']);
-\Phlex\Ui\View::addTo($app, ['ui' => 'ui clearing divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
-$model = new CountryLock($app->db);
+$model = new CountryLock($webpage->db);
 $model = $model->loadAny();
 
 // Prevent form from saving
@@ -28,7 +28,7 @@ $noSave = function (Form $form) {
 
 ////////////////////////////////
 
-$form = Form::addTo($app);
+$form = Form::addTo($webpage);
 $form->setModel($model, false);
 
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class]);
@@ -48,11 +48,11 @@ $form->addControl($model->key()->phonecode);
 
 $form->onSubmit($noSave);
 
-\Phlex\Ui\View::addTo($app, ['ui' => 'divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
 
 ////////////////////////////////
 
-$form = Form::addTo($app);
+$form = Form::addTo($webpage);
 $form->setModel($model, false);
 
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class]);
@@ -70,11 +70,11 @@ $a2->setModel($model, [$model->key()->numcode, $model->key()->phonecode]);
 
 $form->onSubmit($noSave);
 
-\Phlex\Ui\View::addTo($app, ['ui' => 'divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
 
 ////////////////////////////////
 
-$form = Form::addTo($app);
+$form = Form::addTo($webpage);
 $form->setModel($model, false);
 
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class]);
@@ -92,13 +92,13 @@ $tab2->setModel($model, [$model->key()->numcode, $model->key()->phonecode]);
 
 $form->onSubmit($noSave);
 
-\Phlex\Ui\View::addTo($app, ['ui' => 'divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
 
 /////////////////////////////////////////
 
-\Phlex\Ui\Header::addTo($app, ['Color in form']);
+\Phlex\Ui\Header::addTo($webpage, ['Color in form']);
 
-$form = Form::addTo($app);
+$form = Form::addTo($webpage);
 $form->setModel($model, false);
 
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class, 'ui' => 'segment red inverted'], false);
@@ -117,4 +117,4 @@ $c2->setModel($model, [$model->key()->numcode, $model->key()->phonecode]);
 
 $form->onSubmit($noSave);
 
-\Phlex\Ui\View::addTo($app, ['ui' => 'divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);

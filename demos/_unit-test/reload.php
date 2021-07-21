@@ -9,19 +9,19 @@ use Phlex\Ui\Callback;
 use Phlex\Ui\JsReload;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$v = View::addTo($app, ['ui' => 'segment']);
+$v = View::addTo($webpage, ['ui' => 'segment']);
 $v->set('Test');
 $v->name = 'reload';
 
-$b = Button::addTo($app)->set('Reload');
+$b = Button::addTo($webpage)->set('Reload');
 $b->on('click', new JsReload($v));
 
-$cb = Callback::addTo($app);
+$cb = Callback::addTo($webpage);
 $cb->setUrlTrigger('c_reload');
 
-\Phlex\Ui\Loader::addTo($app, ['cb' => $cb])->set(function ($page) {
+\Phlex\Ui\Loader::addTo($webpage, ['cb' => $cb])->set(function ($page) {
     $v = View::addTo($page, ['ui' => 'segment'])->set('loaded');
 });

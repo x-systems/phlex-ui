@@ -7,7 +7,7 @@ namespace Phlex\Ui\Demos;
 use Phlex\Ui\Form;
 use Phlex\Ui\JsToast;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $items = [
@@ -35,14 +35,14 @@ $items = [
     ['name' => 'Appliances', 'id' => 301, 'nodes' => []],
 ];
 
-\Phlex\Ui\Header::addTo($app, ['Tree item selector']);
+\Phlex\Ui\Header::addTo($webpage, ['Tree item selector']);
 
-$form = Form::addTo($app);
+$form = Form::addTo($webpage);
 $control = $form->addControl('tree', [Form\Control\TreeItemSelector::class, 'treeItems' => $items, 'caption' => 'Multiple selection:'], ['type' => 'array', 'serialize' => 'json']);
-$control->set($app->encodeJson([201, 301, 503]));
+$control->set($webpage->encodeJson([201, 301, 503]));
 
-//$control->onItem(function($value) use ($app) {
-//    return new \Phlex\Ui\JsToast($app->encodeJson($value));
+//$control->onItem(function($value) use ($webpage) {
+//    return new \Phlex\Ui\JsToast($webpage->encodeJson($value));
 //});
 
 $control = $form->addControl('tree1', [Form\Control\TreeItemSelector::class, 'treeItems' => $items, 'allowMultiple' => false, 'caption' => 'Single selection:']);
@@ -52,7 +52,7 @@ $control->set(502);
 //    return new JsToast('Received 1');
 //});
 
-$form->onSubmit(function (Form $form) use ($app) {
+$form->onSubmit(function (Form $form) use ($webpage) {
     $response = [
         'multiple' => $form->model->get('tree'),
         'single' => $form->model->get('tree1'),
@@ -60,7 +60,7 @@ $form->onSubmit(function (Form $form) use ($app) {
 
     $view = new \Phlex\Ui\Message('Items: ');
     $view->initialize();
-    $view->text->addParagraph($app->encodeJson($response));
+    $view->text->addParagraph($webpage->encodeJson($response));
 
     return $view;
 });

@@ -6,16 +6,16 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Table;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 if ($id = $_GET['id'] ?? null) {
-    $app->layout->js(true, new \Phlex\Ui\JsToast('Details link is in simulation mode.'));
+    $webpage->layout->js(true, new \Phlex\Ui\JsToast('Details link is in simulation mode.'));
 }
 
-$bb = \Phlex\Ui\View::addTo($app, ['ui' => 'buttons']);
+$bb = \Phlex\Ui\View::addTo($webpage, ['ui' => 'buttons']);
 
-$table = \Phlex\Ui\Table::addTo($app, ['celled' => true]);
+$table = \Phlex\Ui\Table::addTo($webpage, ['celled' => true]);
 \Phlex\Ui\Button::addTo($bb, ['Refresh Table', 'icon' => 'refresh'])
     ->on('click', new \Phlex\Ui\JsReload($table));
 
@@ -63,7 +63,7 @@ $myArray = [
     ['name' => 'Brett', 'surname' => 'Bird', 'birthdate' => '1988-12-20', 'cv' => null],
 ];
 
-$table = \Phlex\Ui\Table::addTo($app);
+$table = \Phlex\Ui\Table::addTo($webpage);
 $table->setSource($myArray, ['name']);
 
 //$table->addColumn('name');

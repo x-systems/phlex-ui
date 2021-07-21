@@ -14,24 +14,24 @@ if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(\PHPUnit\Framewo
     \CoverageUtil::start();
 }
 
-$app = new \Phlex\Ui\Webpage([
+$webpage = new \Phlex\Ui\Webpage([
     'call_exit' => (bool) ($_GET['APP_CALL_EXIT'] ?? true),
     'catch_exceptions' => (bool) ($_GET['APP_CATCH_EXCEPTIONS'] ?? true),
     'always_run' => (bool) ($_GET['APP_ALWAYS_RUN'] ?? true),
 ]);
-$app->title = 'Phlex UI Demo v' . $app->version;
+$webpage->title = 'Phlex UI Demo v' . $webpage->version;
 
-if ($app->call_exit !== true) {
-    $app->stickyGet('APP_CALL_EXIT');
+if ($webpage->call_exit !== true) {
+    $webpage->stickyGet('APP_CALL_EXIT');
 }
 
-if ($app->catch_exceptions !== true) {
-    $app->stickyGet('APP_CATCH_EXCEPTIONS');
+if ($webpage->catch_exceptions !== true) {
+    $webpage->stickyGet('APP_CATCH_EXCEPTIONS');
 }
 
 // collect coverage for HTTP tests 2/2
 if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(\PHPUnit\Framework\TestCase::class, false)) {
-    $app->onHook(\Phlex\Ui\Webpage::HOOK_BEFORE_EXIT, function () {
+    $webpage->onHook(\Phlex\Ui\Webpage::HOOK_BEFORE_EXIT, function () {
         \CoverageUtil::saveData();
     });
 }
@@ -39,7 +39,7 @@ if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(\PHPUnit\Framewo
 try {
     /** @var \Phlex\Data\Persistence\Sql $db */
     require_once __DIR__ . '/init-db.php';
-    $app->db = $db;
+    $webpage->db = $db;
     unset($db);
 } catch (\Throwable $e) {
     throw new \Phlex\Ui\Exception('Database error: ' . $e->getMessage());
@@ -49,13 +49,13 @@ try {
 $demosUrl = $rootUrl . 'demos/';
 
 if (file_exists(__DIR__ . '/../public/atkjs-ui.min.js')) {
-    $app->cdn['atk'] = $rootUrl . 'public';
+    $webpage->cdn['atk'] = $rootUrl . 'public';
 }
 
 // allow custom layout override
-$app->initLayout([$app->stickyGet('layout') ?? \Phlex\Ui\Layout\Maestro::class]);
+$webpage->initLayout([$webpage->stickyGet('layout') ?? \Phlex\Ui\Layout\Maestro::class]);
 
-$layout = $app->layout;
+$layout = $webpage->layout;
 if ($layout instanceof \Phlex\Ui\Layout\NavigableInterface) {
     $layout->addMenuItem(['Welcome to Agile Toolkit', 'icon' => 'gift'], [$demosUrl . 'index']);
 
@@ -156,6 +156,6 @@ if ($layout instanceof \Phlex\Ui\Layout\NavigableInterface) {
 
     // view demo source page on Github
     \Phlex\Ui\Button::addTo($layout->menu->addItem()->addClass('aligned right'), ['View Source', 'teal', 'icon' => 'github'])
-        ->on('click', $app->jsRedirect('https://github.com/atk4/ui/blob/develop/' . $relUrl, true));
+        ->on('click', $webpage->jsRedirect('https://github.com/atk4/ui/blob/develop/' . $relUrl, true));
 }
 unset($layout, $rootUrl, $relUrl, $demosUrl, $path, $menu);

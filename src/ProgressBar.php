@@ -7,7 +7,7 @@ namespace Phlex\Ui;
 /**
  * Class implements ProgressBar.
  *
- * $bar = ProgressBar::addTo($app, [10, 'label' => 'Processing files']);
+ * $bar = ProgressBar::addTo($webpage, [10, 'label' => 'Processing files']);
  */
 class ProgressBar extends View
 {
@@ -24,7 +24,7 @@ class ProgressBar extends View
 
     /**
      * Value that appears on a progress bar. Set it through constructor, e.g.
-     * ProgressBar::addTo($app, [20]);.
+     * ProgressBar::addTo($webpage, [20]);.
      *
      * @var int
      */

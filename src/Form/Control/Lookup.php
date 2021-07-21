@@ -7,10 +7,10 @@ namespace Phlex\Ui\Form\Control;
 use Phlex\Core\Factory;
 use Phlex\Core\HookTrait;
 use Phlex\Data\Model;
-use Phlex\Ui\Webpage;
 use Phlex\Ui\Jquery;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\JsFunction;
+use Phlex\Ui\Webpage;
 
 class Lookup extends Input
 {

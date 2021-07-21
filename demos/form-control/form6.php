@@ -7,15 +7,15 @@ namespace Phlex\Ui\Demos;
 use Phlex\Ui\Form;
 use Phlex\Ui\JsToast;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\View::addTo($app, [
+\Phlex\Ui\View::addTo($webpage, [
     'Forms below demonstrate how to work with multi-value selectors',
     'ui' => 'ignored warning message',
 ]);
 
-$cc = \Phlex\Ui\Columns::addTo($app);
+$cc = \Phlex\Ui\Columns::addTo($webpage);
 $form = Form::addTo($cc->addColumn());
 
 $form->addControl('one', null, ['type' => ['enum', 'values' => ['female', 'male']]])->set('male');
@@ -30,6 +30,6 @@ $form->addControl('six', [Form\Control\Radio::class], ['type' => ['enum', 'value
 $form->addControl('seven', null, ['type' => ['enum', 'values' => ['F' => 'female', 'M' => 'male']]])->set('M');
 $form->addControl('eight', [Form\Control\Radio::class], ['type' => ['enum', 'values' => ['F' => 'female', 'M' => 'male']]])->set('M');
 
-$form->onSubmit(function (Form $form) use ($app) {
-    return new JsToast($app->encodeJson($form->model->get()));
+$form->onSubmit(function (Form $form) use ($webpage) {
+    return new JsToast($webpage->encodeJson($form->model->get()));
 });

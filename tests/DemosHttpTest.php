@@ -17,7 +17,7 @@ class DemosHttpTest extends DemosTest
     private static $_process;
     private static $_processSessionDir;
 
-    /** @var bool set the app->call_exit in demo */
+    /** @var bool set the webpage->call_exit in demo */
     protected $app_call_exit = true;
 
     /** @var bool set the app->catch_exceptions in demo */

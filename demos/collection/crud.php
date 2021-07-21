@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$model = new CountryLock($app->db);
+$model = new CountryLock($webpage->db);
 
-$crud = \Phlex\Ui\Crud::addTo($app, ['ipp' => 10]);
+$crud = \Phlex\Ui\Crud::addTo($webpage, ['ipp' => 10]);
 
 // callback for model action add form.
 $crud->onFormAdd(function ($form, $t) use ($model) {
@@ -32,9 +32,9 @@ $crud->setModel($model);
 
 $crud->addDecorator($model->titleKey, [\Phlex\Ui\Table\Column\Link::class, ['test' => false, 'path' => 'interfaces/page'], ['_id' => 'id']]);
 
-\Phlex\Ui\View::addTo($app, ['ui' => 'divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
 
-$columns = \Phlex\Ui\Columns::addTo($app);
+$columns = \Phlex\Ui\Columns::addTo($webpage);
 $column = $columns->addColumn(0, 'ui blue segment');
 
 // Crud can operate with various fields
@@ -48,7 +48,7 @@ $crud = \Phlex\Ui\Crud::addTo($column, [
     'table' => ['class' => ['red inverted']],
 ]);
 // Condition on the model can be applied on a model
-$model = new CountryLock($app->db);
+$model = new CountryLock($webpage->db);
 $model->addCondition($model->key()->numcode, '<', 200);
 $model->onHook(\Phlex\Data\Model::HOOK_VALIDATE, function ($model, $intent) {
     $err = [];
@@ -90,8 +90,8 @@ $myExecutorClass = get_class(new class() extends \Phlex\Ui\UserAction\ModalExecu
     }
 });
 
-$file = new FileLock($app->db);
-$app->getExecutorFactory()->registerExecutor($file->getUserAction('edit'), [$myExecutorClass]);
+$file = new FileLock($webpage->db);
+$webpage->getExecutorFactory()->registerExecutor($file->getUserAction('edit'), [$myExecutorClass]);
 
 $crud = \Phlex\Ui\Crud::addTo($column, [
     'ipp' => 5,

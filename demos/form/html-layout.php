@@ -10,12 +10,12 @@ use Phlex\Ui\Header;
 use Phlex\Ui\Tabs;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-Header::addTo($app, ['Display form using Html template', 'subHeader' => 'Fully control how to display fields.']);
+Header::addTo($webpage, ['Display form using Html template', 'subHeader' => 'Fully control how to display fields.']);
 
-$tabs = Tabs::addTo($app);
+$tabs = Tabs::addTo($webpage);
 
 $tab = $tabs->addTab('Layout using field name');
 
@@ -54,7 +54,7 @@ $form->getControl('last_name')->hint = 'Please enter your last name.';
 $tab = $tabs->addTab('Custom layout class');
 
 $form = Form::addTo($tab, ['layout' => [Form\Layout\Custom::class, 'defaultTemplate' => __DIR__ . '/templates/form-custom-layout.html']]);
-$form->setModel((new \Phlex\Ui\Demos\CountryLock($app->db))->loadAny());
+$form->setModel((new \Phlex\Ui\Demos\CountryLock($webpage->db))->loadAny());
 
 $form->onSubmit(function ($form) {
     return new \Phlex\Ui\JsToast('Saving is disabled');

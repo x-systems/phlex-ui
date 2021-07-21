@@ -11,12 +11,12 @@ use Phlex\Ui\HtmlTemplate;
 /**
  * Demonstrates how to use fields with form.
  */
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Header::addTo($app, ['Disabled and read only form controls (normal / readonly / disabled)']);
+\Phlex\Ui\Header::addTo($webpage, ['Disabled and read only form controls (normal / readonly / disabled)']);
 
-$form = Form::addTo($app);
+$form = Form::addTo($webpage);
 
 // Test all kinds of input fields
 $group = $form->addGroup('Line');
@@ -72,51 +72,51 @@ $control->onUpload($onUpload);
 
 $group = $form->addGroup('Lookup');
 
-$model = new Country($app->db);
+$model = new Country($webpage->db);
 
 $group->addControl('Lookup_norm', [
     DemoLookup::class,
-    'model' => new CountryLock($app->db),
+    'model' => new CountryLock($webpage->db),
     'plus' => true,
 ])->set($model->loadAny()->getId());
 
 $group->addControl('Lookup_read', [
     Form\Control\Lookup::class,
-    'model' => new CountryLock($app->db),
+    'model' => new CountryLock($webpage->db),
     'plus' => true,
     'readonly' => true,
 ])->set($model->loadAny()->getId());
 
 $group->addControl('Lookup_disb', [
     Form\Control\Lookup::class,
-    'model' => new CountryLock($app->db),
+    'model' => new CountryLock($webpage->db),
     'plus' => true,
     'disabled' => true,
 ])->set($model->loadAny()->getId());
 
 $group = $form->addGroup('Calendar');
 
-$group->addControl('date_norm', [Form\Control\Calendar::class, 'type' => 'date'])->set(date($app->ui_persistence->date_format));
-$group->addControl('date_read', [Form\Control\Calendar::class, 'type' => 'date', 'readonly' => true])->set(date($app->ui_persistence->date_format));
-$group->addControl('date_disb', [Form\Control\Calendar::class, 'type' => 'date', 'disabled' => true])->set(date($app->ui_persistence->date_format));
+$group->addControl('date_norm', [Form\Control\Calendar::class, 'type' => 'date'])->set(date($webpage->ui_persistence->date_format));
+$group->addControl('date_read', [Form\Control\Calendar::class, 'type' => 'date', 'readonly' => true])->set(date($webpage->ui_persistence->date_format));
+$group->addControl('date_disb', [Form\Control\Calendar::class, 'type' => 'date', 'disabled' => true])->set(date($webpage->ui_persistence->date_format));
 
 $form->onSubmit(function (Form $form) {
 });
 
-\Phlex\Ui\Header::addTo($app, ['Stand Alone Line']);
+\Phlex\Ui\Header::addTo($webpage, ['Stand Alone Line']);
 // you can pass values to button
-$control = Form\Control\Line::addTo($app);
+$control = Form\Control\Line::addTo($webpage);
 
 $control->set('hello world');
 
 $button = $control->addAction('check value');
 $button->on('click', new \Phlex\Ui\JsExpression('alert("field value is: "+[])', [$control->jsInput()->val()]));
 
-\Phlex\Ui\Header::addTo($app, ['Line in a Form']);
-$form = Form::addTo($app);
+\Phlex\Ui\Header::addTo($webpage, ['Line in a Form']);
+$form = Form::addTo($webpage);
 
 $control = $form->addControl('Title', null, ['type' => ['enum', 'values' => ['Mr', 'Mrs', 'Miss']], 'options' => [
-		Form\Control::OPTION_SEED => ['hint' => 'select one']
+    Form\Control::OPTION_SEED => ['hint' => 'select one'],
 ]]);
 
 $control = $form->addControl('name', [Form\Control\Line::class, 'hint' => 'this is sample hint that escapes <html> characters']);
@@ -132,9 +132,9 @@ $form->onSubmit(function (Form $form) {
     return $form->model->get('name');
 });
 
-\Phlex\Ui\Header::addTo($app, ['Multiple Form Layouts']);
+\Phlex\Ui\Header::addTo($webpage, ['Multiple Form Layouts']);
 
-$form = Form::addTo($app);
+$form = Form::addTo($webpage);
 $tabs = \Phlex\Ui\Tabs::addTo($form, [], ['AboveControls']);
 \Phlex\Ui\View::addTo($form, ['ui' => 'divider'], ['AboveControls']);
 
@@ -148,9 +148,9 @@ $form->onSubmit(function (Form $form) {
     return $form->model->get('name') . ' has age ' . $form->model->get('age');
 });
 
-\Phlex\Ui\Header::addTo($app, ['onChange event', 'subHeader' => 'see in browser console']);
+\Phlex\Ui\Header::addTo($webpage, ['onChange event', 'subHeader' => 'see in browser console']);
 
-$form = Form::addTo($app);
+$form = Form::addTo($webpage);
 
 $group = $form->addGroup('Calendar');
 $c1 = $group->addControl('c1', new Form\Control\Calendar(['type' => 'date']));
@@ -204,9 +204,9 @@ $r1 = $group->addControl('r1', new Form\Control\Radio(['values' => [
 ]));
 $r1->onChange('console.log("radio changed")');
 
-\Phlex\Ui\Header::addTo($app, ['Line ends of Textarea']);
+\Phlex\Ui\Header::addTo($webpage, ['Line ends of Textarea']);
 
-$form = Form::addTo($app);
+$form = Form::addTo($webpage);
 $group = $form->addGroup('Without model');
 $group->addControl('text_crlf', [Form\Control\Textarea::class])->set("First line\r\nSecond line");
 $group->addControl('text_cr', [Form\Control\Textarea::class])->set("First line\rSecond line");

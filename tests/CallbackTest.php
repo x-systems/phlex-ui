@@ -27,7 +27,7 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
     /** @var string */
     private $htmlDoctypeRegex = '~^<!DOCTYPE~';
 
-    /** @var \Phlex\Ui\App */
+    /** @var \Phlex\Ui\Webpage */
     public $app;
 
     protected function setUp(): void
@@ -101,9 +101,9 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
         $_GET[$cb->name] = '1';
         $_GET[$cb->name . '_2'] = '1';
 
-        $app = $this->app;
-        $cb->set(function ($x) use (&$var, $app, &$cbname) {
-            $cb2 = \Phlex\Ui\CallbackLater::addTo($app);
+        $webpage = $this->app;
+        $cb->set(function ($x) use (&$var, $webpage, &$cbname) {
+            $cb2 = \Phlex\Ui\CallbackLater::addTo($webpage);
             $cbname = $cb2->name;
             $cb2->set(function ($y) use (&$var) {
                 $var = $y;

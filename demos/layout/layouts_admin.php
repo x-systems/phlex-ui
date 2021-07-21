@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$layout = \Phlex\Ui\Layout\Admin::addTo($app);
+$layout = \Phlex\Ui\Layout\Admin::addTo($webpage);
 
 $menu = $layout->menu->addMenu(['Layouts', 'icon' => 'puzzle']);
 $menu->addItem(\Phlex\Ui\Layout\Centered::class);

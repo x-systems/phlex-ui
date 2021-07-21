@@ -236,16 +236,16 @@ class Control extends View
             $resolvedSeed = [Form\Control\Multiline::class, 'model' => $model, 'rowLimit' => $limit, 'caption' => $model->getCaption()];
         } elseif (!$valueType instanceof Model\Field\Type\Boolean) {
             if ($valueType instanceof Model\Field\Type\Selectable) {
-            	$resolvedSeed = [Form\Control\Dropdown::class, 'values' => $valueType->values];
+                $resolvedSeed = [Form\Control\Dropdown::class, 'values' => $valueType->values];
             } elseif ($field->getReference() !== null) {
-            	$resolvedSeed = [Form\Control\Lookup::class, 'model' => $field->getReference()->refModel()];
+                $resolvedSeed = [Form\Control\Lookup::class, 'model' => $field->getReference()->refModel()];
             }
         }
 
         $seed = Factory::mergeSeeds(
             $seed,
             $field->getOption(self::OPTION_SEED),
-        	$resolvedSeed,
+            $resolvedSeed,
             $field->getValueType()->resolveFromRegistry(self::$fieldControls),
             $fallbackSeed
         );

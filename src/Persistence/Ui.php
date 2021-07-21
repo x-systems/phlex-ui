@@ -10,7 +10,7 @@ use Phlex\Ui\Exception;
 
 /**
  * This class is used for typecasting model types to the values that will be presented to the user. App will
- * always initialize this persistence in $app->ui_persistence and this object will be used by various
+ * always initialize this persistence in $webpage->ui_persistence and this object will be used by various
  * UI elements to output data to the user.
  *
  * Overriding and extending this class is a great place where you can tweak how various data-types are displayed

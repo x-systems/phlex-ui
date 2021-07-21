@@ -43,7 +43,7 @@ class JsTest extends \Phlex\Core\PHPUnit\TestCase
 
             // test JSON renderer in App too
             // test extensively because of (possibly fragile) custom regex impl
-            $app = (new \ReflectionClass(\Phlex\Ui\Webpage::class))->newInstanceWithoutConstructor();
+            $webpage = (new \ReflectionClass(\Phlex\Ui\Webpage::class))->newInstanceWithoutConstructor();
             $expectedRaw = json_decode($expected);
             foreach ([
                 [$expectedRaw, $in], // direct value
@@ -51,11 +51,11 @@ class JsTest extends \Phlex\Core\PHPUnit\TestCase
                 [[$expectedRaw], [$in]], // as value in JSON array
                 [['x' => $expectedRaw], ['x' => $in]], // as value in JSON object
             ] as [$expectedData, $inData]) {
-                $this->assertSame(json_encode($expectedData), preg_replace('~\s+~', '', $app->encodeJson($inData)));
+                $this->assertSame(json_encode($expectedData), preg_replace('~\s+~', '', $webpage->encodeJson($inData)));
 
                 // do not change any numbers to string in JSON/JS strings
                 $inDataJson = json_encode($inData);
-                $this->assertSame(json_encode(['x' => $inDataJson]), preg_replace('~\s+~', '', $app->encodeJson(['x' => $inDataJson])));
+                $this->assertSame(json_encode(['x' => $inDataJson]), preg_replace('~\s+~', '', $webpage->encodeJson(['x' => $inDataJson])));
             }
         }
     }

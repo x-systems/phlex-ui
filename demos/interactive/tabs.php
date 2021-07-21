@@ -7,10 +7,10 @@ namespace Phlex\Ui\Demos;
 /**
  * Demonstrates how to use tabs.
  */
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$tabs = \Phlex\Ui\Tabs::addTo($app);
+$tabs = \Phlex\Ui\Tabs::addTo($webpage);
 
 // static tab
 \Phlex\Ui\HelloWorld::addTo($tabs->addTab('Hello'));

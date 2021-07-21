@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /*
-\Phlex\Ui\Button::addTo($app, ['View Form input split in Accordion section', 'small right floated basic blue', 'iconRight' => 'right arrow'])
+\Phlex\Ui\Button::addTo($webpage, ['View Form input split in Accordion section', 'small right floated basic blue', 'iconRight' => 'right arrow'])
     ->link(['accordion-in-form']);
-\Phlex\Ui\View::addTo($app, ['ui' => 'clearing divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'clearing divider']);
 */
 
-\Phlex\Ui\Header::addTo($app, ['Nested accordions']);
+\Phlex\Ui\Header::addTo($webpage, ['Nested accordions']);
 
 $addAccordionFunc = function ($view, $maxDepth = 2, $level = 0) use (&$addAccordionFunc) {
     $accordion = \Phlex\Ui\Accordion::addTo($view, ['type' => ['styled', 'fluid']]);
@@ -53,4 +53,4 @@ $addAccordionFunc = function ($view, $maxDepth = 2, $level = 0) use (&$addAccord
 };
 
 // add accordion structure
-$addAccordionFunc($app);
+$addAccordionFunc($webpage);

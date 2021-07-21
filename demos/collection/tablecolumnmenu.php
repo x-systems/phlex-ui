@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Header::addTo($app, ['Table column may contains popup or dropdown menu.']);
+\Phlex\Ui\Header::addTo($webpage, ['Table column may contains popup or dropdown menu.']);
 
 // Better Popup positionning when Popup are inside a container.
-$container = \Phlex\Ui\View::addTo($app, ['ui' => 'vertical segment']);
+$container = \Phlex\Ui\View::addTo($webpage, ['ui' => 'vertical segment']);
 $table = \Phlex\Ui\Table::addTo($container, ['celled' => true]);
 $table->setModel(new SomeData(), false);
 
@@ -41,11 +41,11 @@ $colTitle->addDropdown(['Change', 'Reorder', 'Update'], function ($item) {
 
 ////////////////////////////////////////////////
 
-\Phlex\Ui\Header::addTo($app, ['Grid column may contains popup or dropdown menu.']);
+\Phlex\Ui\Header::addTo($webpage, ['Grid column may contains popup or dropdown menu.']);
 
 // Table in Grid are already inside a container.
-$grid = \Phlex\Ui\Grid::addTo($app);
-$grid->setModel(new Country($app->db));
+$grid = \Phlex\Ui\Grid::addTo($webpage);
+$grid->setModel(new Country($webpage->db));
 $grid->ipp = 5;
 
 // Adding a dropdown menu to the column 'name'.

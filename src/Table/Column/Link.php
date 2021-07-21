@@ -30,11 +30,11 @@ class Link extends Table\Column
     public $url;
 
     /**
-     * If string 'example', then will be passed to $app->url('example') along with any defined arguments.
+     * If string 'example', then will be passed to $webpage->url('example') along with any defined arguments.
      * If set as arrray, then non-0 key/values will be also passed to the URL:
      *  $page = ['example', 'type' => '123'];.
      *
-     * $url = $app->url(['example', 'type' => '123']);
+     * $url = $webpage->url(['example', 'type' => '123']);
      *
      * In addition to abpove "args" refer to values picked up from a current row.
      */

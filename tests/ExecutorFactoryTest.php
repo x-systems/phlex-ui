@@ -6,7 +6,6 @@ namespace Phlex\Ui\Tests;
 
 use Phlex\Data\Model;
 use Phlex\Data\Persistence\Array_;
-use Phlex\Ui\Webpage;
 use Phlex\Ui\Button;
 use Phlex\Ui\Item;
 use Phlex\Ui\UserAction\BasicExecutor;
@@ -14,6 +13,7 @@ use Phlex\Ui\UserAction\ConfirmationExecutor;
 use Phlex\Ui\UserAction\JsCallbackExecutor;
 use Phlex\Ui\UserAction\ModalExecutor;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
 class TestModel extends Model
 {
@@ -39,7 +39,7 @@ class ExecutorFactoryTest extends \Phlex\Core\PHPUnit\TestCase
 {
     /** @var Model */
     public $model;
-    /** @var App */
+    /** @var Webpage */
     public $app;
 
     protected function setUp(): void

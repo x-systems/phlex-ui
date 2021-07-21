@@ -9,12 +9,12 @@ use Phlex\Data\Model\UserAction;
 use Phlex\Ui\Icon;
 use Phlex\Ui\View;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Demo for Model action in Grid
 
-$country = new CountryLock($app->db);
+$country = new CountryLock($webpage->db);
 // Model actions for this file are setup in DemoActionUtil.
 DemoActionsUtil::setupDemoActions($country);
 
@@ -23,11 +23,11 @@ $multiAction = $country->getUserAction('multi_step');
 $specialItem = Factory::factory([View::class], ['id' => false, 'class' => ['item'], 'content' => 'Multi Step']);
 Icon::addTo($specialItem, ['content' => 'window maximize outline']);
 // register this menu item in factory.
-$app->getExecutorFactory()->registerTrigger($app->getExecutorFactory()::TABLE_MENU_ITEM, $specialItem, $multiAction);
+$webpage->getExecutorFactory()->registerTrigger($webpage->getExecutorFactory()::TABLE_MENU_ITEM, $specialItem, $multiAction);
 
-\Phlex\Ui\Header::addTo($app, ['Execute model action from Grid menu items', 'subHeader' => 'Setting grid menu items in order to execute model actions or javascript.']);
+\Phlex\Ui\Header::addTo($webpage, ['Execute model action from Grid menu items', 'subHeader' => 'Setting grid menu items in order to execute model actions or javascript.']);
 
-$grid = \Phlex\Ui\Grid::addTo($app, ['menu' => false]);
+$grid = \Phlex\Ui\Grid::addTo($webpage, ['menu' => false]);
 $grid->setModel($country);
 
 $divider = Factory::factory([View::class], ['id' => false, 'class' => ['divider'], 'content' => '']);
@@ -53,7 +53,7 @@ foreach ($country->getUserActions(UserAction::APPLIES_TO_SINGLE_RECORD) as $acti
     if (in_array($action->short_name, ['add', 'edit', 'delete'], true)) {
         continue;
     }
-    $grid->addExecutorMenuItem($executor = $app->getExecutorFactory()->create($action, $grid));
+    $grid->addExecutorMenuItem($executor = $webpage->getExecutorFactory()->create($action, $grid));
 }
 
 $grid->ipp = 10;

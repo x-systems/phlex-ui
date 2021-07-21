@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Phlex\Ui\Tests;
 
 use Phlex\Data\Model;
-use Phlex\Ui\Webpage;
 use Phlex\Ui\Form;
+use Phlex\Ui\Webpage;
 
 class FormTest extends \Phlex\Core\PHPUnit\TestCase
 {

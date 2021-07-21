@@ -6,14 +6,14 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Button::addTo($app, ['Form Sections', 'small left floated basic blue', 'icon' => 'left arrow'])
+\Phlex\Ui\Button::addTo($webpage, ['Form Sections', 'small left floated basic blue', 'icon' => 'left arrow'])
     ->link(['form-section']);
-\Phlex\Ui\View::addTo($app, ['ui' => 'ui clearing divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
-$form = Form::addTo($app);
+$form = Form::addTo($webpage);
 
 $sublayout = $form->layout->addSubLayout([\Phlex\Ui\Form\Layout\Section::class]);
 

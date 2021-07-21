@@ -6,24 +6,24 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Button::addTo($app, ['Nested accordions', 'small right floated basic blue', 'iconRight' => 'right arrow'])
+\Phlex\Ui\Button::addTo($webpage, ['Nested accordions', 'small right floated basic blue', 'iconRight' => 'right arrow'])
     ->link(['accordion-nested']);
-\Phlex\Ui\View::addTo($app, ['ui' => 'clearing divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'clearing divider']);
 
-\Phlex\Ui\Header::addTo($app, ['Accordion\'s section can be control programmatically.']);
+\Phlex\Ui\Header::addTo($webpage, ['Accordion\'s section can be control programmatically.']);
 
 // toggle menu
-$bar = \Phlex\Ui\View::addTo($app, ['ui' => 'buttons']);
+$bar = \Phlex\Ui\View::addTo($webpage, ['ui' => 'buttons']);
 $b1 = \Phlex\Ui\Button::addTo($bar, ['Toggle Section #1']);
 $b2 = \Phlex\Ui\Button::addTo($bar, ['Toggle Section #2']);
 $b3 = \Phlex\Ui\Button::addTo($bar, ['Toggle Section #3']);
 
-\Phlex\Ui\Header::addTo($app, ['Accordion Sections']);
+\Phlex\Ui\Header::addTo($webpage, ['Accordion Sections']);
 
-$accordion = \Phlex\Ui\Accordion::addTo($app, ['type' => ['styled', 'fluid']/*, 'settings'=>['exclusive'=>false]*/]);
+$accordion = \Phlex\Ui\Accordion::addTo($webpage, ['type' => ['styled', 'fluid']/*, 'settings'=>['exclusive'=>false]*/]);
 
 // static section
 $i1 = $accordion->addSection('Static Text');

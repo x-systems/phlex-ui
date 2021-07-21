@@ -6,7 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /**
@@ -20,7 +20,7 @@ require_once __DIR__ . '/../init-app.php';
  * This approach will also prevent your application from registering shutdown handler or catching error,
  * so we will need to do a bit of work about that too.
  */
-$tabs = \Phlex\Ui\Tabs::addTo($app);
+$tabs = \Phlex\Ui\Tabs::addTo($webpage);
 
 ////////////////////////////////////////////
 $tab = $tabs->addTab('Basic Use');
@@ -56,8 +56,8 @@ $form->addControl('status_integer_required', [Form\Control\Dropdown::class, 'val
 $form->addControl('status_string_mandatory', [Form\Control\Dropdown::class, 'values' => $values], ['type' => 'string', 'mandatory' => true]);
 $form->addControl('status_integer_mandatory', [Form\Control\Dropdown::class, 'values' => $values], ['type' => 'integer', 'mandatory' => true]);
 
-$form->onSubmit(function (Form $form) use ($app) {
-    return new \Phlex\Ui\JsToast($app->encodeJson($form->model->get()));
+$form->onSubmit(function (Form $form) use ($webpage) {
+    return new \Phlex\Ui\JsToast($webpage->encodeJson($form->model->get()));
 });
 
 \Phlex\Ui\Header::addTo($tab, ['Comparing Field type vs Form control class']);

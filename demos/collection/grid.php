@@ -9,11 +9,11 @@ use Phlex\Ui\Jquery;
 use Phlex\Ui\JsToast;
 use Phlex\Ui\UserAction\BasicExecutor;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$grid = \Phlex\Ui\Grid::addTo($app);
-$model = new CountryLock($app->db);
+$grid = \Phlex\Ui\Grid::addTo($webpage);
+$model = new CountryLock($webpage->db);
 $model->addUserAction('test', function ($model) {
     return 'test from ' . $model->getTitle() . ' was successful!';
 });
@@ -23,7 +23,7 @@ $grid->setModel($model);
 // Adding Quicksearch on Name field using auto query.
 $grid->addQuickSearch([$model->key()->name], true);
 
-if ($app->stickyGet('no-ajax')) {
+if ($webpage->stickyGet('no-ajax')) {
     $grid->quickSearch->useAjax = false;
 }
 

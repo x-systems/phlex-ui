@@ -6,22 +6,22 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Testing form.
 
 // create header
-\Phlex\Ui\Header::addTo($app, ['Database-driven form with an enjoyable layout']);
+\Phlex\Ui\Header::addTo($webpage, ['Database-driven form with an enjoyable layout']);
 
 // create form
-$form = Form::addTo($app, ['segment']);
-//$form = Form::addTo($app, ['segment', 'buttonSave'=>false]);
-//$form = Form::addTo($app, ['segment', 'buttonSave'=>new \Phlex\Ui\Button(['Import', 'secondary', 'iconRight'=>'list'])]);
-//$form = Form::addTo($app, ['segment', 'buttonSave'=>[null, 'Import', 'secondary', 'iconRight'=>'list']]);
+$form = Form::addTo($webpage, ['segment']);
+//$form = Form::addTo($webpage, ['segment', 'buttonSave'=>false]);
+//$form = Form::addTo($webpage, ['segment', 'buttonSave'=>new \Phlex\Ui\Button(['Import', 'secondary', 'iconRight'=>'list'])]);
+//$form = Form::addTo($webpage, ['segment', 'buttonSave'=>[null, 'Import', 'secondary', 'iconRight'=>'list']]);
 \Phlex\Ui\Label::addTo($form, ['Input new country information here', 'top attached'], ['AboveControls']);
 
-$form->setModel(new Country($app->db), false);
+$form->setModel(new Country($webpage->db), false);
 
 // form basic field group
 $formAddress = $form->addGroup('Basic Country Information');
@@ -100,6 +100,6 @@ $personClass = get_class(new class() extends \Phlex\Data\Model {
     }
 });
 
-Form::addTo($app)
+Form::addTo($webpage)
     ->addClass('segment')
-    ->setModel((new $personClass($app->db))->createEntity());
+    ->setModel((new $personClass($webpage->db))->createEntity());

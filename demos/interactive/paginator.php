@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Paginator which tracks its own position
-\Phlex\Ui\Header::addTo($app, ['Paginator tracks its own position']);
-\Phlex\Ui\Paginator::addTo($app, ['total' => 40, 'urlTrigger' => 'page']);
+\Phlex\Ui\Header::addTo($webpage, ['Paginator tracks its own position']);
+\Phlex\Ui\Paginator::addTo($webpage, ['total' => 40, 'urlTrigger' => 'page']);
 
 // Dynamically reloading paginator
-\Phlex\Ui\Header::addTo($app, ['Dynamic reloading']);
-$seg = \Phlex\Ui\View::addTo($app, ['ui' => 'blue segment']);
+\Phlex\Ui\Header::addTo($webpage, ['Dynamic reloading']);
+$seg = \Phlex\Ui\View::addTo($webpage, ['ui' => 'blue segment']);
 $label = \Phlex\Ui\Label::addTo($seg);
 $bb = \Phlex\Ui\Paginator::addTo($seg, ['total' => 50, 'range' => 2, 'reload' => $seg]);
 $label->addClass('blue ribbon');
 $label->set('Current page: ' . $bb->page);
 
 // Multiple dependent Paginators
-\Phlex\Ui\Header::addTo($app, ['Local Sticky Usage']);
-$seg = \Phlex\Ui\View::addTo($app, ['ui' => 'blue segment']);
+\Phlex\Ui\Header::addTo($webpage, ['Local Sticky Usage']);
+$seg = \Phlex\Ui\View::addTo($webpage, ['ui' => 'blue segment']);
 
 $month = $seg->stickyGet('month') ?: 1;
 $day = $seg->stickyGet('day') ?: 1;

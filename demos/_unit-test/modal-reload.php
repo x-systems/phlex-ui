@@ -8,18 +8,18 @@ use Phlex\Ui\Button;
 use Phlex\Ui\Header;
 use Phlex\Ui\Modal;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Simulating ModalExecutor reload for Behat test.
 
-Header::addTo($app, ['Testing ModalExecutor reload']);
+Header::addTo($webpage, ['Testing ModalExecutor reload']);
 
-$modal = Modal::addTo($app->html, ['title' => 'Modal Executor', 'region' => 'Modals']);
+$modal = Modal::addTo($webpage->html, ['title' => 'Modal Executor', 'region' => 'Modals']);
 
 $modal->set(function ($modal) {
     ReloadTest::addTo($modal);
 });
 
-$button = Button::addTo($app)->set('Test');
+$button = Button::addTo($webpage)->set('Test');
 $button->on('click', $modal->show());

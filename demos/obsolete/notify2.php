@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /** @var \Phlex\Data\Model $notifierClass */
@@ -26,15 +26,15 @@ $notifierClass = get_class(new class() extends \Phlex\Data\Model {
 });
 
  // Notification type form
-$head = \Phlex\Ui\Header::addTo($app, ['Notification Types']);
+$head = \Phlex\Ui\Header::addTo($webpage, ['Notification Types']);
 
-$form = \Phlex\Ui\Form::addTo($app, ['segment']);
+$form = \Phlex\Ui\Form::addTo($webpage, ['segment']);
 // Unit test only.
 $form->cb->setUrlTrigger('test_notify');
 
 \Phlex\Ui\Label::addTo($form, ['Some of notification options that can be set.', 'top attached'], ['AboveControls']);
 $form->buttonSave->set('Show');
-$form->setModel(new $notifierClass($app->db), false);
+$form->setModel(new $notifierClass($webpage->db), false);
 
 $formGroup = $form->addGroup(['Set Text and Icon:']);
 $formGroup->addControl('text', ['width' => 'eight']);

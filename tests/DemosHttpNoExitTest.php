@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Tests;
 
 /**
- * Same as DemosHttpTest, only App::call_exit is set to false.
+ * Same as DemosHttpTest, only Webpage::call_exit is set to false.
  *
  * @group demos_http
  */

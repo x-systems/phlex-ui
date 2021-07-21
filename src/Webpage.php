@@ -523,7 +523,7 @@ class Webpage
     {
         if (!$this->layout) {
             throw (new Exception('App layout is missing'))
-                ->addSolution('If you use $app->addView() you should first call $app->initLayout()');
+                ->addSolution('If you use $webpage->addView() you should first call $webpage->initLayout()');
         }
 
         return $this->layout->addView($seed, $region);
@@ -994,11 +994,11 @@ class Webpage
      * Return exception message using HTML block and Semantic UI formatting. It's your job
      * to put it inside boilerplate HTML and output, e.g:.
      *
-     *   $app = new \Phlex\Ui\Webpage();
-     *   $app->initLayout([\Phlex\Ui\Layout\Centered::class]);
-     *   $app->layout->template->dangerouslySetHtml('Content', $e->getHtml());
-     *   $app->run();
-     *   $app->callBeforeExit();
+     *   $webpage = new \Phlex\Ui\Webpage();
+     *   $webpage->initLayout([\Phlex\Ui\Layout\Centered::class]);
+     *   $webpage->layout->template->dangerouslySetHtml('Content', $e->getHtml());
+     *   $webpage->run();
+     *   $webpage->callBeforeExit();
      */
     public function renderExceptionHtml(\Throwable $exception): string
     {

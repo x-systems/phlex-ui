@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Button::addTo($app, ['Loader Examples - Page 2', 'small right floated basic blue', 'iconRight' => 'right arrow'])
+\Phlex\Ui\Button::addTo($webpage, ['Loader Examples - Page 2', 'small right floated basic blue', 'iconRight' => 'right arrow'])
     ->link(['loader2']);
 
-\Phlex\Ui\View::addTo($app, ['ui' => 'clearing divider']);
+\Phlex\Ui\View::addTo($webpage, ['ui' => 'clearing divider']);
 
 // ViewTester will perform callback to self.
-ViewTester::addTo($app);
+ViewTester::addTo($webpage);
 
 // Example 1 - Basic usage of a Loader.
-\Phlex\Ui\Loader::addTo($app)->set(function ($p) {
+\Phlex\Ui\Loader::addTo($webpage)->set(function ($p) {
     // set your time expensive function here.
     sleep(1);
     \Phlex\Ui\Header::addTo($p, ['Loader #1']);
@@ -49,7 +49,7 @@ ViewTester::addTo($app);
 });
 
 // Example 2 - Loader with custom body.
-\Phlex\Ui\Loader::addTo($app, [
+\Phlex\Ui\Loader::addTo($webpage, [
     'ui' => '',   // this will prevent "loading spinner" from showing
     'shim' => [   // shim is displayed while content is leaded
         \Phlex\Ui\Message::class,

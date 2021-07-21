@@ -12,13 +12,13 @@ use Phlex\Ui\Header;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\JsFunction;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-Header::addTo($app, ['Multiline form control', 'icon' => 'database', 'subHeader' => 'Collect/Edit multiple rows of table record.']);
+Header::addTo($webpage, ['Multiline form control', 'icon' => 'database', 'subHeader' => 'Collect/Edit multiple rows of table record.']);
 
-$dateFormat = $app->ui_persistence->date_format;
-$timeFormat = $app->ui_persistence->time_format;
+$dateFormat = $webpage->ui_persistence->date_format;
+$timeFormat = $webpage->ui_persistence->time_format;
 
 /** @var Model $inventoryItemClass */
 $inventoryItemClass = get_class(new class() extends Model {
@@ -89,7 +89,7 @@ $inventoryItemClass = get_class(new class() extends Model {
     }
 });
 
-$inventory = new $inventoryItemClass(new Persistence\Array_(), ['dateFormat' => $dateFormat, 'timeFormat' => $timeFormat, 'countryPersistence' => $app->db]);
+$inventory = new $inventoryItemClass(new Persistence\Array_(), ['dateFormat' => $dateFormat, 'timeFormat' => $timeFormat, 'countryPersistence' => $webpage->db]);
 
 // Populate some data.
 $total = 0;
@@ -106,7 +106,7 @@ for ($i = 1; $i < 3; ++$i) {
     $entity->saveAndUnload();
 }
 
-$form = Form::addTo($app);
+$form = Form::addTo($webpage);
 
 // Add multiline field and set model.
 $multiline = $form->addControl('ml', [Multiline::class, 'tableProps' => ['color' => 'blue'], 'itemLimit' => 10, 'addOnTab' => true]);

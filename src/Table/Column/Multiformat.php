@@ -55,7 +55,7 @@ class Multiformat extends Table\Column
             if (!is_object($c)) {
                 $c = Table\Column::factory($field, $c);
             }
-            
+
             $c->table = $this->table;
             $c->setApp($this->getApp());
 

@@ -154,11 +154,11 @@ class Dropdown extends Input
 
     public function setField(Model\Field $field)
     {
-    	$fieldType = $field->getValueType();
-    	
-    	if ($fieldType instanceof Model\Field\Type\Selectable) {
-    		$this->values = $fieldType->getValuesWithLabels();
-    	}
+        $fieldType = $field->getValueType();
+
+        if ($fieldType instanceof Model\Field\Type\Selectable) {
+            $this->values = $fieldType->getValuesWithLabels();
+        }
 
         return parent::setField($field);
     }

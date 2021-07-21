@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $app */
+/** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /** @var \Phlex\Ui\View $testRunClass */
@@ -27,7 +27,7 @@ $testRunClass = get_class(new class() extends \Phlex\Ui\View {
     }
 });
 
-$tabs = \Phlex\Ui\Tabs::addTo($app);
+$tabs = \Phlex\Ui\Tabs::addTo($webpage);
 
 $tab = $tabs->addTab('set()');
 \Phlex\Ui\Header::addTo($tab, [
