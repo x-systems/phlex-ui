@@ -229,29 +229,23 @@ class Control extends View
     {
         $valueType = $field->getValueType();
 
+        $resolvedSeed = null;
         if ($valueType instanceof Model\Field\Type\Array_ && $field->getReference() !== null) {
             $limit = ($field->getReference() instanceof Model\Reference\ContainsMany) ? 0 : 1;
             $model = $field->getReference()->refModel();
-            $fallbackSeed = [Form\Control\Multiline::class, 'model' => $model, 'rowLimit' => $limit, 'caption' => $model->getCaption()];
+            $resolvedSeed = [Form\Control\Multiline::class, 'model' => $model, 'rowLimit' => $limit, 'caption' => $model->getCaption()];
         } elseif (!$valueType instanceof Model\Field\Type\Boolean) {
             if ($valueType instanceof Model\Field\Type\Selectable) {
-                $fallbackSeed = [Form\Control\Dropdown::class, 'values' => $valueType->values];
+            	$resolvedSeed = [Form\Control\Dropdown::class, 'values' => $valueType->values];
             } elseif ($field->getReference() !== null) {
-                $fallbackSeed = [Form\Control\Lookup::class, 'model' => $field->getReference()->refModel()];
+            	$resolvedSeed = [Form\Control\Lookup::class, 'model' => $field->getReference()->refModel()];
             }
         }
-
-//     	if ($hint = $field->getOption(self::OPTION_HINT)) {
-//     		$fallbackSeed['hint'] = $hint;
-//     	}
-
-//     	if ($placeholder = $field->getOption(self::OPTION_PLACEHOLDER)) {
-//     		$fallbackSeed['placeholder'] = $placeholder;
-//     	}
 
         $seed = Factory::mergeSeeds(
             $seed,
             $field->getOption(self::OPTION_SEED),
+        	$resolvedSeed,
             $field->getValueType()->resolveFromRegistry(self::$fieldControls),
             $fallbackSeed
         );
