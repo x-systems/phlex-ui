@@ -445,7 +445,7 @@ class Webpage extends View
      */
     public function initBody($seed)
     {
-        $this->body = static::addWebpageView(Layout::fromSeed($seed)->setApp($this));
+        $this->body = parent::addView(Layout::fromSeed($seed)->setApp($this));
 
         $this->initIncludes();
 
@@ -501,23 +501,27 @@ class Webpage extends View
      */
     public function addView($seed, $region = null): AbstractView
     {
+        // if region exists in the Webpage add it there
+        // otherwise add it to the body
+        // @todo accept objects only should make below simpler
+        if ($region !== null || (is_object($seed) && ($seed->region ?? false))) {
+            $checkRegion = (is_array($region) ? ($region['region'] ?? null) : $region);
+
+            if (!$checkRegion && is_object($seed)) {
+                $checkRegion = $seed->region;
+            }
+
+            if ($this->template->hasTag($checkRegion)) {
+                return parent::addView($seed, $region);
+            }
+        }
+
         if (!$this->body) {
             throw (new Exception('Webpage body is missing'))
                 ->addSolution('If you use $webpage->addView() you should first call $webpage->initBody()');
         }
 
         return $this->body->addView($seed, $region);
-    }
-
-    /**
-     * Adding view to the webpage.
-     *
-     * @param View|string|array $seed   New object to add
-     * @param string|array|null $region
-     */
-    public function addWebpageView($seed, $region = null): AbstractView
-    {
-        return parent::addView($seed, $region);
     }
 
     /**
