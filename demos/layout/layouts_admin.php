@@ -37,7 +37,7 @@ $layout->template->set('Footer', 'ATK is awesome');
 \Phlex\Ui\Header::addTo($layout, ['Basic Form Example']);
 
 $form = \Phlex\Ui\Form::addTo($layout, ['segment']);
-$form->setModel((new \Phlex\Data\Model())->createEntity());
+$form->setModel(new \Phlex\Data\Model());
 
 $formGroup = $form->addGroup('Name');
 $formGroup->addControl('first_name', ['width' => 'eight']);

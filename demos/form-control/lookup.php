@@ -29,7 +29,7 @@ $model->hasOne('country2', ['model' => [Country::class], 'ui' => ['form' => [
     'plus' => true,
 ]]]);
 
-$form->setModel($model->createEntity());
+$form->setModel($model);
 
 $form->addControl('country3', [
     Form\Control\Lookup::class,

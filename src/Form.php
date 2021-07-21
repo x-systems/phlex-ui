@@ -276,7 +276,9 @@ class Form extends View
      */
     public function setModel(Model $model, $fields = null)
     {
-        $model->assertIsEntity();
+    	if (!$model->isEntity()) {
+    		$model = $model->createEntity();
+    	}
 
         // Model is set for the form and also for the current layout
         try {

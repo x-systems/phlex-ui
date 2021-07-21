@@ -44,7 +44,7 @@ class DemoLookup extends \Phlex\Ui\Form\Control\Lookup
 
             $model = clone $this->model;
 
-            $form->setModel($model->onlyFields($this->plus['fields'] ?? [])->createEntity());
+            $form->setModel($model->onlyFields($this->plus['fields'] ?? []));
 
             $form->onSubmit(function (\Phlex\Ui\Form $form) {
                 // Prevent from saving

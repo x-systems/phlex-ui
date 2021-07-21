@@ -196,7 +196,7 @@ $tab = $tabs->addTab('Layout Control');
 \Phlex\Ui\Header::addTo($tab, ['Shows example of grouping and multiple errors']);
 
 $form = Form::addTo($tab, ['segment']);
-$form->setModel((new \Phlex\Data\Model())->createEntity());
+$form->setModel(new \Phlex\Data\Model());
 
 $form->addHeader('Example fields added one-by-one');
 $form->addControl('name');
