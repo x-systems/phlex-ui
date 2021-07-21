@@ -126,8 +126,7 @@ class Control extends View
     public function set($value = null, $junk = null)
     {
         if ($this->field) {
-            $value = $this->getCodec($this->field)->decode($value);
-            $this->field->set($value);
+            $this->field->set($this->field->decode($value, $this));
 
             return $this;
         }
