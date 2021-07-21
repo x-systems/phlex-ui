@@ -13,4 +13,4 @@ $text = $a->generateLorem(150);
 
 $webpage->initBody([\Phlex\Ui\Layout::class]);
 
-\Phlex\Ui\Text::addTo($webpage->body)->addParagraph($text);
+\Phlex\Ui\Text::addTo($webpage)->addParagraph($text);

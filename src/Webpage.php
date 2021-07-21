@@ -212,6 +212,59 @@ class Webpage extends View
         $this->initialize();
     }
 
+    protected function doInitialize(): void
+    {
+        parent::doInitialize();
+
+        $this->initHead();
+
+        $this->initBody();
+    }
+
+    /**
+     * Initialize JS and CSS includes.
+     */
+    protected function initHead()
+    {
+        // jQuery
+        $this->requireJs($this->cdn['jquery'] . '/jquery.min.js');
+
+        // Semantic UI
+        $this->requireJs($this->cdn['semantic-ui'] . '/semantic.min.js');
+        $this->requireCss($this->cdn['semantic-ui'] . '/semantic.min.css');
+
+        // Serialize Object
+        $this->requireJs($this->cdn['serialize-object'] . '/jquery.serialize-object.min.js');
+
+        // flatpickr
+        $this->requireJs($this->cdn['flatpickr'] . '/flatpickr.min.js');
+        $this->requireCss($this->cdn['flatpickr'] . '/flatpickr.min.css');
+
+        // Agile UI
+        $this->requireJs($this->cdn['atk'] . '/atkjs-ui.min.js');
+        $this->requireCss($this->cdn['atk'] . '/agileui.css');
+
+        // Set js bundle dynamic loading path.
+        $this->template->tryDangerouslySetHtml(
+            'InitJsBundle',
+            (new JsExpression('window.__atkBundlePublicPath = [];', [$this->cdn['atk']]))->jsRender()
+        );
+    }
+
+    public function initBody($seed = null): void
+    {
+        if (!$seed && $this->body instanceof View) {
+            return;
+        }
+
+        $seed = Factory::mergeSeeds(
+            $seed ?? $this->body,
+            [Layout::class]
+        );
+
+        $this->body = parent::addView(Layout::fromSeed($seed));
+    }
+
     public function setExecutorFactory(ExecutorFactory $factory)
     {
         $this->executorFactory = $factory;
@@ -266,32 +319,38 @@ class Webpage extends View
      */
     public function caughtException(\Throwable $exception): void
     {
-        $this->catch_runaway_callbacks = false;
+        try {
+            $this->catch_runaway_callbacks = false;
 
-        // just replace body to avoid any extended App->_construct problems
-        // it will maintain everything as in the original webpage StickyGet, logger, Events
-        $this->elements = [];
-        $this->initBody([Layout\Centered::class]);
+            // just replace body to avoid any extended Webpage->_construct problems
+            // it will maintain everything as in the original webpage StickyGet, logger, Events
+            $this->elements = [];
+            $this->initBody([Layout\Centered::class]);
 
-        $this->body->template->dangerouslySetHtml('Content', $this->renderExceptionHtml($exception));
+            $this->body->template->dangerouslySetHtml('Content', $this->renderExceptionHtml($exception));
 
-        // remove header
-        $this->body->template->tryDel('Header');
+            // remove header
+            $this->body->template->tryDel('Header');
 
-        if (($this->isJsUrlRequest() || strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'xmlhttprequest')
-                && !isset($_GET['__atk_tab'])) {
-            $this->outputResponseJson([
-                'success' => false,
-                'message' => $this->body->getHtml(),
-            ]);
-        } else {
-            $this->setResponseStatusCode(500);
-            $this->run();
+            if (($this->isJsUrlRequest() || strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'xmlhttprequest')
+                    && !isset($_GET['__atk_tab'])) {
+                $this->outputResponseJson([
+                    'success' => false,
+                    'message' => $this->body->getHtml(),
+                ]);
+            } else {
+                $this->setResponseStatusCode(500);
+                $this->run();
+            }
+
+            // Process is already in shutdown/stop
+            // no need of call exit function
+            $this->callBeforeExit();
+        } catch (\Exception $e) {
+            print_r($e->getMessage() . $e->getTraceAsString());
+
+            print_r($exception->getMessage() . $exception->getTraceAsString());
         }
-
-        // Process is already in shutdown/stop
-        // no need of call exit function
-        $this->callBeforeExit();
     }
 
     /**
@@ -437,52 +496,6 @@ class Webpage extends View
     }
 
     /**
-     * Initializes body.
-     *
-     * @param Layout|array $seed
-     *
-     * @return $this
-     */
-    public function initBody($seed)
-    {
-        $this->body = parent::addView(Layout::fromSeed($seed)->setApp($this));
-
-        $this->initIncludes();
-
-        return $this;
-    }
-
-    /**
-     * Initialize JS and CSS includes.
-     */
-    public function initIncludes()
-    {
-        // jQuery
-        $this->requireJs($this->cdn['jquery'] . '/jquery.min.js');
-
-        // Semantic UI
-        $this->requireJs($this->cdn['semantic-ui'] . '/semantic.min.js');
-        $this->requireCss($this->cdn['semantic-ui'] . '/semantic.min.css');
-
-        // Serialize Object
-        $this->requireJs($this->cdn['serialize-object'] . '/jquery.serialize-object.min.js');
-
-        // flatpickr
-        $this->requireJs($this->cdn['flatpickr'] . '/flatpickr.min.js');
-        $this->requireCss($this->cdn['flatpickr'] . '/flatpickr.min.css');
-
-        // Agile UI
-        $this->requireJs($this->cdn['atk'] . '/atkjs-ui.min.js');
-        $this->requireCss($this->cdn['atk'] . '/agileui.css');
-
-        // Set js bundle dynamic loading path.
-        $this->template->tryDangerouslySetHtml(
-            'InitJsBundle',
-            (new JsExpression('window.__atkBundlePublicPath = [];', [$this->cdn['atk']]))->jsRender()
-        );
-    }
-
-    /**
      * Adds a <style> block to the HTML Header. Not escaped. Try to avoid
      * and use file include instead.
      *
@@ -490,7 +503,7 @@ class Webpage extends View
      */
     public function addCss($style)
     {
-        $this->template->dangerouslyAppendHtml('HEAD', $this->getTag('style', $style));
+        $this->template->dangerouslyAppendHtml('HEAD', self::getTag('style', $style));
     }
 
     /**
@@ -718,7 +731,7 @@ class Webpage extends View
      */
     public function requireJs($url, $isAsync = false, $isDefer = false)
     {
-        $this->template->dangerouslyAppendHtml('HEAD', $this->getTag('script', ['src' => $url, 'defer' => $isDefer, 'async' => $isAsync], '') . "\n");
+        $this->template->dangerouslyAppendHtml('HEAD', self::getTag('script', ['src' => $url, 'defer' => $isDefer, 'async' => $isAsync], '') . "\n");
 
         return $this;
     }
@@ -732,7 +745,7 @@ class Webpage extends View
      */
     public function requireCss($url)
     {
-        $this->template->dangerouslyAppendHtml('HEAD', $this->getTag('link/', ['rel' => 'stylesheet', 'type' => 'text/css', 'href' => $url]) . "\n");
+        $this->template->dangerouslyAppendHtml('HEAD', self::getTag('link/', ['rel' => 'stylesheet', 'type' => 'text/css', 'href' => $url]) . "\n");
 
         return $this;
     }
@@ -823,7 +836,7 @@ class Webpage extends View
      * @param string|array $attr
      * @param string|array $value
      */
-    public function getTag($tag = null, $attr = null, $value = null): string
+    public static function getTag($tag = null, $attr = null, $value = null): string
     {
         if ($tag === null) {
             $tag = 'div';
@@ -837,7 +850,7 @@ class Webpage extends View
                     // OH a bunch of tags
                     $output = '';
                     foreach ($tmp as $subtag) {
-                        $output .= $this->getTag($subtag);
+                        $output .= self::getTag($subtag);
                     }
 
                     return $output;
@@ -872,14 +885,14 @@ class Webpage extends View
             $result = [];
             foreach ((array) $value as $v) {
                 if (is_array($v)) {
-                    $result[] = $this->getTag(...$v);
+                    $result[] = self::getTag(...$v);
                 } elseif (in_array($tag, ['script', 'style'], true)) {
                     // see https://mathiasbynens.be/notes/etago
                     $result[] = preg_replace('~(?<=<)(?=/\s*' . preg_quote($tag, '~') . '|!--)~', '\\\\', $v);
                 } elseif (is_array($value)) { // todo, remove later and fix wrong usages, this is the original behaviour, only directly passed strings were escaped
                     $result[] = $v;
                 } else {
-                    $result[] = $this->encodeHtml($v);
+                    $result[] = self::encodeHtml($v);
                 }
             }
             $value = implode('', $result);
@@ -906,7 +919,7 @@ class Webpage extends View
             } elseif ($key === 0) {
                 $tag = $val;
             } else {
-                $tmp[] = $key . '="' . $this->encodeAttribute($val) . '"';
+                $tmp[] = $key . '="' . self::encodeAttribute($val) . '"';
             }
         }
 
@@ -920,7 +933,7 @@ class Webpage extends View
      *
      * @return string
      */
-    public function encodeAttribute($val)
+    public static function encodeAttribute($val)
     {
         return htmlspecialchars((string) $val);
     }
@@ -928,19 +941,17 @@ class Webpage extends View
     /**
      * Encodes string - removes HTML entities.
      */
-    public function encodeHtml(string $val): string
+    public static function encodeHtml(string $val): string
     {
         return htmlentities($val);
     }
 
-    public function decodeJson(string $json)
+    public static function decodeJson(string $json)
     {
-        $data = json_decode($json, true, 512, \JSON_BIGINT_AS_STRING | \JSON_THROW_ON_ERROR);
-
-        return $data;
+        return json_decode($json, true, 512, \JSON_BIGINT_AS_STRING | \JSON_THROW_ON_ERROR);
     }
 
-    public function encodeJson($data, bool $forceObject = false): string
+    public static function encodeJson($data, bool $forceObject = false): string
     {
         $options = \JSON_UNESCAPED_SLASHES | \JSON_PRESERVE_ZERO_FRACTION | \JSON_UNESCAPED_UNICODE | \JSON_PRETTY_PRINT;
         if ($forceObject) {

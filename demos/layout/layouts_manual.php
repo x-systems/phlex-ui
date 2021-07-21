@@ -14,4 +14,4 @@ $layout = new \Phlex\Ui\Layout(['defaultTemplate' => __DIR__ . '/templates/layou
 
 $webpage->initBody([\Phlex\Ui\Layout::class]);
 
-\Phlex\Ui\Text::addTo($webpage->body)->addHtml($layout->render());
+\Phlex\Ui\Text::addTo($webpage)->addHtml($layout->render());

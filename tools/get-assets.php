@@ -30,4 +30,3 @@ class GetAssets extends \Phlex\Ui\Webpage
 
 mkdir('public');
 $app = new GetAssets();
-$app->initIncludes();
