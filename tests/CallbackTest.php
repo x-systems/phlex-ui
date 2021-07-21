@@ -33,7 +33,7 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
     protected function setUp(): void
     {
         $this->app = new WebpageMock(['always_run' => false, 'catch_exceptions' => false]);
-        $this->app->initLayout([\Phlex\Ui\Layout\Centered::class]);
+        $this->app->initBody([\Phlex\Ui\Layout\Centered::class]);
 
         // reset var, between tests
         $_GET = [];

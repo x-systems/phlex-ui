@@ -10,7 +10,7 @@ use Phlex\Ui\Table;
 require_once __DIR__ . '/../init-app.php';
 
 if ($id = $_GET['id'] ?? null) {
-    $webpage->layout->js(true, new \Phlex\Ui\JsToast('Details link is in simulation mode.'));
+    $webpage->body->js(true, new \Phlex\Ui\JsToast('Details link is in simulation mode.'));
 }
 
 $bb = \Phlex\Ui\View::addTo($webpage, ['ui' => 'buttons']);

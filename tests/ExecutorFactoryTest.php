@@ -47,7 +47,7 @@ class ExecutorFactoryTest extends \Phlex\Core\PHPUnit\TestCase
         $p = new Array_();
         $this->model = new TestModel($p);
         $this->app = $this->getApp();
-        $this->app->initLayout([\Phlex\Ui\Layout\Admin::class]);
+        $this->app->initBody([\Phlex\Ui\Layout\Admin::class]);
     }
 
     protected function getApp()

@@ -59,7 +59,7 @@ $b->on('click', null, function ($b) {
 
 Header::addTo($webpage, ['Callbacks on HTML element', 'subHeader' => 'Click on label below.']);
 
-$label = \Phlex\Ui\Label::addTo($webpage->layout, ['Test']);
+$label = \Phlex\Ui\Label::addTo($webpage->body, ['Test']);
 
 $label->on('click', null, function ($j, $arg1) {
     return 'width is ' . $arg1;

@@ -124,7 +124,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
                 throw new DemosTestExitException();
             }
         };
-        $webpage->initLayout([\Phlex\Ui\Layout\Maestro::class]);
+        $webpage->initBody([\Phlex\Ui\Layout\Maestro::class]);
 
         // clone DB (mainly because all Models remains attached now, TODO can be removed once they are GCed)
         $webpage->db = clone self::$_db;

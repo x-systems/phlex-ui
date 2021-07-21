@@ -10,7 +10,7 @@ require_once __DIR__ . '/../init-app.php';
 // Demonstrate the use of Virtual Page.
 
 // define virtual page.
-$virtualPage = \Phlex\Ui\VirtualPage::addTo($webpage->layout, ['urlTrigger' => 'in']);
+$virtualPage = \Phlex\Ui\VirtualPage::addTo($webpage->body, ['urlTrigger' => 'in']);
 
 // Add content to virtual page.
 if (isset($_GET['p_id'])) {

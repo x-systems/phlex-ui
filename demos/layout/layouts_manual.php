@@ -12,6 +12,6 @@ $layout = new \Phlex\Ui\Layout(['defaultTemplate' => __DIR__ . '/templates/layou
 \Phlex\Ui\Lister::addTo($layout, [], ['Report'])
     ->setModel(new SomeData());
 
-$webpage->initLayout([\Phlex\Ui\Layout::class]);
+$webpage->initBody([\Phlex\Ui\Layout::class]);
 
-\Phlex\Ui\Text::addTo($webpage->layout)->addHtml($layout->render());
+\Phlex\Ui\Text::addTo($webpage->body)->addHtml($layout->render());

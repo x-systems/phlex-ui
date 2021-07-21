@@ -46,7 +46,7 @@ class Webpage extends View
     public $title = 'Phlex UI - Untitled Application';
 
     /** @var Layout */
-    public $layout; // the top-most view object
+    public $body; // the top-most view object rendered in the webpage body
 
     /**
      * Set one or more directories where templates should reside.
@@ -268,21 +268,21 @@ class Webpage extends View
     {
         $this->catch_runaway_callbacks = false;
 
-        // just replace layout to avoid any extended App->_construct problems
-        // it will maintain everything as in the original app StickyGet, logger, Events
+        // just replace body to avoid any extended App->_construct problems
+        // it will maintain everything as in the original webpage StickyGet, logger, Events
         $this->elements = [];
-        $this->initLayout([Layout\Centered::class]);
+        $this->initBody([Layout\Centered::class]);
 
-        $this->layout->template->dangerouslySetHtml('Content', $this->renderExceptionHtml($exception));
+        $this->body->template->dangerouslySetHtml('Content', $this->renderExceptionHtml($exception));
 
         // remove header
-        $this->layout->template->tryDel('Header');
+        $this->body->template->tryDel('Header');
 
         if (($this->isJsUrlRequest() || strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'xmlhttprequest')
                 && !isset($_GET['__atk_tab'])) {
             $this->outputResponseJson([
                 'success' => false,
-                'message' => $this->layout->getHtml(),
+                'message' => $this->body->getHtml(),
             ]);
         } else {
             $this->setResponseStatusCode(500);
@@ -437,15 +437,15 @@ class Webpage extends View
     }
 
     /**
-     * Initializes layout.
+     * Initializes body.
      *
      * @param Layout|array $seed
      *
      * @return $this
      */
-    public function initLayout($seed)
+    public function initBody($seed)
     {
-        $this->layout = static::addWebpageView(Layout::fromSeed($seed)->setApp($this));
+        $this->body = static::addWebpageView(Layout::fromSeed($seed)->setApp($this));
 
         $this->initIncludes();
 
@@ -501,12 +501,12 @@ class Webpage extends View
      */
     public function addView($seed, $region = null): AbstractView
     {
-        if (!$this->layout) {
-            throw (new Exception('Webpage layout is missing'))
-                ->addSolution('If you use $webpage->addView() you should first call $webpage->initLayout()');
+        if (!$this->body) {
+            throw (new Exception('Webpage body is missing'))
+                ->addSolution('If you use $webpage->addView() you should first call $webpage->initBody()');
         }
 
-        return $this->layout->addView($seed, $region);
+        return $this->body->addView($seed, $region);
     }
 
     /**
@@ -964,8 +964,8 @@ class Webpage extends View
      * to put it inside boilerplate HTML and output, e.g:.
      *
      *   $webpage = new \Phlex\Ui\Webpage();
-     *   $webpage->initLayout([\Phlex\Ui\Layout\Centered::class]);
-     *   $webpage->layout->template->dangerouslySetHtml('Content', $e->getHtml());
+     *   $webpage->initBody([\Phlex\Ui\Layout\Centered::class]);
+     *   $webpage->body->template->dangerouslySetHtml('Content', $e->getHtml());
      *   $webpage->run();
      *   $webpage->callBeforeExit();
      */

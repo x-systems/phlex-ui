@@ -15,7 +15,7 @@ DemoActionsUtil::setupDemoActions($country);
 // PANEL
 
 \Phlex\Ui\Header::addTo($webpage, ['Static', 'size' => 4, 'subHeader' => 'Panel may have static content only.']);
-$panel = $webpage->layout->addRightPanel(new \Phlex\Ui\Panel\Right(['dynamic' => false]));
+$panel = $webpage->body->addRightPanel(new \Phlex\Ui\Panel\Right(['dynamic' => false]));
 \Phlex\Ui\Message::addTo($panel, ['This panel contains only static content.']);
 $btn = \Phlex\Ui\Button::addTo($webpage, ['Open Static']);
 $btn->on('click', $panel->jsOpen());
@@ -24,7 +24,7 @@ $btn->on('click', $panel->jsOpen());
 // PANEL_1
 
 \Phlex\Ui\Header::addTo($webpage, ['Dynamic', 'size' => 4, 'subHeader' => 'Panel can load content dynamically']);
-$panel1 = $webpage->layout->addRightPanel(new \Phlex\Ui\Panel\Right());
+$panel1 = $webpage->body->addRightPanel(new \Phlex\Ui\Panel\Right());
 \Phlex\Ui\Message::addTo($panel1, ['This panel will load content dynamically below according to button select on the right.']);
 $btn = \Phlex\Ui\Button::addTo($webpage, ['Button 1']);
 $btn->js(true)->data('btn', '1');
@@ -62,7 +62,7 @@ $panel1->onOpen(function ($p) use ($view) {
 
 \Phlex\Ui\Header::addTo($webpage, ['Closing option', 'size' => 4, 'subHeader' => 'Panel can prevent from closing.']);
 
-$panel2 = $webpage->layout->addRightPanel(new \Phlex\Ui\Panel\Right(['hasClickAway' => false]));
+$panel2 = $webpage->body->addRightPanel(new \Phlex\Ui\Panel\Right(['hasClickAway' => false]));
 $icon = \Phlex\Ui\Icon::addTo($webpage, ['big cog'])->addStyle('cursor', 'pointer');
 $icon->on('click', $panel2->jsOpen());
 $panel2->addConfirmation('Changes will be lost. Are you sure?');
@@ -94,7 +94,7 @@ $panel2->onOpen(function ($p) {
 
 $countryId = $webpage->stickyGet('id');
 \Phlex\Ui\Header::addTo($webpage, ['UserAction Friendly', 'size' => 4, 'subHeader' => 'Panel can run model action.']);
-$panel3 = $webpage->layout->addRightPanel(new \Phlex\Ui\Panel\Right());
+$panel3 = $webpage->body->addRightPanel(new \Phlex\Ui\Panel\Right());
 $msg = \Phlex\Ui\Message::addTo($panel3, ['Run Country model action below.']);
 
 $deck = \Phlex\Ui\View::addTo($webpage, ['ui' => 'cards']);
