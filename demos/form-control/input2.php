@@ -41,15 +41,15 @@ $values = [
     'registered' => ['Registered', 'icon' => 'registered icon'],
     'file' => ['File', 'icon' => 'file icon'],
 ];
-$group->addControl('d_norm', [Form\Control\Dropdown::class, 'values' => $values, 'width' => 'three'])->set('globe');
-$group->addControl('d_read', [Form\Control\Dropdown::class, 'values' => $values, 'readonly' => true, 'width' => 'three'])->set('globe'); // allows to change value
-$group->addControl('d_disb', [Form\Control\Dropdown::class, 'values' => $values, 'disabled' => true, 'width' => 'three'])->set('globe'); // css disabled, but can focus with Tab and change value
+$group->addControl('d_norm', [Form\Control\Dropdown::class, 'width' => 'three'], ['type' => ['enum', 'valuesWithLabels' => $values]])->set('globe');
+$group->addControl('d_read', [Form\Control\Dropdown::class, 'readonly' => true, 'width' => 'three'], ['type' => ['enum', 'valuesWithLabels' => $values]])->set('globe'); // allows to change value
+$group->addControl('d_disb', [Form\Control\Dropdown::class, 'disabled' => true, 'width' => 'three'], ['type' => ['enum', 'valuesWithLabels' => $values]])->set('globe'); // css disabled, but can focus with Tab and change value
 
 $group = $form->addGroup('Radio');
 
-$group->addControl('radio_norm', [Form\Control\Radio::class], ['enum' => ['one', 'two', 'three']])->set('two');
-$group->addControl('radio_read', [Form\Control\Radio::class, 'readonly' => true], ['enum' => ['one', 'two', 'three']])->set('two');
-$group->addControl('radio_disb', [Form\Control\Radio::class, 'disabled' => true], ['enum' => ['one', 'two', 'three']])->set('two');
+$group->addControl('radio_norm', [Form\Control\Radio::class], ['type' => ['enum', 'values' => ['one', 'two', 'three']]])->set('two');
+$group->addControl('radio_read', [Form\Control\Radio::class, 'readonly' => true], ['type' => ['enum', 'values' => ['one', 'two', 'three']]])->set('two');
+$group->addControl('radio_disb', [Form\Control\Radio::class, 'disabled' => true], ['type' => ['enum', 'values' => ['one', 'two', 'three']]])->set('two');
 
 $group = $form->addGroup('File upload');
 
@@ -115,7 +115,9 @@ $button->on('click', new \Phlex\Ui\JsExpression('alert("field value is: "+[])', 
 \Phlex\Ui\Header::addTo($app, ['Line in a Form']);
 $form = Form::addTo($app);
 
-$control = $form->addControl('Title', null, ['values' => ['Mr', 'Mrs', 'Miss'], 'ui' => ['hint' => 'select one']]);
+$control = $form->addControl('Title', null, ['type' => ['enum', 'values' => ['Mr', 'Mrs', 'Miss']], 'options' => [
+		Form\Control::OPTION_SEED => ['hint' => 'select one']
+]]);
 
 $control = $form->addControl('name', [Form\Control\Line::class, 'hint' => 'this is sample hint that escapes <html> characters']);
 $control->set('value in a form');

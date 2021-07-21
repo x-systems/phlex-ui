@@ -131,7 +131,7 @@ class DemoActionsUtil
                 'args' => [
                     'age' => ['type' => 'integer', 'required' => true],
                     'city' => [],
-                    'gender' => ['type' => 'enum', 'values' => ['m' => 'Male', 'f' => 'Female'], 'required' => true, 'default' => 'm'],
+                    'gender' => ['type' => ['enum', 'values' => ['m' => 'Male', 'f' => 'Female']], 'required' => true, 'default' => 'm'],
                 ],
                 'fields' => [$country->key()->iso3],
                 'callback' => function ($model, $age, $city, $gender) {

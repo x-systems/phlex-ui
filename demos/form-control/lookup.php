@@ -24,10 +24,12 @@ $model = new \Phlex\Data\Model($app->db, ['table' => 'test']);
 $model->hasOne('country1', ['model' => [Country::class]]);
 
 // With Lookup
-$model->hasOne('country2', ['model' => [Country::class], 'ui' => ['form' => [
-    DemoLookup::class,
-    'plus' => true,
-]]]);
+$model->hasOne('country2', ['model' => [Country::class], 'options' => [
+		Form\Control::OPTION_SEED => [
+		    DemoLookup::class,
+		    'plus' => true,
+		]
+]]);
 
 $form->setModel($model);
 

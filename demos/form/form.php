@@ -51,10 +51,10 @@ $values = [0 => 'noob', 1 => 'pro', 2 => 'dev'];
 $form->addControl('description', [Form\Control\Textarea::class])->set(0);
 $form->addControl('no_description', [Form\Control\Textarea::class])->set(null);
 $form->addControl('status_optional', [Form\Control\Dropdown::class, 'values' => $values]);
-$form->addControl('status_string_required', [Form\Control\Dropdown::class], ['type' => 'string', 'values' => $values, 'required' => true]);
-$form->addControl('status_integer_required', [Form\Control\Dropdown::class], ['type' => 'integer', 'values' => $values, 'required' => true]);
-$form->addControl('status_string_mandatory', [Form\Control\Dropdown::class], ['type' => 'string', 'values' => $values, 'mandatory' => true]);
-$form->addControl('status_integer_mandatory', [Form\Control\Dropdown::class], ['type' => 'integer', 'values' => $values, 'mandatory' => true]);
+$form->addControl('status_string_required', [Form\Control\Dropdown::class, 'values' => $values], ['type' => 'string', 'required' => true]);
+$form->addControl('status_integer_required', [Form\Control\Dropdown::class, 'values' => $values], ['type' => 'integer', 'required' => true]);
+$form->addControl('status_string_mandatory', [Form\Control\Dropdown::class, 'values' => $values], ['type' => 'string', 'mandatory' => true]);
+$form->addControl('status_integer_mandatory', [Form\Control\Dropdown::class, 'values' => $values], ['type' => 'integer', 'mandatory' => true]);
 
 $form->onSubmit(function (Form $form) use ($app) {
     return new \Phlex\Ui\JsToast($app->encodeJson($form->model->get()));
