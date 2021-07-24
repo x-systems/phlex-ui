@@ -350,7 +350,7 @@ class Webpage extends View
      *
      * @return string[]
      */
-    protected function normalizeHeaders(array $headers): array
+    protected static function normalizeHeaders(array $headers): array
     {
         $res = [];
         foreach ($headers as $k => $v) {
