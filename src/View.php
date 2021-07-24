@@ -643,7 +643,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
         if ($this->attr) {
             $tmp = [];
             foreach ($this->attr as $attr => $val) {
-                $tmp[] = $attr . '="' . $this->getApp()->encodeAttribute($val) . '"';
+                $tmp[] = $attr . '="' . Webpage::encodeAttribute($val) . '"';
             }
             $this->template->dangerouslySetHtml('attributes', implode(' ', $tmp));
         }

@@ -1105,7 +1105,7 @@ class Webpage extends View
     }
 
     /**
-     * Generated html and js for modals attached to $html view.
+     * Generated html and js for modals attached to the webpage.
      */
     public function getRenderedModals(): array
     {
