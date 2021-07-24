@@ -148,8 +148,6 @@ class Webpage extends View
     public $templateClass = HtmlTemplate::class;
 
     /**
-     * Constructor.
-     *
      * @param array $defaults
      */
     public function __construct($defaults = [])
@@ -166,48 +164,18 @@ class Webpage extends View
             unset($defaults[0]);
         }
 
-        /*
-        if (is_array($defaults)) {
-            throw (new Exception('Constructor requires array argument'))
-                ->addMoreInfo('arg', $defaults);
-        }*/
         $this->setDefaults($defaults);
-        /*
-
-        foreach ($defaults as $key => $val) {
-            if (is_array($val)) {
-                $this->{$key} = array_merge(is_array($this->{$key} ?? null) ? $this->{$key} : [], $val);
-            } elseif ($val !== null) {
-                $this->{$key} = $val;
-            }
-        }
-         */
 
         $this->setupTemplateDirs();
 
-        // Set our exception handler
-        if ($this->catch_exceptions) {
-            set_exception_handler(\Closure::fromCallable([$this, 'caughtException']));
-            set_error_handler(
-                static function (int $severity, string $msg, string $file, int $line): bool {
-                    throw new \ErrorException($msg, 0, $severity, $file, $line);
-                },
-                \E_ALL
-            );
-        }
-
-        // Always run app on shutdown
-        if ($this->always_run) {
-            $this->setupAlwaysRun();
-        }
+        $this->setupAlwaysRun();
 
         // Set up UI persistence
         if (!isset($this->ui_persistence)) {
             $this->ui_persistence = new UiPersistence();
         }
 
-        // setting up default executor factory.
-        $this->executorFactory = Factory::factory([ExecutorFactory::class]);
+        $this->setupExecutorFactory();
 
         $this->initialize();
     }
@@ -215,6 +183,8 @@ class Webpage extends View
     protected function doInitialize(): void
     {
         parent::doInitialize();
+
+        $this->setupCatchingExceptions();
 
         $this->initHead();
 
@@ -275,6 +245,12 @@ class Webpage extends View
         return $this->executorFactory;
     }
 
+    protected function setupExecutorFactory(): void
+    {
+        // setting up default executor factory.
+        $this->executorFactory = Factory::factory([ExecutorFactory::class]);
+    }
+
     protected function setupTemplateDirs()
     {
         if ($this->template_dir === null) {
@@ -312,6 +288,20 @@ class Webpage extends View
         }
 
         exit;
+    }
+
+    protected function setupCatchingExceptions()
+    {
+        // Set our exception handler
+        if ($this->catch_exceptions) {
+            set_exception_handler(\Closure::fromCallable([$this, 'caughtException']));
+            set_error_handler(
+                static function (int $severity, string $msg, string $file, int $line): bool {
+                        throw new \ErrorException($msg, 0, $severity, $file, $line);
+                    },
+                \E_ALL
+            );
+        }
     }
 
     /**
@@ -989,8 +979,15 @@ class Webpage extends View
         return (string) new \Phlex\Core\ExceptionRenderer\Html($exception);
     }
 
+    /**
+     * Always run app on shutdown.
+     */
     protected function setupAlwaysRun(): void
     {
+        if (!$this->always_run) {
+            return;
+        }
+
         register_shutdown_function(
             function () {
                 if (!$this->run_called) {
