@@ -7,6 +7,7 @@ namespace Phlex\Ui\Demos;
 use Phlex\Data\Hintable\HintablePropertyDef;
 use Phlex\Data\Model;
 use Phlex\Ui\Form;
+use Phlex\Ui\Table;
 
 try {
     if (file_exists(__DIR__ . '/db.php')) {
@@ -103,7 +104,7 @@ class Country extends ModelWithPrefixedFields
         $this->addField($this->key()->name, ['actual' => 'atk_afp_country__nicename', 'required' => true, 'type' => 'string']);
         $this->addField($this->key()->sys_name, ['actual' => 'atk_afp_country__name', 'system' => true]);
 
-        $this->addField($this->key()->iso, ['caption' => 'ISO', 'required' => true, 'type' => 'string', 'ui' => ['table' => ['sortable' => false]]]);
+        $this->addField($this->key()->iso, ['caption' => 'ISO', 'required' => true, 'type' => 'string', 'options' => [Table\Column::OPTION_SEED => ['sortable' => false]]]);
         $this->addField($this->key()->iso3, ['caption' => 'ISO3', 'required' => true, 'type' => 'string']);
         $this->addField($this->key()->numcode, ['caption' => 'ISO Numeric Code', 'type' => 'float', 'required' => true]);
         $this->addField($this->key()->phonecode, ['caption' => 'Phone Prefix', 'type' => 'float', 'required' => true]);
@@ -190,14 +191,14 @@ class Stat extends ModelWithPrefixedFields
         $this->titleKey = $this->key()->project_name;
         $this->addField($this->key()->description, ['type' => 'text']);
         $this->addField($this->key()->client_name, ['type' => 'string']);
-        $this->addField($this->key()->client_address, ['type' => 'text', 'ui' => ['form' => [Form\Control\Textarea::class, 'rows' => 4]]]);
+        $this->addField($this->key()->client_address, ['type' => 'text', 'options' => [Form\Control::OPTION_SEED => [Form\Control\Textarea::class, 'rows' => 4]]]);
 
         $this->hasOne($this->key()->client_country_iso, [
             'model' => [Country::class],
             'theirKey' => Country::hint()->key()->iso,
             'type' => 'string',
-            'ui' => [
-                'form' => [Form\Control\Line::class],
+            'options' => [
+                Form\Control::OPTION_SEED => [Form\Control\Line::class],
             ],
         ])
             ->addField($this->key()->client_country, Country::hint()->key()->name);
@@ -233,8 +234,8 @@ class Stat extends ModelWithPrefixedFields
         $this->addField($this->key()->finish_date, ['type' => 'date']);
         $this->addField($this->key()->finish_time, ['type' => 'time']);
 
-        $this->addField($this->key()->created, ['type' => 'datetime', 'ui' => ['form' => ['disabled' => true]]]);
-        $this->addField($this->key()->updated, ['type' => 'datetime', 'ui' => ['form' => ['disabled' => true]]]);
+        $this->addField($this->key()->created, ['type' => 'datetime', 'options' => [Form\Control::OPTION_SEED => ['disabled' => true]]]);
+        $this->addField($this->key()->updated, ['type' => 'datetime', 'options' => [Form\Control::OPTION_SEED => ['disabled' => true]]]);
     }
 }
 

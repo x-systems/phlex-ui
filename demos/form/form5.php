@@ -51,16 +51,16 @@ $model->addField('one');
 $model->addField('two', ['caption' => 'Caption']);
 
 // ui can also specify caption which is a form-specific
-$model->addField('three', ['ui' => ['form' => ['caption' => 'Caption']]]);
+$model->addField('three', ['options' => [Form\Control::OPTION_SEED => ['caption' => 'Caption']]]);
 
 // type is converted into CheckBox form control with caption as a seed
-$model->addField('four', ['type' => 'boolean', 'ui' => ['form' => ['caption' => 'Caption2']]]);
+$model->addField('four', ['type' => 'boolean', 'options' => [Form\Control::OPTION_SEED => ['caption' => 'Caption2']]]);
 
 // Can specify class for a checkbox explicitly
-$model->addField('five', ['ui' => ['form' => [Form\Control\Checkbox::class, 'caption' => 'Caption3']]]);
+$model->addField('five', ['options' => [Form\Control::OPTION_SEED => [Form\Control\Checkbox::class, 'caption' => 'Caption3']]]);
 
 // Form-specific caption overrides general caption of a field. Also you can specify object instead of seed
-$model->addField('six', ['caption' => 'badcaption', 'ui' => ['form' => new Form\Control\Checkbox(['caption' => 'Caption4'])]]);
+$model->addField('six', ['caption' => 'badcaption', 'options' => [Form\Control::OPTION_SEED => new Form\Control\Checkbox(['caption' => 'Caption4'])]]);
 
 $model = $model->createEntity();
 

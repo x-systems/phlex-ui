@@ -38,11 +38,11 @@ $inventoryItemClass = get_class(new class() extends Model {
         $this->addField('inv_date', [
             'default' => date($this->dateFormat),
             'type' => 'date',
-            'typecast' => [
-                function ($v) {
+            'serialize' => [
+                'encodeFx' => function ($v) {
                     return ($v instanceof \DateTime) ? date_format($v, $this->dateFormat) : $v;
                 },
-                function ($v) {
+                'decodeFx' => function ($v) {
                     return $v;
                 },
             ],
@@ -51,11 +51,11 @@ $inventoryItemClass = get_class(new class() extends Model {
         $this->addField('inv_time', [
             'default' => date($this->timeFormat),
             'type' => 'time',
-            'typecast' => [
-                function ($v) {
+            'serialize' => [
+                'encodeFx' => function ($v) {
                     return ($v instanceof \DateTime) ? date_format($v, $this->timeFormat) : $v;
                 },
-                function ($v) {
+                'decodeFx' => function ($v) {
                     return $v;
                 },
             ],

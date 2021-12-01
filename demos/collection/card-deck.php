@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Button;
+use Phlex\Ui\Form;
 use Phlex\Ui\Header;
 
 /** @var \Phlex\Ui\Webpage $webpage */
@@ -40,7 +41,7 @@ $infoAction = $countries->addUserAction('request_info', [
 
 $infoAction->args = [
     'email' => ['type' => 'email', 'required' => true, 'caption' => 'Please let us know your email address:'],
-    'country' => ['required' => true, 'ui' => ['form' => [\Phlex\Ui\Form\Control\Lookup::class, 'model' => new Country($webpage->db), 'placeholder' => 'Please select a country.']]],
+    'country' => ['required' => true, 'options' => [Form\Control::OPTION_SEED => [Form\Control\Lookup::class, 'model' => new Country($webpage->db), 'placeholder' => 'Please select a country.']]],
 ];
 
 $deck = \Phlex\Ui\CardDeck::addTo($webpage, ['noRecordScopeActions' => ['request_info'], 'singleScopeActions' => ['book']]);
