@@ -99,11 +99,11 @@ class Control extends View
         parent::doInitialize();
 
         if ($this->form && $this->field) {
-            if (isset($this->form->controls[$this->field->short_name])) {
+            if (isset($this->form->controls[$this->field->elementId])) {
                 throw (new Exception('Form already has a control with the same name'))
-                    ->addMoreInfo('name', $this->field->short_name);
+                    ->addMoreInfo('elementId', $this->field->elementId);
             }
-            $this->form->controls[$this->field->short_name] = $this;
+            $this->form->controls[$this->field->elementId] = $this;
         }
     }
 
@@ -143,7 +143,7 @@ class Control extends View
     protected function doRender(): void
     {
         if ($this->form) {
-            $this->template->trySet('name', $this->short_name);
+            $this->template->trySet('name', $this->elementId);
         }
 
         parent::doRender();
@@ -252,7 +252,7 @@ class Control extends View
 
         return Factory::factory($seed, [
             'field' => $field,
-            'short_name' => $field->short_name,
+            'elementId' => $field->elementId,
         ]);
     }
 }

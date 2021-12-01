@@ -47,7 +47,7 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
         $cb = \Phlex\Ui\Callback::addTo($this->app);
 
         // simulate triggering
-        $_GET[$cb->name] = '1';
+        $_GET[$cb->elementName] = '1';
 
         $cb->set(function ($x) use (&$var) {
             $var = $x;
@@ -77,7 +77,7 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
         $cb = \Phlex\Ui\CallbackLater::addTo($this->app);
 
         // simulate triggering
-        $_GET[$cb->name] = '1';
+        $_GET[$cb->elementName] = '1';
 
         $cb->set(function ($x) use (&$var) {
             $var = $x;
@@ -98,13 +98,13 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
         $cb = \Phlex\Ui\CallbackLater::addTo($this->app);
 
         // simulate triggering
-        $_GET[$cb->name] = '1';
-        $_GET[$cb->name . '_2'] = '1';
+        $_GET[$cb->elementName] = '1';
+        $_GET[$cb->elementName . '_2'] = '1';
 
         $webpage = $this->app;
         $cb->set(function ($x) use (&$var, $webpage, &$cbname) {
             $cb2 = \Phlex\Ui\CallbackLater::addTo($webpage);
-            $cbname = $cb2->name;
+            $cbname = $cb2->elementName;
             $cb2->set(function ($y) use (&$var) {
                 $var = $y;
             }, [$x]);
@@ -144,7 +144,7 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
         $vp = \Phlex\Ui\VirtualPage::addTo($this->app);
 
         // simulate triggering
-        $_GET[$vp->name] = '1';
+        $_GET[$vp->elementName] = '1';
 
         $vp->set(function ($p) use (&$var) {
             $var = 25;
@@ -187,7 +187,7 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
         $vp = \Phlex\Ui\VirtualPage::addTo($this->app);
 
         // simulate triggering
-        $_GET[$vp->name] = '1';
+        $_GET[$vp->elementName] = '1';
 
         $vp->set(\Closure::fromCallable([$this, 'callPull230']));
 

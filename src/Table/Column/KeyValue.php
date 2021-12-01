@@ -54,6 +54,6 @@ class KeyValue extends Table\Column
      */
     public function getHtmlTags(Model $row, $field)
     {
-        return [$field->short_name => $field->getValueType()->getLabel($field->get())];
+        return [$field->elementId => $field->getValueType()->getLabel($field->get())];
     }
 }

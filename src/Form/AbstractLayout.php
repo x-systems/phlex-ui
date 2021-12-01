@@ -83,7 +83,7 @@ abstract class AbstractLayout extends \Phlex\Ui\View
 
     protected function doAddControl($decorator, $field)
     {
-        return $this->addView($decorator, $this->template->hasTag($field->short_name) ? $field->short_name : null);
+        return $this->addView($decorator, $this->template->hasTag($field->elementId) ? $field->elementId : null);
     }
 
     /**
@@ -140,9 +140,9 @@ abstract class AbstractLayout extends \Phlex\Ui\View
             $field = $model->getField($fieldName);
 
             if ($field->isEditable()) {
-                $controls[] = [$field->short_name];
+                $controls[] = [$field->elementId];
             } elseif ($field->isVisible()) {
-                $controls[] = [$field->short_name, ['readonly' => true]];
+                $controls[] = [$field->elementId, ['readonly' => true]];
             }
         }
 

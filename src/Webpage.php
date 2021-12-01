@@ -294,13 +294,14 @@ class Webpage extends View
     {
         // Set our exception handler
         if ($this->catch_exceptions) {
-            set_exception_handler(\Closure::fromCallable([$this, 'caughtException']));
-            set_error_handler(
-                static function (int $severity, string $msg, string $file, int $line): bool {
-                        throw new \ErrorException($msg, 0, $severity, $file, $line);
-                    },
-                \E_ALL
-            );
+            (new \Whoops\Run())->register();
+//             set_exception_handler(\Closure::fromCallable([$this, 'caughtException']));
+//             set_error_handler(
+//                 static function (int $severity, string $msg, string $file, int $line): bool {
+//                         throw new \ErrorException($msg, 0, $severity, $file, $line);
+//                     },
+//                 \E_ALL
+//             );
         }
     }
 
@@ -1112,8 +1113,8 @@ class Webpage extends View
         $modals = [];
         foreach ($this->elements as $view) {
             if ($view instanceof Modal) {
-                $modals[$view->name]['html'] = $view->getHtml();
-                $modals[$view->name]['js'] = $view->getJsRenderActions();
+                $modals[$view->elementName]['html'] = $view->getHtml();
+                $modals[$view->elementName]['js'] = $view->getJsRenderActions();
             }
         }
 

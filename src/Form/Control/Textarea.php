@@ -24,7 +24,7 @@ class Textarea extends Input
         return Webpage::getTag(
             'textarea',
             array_merge([
-                'name' => $this->short_name,
+                'name' => $this->elementId,
                 'type' => $this->inputType,
                 'rows' => $this->rows,
                 'placeholder' => $this->placeholder,

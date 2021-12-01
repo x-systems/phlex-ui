@@ -135,5 +135,5 @@ $clock_style = [
 $clock->vue('my-clock', ['clock' => $clock_style], 'myClock');
 
 $btn = \Phlex\Ui\Button::addTo($webpage, ['Change Style']);
-$btn->on('click', $clock->jsEmitEvent($clock->name . '-clock-change-style'));
+$btn->on('click', $clock->jsEmitEvent($clock->elementName . '-clock-change-style'));
 \Phlex\Ui\View::addTo($webpage, ['element' => 'p', 'I am not part of the component but I can still change style using the eventBus.']);

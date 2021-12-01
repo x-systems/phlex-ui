@@ -13,16 +13,16 @@ $mySwitcherClass = get_class(new class() extends \Phlex\Ui\View {
     {
         parent::doInitialize();
 
-        \Phlex\Ui\Header::addTo($this, ['My name is ' . $this->name, 'red']);
+        \Phlex\Ui\Header::addTo($this, ['My name is ' . $this->elementName, 'red']);
 
         $buttons = \Phlex\Ui\View::addTo($this, ['ui' => 'basic buttons']);
         \Phlex\Ui\Button::addTo($buttons, ['Yellow'])->setAttribute('data-id', 'yellow');
         \Phlex\Ui\Button::addTo($buttons, ['Blue'])->setAttribute('data-id', 'blue');
         \Phlex\Ui\Button::addTo($buttons, ['Button'])->setAttribute('data-id', 'button');
 
-        $buttons->on('click', '.button', new \Phlex\Ui\JsReload($this, [$this->name => (new \Phlex\Ui\Jquery())->data('id')]));
+        $buttons->on('click', '.button', new \Phlex\Ui\JsReload($this, [$this->elementName => (new \Phlex\Ui\Jquery())->data('id')]));
 
-        switch ($this->getApp()->stickyGet($this->name)) {
+        switch ($this->getApp()->stickyGet($this->elementName)) {
             case 'yellow':
                 self::addTo(\Phlex\Ui\View::addTo($this, ['ui' => 'yellow segment']));
 

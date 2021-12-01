@@ -276,7 +276,7 @@ class Card extends View
         $btn = $this->addButton($button);
 
         $vp = VirtualPage::addTo($this)->set(function ($page) use ($executor, $action) {
-            $id = $this->stickyGet($this->name);
+            $id = $this->stickyGet($this->elementName);
 
             $page->add($executor = new $executor());
 
@@ -285,7 +285,7 @@ class Card extends View
             $executor->setAction($action);
         });
 
-        $btn->on('click', new JsModal($action->caption, $vp, [$this->name => (new Jquery())->parents('.atk-card')->data('id')]));
+        $btn->on('click', new JsModal($action->caption, $vp, [$this->elementName => (new Jquery())->parents('.atk-card')->data('id')]));
     }
 
     /**

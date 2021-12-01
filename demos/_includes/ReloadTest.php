@@ -11,9 +11,9 @@ class ReloadTest extends \Phlex\Ui\View
         parent::doInitialize();
 
         $label = \Phlex\Ui\Label::addTo($this, ['Testing...', 'detail' => '', 'red']);
-        $reload = new \Phlex\Ui\JsReload($this, [$this->name => 'ok']);
+        $reload = new \Phlex\Ui\JsReload($this, [$this->elementName => 'ok']);
 
-        if (isset($_GET[$this->name])) {
+        if (isset($_GET[$this->elementName])) {
             $label->class[] = 'green';
             $label->content = 'Reload success';
         } else {

@@ -51,7 +51,7 @@ class Checkbox extends Form\Control
         // workaround. Otherwise send boolean "true".
         if ($this->form) {
             $this->form->onHook(Form::HOOK_LOAD_POST, function ($form, &$post) {
-                $post[$this->field->short_name] = isset($post[$this->field->short_name]);
+                $post[$this->field->elementId] = isset($post[$this->field->elementId]);
             });
         }
     }

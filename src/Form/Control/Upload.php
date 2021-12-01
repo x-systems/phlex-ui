@@ -248,10 +248,10 @@ class Upload extends Input
 
         $this->js(true)->atkFileUpload([
             'uri' => $this->cb->getJsUrl(),
-            'action' => $this->action->name,
+            'action' => $this->action->elementName,
             'file' => ['id' => $this->fileId ?: $this->field->get(), 'name' => $this->getInputValue()],
             'hasFocus' => $this->hasFocusEnable,
-            'submit' => ($this->form->buttonSave) ? $this->form->buttonSave->name : null,
+            'submit' => ($this->form->buttonSave) ? $this->form->buttonSave->elementName : null,
         ]);
     }
 }

@@ -37,7 +37,7 @@ class NoValue extends Table\Column
         $actualValue = $field->get();
 
         if (empty($actualValue) || $actualValue === null) {
-            return [$field->short_name => $this->displayValue];
+            return [$field->elementId => $this->displayValue];
         }
 
         return parent::getHtmlTags($row, $field);

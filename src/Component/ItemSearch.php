@@ -60,7 +60,7 @@ class ItemSearch extends View
         parent::doInitialize();
 
         if (!$this->queryArg) {
-            $this->queryArg = $this->name;
+            $this->queryArg = $this->elementName;
         }
 
         if (!$this->q) {
@@ -98,13 +98,13 @@ class ItemSearch extends View
         // reloadId is the view id selector name that need to be reload.
         // this will be pass as get argument to __atk_reload.
         if ($this->reload instanceof View) {
-            $reloadId = $this->reload->name;
+            $reloadId = $this->reload->elementName;
         } else {
             $reloadId = $this->reload;
         }
 
         $this->js(true, (new JsVueService())->createAtkVue(
-            '#' . $this->name,
+            '#' . $this->elementName,
             'atk-item-search',
             [
                 'reload' => $reloadId,

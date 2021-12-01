@@ -51,7 +51,7 @@ $plane = \Phlex\Ui\View::addTo($webpage, ['template' => $planeTemplate]);
 \Phlex\Ui\View::addTo($webpage, ['ui' => 'segment', 'raised', 'element' => 'pre'])->set($plane->render());
 
 \Phlex\Ui\Header::addTo($webpage, ['Has a unique global identifier']);
-\Phlex\Ui\Label::addTo($webpage, ['Plane ID: ', 'detail' => $plane->name]);
+\Phlex\Ui\Label::addTo($webpage, ['Plane ID: ', 'detail' => $plane->elementName]);
 
 \Phlex\Ui\Header::addTo($webpage, ['Can interract with JavaScript actions']);
 \Phlex\Ui\Button::addTo($webpage, ['Hide plane', 'icon' => 'down arrow'])->on('click', $plane->js()->hide());
@@ -62,7 +62,7 @@ $plane = \Phlex\Ui\View::addTo($webpage, ['template' => $planeTemplate]);
 \Phlex\Ui\Header::addTo($webpage, ['Can be on a Virtual Page']);
 $vp = \Phlex\Ui\VirtualPage::addTo($webpage)->set(function ($page) use ($planeTemplate) {
     $plane = View::addTo($page, ['template' => $planeTemplate]);
-    \Phlex\Ui\Label::addTo($page, ['Plane ID: ', 'bottom attached', 'detail' => $plane->name]);
+    \Phlex\Ui\Label::addTo($page, ['Plane ID: ', 'bottom attached', 'detail' => $plane->elementName]);
 });
 
 \Phlex\Ui\Button::addTo($webpage, ['Show $plane in a dialog', 'icon' => 'clone'])->on('click', new \Phlex\Ui\JsModal('Plane Box', $vp));

@@ -29,7 +29,7 @@ trait HandlesTable
      */
     protected function getColumnRef(Table\Column $column): string
     {
-        return 'c_' . $column->short_name;
+        return 'c_' . $column->elementId;
     }
 
     /**
@@ -37,7 +37,7 @@ trait HandlesTable
      */
     protected function getColumnClass(Table\Column $column): string
     {
-        return '_' . $column->short_name . '_class';
+        return '_' . $column->elementId . '_class';
     }
 
     /**
@@ -45,6 +45,6 @@ trait HandlesTable
      */
     protected function getColumnStyle(Table\Column $column): string
     {
-        return '_' . $column->short_name . '_color_rating';
+        return '_' . $column->elementId . '_color_rating';
     }
 }

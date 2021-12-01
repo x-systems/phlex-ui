@@ -131,7 +131,7 @@ class TreeItemSelector extends Form\Control
     public function getInput()
     {
         return Webpage::getTag('input', [
-            'name' => $this->short_name,
+            'name' => $this->elementId,
             'type' => 'hidden',
             'value' => $this->getValue(),
             'readonly' => true,
@@ -156,7 +156,7 @@ class TreeItemSelector extends Form\Control
             [
                 'item' => ['id' => 'atk-root', 'nodes' => $this->treeItems],
                 'values' => [], // need empty for Vue reactivity.
-                'field' => $this->short_name,
+                'field' => $this->elementId,
                 'options' => [
                     'mode' => $this->allowMultiple ? 'multiple' : 'single',
                     'url' => $this->cb ? $this->cb->getJsUrl() : null,

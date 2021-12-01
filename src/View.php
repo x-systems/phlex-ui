@@ -291,7 +291,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
         parent::doInitialize();
 
         if ($this->id === null) {
-            $this->id = $this->name;
+            $this->id = $this->elementName;
         }
 
         if ($this->region && !$this->template && !$this->defaultTemplate && $this->issetOwner() && $this->getOwner()->template) {
@@ -737,7 +737,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
             'message' => 'Success',
             'atkjs' => $this->getJs($forceReturn),
             'html' => $this->renderTemplateToHtml($region),
-            'id' => $this->name,
+            'id' => $this->elementName,
         ];
     }
 
@@ -749,7 +749,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
      */
     public function getHtml()
     {
-        if (isset($_GET['__atk_reload']) && $_GET['__atk_reload'] === $this->name) {
+        if (isset($_GET['__atk_reload']) && $_GET['__atk_reload'] === $this->elementName) {
             $this->getApp()->terminateJson($this);
         }
 
@@ -868,7 +868,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
     public function vue($component, $initData = [], $componentDefinition = null, $selector = null)
     {
         if (!$selector) {
-            $selector = '#' . $this->name;
+            $selector = '#' . $this->elementName;
         }
 
         if ($componentDefinition) {
@@ -893,7 +893,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
      *
      * Note: In order to make sure your event is unique within atk, you can
      * use the view name in it.
-     *    $this->jsEmitEvent($this->name . '-my-event', $data)
+     *    $this->jsEmitEvent($this->elementName . '-my-event', $data)
      */
     public function jsEmitEvent(string $eventName, array $eventData = []): JsChain
     {
@@ -908,8 +908,8 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
      */
     public function jsGetStoreData()
     {
-        $data['local'] = json_decode($_GET[$this->name . '_local_store'] ?? $_POST[$this->name . '_local_store'] ?? 'null', true, 512, \JSON_THROW_ON_ERROR);
-        $data['session'] = json_decode($_GET[$this->name . '_session_store'] ?? $_POST[$this->name . '_session_store'] ?? 'null', true, 512, \JSON_THROW_ON_ERROR);
+        $data['local'] = json_decode($_GET[$this->elementName . '_local_store'] ?? $_POST[$this->elementName . '_local_store'] ?? 'null', true, 512, \JSON_THROW_ON_ERROR);
+        $data['session'] = json_decode($_GET[$this->elementName . '_session_store'] ?? $_POST[$this->elementName . '_session_store'] ?? 'null', true, 512, \JSON_THROW_ON_ERROR);
 
         return $data;
     }
@@ -923,7 +923,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
     {
         $type = $useSession ? 'session' : 'local';
 
-        if (!$name = $this->name) {
+        if (!$name = $this->elementName) {
             throw new Exception('View property name needs to be set.');
         }
 
@@ -947,7 +947,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
     {
         $type = $useSession ? 'session' : 'local';
 
-        if (!$name = $this->name) {
+        if (!$name = $this->elementName) {
             throw new Exception('View property name needs to be set.');
         }
 
@@ -1053,7 +1053,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
             }
 
             // create callback, that will include event as part of the full name
-            $this->addView($cb = new JsCallback(), ['desired_name' => $event]);
+            $this->addView($cb = new JsCallback(), ['desiredName' => $event]);
             if ($defaults['apiConfig'] ?? null) {
                 $cb->apiConfig = $defaults['apiConfig'];
             }
@@ -1071,11 +1071,11 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
             $ex = $action instanceof Model\UserAction ? $this->getExecutorFactory()->create($action, $this) : $action;
             if ($ex instanceof self && $ex instanceof UserAction\JsExecutorInterface) {
                 if (isset($arguments['id'])) {
-                    $arguments[$ex->name] = $arguments['id'];
+                    $arguments[$ex->elementName] = $arguments['id'];
                     unset($arguments['id']);
                 } elseif (isset($arguments[0])) {
                     // if id is not specify we assume arguments[0] is the model id.
-                    $arguments[$ex->name] = $arguments[0];
+                    $arguments[$ex->elementName] = $arguments[0];
                     unset($arguments[0]);
                 }
                 $ex_actions = $ex->jsExecute($arguments);

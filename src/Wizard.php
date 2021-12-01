@@ -66,7 +66,7 @@ class Wizard extends View
         parent::doInitialize();
 
         if (!$this->stepCallback) {
-            $this->stepCallback = Callback::addTo($this, ['urlTrigger' => $this->name]);
+            $this->stepCallback = Callback::addTo($this, ['urlTrigger' => $this->elementName]);
         }
 
         $this->currentStep = (int) ($this->stepCallback->getTriggeredValue() ?: 0);

@@ -60,7 +60,7 @@ $wizard->addStep(['Select Model', 'description' => '"Country" or "Stat"', 'icon'
     // should work after url() fix
     $grid->addDecorator('name', [\Phlex\Ui\Table\Column\Link::class, [], ['name']]);
 
-    //$t->addDecorator('name', [\Phlex\Ui\Table\Column\Link::class, [$wizard->stepCallback->name=>$wizard->currentStep], ['name']]);
+    //$t->addDecorator('name', [\Phlex\Ui\Table\Column\Link::class, [$wizard->stepCallback->elementName=>$wizard->currentStep], ['name']]);
 
     $wizard->buttonNext->addClass('disabled');
 });

@@ -56,7 +56,7 @@ class Crud extends Grid
         parent::doInitialize();
 
         if ($sortBy = $this->getSortBy()) {
-            $this->issetApp() ? $this->getApp()->stickyGet($this->name . '_sort') : $this->stickyGet($this->name . '_sort', $sortBy);
+            $this->issetApp() ? $this->getApp()->stickyGet($this->elementName . '_sort') : $this->stickyGet($this->elementName . '_sort', $sortBy);
         }
     }
 
@@ -73,7 +73,7 @@ class Crud extends Grid
                 $this->container->js(true, $item['item']->js()->off('click.atk_crud_item'));
                 $ex = $item['executor'];
                 if ($ex instanceof UserAction\JsExecutorInterface) {
-                    $ex->stickyGet($this->name . '_sort', $this->getSortBy());
+                    $ex->stickyGet($this->elementName . '_sort', $this->getSortBy());
                     $this->container->js(true, $item['item']->js()->on('click.atk_crud_item', new JsFunction($ex->jsExecute())));
                 }
             }
@@ -152,7 +152,7 @@ class Crud extends Grid
             foreach ($this->onActions as $onAction) {
                 $executor->onHook(UserAction\ModalExecutor::HOOK_STEP, function ($ex, $step, $form) use ($onAction, $action) {
                     $key = key($onAction);
-                    if ($key === $action->short_name && $step === 'fields') {
+                    if ($key === $action->elementId && $step === 'fields') {
                         return $onAction[$key]($form, $ex);
                     }
                 });
@@ -250,12 +250,12 @@ class Crud extends Grid
     protected function getExecutor(Model\UserAction $action)
     {
         // prioritize Crud addFields over action->fields for Model add action.
-        if ($action->short_name === 'add' && $this->addFields) {
+        if ($action->elementId === 'add' && $this->addFields) {
             $action->fields = $this->addFields;
         }
 
         // prioritize Crud editFields over action->fields for Model edit action.
-        if ($action->short_name === 'edit' && $this->editFields) {
+        if ($action->elementId === 'edit' && $this->editFields) {
             $action->fields = $this->editFields;
         }
 
@@ -269,9 +269,9 @@ class Crud extends Grid
      */
     private function _getReloadArgs()
     {
-        $args[$this->name . '_sort'] = $this->getSortBy();
+        $args[$this->elementName . '_sort'] = $this->getSortBy();
         if ($this->paginator) {
-            $args[$this->paginator->name] = $this->paginator->getCurrentPage();
+            $args[$this->paginator->elementName] = $this->paginator->getCurrentPage();
         }
 
         return $args;

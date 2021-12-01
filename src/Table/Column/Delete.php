@@ -18,7 +18,7 @@ class Delete extends Table\Column
 
         $this->vp = $this->table->addView(new \Phlex\Ui\CallbackLater());
         $this->vp->set(function () {
-            $this->table->model->load($_POST[$this->name])->delete();
+            $this->table->model->load($_POST[$this->elementName])->delete();
 
             $reload = $this->table->reload ?: $this->table;
 
@@ -28,14 +28,14 @@ class Delete extends Table\Column
 
     public function getDataCellTemplate(\Phlex\Data\Model\Field $field = null)
     {
-        $this->table->on('click', 'a.' . $this->short_name, null, ['confirm' => (new \Phlex\Ui\Jquery())->attr('title')])->atkAjaxec([
+        $this->table->on('click', 'a.' . $this->elementId, null, ['confirm' => (new \Phlex\Ui\Jquery())->attr('title')])->atkAjaxec([
             'uri' => $this->vp->getJsUrl(),
-            'uri_options' => [$this->name => $this->table->jsRow()->data('id')],
+            'uri_options' => [$this->elementName => $this->table->jsRow()->data('id')],
         ]);
 
         return Webpage::getTag(
             'a',
-            ['href' => '#', 'title' => 'Delete {$' . $this->table->model->titleKey . '}?', 'class' => $this->short_name],
+            ['href' => '#', 'title' => 'Delete {$' . $this->table->model->titleKey . '}?', 'class' => $this->elementId],
             [
                 ['i', ['class' => 'ui red trash icon'], ''],
                 'Delete',

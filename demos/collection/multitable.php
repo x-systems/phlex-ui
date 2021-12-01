@@ -23,14 +23,14 @@ $finderClass = get_class(new class() extends \Phlex\Ui\Columns {
         $table = \Phlex\Ui\Table::addTo($this->addColumn(), ['header' => false, 'very basic selectable'])->addStyle('cursor', 'pointer');
         $table->setModel($model, [$model->titleKey]);
 
-        $selections = explode(',', $_GET[$this->name] ?? '');
+        $selections = explode(',', $_GET[$this->elementName] ?? '');
 
         if (!empty($selections[0])) {
             $table->js(true)->find('tr[data-id=' . $selections[0] . ']')->addClass('active');
         }
 
         $path = [];
-        $jsReload = new \Phlex\Ui\JsReload($this, [$this->name => new \Phlex\Ui\JsExpression('[]+[]', [
+        $jsReload = new \Phlex\Ui\JsReload($this, [$this->elementName => new \Phlex\Ui\JsExpression('[]+[]', [
             $path ? (implode(',', $path) . ',') : '',
             new \Phlex\Ui\JsExpression('$(this).data("id")'),
         ])]);
@@ -61,7 +61,7 @@ $finderClass = get_class(new class() extends \Phlex\Ui\Columns {
                 $table->js(true)->find('tr[data-id=' . $selections[0] . ']')->addClass('active');
             }
 
-            $jsReload = new \Phlex\Ui\JsReload($this, [$this->name => new \Phlex\Ui\JsExpression('[]+[]', [
+            $jsReload = new \Phlex\Ui\JsReload($this, [$this->elementName => new \Phlex\Ui\JsExpression('[]+[]', [
                 $path ? (implode(',', $path) . ',') : '',
                 new \Phlex\Ui\JsExpression('$(this).data("id")'),
             ])]);

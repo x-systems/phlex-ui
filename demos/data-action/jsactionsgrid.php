@@ -50,7 +50,7 @@ $grid->addActionMenuItem($modelHeader);
 
 // Adding Model actions.
 foreach ($country->getUserActions(UserAction::APPLIES_TO_SINGLE_RECORD) as $action) {
-    if (in_array($action->short_name, ['add', 'edit', 'delete'], true)) {
+    if (in_array($action->elementId, ['add', 'edit', 'delete'], true)) {
         continue;
     }
     $grid->addExecutorMenuItem($executor = $webpage->getExecutorFactory()->create($action, $grid));

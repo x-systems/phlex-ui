@@ -146,7 +146,7 @@ class Lookup extends Input
         parent::doInitialize();
 
         $this->template->set([
-            'input_id' => $this->name . '-ac',
+            'input_id' => $this->elementName . '-ac',
             'placeholder' => $this->placeholder,
         ]);
 
@@ -282,7 +282,7 @@ class Lookup extends Input
                 ];
 
                 if ($row = $this->renderRow($form->model)) {
-                    $chain = new Jquery('#' . $this->name . '-ac');
+                    $chain = new Jquery('#' . $this->elementName . '-ac');
                     $chain->dropdown('set value', $row['value'])->dropdown('set text', $row['title']);
 
                     $ret[] = $chain;
@@ -360,7 +360,7 @@ class Lookup extends Input
     public function getInput()
     {
         return Webpage::getTag('input', array_merge([
-            'name' => $this->short_name,
+            'name' => $this->elementId,
             'type' => 'hidden',
             'id' => $this->id . '_input',
             'value' => $this->getValue(),
@@ -425,7 +425,7 @@ class Lookup extends Input
             ], $this->apiConfig['data'] ?? []);
         }
 
-        $chain = new Jquery('#' . $this->name . '-ac');
+        $chain = new Jquery('#' . $this->elementName . '-ac');
 
         $this->initDropdown($chain);
 

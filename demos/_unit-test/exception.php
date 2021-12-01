@@ -15,7 +15,7 @@ $cb = CallbackLater::addTo($webpage);
 $cb->setUrlTrigger('m_cb');
 
 $modal = \Phlex\Ui\Modal::addTo($webpage, ['cb' => $cb]);
-$modal->name = 'm_test';
+$modal->elementName = 'm_test';
 
 $modal->set(function ($m) {
     throw new \Exception('TEST!');

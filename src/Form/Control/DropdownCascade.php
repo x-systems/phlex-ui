@@ -41,7 +41,7 @@ class DropdownCascade extends Dropdown
             throw new Exception('cascadeFrom property should be an instance of ' . Form\Control::class);
         }
 
-        $this->cascadeControlValue = $_POST[$this->cascadeControl->name] ?? $this->cascadeControl->field->get();
+        $this->cascadeControlValue = $_POST[$this->cascadeControl->elementName] ?? $this->cascadeControl->field->get();
 
         $this->model = $this->cascadeControl->model ? $this->cascadeControl->model->ref($this->reference) : null;
 
@@ -61,7 +61,7 @@ class DropdownCascade extends Dropdown
             $this->js()->addClass('loading'),
         ];
 
-        $this->cascadeControl->onChange($expr, ['args' => [$this->cascadeControl->name => $this->cascadeControl->jsInput()->val()]]);
+        $this->cascadeControl->onChange($expr, ['args' => [$this->cascadeControl->elementName => $this->cascadeControl->jsInput()->val()]]);
     }
 
     /**

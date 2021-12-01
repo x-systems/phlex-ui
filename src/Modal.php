@@ -91,7 +91,7 @@ class Modal extends View
     public function enableCallback()
     {
         $this->cb_view = View::addTo($this);
-        $this->cb_view->stickyGet('__atk_m', $this->name);
+        $this->cb_view->stickyGet('__atk_m', $this->elementName);
         if (!$this->cb) {
             $this->cb = CallbackLater::addTo($this->cb_view);
         }

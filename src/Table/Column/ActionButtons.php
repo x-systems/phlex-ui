@@ -48,7 +48,7 @@ class ActionButtons extends Table\Column
      */
     public function addButton($button, $action = null, string $confirmMsg = '', $isDisabled = false)
     {
-        $name = $this->name . '_button_' . (count($this->buttons) + 1);
+        $name = $this->elementName . '_button_' . (count($this->buttons) + 1);
 
         if (!is_object($button)) {
             if (is_string($button)) {
@@ -99,10 +99,10 @@ class ActionButtons extends Table\Column
         $modal->observeChanges(); // adds scrollbar if needed
 
         $modal->set(function ($t) use ($callback) {
-            $callback($t, $this->getApp()->stickyGet($this->name));
+            $callback($t, $this->getApp()->stickyGet($this->elementName));
         });
 
-        return $this->addButton($button, $modal->show(array_merge([$this->name => $this->getOwner()->jsRow()->data('id')], $args)));
+        return $this->addButton($button, $modal->show(array_merge([$this->elementName => $this->getOwner()->jsRow()->data('id')], $args)));
     }
 
     public function getTag($position, $value, $attr = []): string

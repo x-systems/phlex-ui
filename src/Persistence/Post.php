@@ -21,13 +21,13 @@ class Post extends Data\Persistence\Array_
             }
 
             if ($field->getValueType() instanceof Data\Model\Field\Type\Boolean) {
-                $row[$key] = isset($_POST[$field->short_name]);
+                $row[$key] = isset($_POST[$field->elementId]);
 
                 continue;
             }
 
-            if (isset($_POST[$field->short_name])) {
-                $row[$key] = $_POST[$field->short_name];
+            if (isset($_POST[$field->elementId])) {
+                $row[$key] = $_POST[$field->elementId];
             }
         }
         $data = [$row];

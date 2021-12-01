@@ -133,7 +133,7 @@ class Accordion extends View
     {
         $idx = -1;
         foreach ($this->sections as $key => $accordion_section) {
-            if ($accordion_section->name === $section->name) {
+            if ($accordion_section->elementName === $section->elementName) {
                 $idx = $key;
 
                 break;

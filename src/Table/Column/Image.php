@@ -25,7 +25,7 @@ class Image extends Table\Column
      */
     public function getDataCellTemplate(\Phlex\Data\Model\Field $field = null)
     {
-        $caption = $field ? $field->getCaption() : $this->short_name;
+        $caption = $field ? $field->getCaption() : $this->elementId;
 
         return '<img src="' . parent::getDataCellTemplate($field) . '" alt="' . $caption . '" border="0" />';
     }

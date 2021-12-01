@@ -118,7 +118,7 @@ class CardDeck extends View
 
         if ($this->search !== false) {
             $right = View::addTo($this->menu, ['ui' => 'four wide column']);
-            $this->search = $right->addView(Factory::factory($this->search, ['context' => '#' . $this->container->name]));
+            $this->search = $right->addView(Factory::factory($this->search, ['context' => '#' . $this->container->elementName]));
             $this->search->reload = $this->container;
             $this->query = $this->getApp()->stickyGet($this->search->queryArg);
         }
@@ -306,7 +306,7 @@ class CardDeck extends View
     {
         $args = [];
         if ($this->paginator !== false) {
-            $args[$this->paginator->name] = $this->paginator->getCurrentPage();
+            $args[$this->paginator->elementName] = $this->paginator->getCurrentPage();
         }
         if ($this->search !== false) {
             $args[$this->search->queryArg] = $this->query;
@@ -384,7 +384,7 @@ class CardDeck extends View
             View::addTo($this, ['ui' => 'divider'], ['Divider']);
         }
 
-        if ($this->container->name === ($_GET['__atk_reload'] ?? null)) {
+        if ($this->container->elementName === ($_GET['__atk_reload'] ?? null)) {
             $this->applyReload();
         }
         parent::doRender();

@@ -42,7 +42,7 @@ $myFactory = get_class(new class() extends ExecutorFactory {
 
     protected function getCardButton($action, $type)
     {
-        return [Button::class, 'icon' => $this->actionIcon[$action->short_name]];
+        return [Button::class, 'icon' => $this->actionIcon[$action->elementId]];
     }
 });
 
@@ -55,7 +55,7 @@ $cardActions = Card::addTo($webpage, ['useLabel' => true, 'executorFactory' => n
 $cardActions->setModel($country);
 foreach ($country->getUserActions() as $action) {
     $showActions = ['callback', 'preview', 'edit_argument', 'edit_argument_prev', 'edit_iso', 'confirm', 'multi_step'];
-    if (in_array($action->short_name, $showActions, true)) {
+    if (in_array($action->elementId, $showActions, true)) {
         $cardActions->addClickAction($action);
     }
 }

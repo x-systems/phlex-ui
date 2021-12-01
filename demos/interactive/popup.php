@@ -30,18 +30,18 @@ $cartClass = get_class(new class() extends \Phlex\Ui\Lister {
         $this->items = $this->recall('items', []);
 
         // Clicking on any URL produced by this Lister will carry on an extra GET argument.
-        $this->stickyGet($this->name . '_remove', '1');
+        $this->stickyGet($this->elementName . '_remove', '1');
 
         // Set default description for our row template. Normally this is replaced by the 'descr' field
         // of a model, but we don't have it, so it will stay like this.
         $this->templateRow->set('descr', 'click on link to remove item');
 
         // We link to ourselves with this special GET argument to indicate that item must be removed.
-        if (isset($_GET[$this->name . '_remove'])) {
+        if (isset($_GET[$this->elementName . '_remove'])) {
             $this->removeItem($_GET['id']);
 
             // redirect again, since we don't want this to stay in the URL
-            $this->getApp()->redirect([$this->name . '_remove' => false]);
+            $this->getApp()->redirect([$this->elementName . '_remove' => false]);
         }
     }
 

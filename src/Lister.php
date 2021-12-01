@@ -139,7 +139,7 @@ class Lister extends View
         }
 
         // Generate template for data row
-        $this->templateRow->trySet('_id', $this->name);
+        $this->templateRow->trySet('_id', $this->elementName);
 
         // Iterate data rows
         $this->_rendered_rows_count = 0;

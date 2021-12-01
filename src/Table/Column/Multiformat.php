@@ -21,7 +21,7 @@ class Multiformat extends Table\Column
 
     public function getDataCellHtml(Model\Field $field = null, $extra_tags = [])
     {
-        return '{$c_' . $this->short_name . '}';
+        return '{$c_' . $this->elementId . '}';
     }
 
     public function __construct($callback)
@@ -46,7 +46,7 @@ class Multiformat extends Table\Column
         }
 
         // we need to smartly wrap things up
-        $name = $field->short_name;
+        $name = $field->elementId;
         $cell = null;
         $cnt = count($decorators);
         $td_attr = [];
@@ -90,6 +90,6 @@ class Multiformat extends Table\Column
 
         $val = $template->renderToHtml();
 
-        return ['c_' . $this->short_name => $val];
+        return ['c_' . $this->elementId => $val];
     }
 }

@@ -112,7 +112,7 @@ class Column
      */
     public function addPopup(Popup $popup = null, $icon = 'table-filter-off')
     {
-        $id = $this->name . '_ac';
+        $id = $this->elementName . '_ac';
 
         $popup = $this->table->getOwner()->addView($popup ?: [Popup::class])->setHoverable();
 
@@ -158,7 +158,7 @@ class Column
     {
         $this->headerActionTag = ['div',  ['class' => 'atk-table-dropdown'],
             [
-                ['i', ['id' => $this->name . '_ac', 'class' => $icon . ' icon'], ''],
+                ['i', ['id' => $this->elementName . '_ac', 'class' => $icon . ' icon'], ''],
             ],
         ];
     }
@@ -193,7 +193,7 @@ class Column
     public function setHeaderDropdown($items, string $icon = 'caret square down', string $menuId = null)
     {
         $this->hasHeaderAction = true;
-        $id = $this->name . '_ac';
+        $id = $this->elementName . '_ac';
         $this->headerActionTag = ['div',  ['class' => 'atk-table-dropdown'],
             [
                 [
@@ -334,25 +334,25 @@ class Column
         $class = 'atk-table-column-header';
 
         if ($this->hasHeaderAction) {
-            $attr['id'] = $this->name . '_th';
+            $attr['id'] = $this->elementName . '_th';
 
             // add the action tag to the caption
             $caption = [$this->headerActionTag, $caption];
         }
 
         if ($this->table->sortable) {
-            $attr['data-sort'] = $field->short_name;
+            $attr['data-sort'] = $field->elementId;
 
             if ($this->sortable) {
                 $attr['class'] = ['sortable'];
             }
 
             // If table is being sorted by THIS column, set the proper class
-            if ($this->table->sort_by === $field->short_name) {
+            if ($this->table->sort_by === $field->elementId) {
                 $class .= ' sorted ' . $this->table->sort_order;
 
                 if ($this->table->sort_order === 'ascending') {
-                    $attr['data-sort'] = '-' . $field->short_name;
+                    $attr['data-sort'] = '-' . $field->elementId;
                 } elseif ($this->table->sort_order === 'descending') {
                     $attr['data-sort'] = '';
                 }
@@ -411,10 +411,10 @@ class Column
     public function getDataCellTemplate(Model\Field $field = null)
     {
         if ($field) {
-            return '{$' . $field->short_name . '}';
+            return '{$' . $field->elementId . '}';
         }
 
-        return '{_$' . $this->short_name . '}';
+        return '{_$' . $this->elementId . '}';
     }
 
     /**

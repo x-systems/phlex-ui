@@ -138,7 +138,7 @@ class Link extends Table\Column
 
         $label = '';
         if ($this->use_label) {
-            $label = $field ? ('{$' . $field->short_name . '}') : '[Link]';
+            $label = $field ? ('{$' . $field->elementId . '}') : '[Link]';
         }
 
         $class = '';
@@ -146,7 +146,7 @@ class Link extends Table\Column
             $class = ' class="' . $this->class . '" ';
         }
 
-        return '<a href="{$c_' . $this->short_name . '}"' . $external . $class . $download . '>' . $icon . '' . $label . '</a>';
+        return '<a href="{$c_' . $this->elementId . '}"' . $external . $class . $download . '>' . $icon . '' . $label . '</a>';
     }
 
     public function getHtmlTags(Model $row, $field)
@@ -155,7 +155,7 @@ class Link extends Table\Column
         if ($this->url) {
             $rowValues = $row->encode($this->table);
 
-            return ['c_' . $this->short_name => $this->url->set($rowValues)->renderToHtml()];
+            return ['c_' . $this->elementId => $this->url->set($rowValues)->renderToHtml()];
         }
 
         $p = $this->page ?: [];
@@ -170,6 +170,6 @@ class Link extends Table\Column
             }
         }
 
-        return ['c_' . $this->short_name => $this->table->url($p)];
+        return ['c_' . $this->elementId => $this->table->url($p)];
     }
 }

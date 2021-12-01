@@ -40,7 +40,7 @@ class Status extends Table\Column
 
         $attr = $this->getTagAttributes('body');
 
-        $extra_tags = array_merge_recursive($attr, $extra_tags, ['class' => '{$_' . $field->short_name . '_status}']);
+        $extra_tags = array_merge_recursive($attr, $extra_tags, ['class' => '{$_' . $field->elementId . '_status}']);
 
         if (is_array($extra_tags['class'] ?? null)) {
             $extra_tags['class'] = implode(' ', $extra_tags['class']);
@@ -49,8 +49,8 @@ class Status extends Table\Column
         return Webpage::getTag(
             'td',
             $extra_tags,
-            [Webpage::getTag('i', ['class' => 'icon {$_' . $field->short_name . '_icon}'], '') .
-            ' {$' . $field->short_name . '}', ]
+            [Webpage::getTag('i', ['class' => 'icon {$_' . $field->elementId . '_icon}'], '') .
+            ' {$' . $field->elementId . '}', ]
         );
     }
 
@@ -89,8 +89,8 @@ class Status extends Table\Column
         }
 
         return [
-            '_' . $field->short_name . '_status' => $cl . ' single line',
-            '_' . $field->short_name . '_icon' => $ic,
+            '_' . $field->elementId . '_status' => $cl . ' single line',
+            '_' . $field->elementId . '_icon' => $ic,
         ];
     }
 }

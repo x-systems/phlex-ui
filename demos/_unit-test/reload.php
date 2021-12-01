@@ -14,7 +14,7 @@ require_once __DIR__ . '/../init-app.php';
 
 $v = View::addTo($webpage, ['ui' => 'segment']);
 $v->set('Test');
-$v->name = 'reload';
+$v->elementName = 'reload';
 
 $b = Button::addTo($webpage)->set('Reload');
 $b->on('click', new JsReload($v));

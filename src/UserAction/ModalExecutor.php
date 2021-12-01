@@ -134,8 +134,8 @@ class ModalExecutor extends Modal implements JsExecutorInterface
 
         $table_name = is_array($table) ? $getTableName($table) : $table;
 
-        $this->id = mb_strtolower($this->name . '_' . $table_name . '_' . $action->short_name);
-        $this->name = $this->id;
+        $this->id = mb_strtolower($this->elementName . '_' . $table_name . '_' . $action->elementId);
+        $this->elementName = $this->id;
 
         // Add buttons to modal for next and previous.
         $this->btns = (new View())->addStyle(['min-height' => '24px']);
@@ -161,7 +161,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
 
         // get necessary step need prior to execute action.
         if ($this->steps = $this->getSteps($action)) {
-            $this->title = $this->title ?? $action->getDescription();
+            $this->title ??= $action->getDescription();
 
             $this->btns->addView($this->execActionBtn = $this->getExecutorFactory()->createTrigger($action, $this->getExecutorFactory()::MODAL_BUTTON));
 
@@ -181,7 +181,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
      */
     public function executeModelAction()
     {
-        $id = $this->stickyGet($this->name);
+        $id = $this->stickyGet($this->elementName);
         if ($id && $this->action->appliesTo === Model\UserAction::APPLIES_TO_SINGLE_RECORD) {
             $this->action->setEntity($this->action->getEntitySet()->tryLoad($id));
         }
@@ -350,8 +350,8 @@ class ModalExecutor extends Modal implements JsExecutorInterface
         if ($prev = $this->getPreviousStep($this->step)) {
             $chain = $this->loader->jsLoad([
                 'step' => $prev,
-                $this->name => $this->action->getEntity()->getId(),
-            ], ['method' => 'post'], $this->loader->name);
+                $this->elementName => $this->action->getEntity()->getId(),
+            ], ['method' => 'post'], $this->loader->elementName);
 
             $modal->js(true, $this->prevStepBtn->js()->on('click', new JsFunction([$chain])));
         }
@@ -366,10 +366,10 @@ class ModalExecutor extends Modal implements JsExecutorInterface
                         $this->loader->jsLoad(
                             [
                                 'step' => 'final',
-                                $this->name => $this->action->getEntity()->getId(),
+                                $this->elementName => $this->action->getEntity()->getId(),
                             ],
                             ['method' => 'post'],
-                            $this->loader->name
+                            $this->loader->elementName
                         ),
                     ]
                 )
@@ -557,8 +557,8 @@ class ModalExecutor extends Modal implements JsExecutorInterface
                     $this->loader->jsAddStoreData($this->actionData, true),
                     $this->loader->jsLoad([
                         'step' => $this->getNextStep($step),
-                        $this->name => $this->action->getEntity()->getId(),
-                    ], ['method' => 'post'], $this->loader->name),
+                        $this->elementName => $this->action->getEntity()->getId(),
+                    ], ['method' => 'post'], $this->loader->elementName),
                 ];
             }
 
@@ -653,8 +653,8 @@ class ModalExecutor extends Modal implements JsExecutorInterface
         if ($prev = $this->getPreviousStep($step)) {
             $chain = $this->loader->jsLoad([
                 'step' => $prev,
-                $this->name => $this->action->getEntity()->getId(),
-            ], ['method' => 'post'], $this->loader->name);
+                $this->elementName => $this->action->getEntity()->getId(),
+            ], ['method' => 'post'], $this->loader->elementName);
 
             $view->js(true, $this->prevStepBtn->js()->on('click', new JsFunction([$chain])));
         }

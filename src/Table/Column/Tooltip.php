@@ -52,18 +52,18 @@ class Tooltip extends Table\Column
 
         $attr = $this->getTagAttributes('body');
 
-        $extra_tags = array_merge_recursive($attr, $extra_tags, ['class' => '{$_' . $field->short_name . '_tooltip}']);
+        $extra_tags = array_merge_recursive($attr, $extra_tags, ['class' => '{$_' . $field->elementId . '_tooltip}']);
 
         if (is_array($extra_tags['class'] ?? null)) {
             $extra_tags['class'] = implode(' ', $extra_tags['class']);
         }
 
         return Webpage::getTag('td', $extra_tags, [
-            ' {$' . $field->short_name . '}' . Webpage::getTag('span', [
-                'class' => 'ui icon link {$_' . $field->short_name . '_data_visible_class}',
-                'data-tooltip' => '{$_' . $field->short_name . '_data_tooltip}',
+            ' {$' . $field->elementId . '}' . Webpage::getTag('span', [
+                'class' => 'ui icon link {$_' . $field->elementId . '_data_visible_class}',
+                'data-tooltip' => '{$_' . $field->elementId . '_data_tooltip}',
             ], [
-                ['i', ['class' => 'ui icon {$_' . $field->short_name . '_icon}']],
+                ['i', ['class' => 'ui icon {$_' . $field->elementId . '_icon}']],
             ]),
         ]);
     }
@@ -75,16 +75,16 @@ class Tooltip extends Table\Column
 
         if ($tooltip === null || $tooltip === '') {
             return [
-                '_' . $field->short_name . '_data_visible_class' => 'transition hidden',
-                '_' . $field->short_name . '_data_tooltip' => '',
-                '_' . $field->short_name . '_icon' => '',
+                '_' . $field->elementId . '_data_visible_class' => 'transition hidden',
+                '_' . $field->elementId . '_data_tooltip' => '',
+                '_' . $field->elementId . '_icon' => '',
             ];
         }
 
         return [
-            '_' . $field->short_name . '_data_visible_class' => '',
-            '_' . $field->short_name . '_data_tooltip' => $tooltip,
-            '_' . $field->short_name . '_icon' => $this->icon,
+            '_' . $field->elementId . '_data_visible_class' => '',
+            '_' . $field->elementId . '_data_tooltip' => $tooltip,
+            '_' . $field->elementId . '_icon' => $this->icon,
         ];
     }
 }

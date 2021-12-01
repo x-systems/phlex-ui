@@ -56,7 +56,7 @@ class DemoLookup extends \Phlex\Ui\Form\Control\Lookup
                 ];
 
                 if ($row = $this->renderRow($form->model)) {
-                    $chain = new \Phlex\Ui\Jquery('#' . $this->name . '-ac');
+                    $chain = new \Phlex\Ui\Jquery('#' . $this->elementName . '-ac');
                     $chain->dropdown('set value', $row['value'])->dropdown('set text', $row['title']);
 
                     $ret[] = $chain;

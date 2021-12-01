@@ -85,7 +85,7 @@ class ActionMenu extends Table\Column
      */
     public function addActionMenuItem($item, $action = null, string $confirmMsg = '', $isDisabled = false)
     {
-        $name = $this->name . '_action_' . (count($this->items) + 1);
+        $name = $this->elementName . '_action_' . (count($this->items) + 1);
 
         if (!is_object($item)) {
             $item = Factory::factory([\Phlex\Ui\View::class], ['id' => false, 'ui' => 'item', 'content' => $item]);

@@ -32,7 +32,7 @@ class Checkbox extends Table\Column
     {
         parent::doInitialize();
         if (!$this->class) {
-            $this->class = 'cb_' . $this->short_name;
+            $this->class = 'cb_' . $this->elementId;
         }
     }
 

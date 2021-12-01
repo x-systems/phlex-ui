@@ -69,8 +69,8 @@ class ConfirmationExecutor extends Modal implements JsExecutorInterface
 
         $table_name = is_array($action->getEntitySet()->table) ? $getTableName($action->getEntitySet()->table) : $action->getEntitySet()->table;
 
-        $this->id = mb_strtolower($this->name . '_' . $table_name . '_' . $action->short_name);
-        $this->name = $this->id;
+        $this->id = mb_strtolower($this->elementName . '_' . $table_name . '_' . $action->elementId);
+        $this->elementName = $this->id;
 
         // Add buttons to modal for next and previous.
         $btns = (new View())->addStyle(['min-height' => '24px']);
@@ -113,7 +113,7 @@ class ConfirmationExecutor extends Modal implements JsExecutorInterface
         $this->action = $action;
         $this->afterActionInit($action);
 
-        $this->title = $this->title ?? $action->getDescription();
+        $this->title ??= $action->getDescription();
         $this->step = $this->stickyGet('step');
 
         $this->actionInitialized = true;
@@ -127,7 +127,7 @@ class ConfirmationExecutor extends Modal implements JsExecutorInterface
      */
     public function executeModelAction()
     {
-        $id = $this->stickyGet($this->name);
+        $id = $this->stickyGet($this->elementName);
         if ($id && $this->action->appliesTo === Model\UserAction::APPLIES_TO_SINGLE_RECORD) {
             $this->action->setEntity($this->action->getEntitySet()->tryLoad($id));
         }
@@ -169,7 +169,7 @@ class ConfirmationExecutor extends Modal implements JsExecutorInterface
                         $this->loader->jsLoad(
                             [
                                 'step' => 'exec',
-                                $this->name => $this->action->getEntity()->getId(),
+                                $this->elementName => $this->action->getEntity()->getId(),
                             ],
                             ['method' => 'post']
                         ),

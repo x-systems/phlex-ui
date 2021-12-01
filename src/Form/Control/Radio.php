@@ -39,7 +39,7 @@ class Radio extends Form\Control
         parent::doInitialize();
 
         $this->lister = Lister::addTo($this, [], ['Radio']);
-        $this->lister->templateRow->set('_name', $this->short_name);
+        $this->lister->templateRow->set('_name', $this->elementId);
     }
 
     protected function doRender(): void

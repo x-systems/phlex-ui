@@ -144,10 +144,10 @@ class Popup extends View
         }
 
         $this->popOptions = array_merge($this->popOptions, [
-            'popup' => '#' . $this->name,
+            'popup' => '#' . $this->elementName,
             'on' => $this->triggerOn,
             'position' => $this->position,
-            'target' => ($this->target) ? '#' . $this->target->name : false,
+            'target' => ($this->target) ? '#' . $this->target->elementName : false,
         ]);
     }
 
@@ -259,9 +259,9 @@ class Popup extends View
     {
         $name = $this->triggerBy;
         if (!is_string($this->triggerBy)) {
-            $name = '#' . $this->triggerBy->name;
+            $name = '#' . $this->triggerBy->elementName;
             if ($this->triggerBy instanceof Form\Control) {
-                $name = '#' . $this->triggerBy->name . '_input';
+                $name = '#' . $this->triggerBy->elementName . '_input';
             }
         }
         $chain = new Jquery($name);

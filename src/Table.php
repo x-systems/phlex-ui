@@ -274,7 +274,7 @@ class Table extends Lister
         if (!$cols) {
             foreach ($this->model->getFields() as $key => $field) {
                 if (!empty($this->columns[$key])) {
-                    $cols[] = $field->short_name;
+                    $cols[] = $field->elementId;
                 }
             }
         }
@@ -283,7 +283,7 @@ class Table extends Lister
         foreach ($cols as $colName) {
             $col = $this->getColumn($colName);
             if ($col) {
-                $pop = $col->addPopup(new Table\Column\FilterPopup(['field' => $this->model->getField($colName), 'reload' => $this->reload, 'colTrigger' => '#' . $col->name . '_ac']));
+                $pop = $col->addPopup(new Table\Column\FilterPopup(['field' => $this->model->getField($colName), 'reload' => $this->reload, 'colTrigger' => '#' . $col->elementName . '_ac']));
                 $pop->isFilterOn() ? $col->setHeaderPopupIcon('table-filter-on') : null;
                 // apply condition according to popup form.
                 $this->model = $pop->setFilterCondition($this->model);

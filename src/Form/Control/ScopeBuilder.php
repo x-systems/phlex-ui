@@ -323,7 +323,7 @@ class ScopeBuilder extends Control
 
         if ($this->form) {
             $this->form->onHook(\Phlex\Ui\Form::HOOK_LOAD_POST, function ($form, &$post) {
-                $key = $this->field->short_name;
+                $key = $this->field->elementId;
                 $post[$key] = $this->queryToScope($this->getApp()->decodeJson($post[$key] ?? '{}'));
             });
         }
@@ -391,13 +391,11 @@ class ScopeBuilder extends Control
             $type = $field->type;
         }
 
-        $rule = $this->getRule($type, array_merge([
-            'id' => $field->short_name,
+        $this->rules[] = $this->getRule($type, array_merge([
+            'id' => $field->elementId,
             'label' => $field->getCaption(),
             'options' => $this->options[strtolower((string) $type)] ?? [],
         ], $field->ui['scopebuilder'] ?? []), $field);
-
-        $this->rules[] = $rule;
 
         return $this;
     }
@@ -416,11 +414,11 @@ class ScopeBuilder extends Control
 
         if ($field->getReference() !== null) {
             $props['url'] = $this->dataCb->getUrl();
-            $props['reference'] = $field->short_name;
+            $props['reference'] = $field->elementId;
             $props['search'] = true;
         }
 
-        $props['placeholder'] = $props['placeholder'] ?? 'Select ' . $field->getCaption();
+        $props['placeholder'] ??= 'Select ' . $field->getCaption();
 
         return $props;
     }
@@ -468,7 +466,7 @@ class ScopeBuilder extends Control
             // add rules on all fields of the referenced model
             foreach ($theirModel->getFields() as $theirField) {
                 $theirField->ui['scopebuilder'] = [
-                    'id' => $reference->link . '/' . $theirField->short_name,
+                    'id' => $reference->link . '/' . $theirField->elementId,
                     'label' => $field->getCaption() . ' is set to record where ' . $theirField->getCaption(),
                 ];
 
@@ -556,9 +554,9 @@ class ScopeBuilder extends Control
                     'rules' => $this->rules,
                     'maxDepth' => $this->maxDepth,
                     'query' => $this->query,
-                    'name' => $this->short_name,
+                    'name' => $this->elementId,
                     'labels' => $this->labels ?? null,
-                    'form' => $this->form->formElement->name,
+                    'form' => $this->form->formElement->elementName,
                     'debug' => $this->options['debug'] ?? false,
                 ],
             ]
@@ -677,7 +675,7 @@ class ScopeBuilder extends Control
         if (is_string($condition->key)) {
             $rule = $condition->key;
         } elseif ($condition->key instanceof Field) {
-            $rule = $condition->key->short_name;
+            $rule = $condition->key->elementId;
         } else {
             throw new Exception('Unsupported scope key: ' . gettype($condition->key));
         }

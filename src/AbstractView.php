@@ -80,8 +80,8 @@ abstract class AbstractView
             $this->initDefaultApp();
         }
 
-        if ($this->name === null) {
-            $this->name = $this->defaultName;
+        if ($this->elementName === null) {
+            $this->elementName = $this->defaultName;
         }
 
         // add default objects

@@ -96,7 +96,7 @@ class Right extends View implements Loadable
         return $this->service()->openPanel([
             'triggered' => $jsTrigger ?? new Jquery(),
             'reloadArgs' => $args,
-            'openId' => $this->name,
+            'openId' => $this->elementName,
             'activeCSS' => $activeCss,
         ]);
     }
@@ -106,7 +106,7 @@ class Right extends View implements Loadable
      */
     public function jsPanelReload(array $args = []): JsExpression
     {
-        return $this->service()->reloadPanel($this->name, $args);
+        return $this->service()->reloadPanel($this->elementName, $args);
     }
 
     /**
@@ -114,7 +114,7 @@ class Right extends View implements Loadable
      */
     public function jsClose(): JsExpression
     {
-        return $this->service()->closePanel($this->name);
+        return $this->service()->closePanel($this->elementName);
     }
 
     /**
@@ -155,7 +155,7 @@ class Right extends View implements Loadable
      */
     public function jsDisplayWarning(bool $state = true): JsExpression
     {
-        $chain = new Jquery('#' . $this->name . ' ' . $this->warningSelector);
+        $chain = new Jquery('#' . $this->elementName . ' ' . $this->warningSelector);
 
         return $state ? $chain->addClass($this->warningTrigger) : $chain->removeClass($this->warningTrigger);
     }
@@ -167,7 +167,7 @@ class Right extends View implements Loadable
      */
     public function jsToggleWarning(): JsExpression
     {
-        return (new Jquery('#' . $this->name . ' ' . $this->warningSelector))->toggleClass($this->warningTrigger);
+        return (new Jquery('#' . $this->elementName . ' ' . $this->warningSelector))->toggleClass($this->warningTrigger);
     }
 
     /**
@@ -176,9 +176,9 @@ class Right extends View implements Loadable
     public function getPanelOptions(): array
     {
         $panel_options = [
-            'id' => $this->name,
+            'id' => $this->elementName,
             'loader' => ['selector' => '.ui.loader', 'trigger' => 'active'], // the css selector and trigger class to activate loader.
-            'modal' => $this->closeModal ? '#' . $this->closeModal->name : null,
+            'modal' => $this->closeModal ? '#' . $this->closeModal->elementName : null,
             'warning' => ['selector' => $this->warningSelector, 'trigger' => $this->warningTrigger],
             'visible' => 'atk-visible', // the triggering css class that will make this panel visible.
             'closeSelector' => $this->closeSelector, // the css selector to close this flyout.

@@ -182,8 +182,8 @@ class ColorRating extends Table\Column
 
     public function getTagAttributes($position, array $attr = []): array
     {
-        $attr['style'] = $attr['style'] ?? '';
-        $attr['style'] .= '{$_' . $this->short_name . '_color_rating}';
+        $attr['style'] ??= '';
+        $attr['style'] .= '{$_' . $this->elementId . '_color_rating}';
 
         return parent::getTagAttributes($position, $attr);
     }
@@ -194,7 +194,7 @@ class ColorRating extends Table\Column
             throw new Exception('ColorRating can be used only with model field');
         }
 
-        return $this->getTag('body', '{$' . $field->short_name . '}', $extra_tags);
+        return $this->getTag('body', '{$' . $field->elementId . '}', $extra_tags);
     }
 
     public function getHtmlTags(Model $row, $field)
@@ -211,7 +211,7 @@ class ColorRating extends Table\Column
         }
 
         return [
-            '_' . $this->short_name . '_color_rating' => 'background-color:' . $color . ';',
+            '_' . $this->elementId . '_color_rating' => 'background-color:' . $color . ';',
         ];
     }
 

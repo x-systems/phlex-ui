@@ -127,7 +127,7 @@ class Grid extends View
         $this->template->del('Container');
 
         if (!$this->sortTrigger) {
-            $this->sortTrigger = $this->name . '_sort';
+            $this->sortTrigger = $this->elementName . '_sort';
         }
 
         // if menu not disabled ot not already assigned as existing object
@@ -140,7 +140,7 @@ class Grid extends View
         if ($this->paginator !== false) {
             $seg = View::addTo($this->container, [], ['Paginator'])->addStyle('text-align', 'center');
             $this->paginator = $seg->addView(Factory::factory([Paginator::class, 'reload' => $this->container], $this->paginator));
-            $this->issetApp() ? $this->getApp()->stickyGet($this->paginator->name) : $this->stickyGet($this->paginator->name);
+            $this->issetApp() ? $this->getApp()->stickyGet($this->paginator->elementName) : $this->stickyGet($this->paginator->elementName);
         }
 
         $this->issetApp() ? $this->getApp()->stickyGet('_q') : $this->stickyGet('_q');
@@ -310,7 +310,7 @@ class Grid extends View
             'tableContainerHeight' => $containerHeight,
         ]);
         // adding a state context to js scroll plugin.
-        $options = array_merge(['stateContext' => '#' . $this->container->name], $options);
+        $options = array_merge(['stateContext' => '#' . $this->container->elementName], $options);
 
         return $this->addJsPaginator($ipp, $options, $container, $scrollRegion);
     }

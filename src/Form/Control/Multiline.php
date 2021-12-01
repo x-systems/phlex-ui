@@ -207,22 +207,22 @@ class Multiline extends Form\Control
 
         // load the data associated with this input and validate it.
         $this->form->onHook(Form::HOOK_LOAD_POST, function ($form, &$post) {
-            $this->rowData = $this->typeCastLoadValues($this->getApp()->decodeJson($_POST[$this->short_name]));
+            $this->rowData = $this->typeCastLoadValues($this->getApp()->decodeJson($_POST[$this->elementId]));
             if ($this->rowData) {
                 $this->rowErrors = $this->validate($this->rowData);
                 if ($this->rowErrors) {
-                    throw new Model\Field\ValidationException([$this->short_name => 'multiline error']);
+                    throw new Model\Field\ValidationException([$this->elementId => 'multiline error']);
                 }
             }
 
             // remove __atml id from array field.
-            if ($this->form->model->getField($this->short_name)->type === 'array') {
+            if ($this->form->model->getField($this->elementId)->type === 'array') {
                 $rows = [];
                 foreach ($this->rowData as $cols) {
                     unset($cols['__atkml']);
                     $rows[] = $cols;
                 }
-                $post[$this->short_name] = json_encode($rows);
+                $post[$this->elementId] = json_encode($rows);
             }
         });
 
@@ -230,9 +230,9 @@ class Multiline extends Form\Control
         $this->form->onHook(Form::HOOK_DISPLAY_ERROR, function ($form, $fieldName, $str) {
             // When errors are coming from this Multiline field, then notify Multiline component about them.
             // Otherwise use normal field error.
-            if ($fieldName === $this->short_name) {
+            if ($fieldName === $this->elementId) {
                 // multiline.js component listen to 'multiline-rows-error' event.
-                $jsError = [$this->jsEmitEvent($this->multiLine->name . '-multiline-rows-error', ['errors' => $this->rowErrors])];
+                $jsError = [$this->jsEmitEvent($this->multiLine->elementName . '-multiline-rows-error', ['errors' => $this->rowErrors])];
             } else {
                 $jsError = [$form->js()->form('add prompt', $fieldName, $str)];
             }
@@ -288,7 +288,7 @@ class Multiline extends Form\Control
                 $cols = [];
                 foreach ($this->rowFields as $fieldName) {
                     $field = $model->getField($fieldName);
-                    $value = $this->getApp()->ui_persistence->_typecastSaveField($field, $row->get($field->short_name));
+                    $value = $this->getApp()->ui_persistence->_typecastSaveField($field, $row->get($field->elementId));
                     $cols[$fieldName] = $value;
                 }
                 $rows[] = $cols;
@@ -452,7 +452,7 @@ class Multiline extends Form\Control
     public function getFieldDef(Model\Field $field): array
     {
         return [
-            'name' => $field->short_name,
+            'name' => $field->elementId,
             'definition' => $this->getComponentDefinition($field),
             'cellProps' => $this->getSuiTableCellProps($field),
             'caption' => $field->getCaption(),
@@ -546,13 +546,13 @@ class Multiline extends Form\Control
 
         if ($field->getReference() !== null) {
             $props['config']['url'] = $this->dataCb->getUrl();
-            $props['config']['reference'] = $field->short_name;
+            $props['config']['reference'] = $field->elementId;
             $props['config']['search'] = true;
         }
 
-        $props['config']['placeholder'] = $props['config']['placeholder'] ?? 'Select ' . $field->getCaption();
+        $props['config']['placeholder'] ??= 'Select ' . $field->getCaption();
 
-        $this->valuePropsBinding[$field->short_name] = [__CLASS__, 'setLookupOptionValue'];
+        $this->valuePropsBinding[$field->elementId] = [__CLASS__, 'setLookupOptionValue'];
 
         return $props;
     }
@@ -571,7 +571,7 @@ class Multiline extends Form\Control
                 'value' => $value,
             ];
             foreach ($this->fieldDefs as $key => $component) {
-                if ($component['name'] === $field->short_name) {
+                if ($component['name'] === $field->elementId) {
                     $this->fieldDefs[$key]['definition']['componentProps']['optionalValue'] =
                         isset($this->fieldDefs[$key]['definition']['componentProps']['optionalValue'])
                         ? array_merge($this->fieldDefs[$key]['definition']['componentProps']['optionalValue'], [$option])
@@ -668,9 +668,9 @@ class Multiline extends Form\Control
             'atk-multiline',
             [
                 'data' => [
-                    'formName' => $this->form->formElement->name,
+                    'formName' => $this->form->formElement->elementName,
                     'inputValue' => $inputValue,
-                    'inputName' => $this->short_name,
+                    'inputName' => $this->elementId,
                     'fields' => $this->fieldDefs,
                     'url' => $this->renderCallback->getJsUrl(),
                     'eventFields' => $this->eventFields,
@@ -774,7 +774,7 @@ class Multiline extends Form\Control
 
         foreach ($this->getExpressionFields($model) as $k => $field) {
             if (!is_callable($field->expr)) {
-                $dummyFields[$k]['name'] = $field->short_name;
+                $dummyFields[$k]['name'] = $field->elementId;
                 $dummyFields[$k]['expr'] = $this->getDummyExpression($field, $model);
             }
         }
@@ -809,7 +809,7 @@ class Multiline extends Form\Control
     {
         $fields = [];
         foreach ($model->getFields() as $field) {
-            if (!$field instanceof Sql\Field\Expression || !in_array($field->short_name, $this->rowFields, true)) {
+            if (!$field instanceof Sql\Field\Expression || !in_array($field->elementId, $this->rowFields, true)) {
                 continue;
             }
 

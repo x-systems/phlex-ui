@@ -184,16 +184,16 @@ class Form extends View
     {
         parent::doInitialize();
 
-        $this->formElement = View::addTo($this, ['element' => 'form', 'short_name' => 'form'], ['FormElementOnly']);
+        $this->formElement = View::addTo($this, ['element' => 'form', 'elementId' => 'form'], ['FormElementOnly']);
 
         // Initialize layout, so when you call addControl / setModel next time, form will know
         // where to add your fields.
         $this->initLayout();
 
         // set css loader for this form
-        $this->setApiConfig(['stateContext' => '#' . $this->name]);
+        $this->setApiConfig(['stateContext' => '#' . $this->elementName]);
 
-        $this->cb = $this->addView(new JsCallback(), ['desired_name' => 'submit']);
+        $this->cb = $this->addView(new JsCallback(), ['desiredName' => 'submit']);
     }
 
     /**
@@ -218,14 +218,14 @@ class Form extends View
         }
 
         // allow to submit by pressing an enter key when child control is focused
-        $this->on('submit', new JsExpression('if (event.target === this) { $([name]).form("submit"); }', ['name' => '#' . $this->formElement->name]));
+        $this->on('submit', new JsExpression('if (event.target === this) { $([name]).form("submit"); }', ['name' => '#' . $this->formElement->elementName]));
 
         // Add save button in layout
         if ($this->buttonSave) {
             $this->buttonSave = $this->layout->addButton($this->buttonSave);
             $this->buttonSave->setAttribute('tabindex', 0);
             $this->buttonSave->on('click', $this->js(null, null, $this->formElement)->form('submit'));
-            $this->buttonSave->on('keypress', new JsExpression('if (event.keyCode === 13){ $([name]).form("submit"); }', ['name' => '#' . $this->formElement->name]));
+            $this->buttonSave->on('keypress', new JsExpression('if (event.keyCode === 13){ $([name]).form("submit"); }', ['name' => '#' . $this->formElement->elementName]));
         }
     }
 
@@ -538,7 +538,7 @@ class Form extends View
         $innerFormTags = ['button', 'datalist', 'fieldset', 'input', 'keygen', 'label', 'legend',
             'meter', 'optgroup', 'option', 'output', 'progress', 'select', 'textarea', ];
 
-        return preg_replace('~<(' . implode('|', $innerFormTags) . ')(?!\w| form=")~i', '$0 form="' . $this->formElement->name . '"', $html);
+        return preg_replace('~<(' . implode('|', $innerFormTags) . ')(?!\w| form=")~i', '$0 form="' . $this->formElement->elementName . '"', $html);
     }
 
     /**
@@ -584,7 +584,7 @@ class Form extends View
         $this->on('change', 'input, textarea, select', $this->js()->form('remove prompt', new JsExpression('$(this).attr("name")')));
 
         if (!$this->canLeave) {
-            $this->js(true, (new JsChain('atk.formService'))->preventFormLeave($this->name));
+            $this->js(true, (new JsChain('atk.formService'))->preventFormLeave($this->elementName));
         }
     }
 

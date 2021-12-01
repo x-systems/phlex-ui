@@ -48,7 +48,7 @@ class Layout extends AbstractLayout
 
     protected function doAddControl($decorator, $field)
     {
-        return $this->addView($decorator, ['desired_name' => $field->short_name]);
+        return $this->addView($decorator, ['desiredName' => $field->elementId]);
     }
 
     protected function doInitialize(): void
@@ -225,8 +225,8 @@ class Layout extends AbstractLayout
                 $template->del('Hint');
             }
 
-            if ($this->template->hasTag($element->short_name)) {
-                $this->template->tryDangerouslySetHtml($element->short_name, $template->renderToHtml());
+            if ($this->template->hasTag($element->elementId)) {
+                $this->template->tryDangerouslySetHtml($element->elementId, $template->renderToHtml());
             } else {
                 $this->template->dangerouslyAppendHtml('Content', $template->renderToHtml());
             }

@@ -12,7 +12,7 @@ use Phlex\Ui\View;
 require_once __DIR__ . '/../init-app.php';
 
 $wizard = \Phlex\Ui\Wizard::addTo($webpage);
-$webpage->stickyGet($wizard->name);
+$webpage->stickyGet($wizard->elementName);
 
 $wizard->addStep('Define User Action', function ($page) {
     \Phlex\Ui\Header::addTo($page, ['What are User Actions?']);

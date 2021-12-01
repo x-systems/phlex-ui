@@ -92,7 +92,7 @@ class ExecutorFactory
      */
     public function registerExecutor(UserAction $action, $seed)
     {
-        $this->executorSeed[$this->getModelId($action)][$action->short_name] = $seed;
+        $this->executorSeed[$this->getModelId($action)][$action->elementId] = $seed;
     }
 
     /**
@@ -104,9 +104,9 @@ class ExecutorFactory
     public function registerTrigger(string $type, $seed, UserAction $action, bool $isSpecific = false)
     {
         if ($isSpecific) {
-            $this->triggerSeed[$type][$this->getModelId($action)][$action->short_name] = $seed;
+            $this->triggerSeed[$type][$this->getModelId($action)][$action->elementId] = $seed;
         } else {
-            $this->triggerSeed[$type][$action->short_name] = $seed;
+            $this->triggerSeed[$type][$action->elementId] = $seed;
         }
     }
 
@@ -124,11 +124,11 @@ class ExecutorFactory
     public function registerCaption(UserAction $action, string $caption, bool $isSpecific = false, string $type = null)
     {
         if ($isSpecific) {
-            $this->triggerCaption[$this->getModelId($action)][$action->short_name] = $caption;
+            $this->triggerCaption[$this->getModelId($action)][$action->elementId] = $caption;
         } elseif ($type) {
-            $this->triggerCaption[$type][$action->short_name] = $caption;
+            $this->triggerCaption[$type][$action->elementId] = $caption;
         } else {
-            $this->triggerCaption[$action->short_name] = $caption;
+            $this->triggerCaption[$action->elementId] = $caption;
         }
     }
 
@@ -160,7 +160,7 @@ class ExecutorFactory
             }
             $seed = $this->executorSeed[$requiredType];
         // check if executor is register for this model/action.
-        } elseif ($seed = $this->executorSeed[$this->getModelId($action)][$action->short_name] ?? null) {
+        } elseif ($seed = $this->executorSeed[$this->getModelId($action)][$action->elementId] ?? null) {
         } else {
             // if no type is register, determine executor to use base on action properties.
             if (is_callable($action->confirmation)) {
@@ -175,7 +175,7 @@ class ExecutorFactory
         $executor = Factory::factory($seed);
         if ($executor instanceof Modal) {
             // add modal to app->html for proper rendering on callback.
-            if (!isset($owner->getApp()->elements[$executor->short_name])) {
+            if (!isset($owner->getApp()->elements[$executor->elementId])) {
                 // very dirty hack, @TODO, attach modals in the standard render tree
                 // but only render the result to a different place/html DOM
                 $executor->viewForUrl = $owner;
@@ -196,8 +196,8 @@ class ExecutorFactory
     protected function createActionTrigger(UserAction $action, string $type = null): View
     {
         $viewType = array_merge(['default' => [$this, 'getDefaultTrigger']], $this->triggerSeed[$type] ?? []);
-        if ($seed = $viewType[$this->getModelId($action)][$action->short_name] ?? null) {
-        } elseif ($seed = $viewType[$action->short_name] ?? null) {
+        if ($seed = $viewType[$this->getModelId($action)][$action->elementId] ?? null) {
+        } elseif ($seed = $viewType[$action->elementId] ?? null) {
         } else {
             $seed = $viewType['default'];
         }
@@ -242,9 +242,9 @@ class ExecutorFactory
      */
     protected function getActionCaption(UserAction $action, string $type = null): string
     {
-        if ($caption = $this->triggerCaption[$type][$action->short_name] ?? null) {
-        } elseif ($caption = $this->triggerCaption[$this->getModelId($action)][$action->short_name] ?? null) {
-        } elseif ($caption = $this->triggerCaption[$action->short_name] ?? null) {
+        if ($caption = $this->triggerCaption[$type][$action->elementId] ?? null) {
+        } elseif ($caption = $this->triggerCaption[$this->getModelId($action)][$action->elementId] ?? null) {
+        } elseif ($caption = $this->triggerCaption[$action->elementId] ?? null) {
         } else {
             $caption = $action->getCaption();
         }

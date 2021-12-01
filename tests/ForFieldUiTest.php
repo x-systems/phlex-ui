@@ -6,6 +6,7 @@ namespace Phlex\Ui\Tests;
 
 use Phlex\Data\Model;
 use Phlex\Data\Persistence;
+use Phlex\Ui\Form;
 
 class MyTestModel extends Model
 {
@@ -15,7 +16,7 @@ class MyTestModel extends Model
 
         $this->addField('regular_field');
         $this->addField('just_for_data', ['never_persist' => true]);
-        $this->addField('no_persist_but_show_in_ui', ['never_persist' => true, 'ui' => ['editable' => true]]);
+        $this->addField('no_persist_but_show_in_ui', ['never_persist' => true, 'options' => [Form\Control::OPTION_SEED => ['editable' => true]]]);
     }
 }
 

@@ -29,7 +29,7 @@ class Tabs extends View
     public function addTab($name, \Closure $callback = null, $settings = [])
     {
         $item = $this->addTabMenuItem($name, $settings);
-        $sub = $this->addSubView($item->name);
+        $sub = $this->addSubView($item->elementName);
 
         // if there is callback action, then use VirtualPage
         if ($callback) {
@@ -53,7 +53,7 @@ class Tabs extends View
     public function addTabUrl($name, $url, $settings = [])
     {
         $item = $this->addTabMenuItem($name, $settings);
-        $this->addSubView($item->name);
+        $this->addSubView($item->elementName);
 
         $item->setPath($url);
     }
@@ -76,10 +76,10 @@ class Tabs extends View
 
         $tab = $this->addView(Factory::mergeSeeds(['class' => ['item'], 'settings' => $settings], $tab), 'Menu')
             ->setElement('a')
-            ->setAttribute('data-tab', $tab->name);
+            ->setAttribute('data-tab', $tab->elementName);
 
         if (empty($this->activeTabName)) {
-            $this->activeTabName = $tab->name;
+            $this->activeTabName = $tab->elementName;
         }
 
         return $tab;
