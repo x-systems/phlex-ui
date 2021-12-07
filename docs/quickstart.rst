@@ -164,10 +164,10 @@ single ToDo item::
 
 As you might have noted already, Persistence and Model are defined independently from each-other.
 
-Instantiate App using DiContainerTrait (Dependency Injection)
+Instantiate App using InjectableTrait (Dependency Injection)
 =============================================================
 
-Class App use `DiContainerTrait` which allow us to inject dependency directly in constructor::
+Class App use `InjectableTrait` which allow us to inject dependency directly in constructor::
 
     use Monolog\Logger;
     use Monolog\Handler\StreamHandler;

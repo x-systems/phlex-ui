@@ -9,7 +9,7 @@ namespace Phlex\Ui;
  */
 class JsNotify implements JsExpressionable
 {
-    use \Phlex\Core\DiContainerTrait;
+    use \Phlex\Core\InjectableTrait;
 
     public $options = [];
     public $attachTo;

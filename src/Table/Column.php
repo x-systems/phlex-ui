@@ -20,8 +20,8 @@ use Phlex\Ui\Webpage;
 class Column
 {
     use \Phlex\Core\AppScopeTrait;
-    use \Phlex\Core\DiContainerTrait;
     use \Phlex\Core\InitializerTrait;
+    use \Phlex\Core\InjectableTrait;
     use \Phlex\Core\TrackableTrait;
 
     /** @const string */

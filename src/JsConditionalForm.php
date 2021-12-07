@@ -9,7 +9,7 @@ namespace Phlex\Ui;
  */
 class JsConditionalForm implements JsExpressionable
 {
-    use \Phlex\Core\DiContainerTrait;
+    use \Phlex\Core\InjectableTrait;
 
     // {{{ Properties
 

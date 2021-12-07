@@ -6,8 +6,8 @@ namespace Phlex\Ui;
 
 use Phlex\Core\AppScopeTrait;
 use Phlex\Core\ContainerTrait;
-use Phlex\Core\DiContainerTrait;
 use Phlex\Core\InitializerTrait;
+use Phlex\Core\InjectableTrait;
 use Phlex\Core\TrackableTrait;
 
 /**
@@ -23,8 +23,8 @@ abstract class AbstractView
     use ContainerTrait {
         add as doAdd;
     }
-    use DiContainerTrait;
     use InitializerTrait;
+    use InjectableTrait;
     use TrackableTrait;
     use View\StaticAddViewTrait;
 

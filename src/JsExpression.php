@@ -9,7 +9,7 @@ namespace Phlex\Ui;
  */
 class JsExpression implements JsExpressionable
 {
-    use \Phlex\Core\DiContainerTrait;
+    use \Phlex\Core\InjectableTrait;
 
     /**
      * @var string

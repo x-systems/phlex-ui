@@ -33,7 +33,7 @@ traits:
 
  - `TrackableTrait <https://agile-core.readthedocs.io/en/develop/container.html?highlight=trackable#trackable-trait>`_
  - `AppScopeTrait <https://agile-core.readthedocs.io/en/develop/appscope.html>`_
- - `DiContainerTrait <https://agile-core.readthedocs.io/en/develop/di.html>`_
+ - `InjectableTrait <https://agile-core.readthedocs.io/en/develop/di.html>`_
 
 To create a new callback, do this::
 

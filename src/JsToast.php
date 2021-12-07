@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui;
 
-use Phlex\Core\DiContainerTrait;
+use Phlex\Core\InjectableTrait;
 
 /**
  * Class JsToast
@@ -13,7 +13,7 @@ use Phlex\Core\DiContainerTrait;
  */
 class JsToast implements JsExpressionable
 {
-    use DiContainerTrait;
+    use InjectableTrait;
 
     /**
      * Various setting options as per Fomantic ui toast module.
