@@ -578,7 +578,6 @@ class Webpage extends View
     public function loadTemplate($filename)
     {
         $template = new $this->templateClass();
-        $template->setApp($this);
 
         if (in_array($filename[0], ['.', '/', '\\'], true) || strpos($filename, ':\\') !== false) {
             return $template->loadFromFile($filename);

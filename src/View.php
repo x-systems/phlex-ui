@@ -309,10 +309,6 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
             }
         }
 
-        if ($this->template && !$this->template->issetApp() && $this->issetApp()) {
-            $this->template->setApp($this->getApp());
-        }
-
         // add default objects
         foreach ($addLaterArgs as [$object, $region]) {
             $this->addView($object, $region);

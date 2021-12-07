@@ -10,8 +10,6 @@ use Phlex\Ui\HtmlTemplate\Value as HtmlValue;
 
 class HtmlTemplate
 {
-    use \Phlex\Core\AppScopeTrait;
-
     /** @const string */
     public const TOP_TAG = '_top';
 
@@ -28,11 +26,6 @@ class HtmlTemplate
         $this->loadFromString($template);
     }
 
-    public function _hasTag(string $tag): bool
-    {
-        return isset($this->tagTrees[$tag]);
-    }
-
     /**
      * @param string|array $tag
      */
@@ -41,7 +34,7 @@ class HtmlTemplate
         // check if all tags exist
         if (is_array($tag)) {
             foreach ($tag as $t) {
-                if (!$this->_hasTag($t)) {
+                if (!$this->hasTag($t)) {
                     return false;
                 }
             }
@@ -49,7 +42,7 @@ class HtmlTemplate
             return true;
         }
 
-        return $this->_hasTag($tag);
+        return isset($this->tagTrees[$tag]);
     }
 
     public function getTagTree(string $tag): TagTree
@@ -95,10 +88,6 @@ class HtmlTemplate
         // TODO prune unreachable nodes
         // $template->rebuildTagsIndex();
 
-        if ($this->issetApp()) {
-            $template->setApp($this->getApp());
-        }
-
         return $template;
     }
 
@@ -130,14 +119,6 @@ class HtmlTemplate
      */
     protected function _setOrAppend($tag, $value = null, bool $encodeHtml = true, bool $append = false, bool $throwIfNotFound = true): void
     {
-//         if ($tag instanceof Model) {
-//             if (!$encodeHtml) {
-//                 throw new Exception('HTML is not allowed to be dangerously set from Model');
-//             }
-
-//             $tag = $this->getApp()->ui_persistence->typecastSaveRow($tag, $tag->get());
-//         }
-
         // $tag passed as associative array [tag => value]
         // in this case we don't throw exception if tags don't exist
         if (is_array($tag) && $value === null) {

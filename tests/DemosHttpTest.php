@@ -20,7 +20,7 @@ class DemosHttpTest extends DemosTest
     /** @var bool set the webpage->call_exit in demo */
     protected $app_call_exit = true;
 
-    /** @var bool set the app->catch_exceptions in demo */
+    /** @var bool set the webpage->catch_exceptions in demo */
     protected $app_catch_exceptions = true;
 
     protected $host = '127.0.0.1';

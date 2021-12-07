@@ -6,7 +6,6 @@ namespace Phlex\Ui\Tests;
 
 use Phlex\Data\Model;
 use Phlex\Data\Persistence;
-use Phlex\Ui\Form;
 
 class MyTestModel extends Model
 {

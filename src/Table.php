@@ -464,7 +464,6 @@ class Table extends Lister
         $this->t_row_master->dangerouslySetHtml('cells', $this->getDataRowHtml());
         $this->t_row_master->set('_id', '{$_id}');
         $this->templateRow = new HtmlTemplate($this->t_row_master->renderToHtml());
-        $this->templateRow->setApp($this->getApp());
 
         // Iterate data rows
         $this->_rendered_rows_count = 0;

@@ -23,14 +23,12 @@ class CallbackLater extends Callback
      */
     public function set($fx = null, $args = null)
     {
-        $this->getApp(); // assert has App
+        $webpage = $this->getApp(); // assert has App
 
-        if ($this->getApp()->is_rendering) {
+        if ($webpage->is_rendering) {
             return parent::set($fx, $args);
         }
 
-        $this->getApp()->onHook(Webpage::HOOK_BEFORE_RENDER, function () use ($fx, $args) {
-            return parent::set($fx, $args);
-        });
+        $webpage->onHook(Webpage::HOOK_BEFORE_RENDER, fn () => parent::set($fx, $args));
     }
 }
