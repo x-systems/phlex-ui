@@ -488,7 +488,7 @@ class ScopeBuilder extends Control
 
         $options = $defaults['options'] ?? [];
 
-        // 'options' is atk specific so not necessary to pass it to VueQueryBuilder
+        // 'options' is phlex specific so not necessary to pass it to VueQueryBuilder
         unset($defaults['options']);
 
         // when $rule is callable
@@ -519,7 +519,7 @@ class ScopeBuilder extends Control
             $model->setLimit($limit);
 
             foreach ($model as $item) {
-                $items[$item->get($field->getReference()->getTheirFieldName())] = $item->get($model->titleKey);
+                $items[$item->get($field->getReference()->getTheirKey())] = $item->get($model->titleKey);
             }
         }
 
@@ -744,7 +744,7 @@ class ScopeBuilder extends Control
             case 'lookup':
                 $reference = $condition->getModel()->getField($condition->key)->getReference();
                 $model = $reference->refModel();
-                $fieldName = $reference->getTheirFieldName();
+                $fieldName = $reference->getTheirKey();
                 $rec = $model->tryLoadBy($fieldName, $value);
                 if ($rec->isLoaded()) {
                     $option = [

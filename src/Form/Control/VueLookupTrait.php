@@ -29,18 +29,17 @@ trait VueLookupTrait
      */
     public function outputApiResponse()
     {
-        $fieldName = $_GET['atk_vlookup_field'] ?? null;
-        $query = $_GET['atk_vlookup_q'] ?? null;
         $data = [];
-        if ($fieldName) {
-            $ref = $this->getModel()->getField($fieldName)->getReference();
-            $model = $ref->refModel();
-            $refFieldName = $ref->getTheirFieldName();
+        if ($key = $_GET['atk_vlookup_field'] ?? null) {
+            $query = $_GET['atk_vlookup_q'] ?? null;
+            $ref = $this->getModel()->getField($key)->getReference();
+            $theirModel = $ref->refModel();
+            $theirKey = $ref->getTheirKey();
             if (!empty($query)) {
-                $model->addCondition($model->titleKey, 'like', '%' . $query . '%');
+                $theirModel->addCondition($theirModel->titleKey, 'like', '%' . $query . '%');
             }
-            foreach ($model as $row) {
-                $data[] = ['key' => $row->get($refFieldName), 'text' => $row->getTitle(), 'value' => $row->get($refFieldName)];
+            foreach ($theirModel as $row) {
+                $data[] = ['key' => $row->get($theirKey), 'text' => $row->getTitle(), 'value' => $row->get($theirKey)];
             }
         }
 
