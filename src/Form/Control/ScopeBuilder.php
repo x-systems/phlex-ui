@@ -743,13 +743,11 @@ class ScopeBuilder extends Control
         switch ($type) {
             case 'lookup':
                 $reference = $condition->getModel()->getField($condition->key)->getReference();
-                $model = $reference->refModel();
-                $fieldName = $reference->getTheirKey();
-                $rec = $model->tryLoadBy($fieldName, $value);
-                if ($rec->isLoaded()) {
+                $entity = $reference->refModel()->tryLoadBy($reference->getTheirKey(), $value);
+                if ($entity->isLoaded()) {
                     $option = [
                         'key' => $value,
-                        'text' => $rec->get($model->titleKey),
+                        'text' => $entity->getTitle(),
                         'value' => $value,
                     ];
                 }

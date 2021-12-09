@@ -563,11 +563,11 @@ class Multiline extends Form\Control
     public function setLookupOptionValue(Model\Field $field, string $value)
     {
         $model = $field->getReference()->refModel();
-        $rec = $model->tryLoadBy($field->getReference()->getTheirKey(), $value);
-        if ($rec->isLoaded()) {
+        $entity = $model->tryLoadBy($field->getReference()->getTheirKey(), $value);
+        if ($entity->isLoaded()) {
             $option = [
                 'key' => $value,
-                'text' => $rec->get($model->titleKey),
+                'text' => $entity->getTitle(),
                 'value' => $value,
             ];
             foreach ($this->fieldDefs as $key => $component) {
