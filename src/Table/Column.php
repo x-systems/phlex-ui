@@ -297,7 +297,7 @@ class Column
             $attr['class'] = implode(' ', $attr['class']);
         }
 
-        return Webpage::getTag($position === 'body' ? 'td' : 'th', $attr, $value);
+        return Webpage::tag($position === 'body' ? 'td' : 'th', $attr, $value);
     }
 
     /**

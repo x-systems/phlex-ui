@@ -110,7 +110,7 @@ class Input extends Form\Control
      */
     public function getInput()
     {
-        return Webpage::getTag('input', array_merge([
+        return Webpage::tag('input', array_merge([
             'name' => $this->elementId,
             'type' => $this->inputType,
             'placeholder' => $this->placeholder,

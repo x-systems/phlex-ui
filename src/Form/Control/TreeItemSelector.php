@@ -130,7 +130,7 @@ class TreeItemSelector extends Form\Control
      */
     public function getInput()
     {
-        return Webpage::getTag('input', [
+        return Webpage::tag('input', [
             'name' => $this->elementId,
             'type' => 'hidden',
             'value' => $this->getValue(),

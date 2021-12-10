@@ -46,7 +46,7 @@ class Status extends Table\Column
             $extra_tags['class'] = implode(' ', $extra_tags['class']);
         }
 
-        return Webpage::getTag(
+        return Webpage::tag(
             'td',
             $extra_tags,
             [Webpage::getTag('i', ['class' => 'icon {$_' . $field->elementId . '_icon}'], '') .

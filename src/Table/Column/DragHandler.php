@@ -37,6 +37,6 @@ class DragHandler extends Table\Column
 
     public function getDataCellTemplate(\Phlex\Data\Model\Field $field = null)
     {
-        return Webpage::getTag($this->tag, ['class' => $this->class . ' atk-handle', 'style' => 'cursor:pointer; color: #bcbdbd']);
+        return Webpage::tag($this->tag, ['class' => $this->class . ' atk-handle', 'style' => 'cursor:pointer; color: #bcbdbd']);
     }
 }

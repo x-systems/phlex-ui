@@ -33,7 +33,7 @@ class Delete extends Table\Column
             'uri_options' => [$this->elementName => $this->table->jsRow()->data('id')],
         ]);
 
-        return Webpage::getTag(
+        return Webpage::tag(
             'a',
             ['href' => '#', 'title' => 'Delete {$' . $this->table->model->titleKey . '}?', 'class' => $this->elementId],
             [

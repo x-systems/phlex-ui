@@ -171,7 +171,7 @@ class Dropdown extends Input
      */
     public function getInput()
     {
-        return Webpage::getTag('input', array_merge([
+        return Webpage::tag('input', array_merge([
             'name' => $this->elementId,
             'type' => $this->inputType,
             'id' => $this->id . '_input',
