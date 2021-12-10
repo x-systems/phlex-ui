@@ -50,20 +50,22 @@ class Tooltip extends Table\Column
             throw new Exception('Tooltip can be used only with model field');
         }
 
+        $key = $field->getKey();
+
         $attr = $this->getTagAttributes('body');
 
-        $extra_tags = array_merge_recursive($attr, $extra_tags, ['class' => '{$_' . $field->elementId . '_tooltip}']);
+        $extra_tags = array_merge_recursive($attr, $extra_tags, ['class' => '{$_' . $key . '_tooltip}']);
 
         if (is_array($extra_tags['class'] ?? null)) {
             $extra_tags['class'] = implode(' ', $extra_tags['class']);
         }
 
-        return Webpage::getTag('td', $extra_tags, [
-            ' {$' . $field->elementId . '}' . Webpage::getTag('span', [
-                'class' => 'ui icon link {$_' . $field->elementId . '_data_visible_class}',
-                'data-tooltip' => '{$_' . $field->elementId . '_data_tooltip}',
+        return Webpage::tag('td', $extra_tags, [
+            ' {$' . $key . '}' . Webpage::getTag('span', [
+                'class' => 'ui icon link {$_' . $key . '_data_visible_class}',
+                'data-tooltip' => '{$_' . $key . '_data_tooltip}',
             ], [
-                ['i', ['class' => 'ui icon {$_' . $field->elementId . '_icon}']],
+                ['i', ['class' => 'ui icon {$_' . $key . '_icon}']],
             ]),
         ]);
     }
@@ -73,18 +75,20 @@ class Tooltip extends Table\Column
         // @TODO remove popup tooltip when null
         $tooltip = $row->get($this->tooltip_field);
 
+        $key = $field->getKey();
+
         if ($tooltip === null || $tooltip === '') {
             return [
-                '_' . $field->elementId . '_data_visible_class' => 'transition hidden',
-                '_' . $field->elementId . '_data_tooltip' => '',
-                '_' . $field->elementId . '_icon' => '',
+                '_' . $key . '_data_visible_class' => 'transition hidden',
+                '_' . $key . '_data_tooltip' => '',
+                '_' . $key . '_icon' => '',
             ];
         }
 
         return [
-            '_' . $field->elementId . '_data_visible_class' => '',
-            '_' . $field->elementId . '_data_tooltip' => $tooltip,
-            '_' . $field->elementId . '_icon' => $this->icon,
+            '_' . $key . '_data_visible_class' => '',
+            '_' . $key . '_data_tooltip' => $tooltip,
+            '_' . $key . '_icon' => $this->icon,
         ];
     }
 }
