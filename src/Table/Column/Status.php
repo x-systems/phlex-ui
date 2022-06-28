@@ -49,7 +49,7 @@ class Status extends Table\Column
         return Webpage::tag(
             'td',
             $extra_tags,
-            [Webpage::getTag('i', ['class' => 'icon {$_' . $field->elementId . '_icon}'], '') .
+            [Webpage::tag('i', ['class' => 'icon {$_' . $field->elementId . '_icon}'], '') .
             ' {$' . $field->elementId . '}', ]
         );
     }

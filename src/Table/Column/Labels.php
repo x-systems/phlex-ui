@@ -41,7 +41,7 @@ class Labels extends Table\Column
             $id = $values[$id] ?? $id;
 
             if (!empty($id)) {
-                $labels[] = Webpage::getTag('div', ['class' => 'ui label'], $id);
+                $labels[] = Webpage::tag('div', ['class' => 'ui label'], $id);
             }
         }
 

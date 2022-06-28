@@ -129,7 +129,7 @@ class Country extends ModelWithPrefixedFields
         }
 
         // look if name is unique
-        $c = $this->getEntitySet()->tryLoadBy($this->key()->name, $this->name);
+        $c = $this->tryLoadBy($this->key()->name, $this->name);
         if ($c->isLoaded() && $c->getId() !== $this->getId()) {
             $errors[$this->key()->name] = 'Country name must be unique';
         }
@@ -157,6 +157,7 @@ class CountryLock extends Country
  * @property string    $client_name            @Phlex\Field()
  * @property string    $client_address         @Phlex\Field()
  * @property Country   $client_country_iso     @Phlex\RefOne()
+ * @property string    $client_country_iso_value     @Phlex\Field()
  * @property string    $client_country         @Phlex\Field()
  * @property bool      $is_commercial          @Phlex\Field()
  * @property string    $currency               @Phlex\Field()
@@ -194,7 +195,8 @@ class Stat extends ModelWithPrefixedFields
         $this->addField($this->key()->client_address, ['type' => 'text', 'options' => [Form\Control::OPTION_SEED => [Form\Control\Textarea::class, 'rows' => 4]]]);
 
         $this->hasOne($this->key()->client_country_iso, [
-            'model' => [Country::class],
+            'theirModel' => [Country::class],
+        	'ourKey' => $this->key()->client_country_iso_value,
             'theirKey' => Country::hint()->key()->iso,
             'type' => 'string',
             'options' => [
@@ -250,7 +252,8 @@ class Stat extends ModelWithPrefixedFields
  * @property bool   $is_folder        @Phlex\Field()
  * @property File   $SubFolder        @Phlex\RefMany()
  * @property int    $count            @Phlex\Field()
- * @property Folder $parent_folder_id @Phlex\RefOne()
+ * @property Folder $parent_folder    @Phlex\RefOne()
+ * @property int 	$parent_folder_id @Phlex\Field()
  */
 class File extends ModelWithPrefixedFields
 {
@@ -264,14 +267,14 @@ class File extends ModelWithPrefixedFields
         $this->addField($this->key()->type, ['caption' => 'MIME Type']);
         $this->addField($this->key()->is_folder, ['type' => 'boolean']);
 
-        $this->hasMany($this->key()->SubFolder, [
-            'model' => [self::class],
+        $this->withMany($this->key()->SubFolder, [
+            'theirModel' => [self::class],
             'theirKey' => self::hint()->key()->parent_folder_id,
         ])
             ->addField($this->key()->count, ['aggregate' => 'count', 'field' => $this->expr(['*'])]);
 
-        $this->hasOne($this->key()->parent_folder_id, [
-            'model' => [Folder::class],
+        $this->hasOne($this->key()->parent_folder, [
+            'theirModel' => [Folder::class],
         ])
             ->addTitle();
     }
@@ -294,7 +297,7 @@ class File extends ModelWithPrefixedFields
             }
 
             if ($name === 'src' || $name === 'demos' || $isSub) {
-                $entity = $this->getEntitySet(true)->createEntity();
+                $entity = $this->createEntity();
 
                 /*
                 // Disabling saving file in db
@@ -349,12 +352,12 @@ class Category extends ModelWithPrefixedFields
         parent::doInitialize();
         $this->addField($this->key()->name);
 
-        $this->hasMany($this->key()->SubCategories, [
-            'model' => [SubCategory::class],
+        $this->withMany($this->key()->SubCategories, [
+            'theirModel' => [SubCategory::class],
             'theirKey' => SubCategory::hint()->key()->product_category_id,
         ]);
-        $this->hasMany($this->key()->Products, [
-            'model' => [Product::class],
+        $this->withMany($this->key()->Products, [
+            'theirModel' => [Product::class],
             'theirKey' => Product::hint()->key()->product_category_id,
         ]);
     }
@@ -362,7 +365,8 @@ class Category extends ModelWithPrefixedFields
 
 /**
  * @property string   $name                @Phlex\Field()
- * @property Category $product_category_id @Phlex\RefOne()
+ * @property Category $product_category    @Phlex\RefOne()
+ * @property int 	  $product_category_id @Phlex\Field()
  * @property Product  $Products            @Phlex\RefMany()
  */
 class SubCategory extends ModelWithPrefixedFields
@@ -374,11 +378,11 @@ class SubCategory extends ModelWithPrefixedFields
         parent::doInitialize();
         $this->addField($this->key()->name);
 
-        $this->hasOne($this->key()->product_category_id, [
-            'model' => [Category::class],
+        $this->hasOne($this->key()->product_category, [
+            'theirModel' => [Category::class],
         ]);
-        $this->hasMany($this->key()->Products, [
-            'model' => [Product::class],
+        $this->withMany($this->key()->Products, [
+            'theirModel' => [Product::class],
             'theirKey' => Product::hint()->key()->product_sub_category_id,
         ]);
     }
@@ -387,8 +391,10 @@ class SubCategory extends ModelWithPrefixedFields
 /**
  * @property string      $name                    @Phlex\Field()
  * @property string      $brand                   @Phlex\Field()
- * @property Category    $product_category_id     @Phlex\RefOne()
- * @property SubCategory $product_sub_category_id @Phlex\RefOne()
+ * @property Category    $product_category     	  @Phlex\RefOne()
+ * @property int    	 $product_category_id     @Phlex\Field()
+ * @property SubCategory $product_sub_category	  @Phlex\RefOne()
+ * @property int 		 $product_sub_category_id @Phlex\Field()
  */
 class Product extends ModelWithPrefixedFields
 {
@@ -399,11 +405,11 @@ class Product extends ModelWithPrefixedFields
         parent::doInitialize();
         $this->addField($this->key()->name);
         $this->addField($this->key()->brand);
-        $this->hasOne($this->key()->product_category_id, [
-            'model' => [Category::class],
+        $this->hasOne($this->key()->product_category, [
+            'theirModel' => [Category::class],
         ])->addTitle();
-        $this->hasOne($this->key()->product_sub_category_id, [
-            'model' => [SubCategory::class],
+        $this->hasOne($this->key()->product_sub_category, [
+            'theirModel' => [SubCategory::class],
         ])->addTitle();
     }
 }

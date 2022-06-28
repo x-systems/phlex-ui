@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Form\Control;
 
 use Phlex\Data\Model;
+use Phlex\Data\Model\Field\Type\Selectable;
 use Phlex\Data\Model\Scope;
 use Phlex\Data\Model\Scope\Condition;
 use Phlex\Ui\Exception;
@@ -14,6 +15,8 @@ use Phlex\Ui\HtmlTemplate;
 class ScopeBuilder extends Control
 {
     use VueLookupTrait;
+
+    public const OPTION_PRESETS = self::class . '@presets';
 
     /** @var bool Do not render label for this input. */
     public $renderLabel = false;
@@ -383,9 +386,9 @@ class ScopeBuilder extends Control
      */
     protected function addFieldRule(Model\Field $field): self
     {
-        if ($field->enum || $field->values) {
+        if ($field->getValueType() instanceof Selectable) {
             $type = 'enum';
-        } elseif ($field->getReference() !== null) {
+        } elseif ($field instanceof Model\Field\Reference) {
             $type = 'lookup';
         } else {
             $type = $field->type;
@@ -395,7 +398,7 @@ class ScopeBuilder extends Control
             'id' => $field->elementId,
             'label' => $field->getCaption(),
             'options' => $this->options[strtolower((string) $type)] ?? [],
-        ], $field->ui['scopebuilder'] ?? []), $field);
+        ], $field->getOption(self::OPTION_PRESETS, [])), $field);
 
         return $this;
     }

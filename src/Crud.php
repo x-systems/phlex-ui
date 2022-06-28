@@ -87,7 +87,7 @@ class Crud extends Grid
      */
     public function setModel(Model $model, $fields = null): Model
     {
-        $model->assertIsEntitySet();
+        $model->assertNotEntity();
 
         if ($fields !== null) {
             $this->displayFields = $fields;

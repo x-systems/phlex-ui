@@ -67,7 +67,7 @@ class ConfirmationExecutor extends Modal implements JsExecutorInterface
             }
         };
 
-        $table_name = is_array($action->getEntitySet()->table) ? $getTableName($action->getEntitySet()->table) : $action->getEntitySet()->table;
+        $table_name = is_array($action->getModel()->table) ? $getTableName($action->getModel()->table) : $action->getModel()->table;
 
         $this->id = mb_strtolower($this->elementName . '_' . $table_name . '_' . $action->elementId);
         $this->elementName = $this->id;
@@ -129,7 +129,7 @@ class ConfirmationExecutor extends Modal implements JsExecutorInterface
     {
         $id = $this->stickyGet($this->elementName);
         if ($id && $this->action->appliesTo === Model\UserAction::APPLIES_TO_SINGLE_RECORD) {
-            $this->action->setEntity($this->action->getEntitySet()->tryLoad($id));
+            $this->action->setEntity($this->action->getModel()->tryLoad($id));
         }
 
         $this->loader->set(function ($modal) {
@@ -215,7 +215,7 @@ class ConfirmationExecutor extends Modal implements JsExecutorInterface
     protected function jsGetExecute($obj, $id): array
     {
         $success = $this->jsSuccess instanceof \Closure
-            ? ($this->jsSuccess)($this, $this->action->getEntitySet(), $id)
+            ? ($this->jsSuccess)($this, $this->action->getModel(), $id)
             : $this->jsSuccess;
 
         return [

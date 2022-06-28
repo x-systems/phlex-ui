@@ -84,8 +84,8 @@ $personClass = get_class(new class() extends \Phlex\Data\Model {
         $this->addField('name', ['required' => true]);
         $this->addField('surname', ['options' => [Form\Control::OPTION_SEED => ['placeholder' => 'e.g. Smith']]]);
         $this->addField('gender', ['type' => ['enum', 'values' => ['M', 'F']]]);
-        $this->hasOne('country_lookup_id', ['model' => [Country::class]]); // this works fast
-        $this->hasOne('country_dropdown_id', ['model' => [Country::class], 'options' => [Form\Control::OPTION_SEED => new Form\Control\Dropdown()]]); // this works slow
+        $this->hasOne('country_lookup_id', ['theirModel' => [Country::class]]); // this works fast
+        $this->hasOne('country_dropdown_id', ['theirModel' => [Country::class], 'options' => [Form\Control::OPTION_SEED => new Form\Control\Dropdown()]]); // this works slow
     }
 
     public function validate($intent = null): array

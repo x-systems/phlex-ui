@@ -62,9 +62,9 @@ class JsCallbackExecutor extends JsCallback implements ExecutorInterface
     {
         $this->set(function ($j) {
             // may be id is passed as 'id' or model->primaryKey within $post args.
-            $id = $_POST['c0'] ?? $_POST['id'] ?? $_POST[$this->action->getEntitySet()->primaryKey] ?? null;
+            $id = $_POST['c0'] ?? $_POST['id'] ?? $_POST[$this->action->getModel()->primaryKey] ?? null;
             if ($id && $this->action->appliesTo === Model\UserAction::APPLIES_TO_SINGLE_RECORD) {
-                $this->action->setEntity($this->action->getEntitySet()->tryLoad($id));
+                $this->action->setEntity($this->action->getModel()->tryLoad($id));
             }
 
             if ($errors = $this->_hasAllArguments()) {
@@ -77,7 +77,7 @@ class JsCallbackExecutor extends JsCallback implements ExecutorInterface
 
                 $return = $this->action->execute(...$args);
                 $success = $this->jsSuccess instanceof \Closure
-                    ? ($this->jsSuccess)($this, $this->action->getEntitySet(), $id, $return)
+                    ? ($this->jsSuccess)($this, $this->action->getModel(), $id, $return)
                     : $this->jsSuccess;
 
                 $js = $this->hook(BasicExecutor::HOOK_AFTER_EXECUTE, [$return, $id]) ?: $success ?: new JsToast('Success' . (is_string($return) ? (': ' . $return) : ''));

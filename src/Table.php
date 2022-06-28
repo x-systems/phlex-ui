@@ -426,7 +426,7 @@ class Table extends Lister
      */
     public function setModel(Model $model, $columns = null)
     {
-        $model->assertIsEntitySet();
+        $model->assertNotEntity();
 
         parent::setModel($model);
 
@@ -467,7 +467,7 @@ class Table extends Lister
 
         // Iterate data rows
         $this->_rendered_rows_count = 0;
-
+var_dump($this->model->toQuery()->getDebug());
         foreach ($this->model as $entity) {
             if ($this->hook(self::HOOK_BEFORE_ROW, [$entity]) === false) {
                 continue;

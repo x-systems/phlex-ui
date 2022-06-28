@@ -265,12 +265,12 @@ class ExecutorFactory
      */
     protected function getAddActionCaption(UserAction $action): string
     {
-        return 'Add ' . $action->getEntitySet()->caption ?? '';
+        return 'Add ' . $action->getModel()->caption ?? '';
     }
 
     // Generate id for a model user action.
     protected function getModelId(UserAction $action): string
     {
-        return strtolower(str_replace(' ', '_', $action->getEntitySet()->getCaption()));
+        return strtolower(str_replace(' ', '_', $action->getModel()->getCaption()));
     }
 }

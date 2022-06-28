@@ -21,10 +21,10 @@ $form = Form::addTo($webpage, ['segment']);
 $model = new \Phlex\Data\Model($webpage->db, ['table' => 'test']);
 
 // Without Lookup
-$model->hasOne('country1', ['model' => [Country::class]]);
+$model->hasOne('country1', ['theirModel' => [Country::class]]);
 
 // With Lookup
-$model->hasOne('country2', ['model' => [Country::class], 'options' => [
+$model->hasOne('country2', ['theirModel' => [Country::class], 'options' => [
     Form\Control::OPTION_SEED => [
         DemoLookup::class,
         'plus' => true,
