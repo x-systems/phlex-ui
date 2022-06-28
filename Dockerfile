@@ -5,7 +5,7 @@
 ## docker run --rm -p 80:80 -it atk4_ui_demo     ##
 ###################################################
 
-FROM php:8.0-apache
+FROM php:apache
 
 RUN apt-get update && apt-get install -y \
         libicu-dev git jq unzip npm \
