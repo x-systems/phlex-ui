@@ -1,7 +1,6 @@
 docs/build
 /build
 /vendor
-/composer.lock
 .idea
 nbproject
 .DS_Store
@@ -31,3 +30,4 @@ package-lock.json
 yarn.lock
 /coverage
 /demos/test/
+
