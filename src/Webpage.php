@@ -294,14 +294,13 @@ class Webpage extends View
     {
         // Set our exception handler
         if ($this->catch_exceptions) {
-            (new \Whoops\Run())->register();
-//             set_exception_handler(\Closure::fromCallable([$this, 'caughtException']));
-//             set_error_handler(
-//                 static function (int $severity, string $msg, string $file, int $line): bool {
-//                         throw new \ErrorException($msg, 0, $severity, $file, $line);
-//                     },
-//                 \E_ALL
-//             );
+            set_exception_handler(\Closure::fromCallable([$this, 'caughtException']));
+            set_error_handler(
+                static function (int $severity, string $msg, string $file, int $line): bool {
+                        throw new \ErrorException($msg, 0, $severity, $file, $line);
+                    },
+                \E_ALL
+            );
         }
     }
 
