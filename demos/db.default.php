@@ -8,11 +8,11 @@ namespace Phlex\Ui\Demos;
 //   1. copy this file to "db.php"
 //   2. uncomment the line below (and update the configuration if needed)
 //   3. remove the Sqlite code from the new file
-// $db = new \Phlex\Data\Persistence\Sql('mysql:dbname=atk4_test__ui;host=mysql', 'atk4_test', 'atk4_pass');
+// $db = \Phlex\Data\Persistence\Sql::connect('mysql:dbname=atk4_test__ui;host=mysql', 'atk4_test', 'atk4_pass');
 
 $sqliteFile = __DIR__ . '/_demo-data/db.sqlite';
 if (!file_exists($sqliteFile)) {
     throw new \Exception('Sqlite database does not exist, create it first.');
 }
-$db = new \Phlex\Data\Persistence\Sql('sqlite:' . $sqliteFile);
+$db = \Phlex\Data\Persistence\Sql::connect('sqlite:' . $sqliteFile);
 unset($sqliteFile);
