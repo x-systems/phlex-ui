@@ -18,7 +18,7 @@ require_once __DIR__ . '/../init-app.php';
 $container = \Phlex\Ui\View::addTo($webpage);
 
 $view = \Phlex\Ui\View::addTo($container, ['template' => new HtmlTemplate('
-{List}<div class="ui segment" style="height: 60px"><i class="{$atk_fp_country__iso} flag"></i> {$atk_fp_country__name}</div>{/}
+{List}<div class="ui segment" style="height: 60px"><i class="{$phlex_fp_country__iso} flag"></i> {$phlex_fp_country__name}</div>{/}
 {$Content}')]);
 
 $lister = \Phlex\Ui\Lister::addTo($view, [], ['List']);

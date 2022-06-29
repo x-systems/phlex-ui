@@ -34,7 +34,7 @@ class Centered extends \Phlex\Ui\Layout
             if (isset($this->getApp()->cdn['layout-logo'])) {
                 $this->image = $this->getApp()->cdn['layout-logo'];
             } else {
-                $this->image = $this->getApp()->cdn['atk'] . '/logo.png';
+                $this->image = $this->getApp()->cdn['phlex'] . '/logo.png';
             }
         }
 

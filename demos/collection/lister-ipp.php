@@ -20,7 +20,7 @@ require_once __DIR__ . '/../init-app.php'; // default lister
 // lister with custom template
 $view = \Phlex\Ui\View::addTo($webpage, ['template' => new HtmlTemplate('<div>
 <div class="ui header">Top 20 countries (alphabetically)</div>
-{List}<div class="ui icon label"><i class="{$atk_fp_country__iso} flag"></i> {$atk_fp_country__name}</div>{/}
+{List}<div class="ui icon label"><i class="{$phlex_fp_country__iso} flag"></i> {$phlex_fp_country__name}</div>{/}
 </div>')]);
 
 $lister = \Phlex\Ui\Lister::addTo($view, [], ['List']);
@@ -40,7 +40,7 @@ $lister->setModel(new Country($webpage->db))
 // empty lister with custom template
 $view = \Phlex\Ui\View::addTo($webpage, ['template' => new HtmlTemplate('<div>
 <div class="ui header">Empty lister with custom template</div>
-{List}<div class="ui icon label"><i class="{$atk_fp_country__iso} flag"></i> {$atk_fp_country__name}</div>{empty}no flags to show here{/}{/}
+{List}<div class="ui icon label"><i class="{$phlex_fp_country__iso} flag"></i> {$phlex_fp_country__name}</div>{empty}no flags to show here{/}{/}
 </div>')]);
 
 $lister = \Phlex\Ui\Lister::addTo($view, [], ['List']);
@@ -57,7 +57,7 @@ $container = \Phlex\Ui\View::addTo($webpage);
 
 $view = \Phlex\Ui\View::addTo($container, ['template' => new HtmlTemplate('<div>
 <ul>
-{List}<li class="ui icon label"><i class="{$atk_fp_country__iso} flag"></i>{$atk_fp_country__name}</li>{/}
+{List}<li class="ui icon label"><i class="{$phlex_fp_country__iso} flag"></i>{$phlex_fp_country__name}</li>{/}
 </ul>{$Content}</div>')]);
 
 $lister = \Phlex\Ui\Lister::addTo($view, [], ['List']);

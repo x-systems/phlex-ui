@@ -28,10 +28,10 @@ class ModelWithPrefixedFields extends Model
     private function prefixKey(string $key, bool $forActualName = false): string
     {
         if ($forActualName) {
-            $key = preg_replace('~^atk_fp_' . preg_quote($this->table, '~') . '__~', '', $key);
+            $key = preg_replace('~^phlex_fp_' . preg_quote($this->table, '~') . '__~', '', $key);
         }
 
-        return 'atk_' . ($forActualName ? 'a' : '') . 'fp_' . $this->table . '__' . $key;
+        return 'phlex_' . ($forActualName ? 'a' : '') . 'fp_' . $this->table . '__' . $key;
     }
 
     protected function createHintablePropsFromClassDoc(string $className): array
@@ -101,8 +101,8 @@ class Country extends ModelWithPrefixedFields
     protected function doInitialize(): void
     {
         parent::doInitialize();
-        $this->addField($this->key()->name, ['actual' => 'atk_afp_country__nicename', 'required' => true, 'type' => 'string']);
-        $this->addField($this->key()->sys_name, ['actual' => 'atk_afp_country__name', 'system' => true]);
+        $this->addField($this->key()->name, ['actual' => 'phlex_afp_country__nicename', 'required' => true, 'type' => 'string']);
+        $this->addField($this->key()->sys_name, ['actual' => 'phlex_afp_country__name', 'system' => true]);
 
         $this->addField($this->key()->iso, ['caption' => 'ISO', 'required' => true, 'type' => 'string', 'options' => [Table\Column::OPTION_SEED => ['sortable' => false]]]);
         $this->addField($this->key()->iso3, ['caption' => 'ISO3', 'required' => true, 'type' => 'string']);

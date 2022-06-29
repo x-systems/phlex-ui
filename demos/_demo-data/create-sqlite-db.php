@@ -19,7 +19,7 @@ class ImportModelWithPrefixedFields extends Model
 {
     private function prefixKey(string $key, bool $forActualName = false): string
     {
-        return 'atk_' . ($forActualName ? 'a' : '') . 'fp_' . $this->table . '__' . $key;
+        return 'phlex_' . ($forActualName ? 'a' : '') . 'fp_' . $this->table . '__' . $key;
     }
 
     public function addField($key, $seed = []): Model\Field

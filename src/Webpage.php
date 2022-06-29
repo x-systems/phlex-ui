@@ -30,7 +30,7 @@ class Webpage extends View
 
     /** @var array|false Location where to load JS/CSS files */
     public $cdn = [
-        'atk' => 'https://raw.githack.com/atk4/ui/develop/public',
+        'phlex' => '/public',
         'jquery' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1',
         'serialize-object' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-serialize-object/2.5.0',
         'semantic-ui' => 'https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.7',
@@ -40,7 +40,7 @@ class Webpage extends View
     public $defaultTemplate = 'webpage.html';
 
     /** @var string Version of Phlex UI */
-    public $version = '3.0-dev';
+    public $version = '3.0.x';
 
     /** @var string Name of application */
     public $title = 'Phlex UI - Untitled Application';
@@ -211,13 +211,13 @@ class Webpage extends View
         $this->requireCss($this->cdn['flatpickr'] . '/flatpickr.min.css');
 
         // Agile UI
-        $this->requireJs($this->cdn['atk'] . '/atkjs-ui.min.js');
-        $this->requireCss($this->cdn['atk'] . '/agileui.css');
+        $this->requireJs($this->cdn['phlex'] . '/atkjs-ui.min.js');
+        $this->requireCss($this->cdn['phlex'] . '/agileui.css');
 
         // Set js bundle dynamic loading path.
         $this->template->tryDangerouslySetHtml(
             'InitJsBundle',
-            (new JsExpression('window.__atkBundlePublicPath = [];', [$this->cdn['atk']]))->jsRender()
+            (new JsExpression('window.__atkBundlePublicPath = [];', [$this->cdn['phlex']]))->jsRender()
         );
     }
 

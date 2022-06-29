@@ -33,7 +33,7 @@ $wizard->addStep('User Interface', function ($page) {
             HTML
     );
 
-    $t->addParagraph('Your ATK code instead takes a more declarative approach. You work with things like:');
+    $t->addParagraph('Your Phlex code instead takes a more declarative approach. You work with things like:');
 
     $t->addHtml(
         <<< 'HTML'

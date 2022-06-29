@@ -12,7 +12,7 @@ use Phlex\Ui\UserAction\JsCallbackExecutor;
 require_once __DIR__ . '/../init-app.php';
 
 \Phlex\Ui\Header::addTo($webpage, [
-    'Extensions to ATK Data Actions',
+    'Extentions to Phlex Data Actions',
     'subHeader' => 'Model action can be trigger in various ways.',
 ]);
 

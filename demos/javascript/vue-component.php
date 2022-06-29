@@ -41,7 +41,7 @@ $subHeader = 'Searching will reload the list of countries below with matching re
 
 $model = new Country($webpage->db);
 
-$lister_template = new HtmlTemplate('<div id="{$_id}">{List}<div class="ui icon label"><i class="{$atk_fp_country__iso} flag"></i> {$atk_fp_country__name}</div>{$end}{/}</div>');
+$lister_template = new HtmlTemplate('<div id="{$_id}">{List}<div class="ui icon label"><i class="{$phlex_fp_country__iso} flag"></i> {$phlex_fp_country__name}</div>{$end}{/}</div>');
 
 $view = \Phlex\Ui\View::addTo($webpage);
 
