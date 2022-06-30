@@ -27,7 +27,7 @@ class PanelService {
    * Add a panel to this service and
    * initial panel setup.
    *
-   * Atk4/ui callback may call this on each callback so
+   * phlex/ui callback may call this on each callback so
    * we need to make sure it is not add multiple time.
    *
    * @param params
@@ -300,12 +300,12 @@ class PanelService {
     addClickAwayEvent(id) {
         const that = this;
         // clicking anywhere in main tag will close panel.
-        $('main').on('click.atkPanel', atk.debounce((evt) => {
+        $('main').on('click.phlexPanel', phlex.debounce((evt) => {
             that.closePanel(id);
         }, 250));
 
         // pressing esc key will close panel.
-        $(document).on('keyup.atkPanel', atk.debounce((evt) => {
+        $(document).on('keyup.phlexPanel', phlex.debounce((evt) => {
             if (evt.keyCode === 27) {
                 that.closePanel(id);
             }
@@ -316,8 +316,8 @@ class PanelService {
    * Remove click away and esc events.
    */
     removeClickAwayEvent() {
-        $('main').off('click.atkPanel');
-        $(document).off('keyup.atkPanel');
+        $('main').off('click.phlexPanel');
+        $(document).off('keyup.phlexPanel');
     }
 
     /**

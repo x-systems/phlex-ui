@@ -251,7 +251,7 @@ class Form extends View
      *
      * @return $this
      */
-    public function setGroupDisplayRules($rules = [], $selector = '.atk-form-group')
+    public function setGroupDisplayRules($rules = [], $selector = '.phlex-form-group')
     {
         if (is_object($selector)) {
             $selector = $selector->jsRender();
@@ -584,7 +584,7 @@ class Form extends View
         $this->on('change', 'input, textarea, select', $this->js()->form('remove prompt', new JsExpression('$(this).attr("name")')));
 
         if (!$this->canLeave) {
-            $this->js(true, (new JsChain('atk.formService'))->preventFormLeave($this->elementName));
+            $this->js(true, (new JsChain('phlex.formService'))->preventFormLeave($this->elementName));
         }
     }
 

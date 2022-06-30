@@ -30,8 +30,8 @@ trait VueLookupTrait
     public function outputApiResponse()
     {
         $data = [];
-        if ($key = $_GET['atk_vlookup_field'] ?? null) {
-            $query = $_GET['atk_vlookup_q'] ?? null;
+        if ($key = $_GET['phlex_vlookup_field'] ?? null) {
+            $query = $_GET['phlex_vlookup_q'] ?? null;
             $ref = $this->getModel()->getField($key)->getReference();
             $theirModel = $ref->refModel();
             $theirKey = $ref->getTheirKey();

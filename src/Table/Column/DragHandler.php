@@ -24,7 +24,7 @@ class DragHandler extends Table\Column
         if (!$this->class) {
             $this->class = 'content icon';
         }
-        $this->cb = \Phlex\Ui\JsSortable::addTo($this->table, ['handleClass' => 'atk-handle']);
+        $this->cb = \Phlex\Ui\JsSortable::addTo($this->table, ['handleClass' => 'phlex-handle']);
     }
 
     /**
@@ -37,6 +37,6 @@ class DragHandler extends Table\Column
 
     public function getDataCellTemplate(\Phlex\Data\Model\Field $field = null)
     {
-        return Webpage::tag($this->tag, ['class' => $this->class . ' atk-handle', 'style' => 'cursor:pointer; color: #bcbdbd']);
+        return Webpage::tag($this->tag, ['class' => $this->class . ' phlex-handle', 'style' => 'cursor:pointer; color: #bcbdbd']);
     }
 }

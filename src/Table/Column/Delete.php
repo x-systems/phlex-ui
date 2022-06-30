@@ -28,7 +28,7 @@ class Delete extends Table\Column
 
     public function getDataCellTemplate(\Phlex\Data\Model\Field $field = null)
     {
-        $this->table->on('click', 'a.' . $this->elementId, null, ['confirm' => (new \Phlex\Ui\Jquery())->attr('title')])->atkAjaxec([
+        $this->table->on('click', 'a.' . $this->elementId, null, ['confirm' => (new \Phlex\Ui\Jquery())->attr('title')])->phlexAjaxec([
             'uri' => $this->vp->getJsUrl(),
             'uri_options' => [$this->elementName => $this->table->jsRow()->data('id')],
         ]);

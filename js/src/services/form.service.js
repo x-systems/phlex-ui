@@ -17,8 +17,8 @@ class FormService {
             // A collection of jQuery form object where preventLeave is set.
             this.prevents = [];
             window.onbeforeunload = function (event) {
-                atk.formService.prevents.forEach((el) => {
-                    if (el.data('__atkCheckDirty') && el.data('isDirty')) {
+                phlex.formService.prevents.forEach((el) => {
+                    if (el.data('__phlexCheckDirty') && el.data('isDirty')) {
                         const message = 'unsaved';
                         if (event) {
                             event.returnValue = message;
@@ -46,7 +46,7 @@ class FormService {
    * Form onSuccess handler when submit.
    */
     onSuccess() {
-        atk.formService.clearDirtyForm($(this).attr('id'));
+        phlex.formService.clearDirtyForm($(this).attr('id'));
         return true;
     }
 
@@ -58,8 +58,8 @@ class FormService {
    */
     preventFormLeave(id) {
         const $form = $('#' + id);
-        $form.data('__atkCheckDirty', true);
-        $form.on('change.__atkCanLeave', 'input, textarea', () => {
+        $form.data('__phlexCheckDirty', true);
+        $form.on('change.__phlexCanLeave', 'input, textarea', () => {
             $form.data('isDirty', true);
         });
         this.prevents.push($form);

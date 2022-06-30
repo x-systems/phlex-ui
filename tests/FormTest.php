@@ -46,8 +46,8 @@ class FormTest extends \Phlex\Core\PHPUnit\TestCase
         $submit_called = false;
         $_POST = $post_data;
         // trigger callback
-        $_GET['atk_submit'] = 'ajax';
-        $_GET['__atk_callback'] = 'atk_submit';
+        $_GET['phlex_submit'] = 'ajax';
+        $_GET['__phlex_callback'] = 'phlex_submit';
 
         $this->f->onSubmit(function (Form $form) use (&$submit_called, $submit) {
             $submit_called = true;
@@ -61,13 +61,13 @@ class FormTest extends \Phlex\Core\PHPUnit\TestCase
 
         if ($check_expected_error) {
             $this->assertFalse($submit_called, 'Expected submission to fail, but it was successful!');
-            $this->assertNotSame('', $res['atkjs']); // will output useful error
-            $this->f_error = $res['atkjs'];
+            $this->assertNotSame('', $res['script']); // will output useful error
+            $this->f_error = $res['script'];
 
-            $check_expected_error($res['atkjs']);
+            $check_expected_error($res['script']);
         } else {
             $this->assertTrue($submit_called, 'Expected submission to be successful but it failed');
-            $this->assertSame('', $res['atkjs']); // will output useful error
+            $this->assertSame('', $res['script']); // will output useful error
         }
 
         $this->f = null;   // we shouldn't submit form twice!
@@ -147,7 +147,7 @@ class FormTest extends \Phlex\Core\PHPUnit\TestCase
         $m->addField('opt1', ['type' => ['enum', 'values' => $options]]);
         $m->addField('opt2', ['type' => ['enum', 'values' => $options]]);
         $m->addField('opt3', ['type' => ['enum', 'values' => $options], 'required' => true]);
-        //$m->addField('opt3_zerotest', ['values'=>$options, 'required'=>true]);
+        // $m->addField('opt3_zerotest', ['values'=>$options, 'required'=>true]);
         $m->addField('opt4', ['type' => ['enum', 'values' => $options], 'mandatory' => true]);
 
         $m = $m->createEntity();
@@ -164,7 +164,7 @@ class FormTest extends \Phlex\Core\PHPUnit\TestCase
 
             // value with '0' is valid selection
             // TODO: currently fails!! See https://github.com/atk4/ui/issues/781
-            //$this->assertFromControlNoErrors('opt3_zerotest');
+            // $this->assertFromControlNoErrors('opt3_zerotest');
 
             // mandatory will error during save(), but form does not care about it. This is normal
             // as there may be further changes to this field on beforeSave hook...

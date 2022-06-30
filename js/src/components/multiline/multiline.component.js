@@ -6,11 +6,11 @@ import multilineHeader from './multiline-header.component';
  *
  */
 export default {
-    name: 'atk-multiline',
+    name: 'phlex-multiline',
     template: `<div>
                 <sui-table v-bind="tableProp">
-                  <atk-multiline-header :fields="fieldData" :state="getMainToggleState" :errors="errors" :caption="caption"></atk-multiline-header>
-                  <atk-multiline-body @onTabLastRow="onTabLastRow" :fieldDefs="fieldData" :rowData="rowData" :deletables="getDeletables" :errors="errors"></atk-multiline-body>
+                  <phlex-multiline-header :fields="fieldData" :state="getMainToggleState" :errors="errors" :caption="caption"></phlex-multiline-header>
+                  <phlex-multiline-body @onTabLastRow="onTabLastRow" :fieldDefs="fieldData" :rowData="rowData" :deletables="getDeletables" :errors="errors"></phlex-multiline-body>
                   <sui-table-footer>
                     <sui-table-row>
                         <sui-table-header-cell/>
@@ -23,7 +23,7 @@ export default {
                     </sui-table-row>
                   </sui-table-footer>
                 </sui-table>
-                <div><input :form="form" :name="name" type="hidden" :value="value" ref="atkmlInput"></div>
+                <div><input :form="form" :name="name" type="hidden" :value="value" ref="phlexMultilineInput"></div>
              </div>`,
     props: {
         data: Object,
@@ -52,18 +52,18 @@ export default {
         };
     },
     components: {
-        'atk-multiline-body': multilineBody,
-        'atk-multiline-header': multilineHeader,
+        'phlex-multiline-body': multilineBody,
+        'phlex-multiline-header': multilineHeader,
     },
     mounted: function () {
         this.rowData = this.buildRowData(this.value);
         this.updateInputValue();
 
-        atk.eventBus.on(this.$root.$el.id + '-update-row', (payload) => {
+        phlex.eventBus.on(this.$root.$el.id + '-update-row', (payload) => {
             this.onUpdate(payload.rowId, payload.fieldName, payload.value);
         });
 
-        atk.eventBus.on(this.$root.$el.id + '-toggle-delete', (payload) => {
+        phlex.eventBus.on(this.$root.$el.id + '-toggle-delete', (payload) => {
             const idx = this.deletables.indexOf(payload.rowId);
             if (idx > -1) {
                 this.deletables.splice(idx, 1);
@@ -72,16 +72,16 @@ export default {
             }
         });
 
-        atk.eventBus.on(this.$root.$el.id + '-toggle-delete-all', (payload) => {
+        phlex.eventBus.on(this.$root.$el.id + '-toggle-delete-all', (payload) => {
             this.deletables = [];
             if (payload.isOn) {
                 this.rowData.forEach((row) => {
-                    this.deletables.push(row.__atkml);
+                    this.deletables.push(row.__phlex_multiline);
                 });
             }
         });
 
-        atk.eventBus.on(this.$root.$el.id + '-multiline-rows-error', (payload) => {
+        phlex.eventBus.on(this.$root.$el.id + '-multiline-rows-error', (payload) => {
             this.errors = { ...payload.errors };
         });
     },
@@ -96,29 +96,29 @@ export default {
             this.rowData.push(newRow);
             this.updateInputValue();
             if (this.data.afterAdd && typeof this.data.afterAdd === 'function') {
-                this.data.afterAdd(atk.utils.json().tryParse(this.value));
+                this.data.afterAdd(phlex.utils.json().tryParse(this.value));
             }
-            this.fetchExpression(newRow.__atkml);
+            this.fetchExpression(newRow.__phlex_multiline);
             this.fetchOnChangeAction();
         },
         onDelete: function () {
-            this.deletables.forEach((atkmlId) => {
-                this.deleteRow(atkmlId);
+            this.deletables.forEach((phlexMultilineId) => {
+                this.deleteRow(phlexMultilineId);
             });
             this.deletables = [];
             this.updateInputValue();
             this.fetchOnChangeAction();
             if (this.data.afterDelete && typeof this.data.afterDelete === 'function') {
-                this.data.afterDelete(atk.utils.json().tryParse(this.value));
+                this.data.afterDelete(phlex.utils.json().tryParse(this.value));
             }
         },
-        onUpdate: function (atkmlId, fieldName, value) {
-            this.updateFieldInRow(atkmlId, fieldName, value);
-            this.clearError(atkmlId, fieldName);
+        onUpdate: function (phlexMultilineId, fieldName, value) {
+            this.updateFieldInRow(phlexMultilineId, fieldName, value);
+            this.clearError(phlexMultilineId, fieldName);
             this.updateInputValue();
 
-            atk.debounce(() => {
-                this.fetchExpression(atkmlId);
+            phlex.debounce(() => {
+                this.fetchExpression(phlexMultilineId);
                 this.fetchOnChangeAction(fieldName);
             }, 300).call(this);
         },
@@ -131,30 +131,30 @@ export default {
             fields.forEach((field) => {
                 row[field.name] = field.default;
             });
-            row.__atkml = this.getUUID();
+            row.__phlex_multiline = this.getUUID();
 
             return row;
         },
-        deleteRow: function (atkmlId) {
-            this.rowData.splice(this.rowData.findIndex((row) => row.__atkml === atkmlId), 1);
-            delete this.errors[atkmlId];
+        deleteRow: function (phlexMultilineId) {
+            this.rowData.splice(this.rowData.findIndex((row) => row.__phlex_multiline === phlexMultilineId), 1);
+            delete this.errors[phlexMultilineId];
         },
         /**
          * Update the value of the field in rowData.
          */
-        updateFieldInRow: function (atkmlId, fieldName, value) {
+        updateFieldInRow: function (phlexMultilineId, fieldName, value) {
             this.rowData.forEach((row) => {
-                if (row.__atkml === atkmlId) {
+                if (row.__phlex_multiline === phlexMultilineId) {
                     row[fieldName] = value;
                 }
             });
         },
-        clearError: function (atkmlId, fieldName) {
-            if (atkmlId in this.errors) {
-                const errors = this.errors[atkmlId].filter((error) => error.name !== fieldName);
-                this.errors[atkmlId] = [...errors];
+        clearError: function (phlexMultilineId, fieldName) {
+            if (phlexMultilineId in this.errors) {
+                const errors = this.errors[phlexMultilineId].filter((error) => error.name !== fieldName);
+                this.errors[phlexMultilineId] = [...errors];
                 if (errors.length === 0) {
-                    delete this.errors[atkmlId];
+                    delete this.errors[phlexMultilineId];
                 }
             }
         },
@@ -169,9 +169,9 @@ export default {
         * Build rowData from json string.
          */
         buildRowData: function (jsonValue) {
-            const rows = atk.utils.json().tryParse(jsonValue, []);
+            const rows = phlex.utils.json().tryParse(jsonValue, []);
             rows.forEach((row) => {
-                row.__atkml = this.getUUID();
+                row.__phlex_multiline = this.getUUID();
             });
 
             return rows;
@@ -193,16 +193,16 @@ export default {
                     on: 'now',
                     url: this.data.url,
                     method: 'post',
-                    data: { __atkml_action: 'on-change', rows: this.value },
+                    data: { __phlex_multiline_action: 'on-change', rows: this.value },
                 });
             }
         },
         postData: async function (row) {
             const data = { ...row };
             const context = this.$refs.addBtn.$el;
-            data.__atkml_action = 'update-row';
+            data.__phlex_multiline_action = 'update-row';
             try {
-                return await atk.apiService.suiFetch(this.data.url, { data: data, method: 'post', stateContext: context });
+                return await phlex.apiService.suiFetch(this.data.url, { data: data, method: 'post', stateContext: context });
             } catch (e) {
                 console.error(e);
             }
@@ -210,27 +210,27 @@ export default {
         /**
          * Get expressions values from server.
          */
-        fetchExpression: async function (atkmlId) {
+        fetchExpression: async function (phlexMultilineId) {
             if (this.hasExpression()) {
-                const row = this.findRow(atkmlId);
+                const row = this.findRow(phlexMultilineId);
                 // server will return expression field - value if define.
                 if (row) {
                     const resp = await this.postData(row);
                     if (resp.expressions) {
                         const fields = Object.keys(resp.expressions);
                         fields.forEach((field) => {
-                            this.updateFieldInRow(atkmlId, field, resp.expressions[field]);
+                            this.updateFieldInRow(phlexMultilineId, field, resp.expressions[field]);
                         });
                         this.updateInputValue();
                     }
                 }
             }
         },
-        findRow: function (atkmlId) {
-            return this.rowData.find((row) => row.__atkml === atkmlId);
+        findRow: function (phlexMultilineId) {
+            return this.rowData.find((row) => row.__phlex_multiline === phlexMultilineId);
         },
         getInputElement: function () {
-            return this.$refs.atkmlInput;
+            return this.$refs.phlexMultilineInput;
         },
         /**
          * UUID v4 generator.

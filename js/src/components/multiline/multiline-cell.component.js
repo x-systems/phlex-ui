@@ -1,10 +1,10 @@
 import multilineReadOnly from './multiline-readonly.component';
 import multilineTextarea from './multiline-textarea.component';
-import atkDatePicker from '../share/atk-date-picker';
-import atkLookup from '../share/atk-lookup';
+import phlexDatePicker from '../share/phlex-date-picker';
+import phlexLookup from '../share/phlex-lookup';
 
 export default {
-    name: 'atk-multiline-cell',
+    name: 'phlex-multiline-cell',
     template: ` 
     <component :is="getComponent()"
         :fluid="true"  
@@ -17,10 +17,10 @@ export default {
         v-bind="getComponentProps()"></component>
   `,
     components: {
-        'atk-multiline-readonly': multilineReadOnly,
-        'atk-multiline-textarea': multilineTextarea,
-        'atk-date-picker': atkDatePicker,
-        'atk-lookup': atkLookup,
+        'phlex-multiline-readonly': multilineReadOnly,
+        'phlex-multiline-textarea': multilineTextarea,
+        'phlex-date-picker': phlexDatePicker,
+        'phlex-lookup': phlexLookup,
     },
     props: ['cellData', 'fieldValue'],
     data: function () {
@@ -36,7 +36,7 @@ export default {
             return this.cellData.definition.component;
         },
         getComponentProps: function () {
-            if (this.getComponent() === 'atk-multiline-readonly') {
+            if (this.getComponent() === 'phlex-multiline-readonly') {
                 return { readOnlyValue: this.fieldValue };
             }
             return this.cellData.definition.componentProps;

@@ -61,7 +61,7 @@ class Accordion extends View
         // if there is callback action, then use VirtualPage
         if ($callback) {
             $section->virtualPage = VirtualPage::addTo($section, ['ui' => '']);
-            $section->virtualPage->stickyGet('__atk-dyn-section', '1');
+            $section->virtualPage->stickyGet('__phlex-dyn-section', '1');
             $section->virtualPage->set($callback);
         }
 
@@ -148,7 +148,7 @@ class Accordion extends View
      */
     public function isDynamicSection(): bool
     {
-        return isset($_GET['__atk-dyn-section']);
+        return isset($_GET['__phlex-dyn-section']);
     }
 
     protected function doRender(): void

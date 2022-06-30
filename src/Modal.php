@@ -11,7 +11,7 @@ namespace Phlex\Ui;
  * $modal->show() is the triggered needed to actually display the modal.
  *
  * Modal can be use as a regular view, simply by adding other view to it.
- *  Message::addTo($modal, ['title'=>'Welcome to Agile Toolkit'])->text('Your text here');
+ *  Message::addTo($modal, ['title'=>'Welcome to Phlex UI'])->text('Your text here');
  *
  * Modal can add content dynamically via CallbackLater.
  *  $modal->set(function ($modal) {
@@ -49,7 +49,7 @@ class Modal extends View
      *
      * @var array
      */
-    public $contentCss = ['img', 'content', 'atk-dialog-content'];
+    public $contentCss = ['img', 'content', 'phlex-dialog-content'];
 
     /**
      * if true, the <div class="actions"> at the bottom of the modal is
@@ -86,12 +86,12 @@ class Modal extends View
      * Add View to be loaded in this modal and
      * attach CallbackLater to it.
      * The cb_view only will be loaded dynamically within modal
-     * div.atk-content.
+     * div.phlex-content.
      */
     public function enableCallback()
     {
         $this->cb_view = View::addTo($this);
-        $this->cb_view->stickyGet('__atk_m', $this->elementName);
+        $this->cb_view->stickyGet('__phlex_modal', $this->elementName);
         if (!$this->cb) {
             $this->cb = CallbackLater::addTo($this->cb_view);
         }

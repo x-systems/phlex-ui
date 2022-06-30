@@ -66,7 +66,7 @@ $myArray = [
 $table = \Phlex\Ui\Table::addTo($webpage);
 $table->setSource($myArray, ['name']);
 
-//$table->addColumn('name');
+// $table->addColumn('name');
 $table->addColumn('surname', [Table\Column\Link::class, 'url' => 'table.php?id={$surname}']);
 $table->addColumn('birthdate', null, ['type' => 'date']);
 $table->addColumn('cv', [Table\Column\Html::class]);

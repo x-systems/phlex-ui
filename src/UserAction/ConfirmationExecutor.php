@@ -81,7 +81,7 @@ class ConfirmationExecutor extends Modal implements JsExecutorInterface
 
         $this->loader = Loader::addTo($this, ['ui' => $this->loaderUi, 'shim' => $this->loaderShim]);
         $this->loader->loadEvent = false;
-        $this->loader->addClass('atk-hide-loading-content');
+        $this->loader->addClass('phlex-hide-loading-content');
     }
 
     /**

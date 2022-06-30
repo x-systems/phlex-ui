@@ -214,7 +214,7 @@ class Control extends View
     }
 
     /**
-     * Provided with a Agile Data Model Field, this method have to decide
+     * Provided with a Phlex Data Model Field, this method have to decide
      * and create instance of a View that will act as a form-control. It takes
      * various input and looks for hints as to which class to use:.
      *
@@ -230,14 +230,14 @@ class Control extends View
         $valueType = $field->getValueType();
 
         $resolvedSeed = null;
-        if ($valueType instanceof Model\Field\Type\Array_ && $field instanceof Model\Field\Reference ) {
-        	$limit = ($field instanceof Model\Field\Reference\ContainsMany) ? 0 : 1;
-        	$model = $field->getTheirEntity();
+        if ($valueType instanceof Model\Field\Type\Array_ && $field instanceof Model\Field\Reference) {
+            $limit = ($field instanceof Model\Field\Reference\ContainsMany) ? 0 : 1;
+            $model = $field->getTheirEntity();
             $resolvedSeed = [Form\Control\Multiline::class, 'model' => $model, 'rowLimit' => $limit, 'caption' => $model->getCaption()];
         } elseif (!$valueType instanceof Model\Field\Type\Boolean) {
             if ($valueType instanceof Model\Field\Type\Selectable) {
                 $resolvedSeed = [Form\Control\Dropdown::class, 'values' => $valueType->values];
-            } elseif ($field instanceof Model\Field\Reference ) {
+            } elseif ($field instanceof Model\Field\Reference) {
                 $resolvedSeed = [Form\Control\Lookup::class, 'model' => $field->getReference()->refModel()];
             }
         }

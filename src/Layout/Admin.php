@@ -52,13 +52,13 @@ class Admin extends \Phlex\Ui\Layout implements NavigableInterface
         if ($this->menu === null) {
             $this->menu = Menu::addTo(
                 $this,
-                ['inverted fixed horizontal atk-admin-top-menu', 'element' => 'header'],
+                ['inverted fixed horizontal phlex-admin-top-menu', 'element' => 'header'],
                 ['TopMenu']
             );
             $this->burger = $this->menu->addItem(['class' => ['icon']]);
             $this->burger->on('click', [
-                (new Jquery('.atk-sidenav'))->toggleClass('visible'),
-                (new Jquery('body'))->toggleClass('atk-sidenav-visible'),
+                (new Jquery('.phlex-sidenav'))->toggleClass('visible'),
+                (new Jquery('body'))->toggleClass('phlex-sidenav-visible'),
             ]);
             Icon::addTo($this->burger, ['content']);
 
@@ -71,7 +71,7 @@ class Admin extends \Phlex\Ui\Layout implements NavigableInterface
         }
 
         if ($this->menuLeft === null) {
-            $this->menuLeft = Menu::addTo($this, ['ui' => 'atk-sidenav-content'], ['LeftMenu']);
+            $this->menuLeft = Menu::addTo($this, ['ui' => 'phlex-sidenav-content'], ['LeftMenu']);
         }
 
         $this->template->trySet('version', $this->getApp()->version);

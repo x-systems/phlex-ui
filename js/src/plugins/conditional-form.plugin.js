@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 
-import atkPlugin from './atk.plugin';
+import phlexPlugin from './phlex.plugin';
 import formService from '../services/form.service';
 
 /**
@@ -16,7 +16,7 @@ import formService from '../services/form.service';
  *    fieldRules is an array that contains items where each item describe the field to hide or show
  *    that depends on other field with their input value conditions.
  *
- *    $form->js()->atkConditionalForm(
+ *    $form->js()->phlexConditionalForm(
  *      [ 'fieldRules =>
  *        [
  *          'fieldToShow' => ['field1' => 'notEmpty', 'field2' => 'number']
@@ -25,7 +25,7 @@ import formService from '../services/form.service';
  *   Can be phrase this way: Display 'fieldToShow' if 'field1' is not empty AND field2 is a number.
  *
  *   Adding and array of field => rules for the same field will OR the condition for that field.
- *    $form->js()->atkConditionalForm(
+ *    $form->js()->phlexConditionalForm(
  *      [ 'fieldRules =>
  *        [
  *          'hair_cut' => [
@@ -39,7 +39,7 @@ import formService from '../services/form.service';
  *
  *   Adding an array of conditions for the same field is also support.
  *
- *    $form->js()->atkConditionalForm(
+ *    $form->js()->phlexConditionalForm(
  *      [ 'fieldRules =>
  *        [
  *          'ext' => ['phone' => ['number', 'minLength[7]']]
@@ -49,7 +49,7 @@ import formService from '../services/form.service';
  *
  *   See semantic-ui validation rule for more details: https://semantic-ui.com/behaviors/form.html#validation-rules
  */
-export default class conditionalForm extends atkPlugin {
+export default class conditionalForm extends phlexPlugin {
     main() {
         this.inputs = [];
         this.selector = this.settings.selector;
@@ -58,15 +58,15 @@ export default class conditionalForm extends atkPlugin {
         }
         // add change listener to inputs according to selector
         this.$el.find(':checkbox')
-            .on('change', this, atk.debounce(this.onInputChange, 100, true));
+            .on('change', this, phlex.debounce(this.onInputChange, 100, true));
         this.$el.find(':radio')
-            .on('change', this, atk.debounce(this.onInputChange, 100, true));
+            .on('change', this, phlex.debounce(this.onInputChange, 100, true));
         this.$el.find('input[type="hidden"]')
-            .on('change', this, atk.debounce(this.onInputChange, 100, true));
+            .on('change', this, phlex.debounce(this.onInputChange, 100, true));
         this.$el.find('input')
-            .on(this.settings.validateEvent, this, atk.debounce(this.onInputChange, 350));
+            .on(this.settings.validateEvent, this, phlex.debounce(this.onInputChange, 350));
         this.$el.find('select')
-            .on('change', this, atk.debounce(this.onInputChange, 100));
+            .on('change', this, phlex.debounce(this.onInputChange, 100));
 
         this.initialize();
     }

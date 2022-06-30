@@ -83,7 +83,7 @@ $clock_template = new HtmlTemplate('
 $clock_script = "
     <script>
         // Register clock component from vue-clock2 to use with myClock.
-        atk.vueService.getVue().component('clock', Clock.default);
+        phlex.vueService.getVue().component('clock', Clock.default);
 
         var myClock = {
           props : {clock: Array},
@@ -93,7 +93,7 @@ $clock_script = "
           mounted: function() {
             // add a listener for changing clock style.
             // this will listen to event '-clock-change-style' emit on the eventBus.
-            atk.eventBus.on(this.\$root.\$el.id + '-clock-change-style', (payload) => {
+            phlex.eventBus.on(this.\$root.\$el.id + '-clock-change-style', (payload) => {
                 this.onChangeStyle();
             });
           },

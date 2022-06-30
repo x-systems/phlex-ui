@@ -27,7 +27,7 @@ $lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $l
 });
 
 $model = $lister->setModel(new Country($webpage->db));
-//$model->addCondition(Country::hint()->key()->name, 'like', 'A%');
+// $model->addCondition(Country::hint()->key()->name, 'like', 'A%');
 
 // add dynamic scrolling.
 $lister->addJsPaginator(30, [], $container);

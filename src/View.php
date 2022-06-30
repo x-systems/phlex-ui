@@ -53,7 +53,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
      *
      * @var string
      */
-    public $region; //'Content';
+    public $region; // 'Content';
 
     /**
      * Enables UI keyword for Semantic UI indicating that this is a
@@ -714,7 +714,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
         $this->renderAll();
 
         return [
-            'atkjs' => $this->getJsRenderActions(),
+            'script' => $this->getJsRenderActions(),
             'html' => $this->renderTemplateToHtml(),
         ];
     }
@@ -731,7 +731,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
         return [
             'success' => true,
             'message' => 'Success',
-            'atkjs' => $this->getJs($forceReturn),
+            'script' => $this->getJs($forceReturn),
             'html' => $this->renderTemplateToHtml($region),
             'id' => $this->elementName,
         ];
@@ -745,7 +745,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
      */
     public function getHtml()
     {
-        if (isset($_GET['__atk_reload']) && $_GET['__atk_reload'] === $this->elementName) {
+        if (isset($_GET['__phlex_reload']) && $_GET['__phlex_reload'] === $this->elementName) {
             $this->getApp()->terminateJson($this);
         }
 
@@ -759,7 +759,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
     // {{{ JavaScript integration
 
     /**
-     * Views in Agile UI can assign javascript actions to themselves. This
+     * Views in Phlex UI can assign javascript actions to themselves. This
      * is done by calling $view->js() method which returns instance of JsChain
      * object that is initialized to the object itself. Normally this chain
      * will map into $('#object_id') and calling additional methods will map
@@ -799,7 +799,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
      *
      * Documentation:
      *
-     * @see http://agile-ui.readthedocs.io/en/latest/js.html
+     * @see http://phlex-ui.readthedocs.io/en/latest/js.html
      *
      * @param string|bool|null $when     Event when chain will be executed
      * @param JsExpression     $action   JavaScript action
@@ -839,16 +839,16 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
      * Create Vue.js instance.
      * Vue.js instance can be create from Phlex\Ui\View.
      *
-     * Component managed and defined by atk does not need componentDefinition variable name
-     * because these are already loaded within the atk js namespace.
+     * Component managed and defined by phlex does not need componentDefinition variable name
+     * because these are already loaded within the phlex js namespace.
      * When creating your own component externally, you must supply the variable name holding
      * your Vue component definition. This definition must be also accessible within the window javascript
      * object. This way, you do not need to load Vue js file since it has already being include within
-     * atkjs-ui.js build.
+     * phlex-ui.js build.
      *
      * If the external component use other components, it is possible to register them using
      * vueService getVue() method. This method return the current Vue object.
-     * ex: atk.vueService.getVue().component('external_component', externalComponent). This is the same
+     * ex: phlex.vueService.getVue().component('external_component', externalComponent). This is the same
      * as Vue.component() method.
      *
      * @param string           $component           The component name;
@@ -870,7 +870,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
         if ($componentDefinition) {
             $chain = (new JsVueService())->createVue($selector, $component, $componentDefinition, $initData);
         } else {
-            $chain = (new JsVueService())->createAtkVue($selector, $component, $initData);
+            $chain = (new JsVueService())->createPhlexVue($selector, $component, $initData);
         }
 
         $this->_js_actions[true][] = $chain;
@@ -879,21 +879,21 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
     }
 
     /**
-     * Emit an event on atkEvent bus.
+     * Emit an event on phlexEvent bus.
      *
      * example of adding a listener on for an emit event.
      *
-     *      atk.eventBus.on('eventName', (data) => {
+     *      phlex.eventBus.on('eventName', (data) => {
      *          console.log(data)
      *      });
      *
-     * Note: In order to make sure your event is unique within atk, you can
+     * Note: In order to make sure your event is unique within phlex, you can
      * use the view name in it.
      *    $this->jsEmitEvent($this->elementName . '-my-event', $data)
      */
     public function jsEmitEvent(string $eventName, array $eventData = []): JsChain
     {
-        return (new JsChain('atk.eventBus'))->emit($eventName, $eventData);
+        return (new JsChain('phlex.eventBus'))->emit($eventName, $eventData);
     }
 
     /**
@@ -923,7 +923,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
             throw new Exception('View property name needs to be set.');
         }
 
-        return (new JsChain('atk.dataService'))->clearData($name, $type);
+        return (new JsChain('phlex.dataService'))->clearData($name, $type);
     }
 
     /**
@@ -947,7 +947,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
             throw new Exception('View property name needs to be set.');
         }
 
-        return (new JsChain('atk.dataService'))->addJsonData($name, json_encode($data, \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR), $type);
+        return (new JsChain('phlex.dataService'))->addJsonData($name, json_encode($data, \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR), $type);
     }
 
     /**
@@ -965,7 +965,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
     }
 
     /**
-     * Views in Agile Toolkit can assign javascript actions to themselves. This
+     * Views in Phlex Toolkit can assign javascript actions to themselves. This
      * is done by calling $view->js() or $view->on().
      *
      * on() method is similar to jQuery on() method.
@@ -994,7 +994,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
      *
      * For more information on how this works, see documentation:
      *
-     * @see http://agile-ui.readthedocs.io/en/latest/js.html
+     * @see http://phlex-ui.readthedocs.io/en/latest/js.html
      *
      * @param string                            $event    JavaScript event
      * @param string|View|JsExpressionable|null $selector Optional jQuery-style selector
@@ -1101,7 +1101,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
 
         // Do we need confirm action.
         if ($defaults['confirm'] ?? null) {
-            array_unshift($event_stmts, new JsExpression('$.atkConfirm({message:[confirm], onApprove: [action], options: {button:{ok:[ok], cancel:[cancel]}}, context:this})', [
+            array_unshift($event_stmts, new JsExpression('$.phlexConfirm({message:[confirm], onApprove: [action], options: {button:{ok:[ok], cancel:[cancel]}}, context:this})', [
                 'confirm' => $defaults['confirm'],
                 'action' => new JsFunction($actions),
                 'ok' => $defaults['ok'] ?? 'Ok',

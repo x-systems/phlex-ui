@@ -10,7 +10,7 @@
 const template = '<flat-picker v-model="date" :config="flatPickr" @on-change="onChange"></flat-picker>';
 
 export default {
-    name: 'atk-date-picker',
+    name: 'phlex-date-picker',
     template: template,
     props: ['config', 'value'],
     data: function () {

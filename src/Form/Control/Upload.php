@@ -91,7 +91,7 @@ class Upload extends Input
     {
         parent::doInitialize();
 
-        //$this->inputType = 'hidden';
+        // $this->inputType = 'hidden';
 
         $this->cb = \Phlex\Ui\JsCallback::addTo($this);
 
@@ -193,7 +193,7 @@ class Upload extends Input
 
                 if (count($postFiles) > 0 && reset($postFiles)['error'] === 0) {
                     $this->addJsAction([
-                        $this->js()->atkFileUpload('updateField', [$this->fileId, $this->getInputValue()]),
+                        $this->js()->phlexFileUpload('updateField', [$this->fileId, $this->getInputValue()]),
                     ]);
                 }
 
@@ -246,7 +246,7 @@ class Upload extends Input
             $this->template->trySet('PlaceHolder', $this->placeholder);
         }
 
-        $this->js(true)->atkFileUpload([
+        $this->js(true)->phlexFileUpload([
             'uri' => $this->cb->getJsUrl(),
             'action' => $this->action->elementName,
             'file' => ['id' => $this->fileId ?: $this->field->get(), 'name' => $this->getInputValue()],

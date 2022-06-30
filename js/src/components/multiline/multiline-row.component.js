@@ -10,15 +10,15 @@ import multilineCell from './multiline-cell.component';
  *
  */
 export default {
-    name: 'atk-multiline-row',
+    name: 'phlex-multiline-row',
     template: `
     <sui-table-row :verticalAlign="'middle'">
         <sui-table-cell width="one" textAlign="center"><input type="checkbox" @input="onToggleDelete" v-model="toDelete"></input></sui-table-cell>
         <sui-table-cell  @keydown.tab="onTab(idx)" v-for="(column, idx) in columns" :key="idx" :state="getErrorState(column)" v-bind="column.cellProps" :style="{overflow: 'visible'}" v-if="column.isVisible">
-         <atk-multiline-cell
+         <phlex-multiline-cell
            :cellData="column" 
            @update-value="onUpdateValue"
-           :fieldValue="getValue(column)"></atk-multiline-cell>
+           :fieldValue="getValue(column)"></phlex-multiline-cell>
         </sui-table-cell>
     </sui-table-row>
   `,
@@ -27,7 +27,7 @@ export default {
         return { columns: this.fields };
     },
     components: {
-        'atk-multiline-cell': multilineCell,
+        'phlex-multiline-cell': multilineCell,
     },
     computed: {
     /**
@@ -66,10 +66,10 @@ export default {
             this.isEditing = true;
         },
         onToggleDelete: function (e) {
-            atk.eventBus.emit(this.$root.$el.id + '-toggle-delete', { rowId: this.rowId });
+            phlex.eventBus.emit(this.$root.$el.id + '-toggle-delete', { rowId: this.rowId });
         },
         onUpdateValue: function (fieldName, value) {
-            atk.eventBus.emit(this.$root.$el.id + '-update-row', { rowId: this.rowId, fieldName: fieldName, value: value });
+            phlex.eventBus.emit(this.$root.$el.id + '-update-row', { rowId: this.rowId, fieldName: fieldName, value: value });
         },
         getValue: function (column) {
             return this.rowValues[column.name] || column.default;

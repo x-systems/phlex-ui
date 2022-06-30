@@ -3,7 +3,7 @@
 ### version 1.19.2 (2021-02-05)
 
 - Fix issue in js-search plugin when not using ajax request.
-- Add missing popupService to atk object.
+- Add missing popupService to phlex object.
 
 ### version 1.19.1 (2021-01-05)
 
@@ -17,34 +17,34 @@
 
 ### version 1.18.0 (2020-11-25)
 
-- Add atk-lookup share component for query-builder.
+- Add phlex-lookup share component for query-builder.
 
 ### version 1.17.0 (2020-11-10)
 
-- atk-date-picker use vue-flatpickr-component instead of v-date-picker;
+- phlex-date-picker use vue-flatpickr-component instead of v-date-picker;
 - enable time and datetime in query builder;
 - enable time and datetime in multiline;
 
 ### version 1.16.4 (2020-11-09)
 
 - adding textarea form control to be detect by form leave when set.
-  see https://github.com/atk4/ui/issues/1527
+  see https://github.com/x-systems/phlex-ui/issues/1527
 - Refactor arrow function.  
 
 ### version 1.16.3 (2020-09-30)
 
-- create atk-date-picker vue component.
+- create phlex-date-picker vue component.
 - Update query-builder
     - allow date picker customization;
     
-- add atk-date-picker to multiline component.
+- add phlex-date-picker to multiline component.
 
 
 ### version 1.16.2 (2020-09-23)
 - VueService
     - Add possibility to check if all components on page are load.
     - Add Loading and Error component for dynamic component.
-- Rename window var bundlePublicPath to __atkBundlePublicPath
+- Rename window var bundlePublicPath to __phlexBundlePublicPath
 
 ### version 1.16.1 (2020-09-17)
 - set js bundle path dynamically for loading ressource.
@@ -56,9 +56,9 @@
 
 ### version 1.15.4 (2020-09-08)
 
-- add atk eventBus for listening and publishing event.
+- add phlex eventBus for listening and publishing event.
     - replace deprecated Vue eventBus;
-- create atk-utils file for options and eventBus.
+- create phlex-utils file for options and eventBus.
 - remove Vue component deprecated inline-template in v3.
 
 ### version 1.15.3 (2020-08-27)
@@ -68,17 +68,17 @@
     - condition-form plugin
     - panel service
  - Fix issue with Querybuilder date.
-   - https://github.com/atk4/ui/issues/1420
+   - https://github.com/x-systems/phlex-ui/issues/1420
  - Package 
     - update package dependencies to latest release;
         - note: css-loader v4 now require style-loader
   
-  PR: https://github.com/atk4/ui/pull/1430
+  PR: https://github.com/x-systems/phlex-ui/pull/1430
 
 ### version 1.15.2 (2020-08-19)
 
  - sidenav.plugin.js
-    - fix issue (1406) when using Control or Command click on a link (https://github.com/atk4/ui/issues/1406 )
+    - fix issue (1406) when using Control or Command click on a link (https://github.com/x-systems/phlex-ui/issues/1406 )
 
  - Package 
     - update package dependencies to latest release;
@@ -122,11 +122,11 @@
 
 ### version 1.12.7 (2020-04-08)
 
-- URL query parameter to enable SSE response was renamed from "event=sse" to "__atk_sse".
+- URL query parameter to enable SSE response was renamed from "event=sse" to "__phlex_sse".
 
 ### version 1.12.6 (2020-04-03)
 
-- URL query parameter to force JSON response was renamed from "json" to "__atk_json".
+- URL query parameter to force JSON response was renamed from "json" to "__phlex_json".
 
 ### version 1.12.5 (2020-03-24)
 
@@ -145,11 +145,11 @@
 ### version 1.12.3 (2020-02-11)
 
 - Fix duplicate url encoding for reload-view and ajaxec plugins.
-   see https://github.com/atk4/ui/issues/924
+   see https://github.com/x-systems/phlex-ui/issues/924
 
 ### version 1.12.2 (2020-02-04)
 
-- Fix https://github.com/atk4/ui/issues/902 
+- Fix https://github.com/x-systems/phlex-ui/issues/902 
    Throwing error on server was not clearing api.data object, thus keeping
    old value with new server request. This fix make sure api.data gets clear
    on all server response, successful or not.
@@ -168,10 +168,10 @@
 
 - Add DataService. 
     Enable usage of web storage: local or session.
-- Update atk.reloadView jQuery plugin.
+- Update phlex.reloadView jQuery plugin.
     Can include web storage in api request,
     Possible to set specific Fomantic api settings
-- Update atk.ajaxExec jQuery plugin.
+- Update phlex.ajaxExec jQuery plugin.
     Can include web storage in api request,
     Possible to set specific Fomantic api settings    
     
@@ -198,7 +198,7 @@ the last column and last row.
 - Add input options support in Multiline Vue Component
 
 - Include semantic-ui-vue in bundle.
-    - atkjs-ui.min.js bundle file now include semantic-ui-vue package so there is no need to explicitly load it.
+- phlex-ui.min.js bundle file now include semantic-ui-vue package so there is no need to explicitly load it.
 
 ### version 1.8.0 (2019-07-23)
 
@@ -208,7 +208,7 @@ the last column and last row.
 
 ### version 1.7.0
 
-- New atkConfirm plugin. Will display a user confirmaton dialog using fomantic ui modal.
+- New phlexConfirm plugin. Will display a user confirmaton dialog using fomantic ui modal.
 
 ### version 1.6.8
 
@@ -228,13 +228,13 @@ the last column and last row.
    - fix: Prevent plugin from being create if a plugin method is called prior to the plugin
    instantiation. Was causing unexpected result when plugin was create using a method call, since
    there was no setting. 
-- atkJsSearch plugin
+- phlexJsSearch plugin
   - Now support initial display setup value.
   - Add support for reloading page via window.location and not using ajax. 
 - url.helpers, previously add-param.helpers
-  - Add new plugin function: atkRemoveParam. 
+  - Add new plugin function: phlexRemoveParam. 
   You can use this function for removing an url query parameter from an url string.
-  ex: $.atkRemoveParam('test.php?sort=2&id=3', 'sort') will output:  test.php?id=3
+  ex: $.phlexRemoveParam('test.php?sort=2&id=3', 'sort') will output:  test.php?id=3
    
 
 ### version 1.6.6
@@ -293,7 +293,7 @@ Maintenance release.
 
 ### version 1.4.0
 
- - add new plugin atkColumnresizer. This new jQuery plugin allow to resize table column using drag n drop,
+ - add new plugin phlexColumnresizer. This new jQuery plugin allow to resize table column using drag n drop,
  - fix padding setting in apiService error modal.
 
 ### version 1.3.9
@@ -375,5 +375,5 @@ Maintenance release.
 
 - add new function for exporting package version number;
   ```
-    atk.version()
+    phlex.version()
   ``` 

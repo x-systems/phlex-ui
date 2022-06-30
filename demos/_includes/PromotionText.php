@@ -13,7 +13,7 @@ class PromotionText extends \Phlex\Ui\View
         $t = \Phlex\Ui\Text::addTo($this);
         $t->addParagraph(
             <<< 'EOF'
-                Agile Toolkit base package includes:
+                Phlex UI base package includes:
                 EOF
         );
 
@@ -41,6 +41,6 @@ class PromotionText extends \Phlex\Ui\View
         \Phlex\Ui\View::addTo($this, ['ui' => 'divider']);
 
         \Phlex\Ui\Message::addTo($this, ['Cool fact!', 'info', 'icon' => 'book'])->text
-            ->addParagraph('This entire demo is coded in Agile Toolkit and takes up less than 300 lines of very simple code!');
+            ->addParagraph('This entire demo is coded with Phlex UI and takes up less than 300 lines of very simple code!');
     }
 }

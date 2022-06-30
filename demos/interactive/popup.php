@@ -210,9 +210,9 @@ $pop = \Phlex\Ui\Popup::addTo($webpage, [$browse, 'position' => 'bottom left', '
     ->setHoverable()
     ->setOption('delay', ['show' => 100, 'hide' => 400]);
 $shelf2 = $itemShelfClass::addTo($pop);
-//$shelf2->linkCart($cart, $cartItem->jsReload());
+// $shelf2->linkCart($cart, $cartItem->jsReload());
 
-//////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
 
 $userMenu = \Phlex\Ui\Menu::addTo($menu, ['ui' => false], ['RightMenu'])
     ->addClass('right menu')->removeClass('item');
@@ -245,12 +245,12 @@ $signup->set(function ($pop) {
 
             // refreshes entire page
             return $form->getApp()->jsRedirect(['logged' => $form->model->get('email')]);
-            //return new \Phlex\Ui\JsExpression('alert([])', ['Thank you ' . $form->model->get('email')]);
+            // return new \Phlex\Ui\JsExpression('alert([])', ['Thank you ' . $form->model->get('email')]);
         });
     }
 });
 
-//////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
 
 \Phlex\Ui\Header::addTo($webpage)->set('Specifying trigger');
 

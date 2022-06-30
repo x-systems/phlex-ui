@@ -29,7 +29,7 @@ use Phlex\Data\Model;
 
 class Card extends View
 {
-    public $ui = 'card atk-card';
+    public $ui = 'card phlex-card';
 
     public $defaultTemplate = 'card.html';
 
@@ -285,7 +285,7 @@ class Card extends View
             $executor->setAction($action);
         });
 
-        $btn->on('click', new JsModal($action->caption, $vp, [$this->elementName => (new Jquery())->parents('.atk-card')->data('id')]));
+        $btn->on('click', new JsModal($action->caption, $vp, [$this->elementName => (new Jquery())->parents('.phlex-card')->data('id')]));
     }
 
     /**

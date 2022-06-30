@@ -41,7 +41,7 @@ class JsPaginator extends JsCallback
             $this->view = $this->getOwner();
         }
 
-        $this->view->js(true)->atkScroll([
+        $this->view->js(true)->phlexScroll([
             'uri' => $this->getJsUrl(),
             'uri_options' => $this->args,
             'options' => $this->options,
@@ -49,7 +49,7 @@ class JsPaginator extends JsCallback
     }
 
     /**
-     * Generate a js action that will set nextPage to atkScroll plugin.
+     * Generate a js action that will set nextPage to phlexScroll plugin.
      *
      * Method currently unused.
      *
@@ -59,7 +59,7 @@ class JsPaginator extends JsCallback
      */
     public function jsNextPage($page)
     {
-        return $this->view->js(true)->atkScroll('setNextPage', $page);
+        return $this->view->js(true)->phlexScroll('setNextPage', $page);
     }
 
     /**
@@ -69,7 +69,7 @@ class JsPaginator extends JsCallback
      */
     public function jsIdle()
     {
-        return $this->view->js(true)->atkScroll('idle');
+        return $this->view->js(true)->phlexScroll('idle');
     }
 
     /**

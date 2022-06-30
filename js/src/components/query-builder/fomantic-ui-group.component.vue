@@ -10,7 +10,7 @@
                         <div class="item">
                             <select
                                     v-model="query.logicalOperator"
-                                    class="atk-qb-select"
+                                    class="phlex-qb-select"
                             >
                                 <option
                                         v-for="label in labels.matchTypes"
@@ -24,10 +24,10 @@
                                 <div>
                                     <sui-dropdown
                                             :text="labels.addRule"
-                                            class="ui mini basic button atk-qb-rule-select"
+                                            class="ui mini basic button phlex-qb-rule-select"
                                             selection
                                     >
-                                        <sui-dropdown-menu class="atk-qb-rule-select-menu">
+                                        <sui-dropdown-menu class="phlex-qb-rule-select-menu">
                                             <sui-dropdown-item
                                                 @click="addNewRule(rule.id)"
                                                 v-for="rule in rules"
@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="two wide right aligned column">
-                    <i v-if="depth > 1" class="atk-qb-remove" :class="labels.removeGroup" @click="remove"></i>
+                    <i v-if="depth > 1" class="phlex-qb-remove" :class="labels.removeGroup" @click="remove"></i>
                 </div>
             </div>
         </div>
@@ -101,17 +101,17 @@ export default {
 </script>
 
 <style>
-    .atk-qb-select, .ui.form select.atk-qb-select {
+    .phlex-qb-select, .ui.form select.phlex-qb-select {
        padding: 2px 6px 4px 4px;
     }
-    .atk-qb-remove {
+    .phlex-qb-remove {
         cursor: pointer;
         color: rgba(0,0,0,0.6);
     }
-    .ui.selection.dropdown.atk-qb-rule-select {
+    .ui.selection.dropdown.phlex-qb-rule-select {
         background-color: rgba(0,0,0,0);
     }
-    .ui.selection.dropdown .atk-qb-rule-select-menu {
+    .ui.selection.dropdown .phlex-qb-rule-select-menu {
         width: max-content;
         z-index: 1000;
     }

@@ -21,10 +21,10 @@ $vp = VirtualPage::addTo($webpage);
 $vp->set(function ($firstPage) {
     $secondVp = VirtualPage::addTo($firstPage);
     $secondVp->set(function ($secondPage) {
-        View::addTo($secondPage)->set('Second Level Page')->addClass('__atk-behat-test-second');
+        View::addTo($secondPage)->set('Second Level Page')->addClass('__phlex-behat-test-second');
         $thirdVp = VirtualPage::addTo($secondPage);
         $thirdVp->set(function ($thirdPage) {
-            View::addTo($thirdPage)->set('Third Level Page')->addClass('__atk-behat-test-third');
+            View::addTo($thirdPage)->set('Third Level Page')->addClass('__phlex-behat-test-third');
             $form = Form::addTo($thirdPage);
             $form->addControl('category', [Form\Control\Lookup::class, 'model' => new Category($thirdPage->getApp()->db)]);
             $form->onSubmit(function ($f) {
@@ -35,7 +35,7 @@ $vp->set(function ($firstPage) {
         });
         Button::addTo($secondPage, ['Open Third'])->link($thirdVp->getUrl());
     });
-    View::addTo($firstPage)->set('First Level Page')->addClass('__atk-behat-test-first');
+    View::addTo($firstPage)->set('First Level Page')->addClass('__phlex-behat-test-first');
     Button::addTo($firstPage, ['Open Second'])->link($secondVp->getUrl());
 });
 

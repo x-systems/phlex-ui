@@ -47,10 +47,10 @@
 @desktopWidth: 992px;
 @tabletWidth: 768px;
 @adminMenuHeight: 48px;
-@atkFooterHeight : 50px;
+@phlexFooterHeight : 50px;
 @menuBorder: 1px solid rgba(255,255,255,0.10);
 
-@atkSlidePanelColor: @offWhite;
+@phlexSlidePanelColor: @offWhite;
 
 // z-index
 @topMenuIndex: 201;
@@ -60,24 +60,24 @@
 
 /******* ADMIN TOP MENU *******/
 
-.ui.inverted.fixed.atk-admin-top-menu {
+.ui.inverted.fixed.phlex-admin-top-menu {
   border: @menuBorder;
   z-index: @topMenuIndex;
 }
 
 /******* ADMIN SIDENAV MENU *******/
 
-.atk-maestro-sidenav > .ui.grid {
+.phlex-maestro-sidenav > .ui.grid {
   width: @leftMenuWidth;
 }
 
-.atk-sidenav-content {
+.phlex-sidenav-content {
   overflow-x: hidden;
   overflow-y: auto;
 }
 
 /* A selected item in admin menu */
-.ui.sidebar.atk-sidenav {
+.ui.sidebar.phlex-sidenav {
   .menu > .item.active {
     background: none;
   }
@@ -85,20 +85,20 @@
 
 /******* MAESTRO SIDENAV MENU *******/
 
-.atk-maestro-sidenav {
+.phlex-maestro-sidenav {
   cursor: pointer;
   color: white;
 }
 
-.atk-maestro-sidenav > .ui.grid > .atk-maestro-menu-items {
+.phlex-maestro-sidenav > .ui.grid > .phlex-maestro-menu-items {
   display: none;
-  &.atk-visible {
+  &.phlex-visible {
     display: flex;
   }
 }
 
 /* Item without a group in menu */
-.ui.inverted.menu a.atk-maestro-sidenav.item {
+.ui.inverted.menu a.phlex-maestro-sidenav.item {
   padding-left: 34px;
   i {
     margin-right: 2px;
@@ -108,8 +108,8 @@
   }
 }
 
-.atk-maestro-sidenav {
-  .atk-submenu-toggle {
+.phlex-maestro-sidenav {
+  .phlex-submenu-toggle {
     div {
       height: 100%;
       display: flex;
@@ -119,7 +119,7 @@
     }
   }
   &:not(active) {
-    .atk-submenu-toggle:hover {
+    .phlex-submenu-toggle:hover {
       background-color: rgba(255,255,255,0.15);
     }
   }
@@ -131,16 +131,16 @@
       padding-top: @maestroSpace;
       padding-bottom: @maestroSpace;
     }
-    .atk-maestro-menu-title header {
+    .phlex-maestro-menu-title header {
       margin-left: -@maestroItemsLeftMargin;
     }
-    .atk-maestro-menu-items .menu {
+    .phlex-maestro-menu-items .menu {
       margin-left: @maestroItemsLeftMargin;
     }
   }
 }
 
-.atk-maestro-sidenav.active .atk-maestro-menu-title {
+.phlex-maestro-sidenav.active .phlex-maestro-menu-title {
   background-color: @blue;
 }
 
@@ -149,50 +149,50 @@ header.ui.fixed.horizontal.menu {
   min-height: 48px;
 }
 
-.ui.visible.left.sidebar ~ header.atk-topMenu.ui.menu.fixed {
+.ui.visible.left.sidebar ~ header.phlex-topMenu.ui.menu.fixed {
   width: ~'calc(100% - '@leftMenuWidth~')';
 }
-.ui.visible.left.sidebar ~ .atk-mainContainer,
-.ui.visible.left.sidebar ~ footer.atk-footer {
+.ui.visible.left.sidebar ~ .phlex-mainContainer,
+.ui.visible.left.sidebar ~ footer.phlex-footer {
   padding-left: @leftMenuWidth;
 }
 
-.atk-dialog-content {
+.phlex-dialog-content {
   min-height: 100px;
 }
 
-.atk-hide-loading-content.loading:before {
+.phlex-hide-loading-content.loading:before {
       background: rgba(255,255,255,.98) !important;
 }
 
-.atk-layout {
+.phlex-layout {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
 }
-.atk-topMenuGhost.ui.menu {
+.phlex-topMenuGhost.ui.menu {
   display: none;
   margin: 0;
   pointer-events: none;
   visibility: hidden;
 }
-header.atk-topMenu.ui.fixed.menu ~ .atk-topMenuGhost {
+header.phlex-topMenu.ui.fixed.menu ~ .phlex-topMenuGhost {
   display: block;
 }
-header.atk-topMenu.ui.menu .item > .label {
+header.phlex-topMenu.ui.menu .item > .label {
   margin-left: 0;
 }
 
-.atk-mainContainer {
+.phlex-mainContainer {
   flex: 1;
-  .atk-mainContainerWrapper {
+  .phlex-mainContainerWrapper {
     padding: 3em;
   }
-  &.atk-admin-layout {
+  &.phlex-admin-layout {
     margin-top: @adminMenuHeight;
   }
 }
-footer.atk-footer {
+footer.phlex-footer {
   .ui.divider, .ui.segment {
     margin: 0;
   }
@@ -205,14 +205,14 @@ footer.atk-footer {
   z-index: @sideNavIndex;
 }
 
-.atk-right-panel {
+.phlex-right-panel {
   -webkit-transition: box-shadow 0.2s, right 0.2s;
   -moz-transition: box-shadow 0.2s, right 0.2s;
   -ms-transition: box-shadow 0.2s, right 0.2s;
   -o-transition: box-shadow 0.2s, right 0.2s;
   transition: box-shadow 0.2s, right 0.2s;
   bottom: 0;
-  background-color: @atkSlidePanelColor;
+  background-color: @phlexSlidePanelColor;
   box-shadow: 0 0 0 fade(@black, 0%);
   height: 99%;
   right: -100%;
@@ -220,37 +220,37 @@ footer.atk-footer {
   position: fixed;
   width: 40%;
   z-index: @rightPanelIndex;
-  &.atk-visible {
+  &.phlex-visible {
     box-shadow: 0px 0 5px fade(@black, 20%);
     right: 0%;
   }
 }
 
-.atk-panel-close {
+.phlex-panel-close {
   color: @black;
 }
 
-i.atk-panel-warning {
-  color: @atkSlidePanelColor;
-  &.atk-visible {
+i.phlex-panel-warning {
+  color: @phlexSlidePanelColor;
+  &.phlex-visible {
     color: @orange;
   }
 }
 
-.ui.left.sidebar.atk-sidenav {
+.ui.left.sidebar.phlex-sidenav {
   top: @adminMenuHeight;
 }
 
-.atk-sidenav-content {
-  height: ~'calc(100% - '@atkFooterHeight + @adminMenuHeight~')';
+.phlex-sidenav-content {
+  height: ~'calc(100% - '@phlexFooterHeight + @adminMenuHeight~')';
 }
 
-.ui.left.sidebar.atk-sidenav {
+.ui.left.sidebar.phlex-sidenav {
   width: @leftMenuWidth;
 }
 
 // table dropdown menu
-.atk-table-dropdown {
+.phlex-table-dropdown {
   margin-top: -8px;
   float: left;
   i {
@@ -275,7 +275,7 @@ i.atk-panel-warning {
   }
 }
 
-.atk-table-column-header {
+.phlex-table-column-header {
     white-space: pre-wrap;
     &:after {
       //display: none;
@@ -291,13 +291,13 @@ i.atk-panel-warning {
       float: right;
   }
 }
-.atk-table-column-header.ascending {
+.phlex-table-column-header.ascending {
   &:after {
     content: '\f0d8';
   }
 }
 
-.atk-table-column-header.descending {
+.phlex-table-column-header.descending {
   &:after {
     content: '\f0d7';
   }
@@ -319,7 +319,7 @@ i.atk-panel-warning {
     user-select: none;
 }
 
-.atk-overflow-auto {
+.phlex-overflow-auto {
   overflow: auto;
   border: 1px solid rgba(34, 36, 38, 0.15);
   margin-bottom: 1em;
@@ -328,12 +328,12 @@ i.atk-panel-warning {
   }
 
 }
-.atk-cell-expanded {
+.phlex-cell-expanded {
   min-width: 320px;
   max-width: 640px;
   white-space: normal
 }
-.atk-overlay.pushable {
+.phlex-overlay.pushable {
   height: 100%;
   left: 0;
   opacity: 0;
@@ -355,13 +355,13 @@ i.atk-panel-warning {
 // Responsive
 
 @media (max-width: (@desktopWidth - 1px)) {
-  .ui.left.sidebar ~ header.atk-topMenu.ui.menu.fixed {
+  .ui.left.sidebar ~ header.phlex-topMenu.ui.menu.fixed {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
     width: 100% !important;
   }
-  .ui.visible.left.sidebar ~ .atk-mainContainer,
-  .ui.visible.left.sidebar ~ footer.atk-footer {
+  .ui.visible.left.sidebar ~ .phlex-mainContainer,
+  .ui.visible.left.sidebar ~ footer.phlex-footer {
     padding-left: 0;
   }
   .ui.left.sidebar {
@@ -371,7 +371,7 @@ i.atk-panel-warning {
     transform: translate3d(0, 0, 0);
     visibility: visible;
   }
-  body.atk-sidenav-visible {
+  body.phlex-sidenav-visible {
     &:after {
       left: 0;
       position: fixed;
@@ -380,25 +380,25 @@ i.atk-panel-warning {
     .ui.left.sidebar {
       opacity: 1;
       pointer-events: auto;
-      .atk-leftMenuClose {
+      .phlex-leftMenuClose {
         display: block;
       }
     }
   }
 }
 @media (max-width: @desktopWidth - 1px) {
-  body.atk-sidenav-visible .atk-overlay.pushable {
+  body.phlex-sidenav-visible .phlex-overlay.pushable {
     opacity: 1;
   }
 }
 
 @media (min-width: @tabletWidth) and (max-width: (@desktopWidth - 1px)) {
-  .atk-right-panel {
+  .phlex-right-panel {
     width: 65%;
   }
 }
 @media (max-width: (@tabletWidth - 1px)) {
-  .atk-right-panel {
+  .phlex-right-panel {
     width: 95%;
   }
 }
@@ -406,11 +406,11 @@ i.atk-panel-warning {
 // Print
 
 @media print {
-  .ui.visible.left.sidebar ~ .atk-mainContainer,
-  .ui.visible.left.sidebar ~ footer.atk-footer {
+  .ui.visible.left.sidebar ~ .phlex-mainContainer,
+  .ui.visible.left.sidebar ~ footer.phlex-footer {
     padding-left: 0;
   }
-  .ui.left.sidebar, .atk-topMenu, .atk-topMenuGhost {
+  .ui.left.sidebar, .phlex-topMenu, .phlex-topMenuGhost {
     display: none !important;
   }
 }

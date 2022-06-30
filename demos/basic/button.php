@@ -74,7 +74,7 @@ $webpage->addView($forkButton);
 $view = \Phlex\Ui\View::addTo($webpage, ['template' => new HtmlTemplate('Hello, {$tag1}, my name is {$tag2}')]);
 
 Button::addTo($view, ['World'], ['tag1']);
-Button::addTo($view, ['Agile UI', 'blue'], ['tag2']);
+Button::addTo($view, ['Phlex UI', 'blue'], ['tag2']);
 
 \Phlex\Ui\Header::addTo($webpage, ['Attaching', 'size' => 2]);
 

@@ -96,16 +96,16 @@ class ItemSearch extends View
         parent::doRender();
 
         // reloadId is the view id selector name that need to be reload.
-        // this will be pass as get argument to __atk_reload.
+        // this will be pass as get argument to __phlex_reload.
         if ($this->reload instanceof View) {
             $reloadId = $this->reload->elementName;
         } else {
             $reloadId = $this->reload;
         }
 
-        $this->js(true, (new JsVueService())->createAtkVue(
+        $this->js(true, (new JsVueService())->createPhlexVue(
             '#' . $this->elementName,
-            'atk-item-search',
+            'phlex-item-search',
             [
                 'reload' => $reloadId,
                 'queryArg' => $this->queryArg,

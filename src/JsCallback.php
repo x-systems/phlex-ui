@@ -72,7 +72,7 @@ class JsCallback extends Callback implements JsExpressionable
     {
         $this->getApp(); // assert has App
 
-        return (new Jquery())->atkAjaxec([
+        return (new Jquery())->phlexAjaxec([
             'uri' => $this->getJsUrl(),
             'uri_options' => $this->args,
             'confirm' => $this->confirm,
@@ -138,7 +138,7 @@ class JsCallback extends Callback implements JsExpressionable
     public function terminateAjax($ajaxec, $msg = null, $success = true): void
     {
         if ($this->canTerminate()) {
-            $this->getApp()->terminateJson(['success' => $success, 'message' => $msg, 'atkjs' => $ajaxec]);
+            $this->getApp()->terminateJson(['success' => $success, 'message' => $msg, 'script' => $ajaxec]);
         }
     }
 
@@ -215,6 +215,6 @@ class JsCallback extends Callback implements JsExpressionable
             $html = $modal->getHtml();
         }
 
-        return new JsExpression('$([html]).modal("show").data("needRemove", true).addClass("atk-callback-response")', ['html' => $html]);
+        return new JsExpression('$([html]).modal("show").data("needRemove", true).addClass("phlex-callback-response")', ['html' => $html]);
     }
 }

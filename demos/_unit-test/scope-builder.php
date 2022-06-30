@@ -39,7 +39,7 @@ $form->addControl('qb', [\Phlex\Ui\Form\Control\ScopeBuilder::class, 'model' => 
 
 $form->onSubmit(function ($form) use ($model) {
     $message = $form->model->get('qb')->toWords($model);
-    $view = (new \Phlex\Ui\View(['id' => false]))->addClass('atk-scope-builder-response');
+    $view = (new \Phlex\Ui\View(['id' => false]))->addClass('phlex-scope-builder-response');
     $view->initialize();
 
     $view->set($message);
@@ -146,7 +146,7 @@ $expectedInput = <<< 'EOF'
     EOF;
 
 Header::addTo($webpage, ['Word:']);
-View::addTo($webpage, ['element' => 'p', 'content' => $expectedWord])->addClass('atk-expected-word-result');
+View::addTo($webpage, ['element' => 'p', 'content' => $expectedWord])->addClass('phlex-expected-word-result');
 
 Header::addTo($webpage, ['Input:']);
-View::addTo($webpage, ['element' => 'p', 'content' => $expectedInput])->addClass('atk-expected-input-result');
+View::addTo($webpage, ['element' => 'p', 'content' => $expectedInput])->addClass('phlex-expected-input-result');

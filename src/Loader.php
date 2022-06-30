@@ -109,7 +109,7 @@ class Loader extends View
      */
     public function jsLoad($args = [], $apiConfig = [], $storeName = null)
     {
-        return $this->js()->atkReloadView([
+        return $this->js()->phlexReloadView([
             'uri' => $this->cb->getUrl(),
             'uri_options' => $args,
             'apiConfig' => !empty($apiConfig) ? $apiConfig : null,

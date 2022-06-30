@@ -62,7 +62,7 @@ class JsSortable extends JsCallback
         }
         $this->getApp()->requireJs('https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.5/lib/draggable.bundle.js');
 
-        $this->view->js(true)->atkJsSortable([
+        $this->view->js(true)->phlexJsSortable([
             'uri' => $this->getJsUrl(),
             'uri_options' => $this->args,
             'container' => $this->container,
@@ -97,6 +97,6 @@ class JsSortable extends JsCallback
      */
     public function jsGetOrders($uriOptions = null)
     {
-        return $this->view->js()->atkJsSortable('getSortOrders', [$uriOptions]);
+        return $this->view->js()->phlexJsSortable('getSortOrders', [$uriOptions]);
     }
 }

@@ -22,7 +22,7 @@ require_once __DIR__ . '/../init-app.php';
  */
 $tabs = \Phlex\Ui\Tabs::addTo($webpage);
 
-////////////////////////////////////////////
+// //////////////////////////////////////////
 $tab = $tabs->addTab('Basic Use');
 
 \Phlex\Ui\Header::addTo($tab, ['Very simple form']);
@@ -75,7 +75,7 @@ $form->onSubmit(function (Form $form) {
     return $view;
 });
 
-////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////
 $tab = $tabs->addTab('Handler Output');
 
 \Phlex\Ui\Header::addTo($tab, ['Form can respond with manually generated error']);
@@ -129,7 +129,7 @@ $form->onSubmit(function (Form $form) use ($control) {
     return $control->jsInput()->val('random is ' . random_int(1, 100));
 });
 
-/////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////
 $tab = $tabs->addTab('Handler Safety');
 
 \Phlex\Ui\Header::addTo($tab, ['Form handles errors', 'size' => 2]);
@@ -137,12 +137,12 @@ $tab = $tabs->addTab('Handler Safety');
 $form = Form::addTo($tab);
 $form->addControl('email');
 $form->onSubmit(function (Form $form) {
-    $o = new \StdClass();
+    $o = new \stdClass();
 
     return $o['abc'];
 });
 
-\Phlex\Ui\Header::addTo($tab, ['Form shows Agile exceptions', 'size' => 2]);
+\Phlex\Ui\Header::addTo($tab, ['Form shows Phlex exceptions', 'size' => 2]);
 
 $form = Form::addTo($tab);
 $form->addControl('email');
@@ -165,7 +165,7 @@ $form->onSubmit(function (Form $form) {
         });
     })->show());
 
-/////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////
 $tab = $tabs->addTab('Complex Examples');
 
 \Phlex\Ui\Header::addTo($tab, ['Conditional response']);
@@ -190,7 +190,7 @@ $form->onSubmit(function (Form $form) {
     ];
 });
 
-////////////////////////////////////////
+// //////////////////////////////////////
 $tab = $tabs->addTab('Layout Control');
 
 \Phlex\Ui\Header::addTo($tab, ['Shows example of grouping and multiple errors']);

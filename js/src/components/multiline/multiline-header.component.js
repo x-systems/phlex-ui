@@ -1,5 +1,5 @@
 export default {
-    name: 'atk-multiline-header',
+    name: 'phlex-multiline-header',
     template: `
      <sui-table-header>
        <sui-table-row v-if="hasError()">
@@ -25,7 +25,7 @@ export default {
     methods: {
         onToggleDeleteAll: function () {
             this.$nextTick(() => {
-                atk.eventBus.emit(this.$root.$el.id + '-toggle-delete-all', { isOn: this.$refs.check.checked });
+                phlex.eventBus.emit(this.$root.$el.id + '-toggle-delete-all', { isOn: this.$refs.check.checked });
             });
         },
         getTextAlign: function (column) {

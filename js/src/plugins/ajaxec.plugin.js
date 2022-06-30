@@ -1,9 +1,9 @@
 /* eslint no-alert: "off" */
 
 import $ from 'jquery';
-import atkPlugin from './atk.plugin';
+import phlexPlugin from './phlex.plugin';
 
-export default class ajaxec extends atkPlugin {
+export default class ajaxec extends phlexPlugin {
     main() {
         if (!this.settings.uri) {
             console.error('Trying to execute callback without url.');
@@ -21,17 +21,17 @@ export default class ajaxec extends atkPlugin {
     }
 
     doExecute() {
-        const url = $.atk.getUrl(this.settings.uri);
+        const url = $.phlex.getUrl(this.settings.uri);
         const userConfig = this.settings.apiConfig ? this.settings.apiConfig : {};
 
         // uri_options is always use as data in a post request.
         const data = this.settings.uri_options ? this.settings.uri_options : {};
 
         // retrieve param from url.
-        let urlParam = $.atkGetQueryParam(this.settings.uri);
+        let urlParam = $.phlexGetQueryParam(this.settings.uri);
 
         // get store object.
-        const store = atk.dataService.getStoreData(this.settings.storeName);
+        const store = phlex.dataService.getStoreData(this.settings.storeName);
 
         const settings = {
             on: 'now',

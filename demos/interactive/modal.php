@@ -211,12 +211,12 @@ $stepModal->set(function ($modal) use ($stepModal, $session, $prevAction, $nextA
 });
 
 // Bind next action to modal next button.
-$nextAction->on('click', $stepModal->js()->atkReloadView(
+$nextAction->on('click', $stepModal->js()->phlexReloadView(
     ['uri' => $stepModal->cb->getJsUrl(), 'uri_options' => ['move' => 'next']]
 ));
 
 // Bin prev action to modal previous button.
-$prevAction->on('click', $stepModal->js()->atkReloadView(
+$prevAction->on('click', $stepModal->js()->phlexReloadView(
     ['uri' => $stepModal->cb->getJsUrl(), 'uri_options' => ['move' => 'prev']]
 ));
 

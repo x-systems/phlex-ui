@@ -14,7 +14,7 @@ $virtualPage = \Phlex\Ui\VirtualPage::addTo($webpage->body, ['urlTrigger' => 'in
 
 // Add content to virtual page.
 if (isset($_GET['p_id'])) {
-    \Phlex\Ui\Header::addTo($virtualPage, [$_GET['p_id']])->addClass('__atk-behat-test-car');
+    \Phlex\Ui\Header::addTo($virtualPage, [$_GET['p_id']])->addClass('__phlex-behat-test-car');
 }
 \Phlex\Ui\LoremIpsum::addTo($virtualPage, ['size' => 1]);
 $virtualPageButton = \Phlex\Ui\Button::addTo($virtualPage, ['Back', 'icon' => 'left arrow']);
@@ -36,7 +36,7 @@ $btn->link($virtualPage->cb->getUrl() . '&p_id=Bike');
 \Phlex\Ui\Header::addTo($webpage, ['Virtual Page Logic']);
 
 $virtualPage = \Phlex\Ui\VirtualPage::addTo($webpage); // this page will not be visible unless you trigger it specifically
-\Phlex\Ui\View::addTo($virtualPage, ['Contents of your pop-up here'])->addClass('ui header __atk-behat-test-content');
+\Phlex\Ui\View::addTo($virtualPage, ['Contents of your pop-up here'])->addClass('ui header __phlex-behat-test-content');
 \Phlex\Ui\LoremIpsum::addTo($virtualPage, ['size' => 2]);
 
 Counter::addTo($virtualPage);

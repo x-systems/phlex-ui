@@ -1,7 +1,7 @@
 /* global Draggable */
 
 import $ from 'jquery';
-import atkPlugin from './atk.plugin';
+import phlexPlugin from './phlex.plugin';
 import 'draggable';
 
 /**
@@ -17,14 +17,14 @@ import 'draggable';
  *
  *  Defaut container is set to table boddy (tbody), using table row(tr) as reoderable element.
  *     To use other container, simply set container and draggable accordingly.
- *      $sortable = \Atk4\Ui\JsSortable::addTo($lister, ['container' => 'ul', 'draggable' => 'li', 'dataLabel' => 'name']);
+ *      $sortable = \Phlex\Ui\JsSortable::addTo($lister, ['container' => 'ul', 'draggable' => 'li', 'dataLabel' => 'name']);
  *
  *  Element containing specific css class can be used as the handle for dragging element, if null
  *  is pass, than the entire element is used.
  *
  *    For a complete example check /demos/jssortable.php
  */
-export default class JsSortable extends atkPlugin {
+export default class JsSortable extends phlexPlugin {
     main() {
         this.ids = [];
         // the data label attribute value of the source element being drag. ex: data-id
@@ -97,9 +97,9 @@ export default class JsSortable extends atkPlugin {
     buildUrl(extraParams = null) {
         let url = null;
         if (this.settings.uri_options && extraParams) {
-            url = $.atkAddParams(this.settings.uri, $.extend({}, this.settings.uri_options, extraParams));
+            url = $.phlexAddParams(this.settings.uri, $.extend({}, this.settings.uri_options, extraParams));
         } else if (this.settings.uri_options) {
-            url = $.atkAddParams(this.settings.uri, this.settings.uri_options);
+            url = $.phlexAddParams(this.settings.uri, this.settings.uri_options);
         } else {
             url = this.settings.uri;
         }

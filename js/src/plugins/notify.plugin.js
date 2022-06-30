@@ -1,13 +1,13 @@
 import $ from 'jquery';
-import atkPlugin from './atk.plugin';
+import phlexPlugin from './phlex.plugin';
 
 /**
  * Create notification message.
  *
- * Can be attach to an element using $('selector')->atkNotify(options);
- * or to the body using $.atkNotify($option)
+ * Can be attach to an element using $('selector')->phlexNotify(options);
+ * or to the body using $.phlexNotify($option)
  */
-export default class notify extends atkPlugin {
+export default class notify extends phlexPlugin {
     main() {
         let cssStyle = {};
         this.timer = null;
@@ -43,7 +43,7 @@ export default class notify extends atkPlugin {
      * @returns {string}
      */
     getNotifier(options) {
-        return `<div class="atk-notify transition hidden"> 
+        return `<div class="phlex-notify transition hidden"> 
                 <div class="ui ${options.color} ${options.size} inverted segment" style="overflow: auto; display: block !important">
                     <i class="close icon" style="float:right"></i>
                     <div class="content">

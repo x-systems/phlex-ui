@@ -384,7 +384,7 @@ class CardDeck extends View
             View::addTo($this, ['ui' => 'divider'], ['Divider']);
         }
 
-        if ($this->container->elementName === ($_GET['__atk_reload'] ?? null)) {
+        if ($this->container->elementName === ($_GET['__phlex_reload'] ?? null)) {
             $this->applyReload();
         }
         parent::doRender();

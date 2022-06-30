@@ -20,7 +20,7 @@ class JsModal extends JsExpression
             $url = $url->getJsUrl('cut');
         }
 
-        parent::__construct('$(this).atkCreateModal([arg])', ['arg' => ['uri' => $url, 'title' => $title, 'data_type' => $dataType, 'uri_options' => $args]]);
+        parent::__construct('$(this).phlexCreateModal([arg])', ['arg' => ['uri' => $url, 'title' => $title, 'data_type' => $dataType, 'uri_options' => $args]]);
 
         if (empty($title)) {
             $this->removeHeader();

@@ -1,7 +1,7 @@
 import $ from 'jquery';
-import atkPlugin from './atk.plugin';
+import phlexPlugin from './phlex.plugin';
 
-export default class createModal extends atkPlugin {
+export default class createModal extends phlexPlugin {
     main() {
         const options = this.settings;
         // make sure we have an object when no option is passed
@@ -9,7 +9,7 @@ export default class createModal extends atkPlugin {
             options.uri_options = {};
         }
         // create modal and add it to the DOM
-        const $m = $('<div class="atk-modal ui modal"/>')
+        const $m = $('<div class="phlex-modal ui modal"/>')
             .appendTo('body')
             .html(this.getDialogHtml(options.title));
 
@@ -31,7 +31,7 @@ export default class createModal extends atkPlugin {
     getDialogHtml(title) {
         return `<i class="icon close"></i>
           <div class="${this.settings.headerCss}">${title}</div>
-          <div class="${this.settings.contentCss} content atk-dialog-content">
+          <div class="${this.settings.contentCss} content phlex-dialog-content">
             </div>
           </div>`;
     }

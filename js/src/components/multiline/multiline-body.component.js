@@ -1,16 +1,16 @@
 import multilineRow from './multiline-row.component';
 
 export default {
-    name: 'atk-multiline-body',
+    name: 'phlex-multiline-body',
     template: `
     <sui-table-body>
-      <atk-multiline-row v-for="(row , idx) in rows" :key="row.__atkml" 
+      <phlex-multiline-row v-for="(row , idx) in rows" :key="row.__phlex_multiline" 
       @onTabLastColumn="onTabLastColumn(idx)"
       :fields="fields" 
-      :rowId="row.__atkml" 
+      :rowId="row.__phlex_multiline" 
       :isDeletable="isDeletableRow(row)" 
       :rowValues="row"
-      :error="getError(row.__atkml)"></atk-multiline-row>
+      :error="getError(row.__phlex_multiline)"></phlex-multiline-row>
     </sui-table-body>
   `,
     props: ['fieldDefs', 'rowData', 'deletables', 'errors'],
@@ -20,7 +20,7 @@ export default {
     created: function () {
     },
     components: {
-        'atk-multiline-row': multilineRow,
+        'phlex-multiline-row': multilineRow,
     },
     computed: {
         rows: function () {
@@ -34,7 +34,7 @@ export default {
             }
         },
         isDeletableRow: function (row) {
-            return this.deletables.indexOf(row.__atkml) > -1;
+            return this.deletables.indexOf(row.__phlex_multiline) > -1;
         },
         getError: function (rowId) {
             if (rowId in this.errors) {

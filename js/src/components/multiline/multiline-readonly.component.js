@@ -4,6 +4,6 @@
 
 export default {
     template: '<div>{{readOnlyValue}}</div>',
-    name: 'atk-multiline-readonly',
+    name: 'phlex-multiline-readonly',
     props: ['readOnlyValue'],
 };

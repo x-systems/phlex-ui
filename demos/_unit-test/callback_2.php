@@ -20,7 +20,7 @@ require_once __DIR__ . '/../init-app.php';
 $m = (new CountryLock($webpage->db))->setLimit(5);
 $webpage->getExecutorFactory()->registerTrigger(
     ExecutorFactory::TABLE_BUTTON,
-    [Button::class, 'ui' => 'atk-test button', 'icon' => 'pencil'],
+    [Button::class, 'ui' => 'phlex-test button', 'icon' => 'pencil'],
     $m->getUserAction('edit')
 );
 

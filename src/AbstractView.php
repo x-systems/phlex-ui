@@ -33,7 +33,7 @@ abstract class AbstractView
      *
      * @var string
      */
-    public $defaultName = 'atk';
+    public $defaultName = 'phlex';
 
     /**
      * If addView() method is called, but current view is not part of render tree yet,

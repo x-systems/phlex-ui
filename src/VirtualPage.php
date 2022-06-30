@@ -109,11 +109,11 @@ class VirtualPage extends View
                 }
 
                 // render and terminate
-                if (isset($_GET['__atk_json'])) {
+                if (isset($_GET['__phlex_json'])) {
                     $this->getApp()->terminateJson($this);
                 }
 
-                if (isset($_GET['__atk_tab'])) {
+                if (isset($_GET['__phlex_tab'])) {
                     $this->getApp()->terminateHtml($this->renderToTab());
                 }
 

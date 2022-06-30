@@ -2,15 +2,15 @@ import mitt from 'mitt';
 import 'helpers/url.helper';
 
 /**
- * Define atk global options.
+ * Define phlex global options.
  * In Js:
- *  atk.options.set('name','value');
+ *  phlex.options.set('name','value');
  * In Php:
- *  (new JsChain('atk.options')->set('name', 'value');
+ *  (new JsChain('phlex.options')->set('name', 'value');
  */
-const atkOptions = (function () {
+const phlexOptions = (function () {
     const options = {
-    // Value for debounce time out (in ms) that will be apply globally when set using atk.debounce.
+    // Value for debounce time out (in ms) that will be apply globally when set using phlex.debounce.
         debounceTimeout: null,
     };
     return {
@@ -22,12 +22,12 @@ const atkOptions = (function () {
 /**
  * Subscribe too and publish events.
  * listen to an event
- *   atk.eventBus.on('foo', e => console.log('foo', e))
+ *   phlex.eventBus.on('foo', e => console.log('foo', e))
  * Fire an event
- *   atk.eventBus.emit('foo', { a: 'b' })
+ *   phlex.eventBus.emit('foo', { a: 'b' })
  *
  */
-const atkEventBus = (function () {
+const phlexEventBus = (function () {
     const eventBus = mitt();
     return {
         emit: (event, payload) => eventBus.emit(event, payload),
@@ -39,9 +39,9 @@ const atkEventBus = (function () {
 
 /*
 * Utilities function that you can execute
-* from atk context. Usage: atk.utils.date().parse('string');
+* from phlex context. Usage: phlex.utils.date().parse('string');
 */
-const atkUtils = (function () {
+const phlexUtils = (function () {
     return {
         json: function () {
             return {
@@ -69,4 +69,4 @@ const atkUtils = (function () {
     };
 }());
 
-export { atkOptions, atkEventBus, atkUtils };
+export { phlexOptions, phlexEventBus, phlexUtils };

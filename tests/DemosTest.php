@@ -326,7 +326,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
         }
 
         $response = $this->getResponseFromRequest(
-            'interactive/wizard.php?demo_wizard=1&w_form_submit=ajax&__atk_callback=w_form_submit',
+            'interactive/wizard.php?demo_wizard=1&w_form_submit=ajax&__phlex_callback=w_form_submit',
             ['form_params' => [
                 'dsn' => 'mysql://root:root@db-host.example.com/atk4',
             ]]
@@ -347,12 +347,12 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     {
         $files = [];
         // simple reload
-        $files[] = ['_unit-test/reload.php?__atk_reload=reload'];
+        $files[] = ['_unit-test/reload.php?__phlex_reload=reload'];
         // loader callback reload
-        $files[] = ['_unit-test/reload.php?c_reload=ajax&__atk_callback=c_reload'];
+        $files[] = ['_unit-test/reload.php?c_reload=ajax&__phlex_callback=c_reload'];
         // test catch exceptions
-        $files[] = ['_unit-test/exception.php?m_cb=ajax&__atk_callback=m_cb&__atk_json=1'];
-        $files[] = ['_unit-test/exception.php?m2_cb=ajax&__atk_callback=m2_cb&__atk_json=1'];
+        $files[] = ['_unit-test/exception.php?m_cb=ajax&__phlex_callback=m_cb&__phlex_json=1'];
+        $files[] = ['_unit-test/exception.php?m2_cb=ajax&__phlex_callback=m2_cb&__phlex_json=1'];
 
         return $files;
     }
@@ -382,11 +382,11 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     public function sseResponseProvider(): array
     {
         $files = [];
-        $files[] = ['_unit-test/sse.php?see_test=ajax&__atk_callback=1&__atk_sse=1'];
-        $files[] = ['_unit-test/console.php?console_test=ajax&__atk_callback=1&__atk_sse=1'];
+        $files[] = ['_unit-test/sse.php?see_test=ajax&__phlex_callback=1&__phlex_sse=1'];
+        $files[] = ['_unit-test/console.php?console_test=ajax&__phlex_callback=1&__phlex_sse=1'];
         if (!($this instanceof DemosHttpNoExitTest)) { // ignore content type mismatch when Webpage->call_exit equals to true
-            $files[] = ['_unit-test/console_run.php?console_test=ajax&__atk_callback=1&__atk_sse=1'];
-            $files[] = ['_unit-test/console_exec.php?console_test=ajax&__atk_callback=1&__atk_sse=1'];
+            $files[] = ['_unit-test/console_run.php?console_test=ajax&__phlex_callback=1&__phlex_sse=1'];
+            $files[] = ['_unit-test/console_exec.php?console_test=ajax&__phlex_callback=1&__phlex_sse=1'];
         }
 
         return $files;
@@ -432,7 +432,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     {
         $files = [];
         $files[] = [
-            '_unit-test/post.php?test_submit=ajax&__atk_callback=test_submit',
+            '_unit-test/post.php?test_submit=ajax&__phlex_callback=test_submit',
             [
                 'f1' => 'v1',
             ],
@@ -440,7 +440,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
 
         // for JsNotify coverage
         $files[] = [
-            'obsolete/notify2.php?test_notify=ajax&__atk_callback=test_notify',
+            'obsolete/notify2.php?test_notify=ajax&__phlex_callback=test_notify',
             [
                 'text' => 'This text will appear in notification',
                 'icon' => 'warning sign',

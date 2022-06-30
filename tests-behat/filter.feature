@@ -4,9 +4,9 @@ Feature: Filter
 Scenario:
  Given I am on "collection/tablefilter.php"
  Then I should see "Clear Filters"
- Then I click filter column name "atk_fp_country__name"
+ Then I click filter column name "phlex_fp_country__name"
  When I fill in "value" with "united kingdom"
  Then I press button "Set"
  Then I should see "United Kingdom"
- Then I press menu button "Clear Filters" using class "atk-grid-menu"
+ Then I press menu button "Clear Filters" using class "phlex-grid-menu"
  Then I should see "Australia"

@@ -18,7 +18,7 @@ class Content extends View implements LoadableContent
     protected function doInitialize(): void
     {
         parent::doInitialize();
-        $this->addClass('atk-panel-content');
+        $this->addClass('phlex-panel-content');
         $this->setCb(new Callback());
     }
 
@@ -55,7 +55,7 @@ class Content extends View implements LoadableContent
      */
     public function getClearSelector(): array
     {
-        return ['.atk-panel-content'];
+        return ['.phlex-panel-content'];
     }
 
     protected function mergeStickyArgsFromChildView(): ?\Phlex\Ui\AbstractView

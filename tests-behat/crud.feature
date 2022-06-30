@@ -5,19 +5,19 @@ Feature: Crud
     Given I am on "_unit-test/crud.php"
 
   Scenario: add
-    Then I press menu button "Add Country" using class "atk-grid-menu"
-    Then I fill in "atk_fp_country__name" with "Test"
-    Then I fill in "atk_fp_country__iso" with "TT"
-    Then I fill in "atk_fp_country__iso3" with "TTT"
-    Then I fill in "atk_fp_country__numcode" with "123"
-    Then I fill in "atk_fp_country__phonecode" with "1"
+    Then I press menu button "Add Country" using class "phlex-grid-menu"
+    Then I fill in "phlex_fp_country__name" with "Test"
+    Then I fill in "phlex_fp_country__iso" with "TT"
+    Then I fill in "phlex_fp_country__iso3" with "TTT"
+    Then I fill in "phlex_fp_country__numcode" with "123"
+    Then I fill in "phlex_fp_country__phonecode" with "1"
     Then I press Modal button "Save"
     Then Toast display should contains text "Form Submit"
 
   Scenario: search
     Then I search grid for "united kingdom"
 #    make sure auto query trigger
-    And I wait for loading to start in "button.atk-search-button"
+    And I wait for loading to start in "button.phlex-search-button"
     Then I should see "United Kingdom"
 
   Scenario: edit

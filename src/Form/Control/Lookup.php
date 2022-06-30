@@ -278,7 +278,7 @@ class Lookup extends Input
                 $form->model->save();
 
                 $ret = [
-                    (new Jquery('.atk-modal'))->modal('hide'),
+                    (new Jquery('.phlex-modal'))->modal('hide'),
                 ];
 
                 if ($row = $this->renderRow($form->model)) {

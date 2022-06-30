@@ -15,7 +15,7 @@ module.exports = {
         'vue',
     ],
     globals: {
-        atk: true,
+        phlex: true,
         $: true,
         jQuery: true,
         flatpickr: true,
@@ -32,7 +32,7 @@ module.exports = {
         'no-nested-ternary': 'off',
         'import/prefer-default-export': 'off',
         'no-console': ['error', { allow: ['warn', 'error'] }],
-        'no-underscore-dangle': ['error', { allow: ['__atkml', '__atkml_action', '__atk_reload'] }],
+        'no-underscore-dangle': ['error', { allow: ['__phlex_multiline', '__phlex_multiline_action', '__phlex_reload'] }],
         'max-len': ['error', {
             code: 120,
             ignoreTemplateLiterals: true,

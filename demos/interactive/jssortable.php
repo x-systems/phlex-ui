@@ -38,7 +38,7 @@ $sortable->onReorder(function ($order, $src, $pos, $oldPos) {
 $button = \Phlex\Ui\Button::addTo($webpage)->set('Get countries order');
 $button->js('click', $sortable->jsGetOrders(['btn' => '1']));
 
-//////////////////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////////////////
 \Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
 \Phlex\Ui\Header::addTo($webpage, ['Add Drag n drop to Grid']);
 

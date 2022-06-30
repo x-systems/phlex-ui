@@ -18,7 +18,7 @@ require_once __DIR__ . '/../init-app.php';
 $webpage->getExecutorFactory()->useTriggerDefault(ExecutorFactory::TABLE_BUTTON);
 
 $model = new CountryLock($webpage->db);
-$crud = \Phlex\Ui\Crud::addTo($webpage, ['ipp' => 10, 'menu' => ['class' => ['atk-grid-menu']]]);
+$crud = \Phlex\Ui\Crud::addTo($webpage, ['ipp' => 10, 'menu' => ['class' => ['phlex-grid-menu']]]);
 $crud->setModel($model);
 
 $crud->addQuickSearch([$model->key()->name], true);

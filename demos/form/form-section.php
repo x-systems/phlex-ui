@@ -26,7 +26,7 @@ $noSave = function (Form $form) {
     ]);
 };
 
-////////////////////////////////
+// //////////////////////////////
 
 $form = Form::addTo($webpage);
 $form->setModel($model, false);
@@ -42,7 +42,7 @@ $c1 = $colsLayout->addColumn();
 $c1->setModel($model, [$model->key()->iso, $model->key()->iso3]);
 
 $c2 = $colsLayout->addColumn();
-$c2->setModel($model, [$model->key()->numcode/*, $model->key()->phonecode*/]);
+$c2->setModel($model, [$model->key()->numcode/* , $model->key()->phonecode */]);
 
 $form->addControl($model->key()->phonecode);
 
@@ -50,7 +50,7 @@ $form->onSubmit($noSave);
 
 \Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
 
-////////////////////////////////
+// //////////////////////////////
 
 $form = Form::addTo($webpage);
 $form->setModel($model, false);
@@ -72,7 +72,7 @@ $form->onSubmit($noSave);
 
 \Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
 
-////////////////////////////////
+// //////////////////////////////
 
 $form = Form::addTo($webpage);
 $form->setModel($model, false);
@@ -94,7 +94,7 @@ $form->onSubmit($noSave);
 
 \Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
 
-/////////////////////////////////////////
+// ///////////////////////////////////////
 
 \Phlex\Ui\Header::addTo($webpage, ['Color in form']);
 

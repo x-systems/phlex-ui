@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import atkPlugin from './atk.plugin';
+import phlexPlugin from './phlex.plugin';
 
 /**
  * Will expand or collapse menu items for side navigation.
@@ -11,7 +11,7 @@ import atkPlugin from './atk.plugin';
  * Default value are set for Maestro admin layout.
  */
 
-export default class sidenav extends atkPlugin {
+export default class sidenav extends phlexPlugin {
     main() {
     // menu items container.
         this.menu = this.$el.find(this.settings.menuItemsSelector);
@@ -112,10 +112,10 @@ export default class sidenav extends atkPlugin {
 
 sidenav.DEFAULTS = {
     base: 'index.php',
-    menuItemsSelector: '.atk-maestro-menu-items', // The css selector where menu items are contain.
-    menuGroupTitleSelector: '.atk-menu-group-title', // The css selector for menu group title.
-    toggleSelector: '.atk-submenu-toggle', // the css selector that will show or hide sub menu.
-    visibleCssClass: 'atk-visible', // Display an item when this css class is set.
+    menuItemsSelector: '.phlex-maestro-menu-items', // The css selector where menu items are contain.
+    menuGroupTitleSelector: '.phlex-menu-group-title', // The css selector for menu group title.
+    toggleSelector: '.phlex-submenu-toggle', // the css selector that will show or hide sub menu.
+    visibleCssClass: 'phlex-visible', // Display an item when this css class is set.
     menuGroupActiveClass: 'active', // the css class to set when a menu group is active.
     menuItemActiveClass: 'active', // the css class to set when a menu item in a group is active.
     firstItemSelector: 'a', // the selector for the first menu item in a group, where click will be trigger.

@@ -8,7 +8,7 @@
  *
  * Using Development
  *  - set webpack config mode to development
- *  - devtools will use source-map under atk name;
+ *  - devtools will use source-map under phlex name;
  *
  * Using Production
  *  - set webpack config mode to production
@@ -32,8 +32,8 @@ module.exports = (env) => {
     const isProduction = env.production;
     const srcDir = path.resolve(__dirname, './src');
     const publicDir = path.resolve(__dirname, '../public');
-    const libraryName = 'atk';
-    const filename = libraryName + 'js-ui';
+    const libraryName = 'phlex';
+    const filename = libraryName + '-ui';
 
     const prodPerformance = {
         hints: false,
@@ -42,7 +42,7 @@ module.exports = (env) => {
     };
 
     return {
-        entry: { [filename]: srcDir + '/agile-toolkit-ui.js' },
+        entry: { [filename]: srcDir + '/phlex-ui.js' },
         mode: isProduction ? 'production' : 'development',
         devtool: isProduction ? false : 'source-map',
         performance: isProduction ? prodPerformance : {},
@@ -112,7 +112,7 @@ module.exports = (env) => {
         },
         plugins: [
             new webpack.DefinePlugin({
-                _ATKVERSION_: JSON.stringify(packageVersion),
+                _PHLEXVERSION_: JSON.stringify(packageVersion),
             }),
             new VueLoaderPlugin(),
         ],

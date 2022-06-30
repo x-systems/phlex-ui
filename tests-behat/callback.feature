@@ -17,7 +17,7 @@ Feature: Callback
     Then I should see "Loader-2"
     Then I should see "Loader-3"
     Then I click paginator page "2"
-    Then I click first element using class ".ui.atk-test.button"
+    Then I click first element using class ".ui.phlex-test.button"
     Then Modal is open with text "Edit Country"
     Then I press Modal button "Save"
     Then Toast display should contains text "Form Submit"

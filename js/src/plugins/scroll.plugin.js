@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import atkPlugin from './atk.plugin';
+import phlexPlugin from './phlex.plugin';
 
 /**
  * Add dynamic scrolling to a View that can accept page argument in URL.
@@ -13,11 +13,11 @@ import atkPlugin from './atk.plugin';
  *                        if null, then a default loader will be apply to the bottom of the $inner element.
  */
 
-export default class scroll extends atkPlugin {
+export default class scroll extends phlexPlugin {
     main() {
     // check if we are initialized already because loading content
     // can recall this plugin and screw up page number.
-        if (this.$el.data('__atkScroll')) {
+        if (this.$el.data('__phlexScroll')) {
             return false;
         }
 
@@ -201,9 +201,9 @@ export default class scroll extends atkPlugin {
    * Add loader.
    */
     addLoader() {
-        const $parent = this.$inner.parent().hasClass('atk-overflow-auto') ? this.$inner.parent().parent() : this.$inner.parent();
+        const $parent = this.$inner.parent().hasClass('phlex-overflow-auto') ? this.$inner.parent().parent() : this.$inner.parent();
         /* eslint-disable */
-        $parent.append($('<div id="atkScrollLoader"><div class="ui section hidden divider"></div><div class="ui active centered inline loader basic segment"></div></div>'));
+        $parent.append($('<div id="phlexScrollLoader"><div class="ui section hidden divider"></div><div class="ui active centered inline loader basic segment"></div></div>'));
         /* eslint-enable */
     }
 
@@ -211,7 +211,7 @@ export default class scroll extends atkPlugin {
    * Remove loader.
    */
     removeLoader() {
-        $('#atkScrollLoader').remove();
+        $('#phlexScrollLoader').remove();
     }
 }
 

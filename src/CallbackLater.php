@@ -6,7 +6,7 @@ namespace Phlex\Ui;
 
 /**
  * Works same as Callback but will be executed when the current
- * pass completes. Agile UI uses two-pass system - first to
+ * pass completes. Phlex UI uses two-pass system - first to
  * initialize objects, second to render them. If you use this during
  * Init, then it will be executed.
  */

@@ -145,7 +145,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
 
         $this->loader = \Phlex\Ui\Loader::addTo($this, ['ui' => $this->loaderUi, 'shim' => $this->loaderShim]);
         $this->loader->loadEvent = false;
-        $this->loader->addClass('atk-hide-loading-content');
+        $this->loader->addClass('phlex-hide-loading-content');
         $this->actionData = $this->loader->jsGetStoreData()['session'];
     }
 

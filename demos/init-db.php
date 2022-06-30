@@ -21,7 +21,7 @@ try {
         ->addMoreInfo('PDO error', $e->getMessage());
 }
 
-// a very basic file that sets up Agile Data to be used in some demonstrations
+// a very basic file that sets up Phlex Data to be used in some demonstrations
 
 class ModelWithPrefixedFields extends Model
 {
@@ -151,32 +151,32 @@ class CountryLock extends Country
 }
 
 /**
- * @property string    $project_name           @Phlex\Field()
- * @property string    $project_code           @Phlex\Field()
- * @property string    $description            @Phlex\Field()
- * @property string    $client_name            @Phlex\Field()
- * @property string    $client_address         @Phlex\Field()
- * @property Country   $client_country_iso     @Phlex\RefOne()
- * @property string    $client_country_iso_value     @Phlex\Field()
- * @property string    $client_country         @Phlex\Field()
- * @property bool      $is_commercial          @Phlex\Field()
- * @property string    $currency               @Phlex\Field()
- * @property string    $currency_symbol        @Phlex\Field()
- * @property float     $project_budget         @Phlex\Field()
- * @property float     $project_invoiced       @Phlex\Field()
- * @property float     $project_paid           @Phlex\Field()
- * @property float     $project_hour_cost      @Phlex\Field()
- * @property int       $project_hours_est      @Phlex\Field()
- * @property int       $project_hours_reported @Phlex\Field()
- * @property float     $project_expenses_est   @Phlex\Field()
- * @property float     $project_expenses       @Phlex\Field()
- * @property float     $project_mgmt_cost_pct  @Phlex\Field()
- * @property float     $project_qa_cost_pct    @Phlex\Field()
- * @property \DateTime $start_date             @Phlex\Field()
- * @property \DateTime $finish_date            @Phlex\Field()
- * @property \DateTime $finish_time            @Phlex\Field()
- * @property \DateTime $created                @Phlex\Field()
- * @property \DateTime $updated                @Phlex\Field()
+ * @property string    $project_name             @Phlex\Field()
+ * @property string    $project_code             @Phlex\Field()
+ * @property string    $description              @Phlex\Field()
+ * @property string    $client_name              @Phlex\Field()
+ * @property string    $client_address           @Phlex\Field()
+ * @property Country   $client_country_iso       @Phlex\RefOne()
+ * @property string    $client_country_iso_value @Phlex\Field()
+ * @property string    $client_country           @Phlex\Field()
+ * @property bool      $is_commercial            @Phlex\Field()
+ * @property string    $currency                 @Phlex\Field()
+ * @property string    $currency_symbol          @Phlex\Field()
+ * @property float     $project_budget           @Phlex\Field()
+ * @property float     $project_invoiced         @Phlex\Field()
+ * @property float     $project_paid             @Phlex\Field()
+ * @property float     $project_hour_cost        @Phlex\Field()
+ * @property int       $project_hours_est        @Phlex\Field()
+ * @property int       $project_hours_reported   @Phlex\Field()
+ * @property float     $project_expenses_est     @Phlex\Field()
+ * @property float     $project_expenses         @Phlex\Field()
+ * @property float     $project_mgmt_cost_pct    @Phlex\Field()
+ * @property float     $project_qa_cost_pct      @Phlex\Field()
+ * @property \DateTime $start_date               @Phlex\Field()
+ * @property \DateTime $finish_date              @Phlex\Field()
+ * @property \DateTime $finish_time              @Phlex\Field()
+ * @property \DateTime $created                  @Phlex\Field()
+ * @property \DateTime $updated                  @Phlex\Field()
  */
 class Stat extends ModelWithPrefixedFields
 {
@@ -196,7 +196,7 @@ class Stat extends ModelWithPrefixedFields
 
         $this->hasOne($this->key()->client_country_iso, [
             'theirModel' => [Country::class],
-        	'ourKey' => $this->key()->client_country_iso_value,
+            'ourKey' => $this->key()->client_country_iso_value,
             'theirKey' => Country::hint()->key()->iso,
             'type' => 'string',
             'options' => [
@@ -253,7 +253,7 @@ class Stat extends ModelWithPrefixedFields
  * @property File   $SubFolder        @Phlex\RefMany()
  * @property int    $count            @Phlex\Field()
  * @property Folder $parent_folder    @Phlex\RefOne()
- * @property int 	$parent_folder_id @Phlex\Field()
+ * @property int    $parent_folder_id @Phlex\Field()
  */
 class File extends ModelWithPrefixedFields
 {
@@ -366,7 +366,7 @@ class Category extends ModelWithPrefixedFields
 /**
  * @property string   $name                @Phlex\Field()
  * @property Category $product_category    @Phlex\RefOne()
- * @property int 	  $product_category_id @Phlex\Field()
+ * @property int      $product_category_id @Phlex\Field()
  * @property Product  $Products            @Phlex\RefMany()
  */
 class SubCategory extends ModelWithPrefixedFields
@@ -391,10 +391,10 @@ class SubCategory extends ModelWithPrefixedFields
 /**
  * @property string      $name                    @Phlex\Field()
  * @property string      $brand                   @Phlex\Field()
- * @property Category    $product_category     	  @Phlex\RefOne()
- * @property int    	 $product_category_id     @Phlex\Field()
- * @property SubCategory $product_sub_category	  @Phlex\RefOne()
- * @property int 		 $product_sub_category_id @Phlex\Field()
+ * @property Category    $product_category        @Phlex\RefOne()
+ * @property int         $product_category_id     @Phlex\Field()
+ * @property SubCategory $product_sub_category    @Phlex\RefOne()
+ * @property int         $product_sub_category_id @Phlex\Field()
  */
 class Product extends ModelWithPrefixedFields
 {

@@ -376,7 +376,7 @@ class Table extends Lister
             $options = array_merge($options, $resizerOptions);
         }
 
-        $this->js(true, $this->js()->atkColumnResizer($options));
+        $this->js(true, $this->js()->phlexColumnResizer($options));
 
         return $this;
     }
@@ -467,7 +467,7 @@ class Table extends Lister
 
         // Iterate data rows
         $this->_rendered_rows_count = 0;
-var_dump($this->model->toQuery()->getDebug());
+
         foreach ($this->model as $entity) {
             if ($this->hook(self::HOOK_BEFORE_ROW, [$entity]) === false) {
                 continue;

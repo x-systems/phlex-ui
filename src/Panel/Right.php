@@ -38,13 +38,13 @@ class Right extends View implements Loadable
     public $dynamic = [Content::class];
 
     /** @var string The css selector on where to add close panel event triggering for closing it. */
-    public $closeSelector = '.atk-panel-close';
+    public $closeSelector = '.phlex-panel-close';
 
     /** @var string a css selector where warning trigger class will be applied. */
-    public $warningSelector = '.atk-panel-warning';
+    public $warningSelector = '.phlex-panel-warning';
 
     /** @var string the css class name to apply to element set by warning selector. */
-    public $warningTrigger = 'atk-visible';
+    public $warningTrigger = 'phlex-visible';
 
     /** @var string the warning icon class */
     public $warningIcon = 'icon exclamation circle';
@@ -81,7 +81,7 @@ class Right extends View implements Loadable
      */
     public function service(): JsExpression
     {
-        return new \Phlex\Ui\JsChain('atk.panelService');
+        return new \Phlex\Ui\JsChain('phlex.panelService');
     }
 
     /**
@@ -180,7 +180,7 @@ class Right extends View implements Loadable
             'loader' => ['selector' => '.ui.loader', 'trigger' => 'active'], // the css selector and trigger class to activate loader.
             'modal' => $this->closeModal ? '#' . $this->closeModal->elementName : null,
             'warning' => ['selector' => $this->warningSelector, 'trigger' => $this->warningTrigger],
-            'visible' => 'atk-visible', // the triggering css class that will make this panel visible.
+            'visible' => 'phlex-visible', // the triggering css class that will make this panel visible.
             'closeSelector' => $this->closeSelector, // the css selector to close this flyout.
             'hasClickAway' => $this->hasClickAway,
         ];

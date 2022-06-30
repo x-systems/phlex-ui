@@ -30,7 +30,7 @@ class ModalService {
     }
 
     onHidden() {
-        atk.modalService.removeModal($(this));
+        phlex.modalService.removeModal($(this));
     }
 
     onVisible() {
@@ -38,7 +38,7 @@ class ModalService {
             data;
         // const service = apiService;
         const $modal = $(this);
-        const $content = $(this).find('.atk-dialog-content');
+        const $content = $(this).find('.phlex-dialog-content');
 
         // check data associated with this modal.
         if (!$.isEmptyObject($modal.data())) {
@@ -52,12 +52,12 @@ class ModalService {
 
         // check for data type, usually json or html
         if (data && data.type === 'json') {
-            args = $.extend(true, args, { __atk_json: 1 });
+            args = $.extend(true, args, { __phlex_json: 1 });
         }
 
         // does modal content need to be loaded dynamically
         if (data && data.uri) {
-            $content.html(atk.modalService.getLoader(data.label ? data.label : ''));
+            $content.html(phlex.modalService.getLoader(data.label ? data.label : ''));
             $content.api({
                 on: 'now',
                 url: data.uri,
@@ -69,10 +69,10 @@ class ModalService {
                     if (!result.length) {
                         response.success = false;
                         response.isServiceError = true;
-                        response.message = 'Modal service error: Unable to replace atk-dialog content in modal from server response. Empty Content.';
+                        response.message = 'Modal service error: Unable to replace phlex-dialog content in modal from server response. Empty Content.';
                     } else {
                         if ($modal.modal.settings.autofocus) {
-                            atk.modalService.doAutoFocus($modal);
+                            phlex.modalService.doAutoFocus($modal);
                         }
                         $modal.modal('refresh');
                         // content is replace no need to do it in api
@@ -85,7 +85,7 @@ class ModalService {
 
     onShow() {
         const $modal = $(this);
-        atk.modalService.addModal($modal);
+        phlex.modalService.addModal($modal);
     }
 
     onHide() {
@@ -108,7 +108,7 @@ class ModalService {
 
         // add modal esc handler.
         if (this.modals.length === 1) {
-            $(document).on('keyup.atk.modalService', (e) => {
+            $(document).on('keyup.phlex.modalService', (e) => {
                 if (e.keyCode === 27) {
                     if (that.modals.length > 0) {
                         that.modals[that.modals.length - 1].modal('hide');
@@ -136,7 +136,7 @@ class ModalService {
         }
 
         if (this.modals.length === 0) {
-            $(document).off('atk.modalService');
+            $(document).off('phlex.modalService');
         }
     }
 
@@ -158,11 +158,11 @@ class ModalService {
         for (let i = this.modals.length - 1; i >= 0; --i) {
             const modal = this.modals[i];
             if (modal.data().needCloseTrigger) {
-                modal.on('close', '.atk-dialog-content', () => {
+                modal.on('close', '.phlex-dialog-content', () => {
                     modal.modal('hide');
                 });
             } else {
-                modal.off('close', '.atk-dialog-content');
+                modal.off('close', '.phlex-dialog-content');
             }
         }
     }

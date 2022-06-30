@@ -26,7 +26,7 @@ $sendEmailAction = $country->addUserAction('Email', [
     },
 ]);
 
-///////////////////////////////////////////
+// /////////////////////////////////////////
 
 \Phlex\Ui\View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
@@ -53,7 +53,7 @@ $country->addUserAction('greet', [
 // Set the action property for the Line Form Control.
 Line::addTo($webpage, ['action' => $country->getUserAction('greet')]);
 
-///////////////////////////////////////////
+// /////////////////////////////////////////
 
 \Phlex\Ui\View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
