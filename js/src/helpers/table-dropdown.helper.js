@@ -2,8 +2,8 @@ import throttle from 'lodash.throttle';
 import $ from 'jquery';
 
 /**
- * Simple helper to help displaying Fomantic-ui Dropdown within an atk table.
- * Because atk table use overflow: scroll, Dropdown is not
+ * Simple helper to help displaying Fomantic-ui Dropdown within an phlex table.
+ * Because phlex table use overflow: scroll, Dropdown is not
  * display on top of table.
  *
  * This utility will properly set css style for dropdown menu to be display correctly.
@@ -48,8 +48,8 @@ function showTableDropdown() {
     }
 
     setCssPosition();
-    $(window).on('scroll.atktable', throttle(setCssPosition, 10));
-    $(window).on('resize.atktable', () => {
+    $(window).on('scroll.phlextable', throttle(setCssPosition, 10));
+    $(window).on('resize.phlextable', () => {
         $that.dropdown('hide');
     });
 }
@@ -61,11 +61,11 @@ function hideTableDropdown() {
     // reset positioning.
     const $menu = $(this).find('.menu');
     $menu.css('cssText', '');
-    $(window).off('scroll.atktable');
-    $(window).off('resize.atktable');
+    $(window).off('scroll.phlextable');
+    $(window).off('resize.phlextable');
 }
 
-// Export function to atk.
+// Export function to phlex.
 export const tableDropdown = {
     onShow: showTableDropdown,
     onHide: hideTableDropdown,

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 /**
  * Shortcut handler for calling method of
- * the atk javascript vue service.
+ * the phlex javascript vue service.
  */
 
 namespace Phlex\Ui;
@@ -11,7 +11,7 @@ namespace Phlex\Ui;
 class JsVueService
 {
     /**
-     * The atk vue service to talk too.
+     * The phlex vue service to talk too.
      *
      * @var JsChain
      */
@@ -22,26 +22,26 @@ class JsVueService
      */
     public function __construct()
     {
-        $this->service = new JsChain('atk.vueService');
+        $this->service = new JsChain('phlex.vueService');
     }
 
     /**
-     * Create a new Vue instance using a component managed by ATK.
+     * Create a new Vue instance using a component managed by Phlex UI.
      *
-     * This output js: atk.vueService.createAtkVue("id", "component", {});
+     * This output js: phlex.vueService.createPhlexVue("id", "component", {});
      *
      * @return mixed
      */
-    public function createAtkVue($id, $component, array $data = [])
+    public function createPhlexVue($id, $component, array $data = [])
     {
-        return $this->service->createAtkVue($id, $component, $data);
+        return $this->service->createPhlexVue($id, $component, $data);
     }
 
     /**
      * Create a new Vue instance using an external component.
      * External component should be load via js file and define properly.
      *
-     * This output js: atk.vueService.createVue("id", "component", {});
+     * This output js: phlex.vueService.createVue("id", "component", {});
      *
      * @return mixed
      */

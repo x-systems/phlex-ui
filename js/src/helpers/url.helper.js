@@ -3,18 +3,18 @@
  *
  * - AddParams - Pass an url with an object and object key=value pair will be
  *   added to the url as get parameter.
- *   ex: $.atkAddParams('myurl.php', {q: 'test', 'reload': 'my_view'})
+ *   ex: $.phlexAddParams('myurl.php', {q: 'test', 'reload': 'my_view'})
  *   will return: myurl.php?q=test&reload=my_view
  *
  * -RemoveParam - remove a parameter from an url string.
- *  ex: $.atkRemoveParam('myurl.php?q=test&reload=my_view', 'q')
+ *  ex: $.phlexRemoveParam('myurl.php?q=test&reload=my_view', 'q')
  *  will return: myurl.php?reload=my_view
  *
  */
 
 (function ($) {
-    if (!$.atk) {
-        $.atk = {};
+    if (!$.phlex) {
+        $.phlex = {};
     }
 
     /**
@@ -23,7 +23,7 @@
      * @param url
      * @returns {*|string}
      */
-    $.atk.getUrl = function (url) {
+    $.phlex.getUrl = function (url) {
         return url.split('?')[0];
     };
 
@@ -33,7 +33,7 @@
      * @param str
      * @returns {{}|unknown}
      */
-    $.atk.getQueryParams = function (str) {
+    $.phlex.getQueryParams = function (str) {
         if (str.split('?')[1]) {
             return decodeURIComponent(str.split('?')[1])
                 .split('&')
@@ -54,7 +54,7 @@
      * @param data
      * @returns {*}
      */
-    $.atk.addParams = function (url, data) {
+    $.phlex.addParams = function (url, data) {
         if (!$.isEmptyObject(data)) {
             url += (url.indexOf('?') >= 0 ? '&' : '?') + $.param(data);
         }
@@ -69,7 +69,7 @@
      * @param param
      * @returns {string|*|string}
      */
-    $.atk.removeParam = function (url, param) {
+    $.phlex.removeParam = function (url, param) {
         const splitUrl = url.split('?');
         if (splitUrl.length === 0) {
             return url;
@@ -89,8 +89,8 @@
 }(jQuery));
 
 export default (function ($) {
-    $.atkGetUrl = $.atk.getUrl;
-    $.atkAddParams = $.atk.addParams;
-    $.atkRemoveParam = $.atk.removeParam;
-    $.atkGetQueryParam = $.atk.getQueryParams;
+    $.phlexGetUrl = $.phlex.getUrl;
+    $.phlexAddParams = $.phlex.addParams;
+    $.phlexRemoveParam = $.phlex.removeParam;
+    $.phlexGetQueryParam = $.phlex.getQueryParams;
 }(jQuery));

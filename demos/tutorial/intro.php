@@ -18,7 +18,7 @@ $wizard->addStep('User Interface', function ($page) {
     $t = \Phlex\Ui\Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
-            Agile Toolkit is a "Low Code Framework" written in PHP. It is designed to simplify all aspects of web application creation:
+            Phlex UI is a "Low Code Framework" written in PHP. It is designed to simplify all aspects of web application creation:
             EOF
     );
     $t->addHtml(
@@ -33,7 +33,7 @@ $wizard->addStep('User Interface', function ($page) {
             HTML
     );
 
-    $t->addParagraph('Your ATK code instead takes a more declarative approach. You work with things like:');
+    $t->addParagraph('Your Phlex code instead takes a more declarative approach. You work with things like:');
 
     $t->addHtml(
         <<< 'HTML'
@@ -49,7 +49,7 @@ $wizard->addStep('User Interface', function ($page) {
 
     $t->addParagraph(
         <<< 'EOF'
-            Since 2017 our collection of built-in widgets, add-ons have grown significantly and today Agile Toolkit is a mature
+            Since 2017 our collection of built-in widgets, add-ons have grown significantly and today Phlex UI is a mature
             and production ready framework.
             EOF
     );
@@ -80,7 +80,7 @@ $wizard->addStep('Interactivity', function ($page) {
     $t = \Phlex\Ui\Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
-            A component of Agile Toolkit (callback) enables seamless communication between the frontend components (which are often
+            A component of Phlex UI (callback) enables seamless communication between the frontend components (which are often
             written in VueJS) and the backend. We also support seamless reloading of any UI widget:
             EOF
     );
@@ -107,7 +107,7 @@ $wizard->addStep('Interactivity', function ($page) {
     $t->addParagraph(
         <<< 'EOF'
             This demo also shows you how to create composite views. The '$seg' above contains text, paginator, divider and some
-            buttons. Interestingly, Paginator view also consists of buttons and Agile Toolkit renders everything reliably.
+            buttons. Interestingly, Paginator view also consists of buttons and Phlex UI renders everything reliably.
             EOF
     );
 });
@@ -117,7 +117,7 @@ $wizard->addStep('Business Model', function ($page) {
     $t->addParagraph(
         <<< 'EOF'
             One major benefit of Server Side Rendered applications is ability to directly interact with data. In other applications
-            you may need to manually process data but in Agile Toolkit we use data mapping framework.
+            you may need to manually process data but in Phlex UI we use data mapping framework.
             EOF
     );
 

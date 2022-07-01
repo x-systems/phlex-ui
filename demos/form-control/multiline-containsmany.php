@@ -22,7 +22,7 @@ if (!class_exists(Client::class)) {
             parent::doInitialize();
 
             $this->addField('name');
-            $this->containsMany('Accounts', ['model' => [Account::class]]);
+            $this->containsMany('Accounts', ['theirModel' => [Account::class]]);
         }
     }
 

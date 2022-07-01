@@ -30,7 +30,11 @@ class Webpage extends View
 
     /** @var array|false Location where to load JS/CSS files */
     public $cdn = [
-        'atk' => 'https://raw.githack.com/atk4/ui/develop/public',
+        'phlex' => '/public',
+        //     		'jquery' => '/public/external/jquery/dist',
+        //     		'serialize-object' => '/public/external/form-serializer/dist',
+        //     		'semantic-ui' => '/public/external/fomantic-ui-css',
+        //     		'flatpickr' => '/public/external/flatpickr/dist',
         'jquery' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1',
         'serialize-object' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-serialize-object/2.5.0',
         'semantic-ui' => 'https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.7',
@@ -40,7 +44,7 @@ class Webpage extends View
     public $defaultTemplate = 'webpage.html';
 
     /** @var string Version of Phlex UI */
-    public $version = '3.0-dev';
+    public $version = '3.0.x';
 
     /** @var string Name of application */
     public $title = 'Phlex UI - Untitled Application';
@@ -141,8 +145,8 @@ class Webpage extends View
      * @var array global sticky arguments
      */
     public $stickyArgs = [
-        '__atk_json' => false,
-        '__atk_tab' => false,
+        '__phlex_json' => false,
+        '__phlex_tab' => false,
     ];
 
     public $templateClass = HtmlTemplate::class;
@@ -210,14 +214,14 @@ class Webpage extends View
         $this->requireJs($this->cdn['flatpickr'] . '/flatpickr.min.js');
         $this->requireCss($this->cdn['flatpickr'] . '/flatpickr.min.css');
 
-        // Agile UI
-        $this->requireJs($this->cdn['atk'] . '/atkjs-ui.min.js');
-        $this->requireCss($this->cdn['atk'] . '/agileui.css');
+        // Phlex UI
+        $this->requireJs($this->cdn['phlex'] . '/phlex-ui.min.js');
+        $this->requireCss($this->cdn['phlex'] . '/phlex-ui.css');
 
         // Set js bundle dynamic loading path.
         $this->template->tryDangerouslySetHtml(
             'InitJsBundle',
-            (new JsExpression('window.__atkBundlePublicPath = [];', [$this->cdn['atk']]))->jsRender()
+            (new JsExpression('window.__phlexBundlePublicPath = [];', [$this->cdn['phlex']]))->jsRender()
         );
     }
 
@@ -294,14 +298,13 @@ class Webpage extends View
     {
         // Set our exception handler
         if ($this->catch_exceptions) {
-            (new \Whoops\Run())->register();
-//             set_exception_handler(\Closure::fromCallable([$this, 'caughtException']));
-//             set_error_handler(
-//                 static function (int $severity, string $msg, string $file, int $line): bool {
-//                         throw new \ErrorException($msg, 0, $severity, $file, $line);
-//                     },
-//                 \E_ALL
-//             );
+            set_exception_handler(\Closure::fromCallable([$this, 'caughtException']));
+            set_error_handler(
+                static function (int $severity, string $msg, string $file, int $line): bool {
+                    throw new \ErrorException($msg, 0, $severity, $file, $line);
+                },
+                \E_ALL
+            );
         }
     }
 
@@ -324,7 +327,7 @@ class Webpage extends View
             $this->body->template->tryDel('Header');
 
             if (($this->isJsUrlRequest() || strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'xmlhttprequest')
-                    && !isset($_GET['__atk_tab'])) {
+                    && !isset($_GET['__phlex_tab'])) {
                 $this->outputResponseJson([
                     'success' => false,
                     'message' => $this->body->getHtml(),
@@ -425,7 +428,7 @@ class Webpage extends View
             $output['modals'] = $this->getRenderedModals();
 
             $this->outputResponseJson($output, $headers);
-        } elseif (isset($_GET['__atk_tab']) && $type === 'text/html') {
+        } elseif (isset($_GET['__phlex_tab']) && $type === 'text/html') {
             // ugly hack for TABS
             // because fomantic ui tab only deal with html and not JSON
             // we need to hack output to include app modal.
@@ -434,14 +437,14 @@ class Webpage extends View
             foreach ($this->getRenderedModals() as $key => $modal) {
                 // add modal rendering to output
                 $keys[] = '#' . $key;
-                $output['atkjs'] = $output['atkjs'] . ';' . $modal['js'];
+                $output['script'] = $output['script'] . ';' . $modal['js'];
                 $output['html'] = $output['html'] . $modal['html'];
             }
             if ($keys) {
                 $ids = implode(',', $keys);
                 $remove_function = '$(\'.ui.dimmer.modals.page\').find(\'' . $ids . '\').remove();';
             }
-            $output = '<script>jQuery(function() {' . $remove_function . $output['atkjs'] . '});</script>' . $output['html'];
+            $output = '<script>jQuery(function() {' . $remove_function . $output['script'] . '});</script>' . $output['html'];
 
             $this->outputResponseHtml($output, $headers);
         } elseif ($type === 'text/html') {
@@ -545,7 +548,7 @@ class Webpage extends View
             $this->is_rendering = false;
             $this->hook(self::HOOK_BEFORE_OUTPUT);
 
-            if (isset($_GET['__atk_callback']) && $this->catch_runaway_callbacks) {
+            if (isset($_GET['__phlex_callback']) && $this->catch_runaway_callbacks) {
                 throw new Exception('Callback requested, but never reached. You may be missing some arguments in request URL.');
             }
 
@@ -697,7 +700,7 @@ class Webpage extends View
     public function jsUrl($page = [], $needRequestUri = false, $extraRequestUriArgs = [])
     {
         // append to the end but allow override
-        $extraRequestUriArgs = array_merge($extraRequestUriArgs, ['__atk_json' => 1], $extraRequestUriArgs);
+        $extraRequestUriArgs = array_merge($extraRequestUriArgs, ['__phlex_json' => 1], $extraRequestUriArgs);
 
         return $this->url($page, $needRequestUri, $extraRequestUriArgs);
     }
@@ -707,7 +710,7 @@ class Webpage extends View
      */
     public function isJsUrlRequest(): bool
     {
-        return isset($_GET['__atk_json']) && $_GET['__atk_json'] !== '0';
+        return isset($_GET['__phlex_json']) && $_GET['__phlex_json'] !== '0';
     }
 
     /**
@@ -1107,7 +1110,7 @@ class Webpage extends View
     public function getRenderedModals(): array
     {
         // prevent looping (calling Webpage::terminateJson() recursively) if JsReload is used in Modal
-        unset($_GET['__atk_reload']);
+        unset($_GET['__phlex_reload']);
 
         $modals = [];
         foreach ($this->elements as $view) {

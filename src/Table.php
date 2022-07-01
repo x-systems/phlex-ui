@@ -376,7 +376,7 @@ class Table extends Lister
             $options = array_merge($options, $resizerOptions);
         }
 
-        $this->js(true, $this->js()->atkColumnResizer($options));
+        $this->js(true, $this->js()->phlexColumnResizer($options));
 
         return $this;
     }
@@ -426,7 +426,7 @@ class Table extends Lister
      */
     public function setModel(Model $model, $columns = null)
     {
-        $model->assertIsEntitySet();
+        $model->assertNotEntity();
 
         parent::setModel($model);
 

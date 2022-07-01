@@ -14,7 +14,7 @@ $bar = \Phlex\Ui\ProgressBar::addTo($webpage);
 $button = \Phlex\Ui\Button::addTo($webpage, ['Turn On']);
 $buttonStop = \Phlex\Ui\Button::addTo($webpage, ['Turn Off']);
 // non-SSE way
-//$button->on('click', $bar->js()->progress(['percent'=> 40]));
+// $button->on('click', $bar->js()->progress(['percent'=> 40]));
 
 $sse = \Phlex\Ui\JsSse::addTo($webpage, ['showLoader' => true]);
 
@@ -37,7 +37,7 @@ $button->on('click', $sse->set(function () use ($button, $sse, $bar) {
     ];
 }));
 
-$buttonStop->on('click', [$button->js()->atkServerEvent('stop'), $button->js()->removeClass('disabled')]);
+$buttonStop->on('click', [$button->js()->phlexServerEvent('stop'), $button->js()->removeClass('disabled')]);
 
 \Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
 \Phlex\Ui\Header::addTo($webpage, ['SSE operation with user confirmation']);

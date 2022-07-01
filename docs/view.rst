@@ -424,12 +424,12 @@ use ``id=atk`` and all of the child elements will create a derrived ID based on 
 .. code-block:: yml
 
     atk:
-        atk-button:
-        atk-button2:
-        atk-form:
-            atk-form-name:
-            atk-form-surname:
-            atk-form-button:
+        phlex-button:
+        phlex-button2:
+        phlex-form:
+            phlex-form-name:
+            phlex-form-surname:
+            phlex-form-button:
 
 If role is unspecified then 'view' will be used. The main benefit here is to have automatic
 allocation of all the IDs througout the render-tree ensuring that those ID's are consistent

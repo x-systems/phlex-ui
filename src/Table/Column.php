@@ -144,7 +144,7 @@ class Column
     {
         $this->hasHeaderAction = true;
 
-        $this->headerActionTag = ['div',  ['class' => 'atk-table-dropdown'],
+        $this->headerActionTag = ['div',  ['class' => 'phlex-table-dropdown'],
             [
                 ['i', ['id' => $id, 'class' => $class . ' icon'], ''],
             ],
@@ -156,7 +156,7 @@ class Column
      */
     public function setHeaderPopupIcon($icon)
     {
-        $this->headerActionTag = ['div',  ['class' => 'atk-table-dropdown'],
+        $this->headerActionTag = ['div',  ['class' => 'phlex-table-dropdown'],
             [
                 ['i', ['id' => $this->elementName . '_ac', 'class' => $icon . ' icon'], ''],
             ],
@@ -194,7 +194,7 @@ class Column
     {
         $this->hasHeaderAction = true;
         $id = $this->elementName . '_ac';
-        $this->headerActionTag = ['div',  ['class' => 'atk-table-dropdown'],
+        $this->headerActionTag = ['div',  ['class' => 'phlex-table-dropdown'],
             [
                 [
                     'div', ['id' => $id, 'class' => 'ui top left pointing dropdown', 'data-menu-id' => $menuId],
@@ -331,7 +331,7 @@ class Column
             'data-column' => $this->columnData,
         ];
 
-        $class = 'atk-table-column-header';
+        $class = 'phlex-table-column-header';
 
         if ($this->hasHeaderAction) {
             $attr['id'] = $this->elementName . '_th';

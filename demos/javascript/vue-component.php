@@ -41,7 +41,7 @@ $subHeader = 'Searching will reload the list of countries below with matching re
 
 $model = new Country($webpage->db);
 
-$lister_template = new HtmlTemplate('<div id="{$_id}">{List}<div class="ui icon label"><i class="{$atk_fp_country__iso} flag"></i> {$atk_fp_country__name}</div>{$end}{/}</div>');
+$lister_template = new HtmlTemplate('<div id="{$_id}">{List}<div class="ui icon label"><i class="{$phlex_fp_country__iso} flag"></i> {$phlex_fp_country__name}</div>{$end}{/}</div>');
 
 $view = \Phlex\Ui\View::addTo($webpage);
 
@@ -83,7 +83,7 @@ $clock_template = new HtmlTemplate('
 $clock_script = "
     <script>
         // Register clock component from vue-clock2 to use with myClock.
-        atk.vueService.getVue().component('clock', Clock.default);
+        phlex.vueService.getVue().component('clock', Clock.default);
 
         var myClock = {
           props : {clock: Array},
@@ -93,7 +93,7 @@ $clock_script = "
           mounted: function() {
             // add a listener for changing clock style.
             // this will listen to event '-clock-change-style' emit on the eventBus.
-            atk.eventBus.on(this.\$root.\$el.id + '-clock-change-style', (payload) => {
+            phlex.eventBus.on(this.\$root.\$el.id + '-clock-change-style', (payload) => {
                 this.onChangeStyle();
             });
           },

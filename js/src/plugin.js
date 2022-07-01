@@ -39,16 +39,16 @@ import sidenav from './plugins/sidenav.plugin';
  * in final webpack output.
  */
 function plugin(name, className, shortHand = false) {
-    // Add atk namespace to jQuery global space.
-    if (!$.atk) {
-        $.atk = {};
+    // Add phlex namespace to jQuery global space.
+    if (!$.phlex) {
+        $.phlex = {};
     }
 
-    const pluginName = 'atk' + name;
+    const pluginName = 'phlex' + name;
     const dataName = `__${pluginName}`;
 
-    // add plugin to atk namespace.
-    $.atk[name] = className;
+    // add plugin to phlex namespace.
+    $.phlex[name] = className;
 
     // register plugin to jQuery fn prototype.
     $.fn[pluginName] = function (option = {}, args = []) {
@@ -63,9 +63,9 @@ function plugin(name, className, shortHand = false) {
 
         return this.each(function () {
             const options = $.extend({}, className.DEFAULTS, typeof option === 'object' && option);
-            // create plugin using the constructor function store in atk namespace object
+            // create plugin using the constructor function store in phlex namespace object
             // and add a reference of it to this jQuery object data.
-            $(this).data(dataName, new $.atk[name](this, options));
+            $(this).data(dataName, new $.phlex[name](this, options));
         });
     };
 
@@ -76,10 +76,10 @@ function plugin(name, className, shortHand = false) {
 }
 
 /**
- * Create all jQuery plugins need for atk.
+ * Create all jQuery plugins needed for Phlex UI.
  */
 (function () {
-    const atkJqPlugins = [
+    const phlexJqPlugins = [
         { name: 'Spinner', plugin: spinner, sh: false },
         { name: 'ReloadView', plugin: reloadView, sh: false },
         { name: 'Ajaxec', plugin: ajaxec, sh: false },
@@ -96,8 +96,8 @@ function plugin(name, className, shortHand = false) {
         { name: 'Sidenav', plugin: sidenav, sh: false },
     ];
 
-    atkJqPlugins.forEach((atkJqPlugin) => {
-        plugin(atkJqPlugin.name, atkJqPlugin.plugin, atkJqPlugin.sh);
+    phlexJqPlugins.forEach((phlexJqPlugin) => {
+        plugin(phlexJqPlugin.name, phlexJqPlugin.plugin, phlexJqPlugin.sh);
     });
 }());
 

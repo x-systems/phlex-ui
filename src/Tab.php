@@ -42,7 +42,7 @@ class Tab extends Item
                 'cache' => false,
                 'auto' => true,
                 'path' => $this->path,
-                'apiSettings' => ['data' => ['__atk_tab' => 1]],
+                'apiSettings' => ['data' => ['__phlex_tab' => 1]],
             ]);
         }
 

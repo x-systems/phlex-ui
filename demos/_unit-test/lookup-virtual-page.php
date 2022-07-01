@@ -30,7 +30,7 @@ $vp->set(function ($page) {
     });
 });
 
-$g = Grid::addTo($webpage, ['menu' => ['class' => ['atk-grid-menu']]]);
+$g = Grid::addTo($webpage, ['menu' => ['class' => ['phlex-grid-menu']]]);
 $g->setModel($product);
 
 $g->menu->addItem(

@@ -43,7 +43,7 @@ class TreeItemSelector extends Form\Control
      *
      * @var string
      */
-    public $loaderCssName = 'atk-tree-loader';
+    public $loaderCssName = 'phlex-tree-loader';
 
     /**
      * Allow multiple selection or just one.
@@ -84,7 +84,7 @@ class TreeItemSelector extends Form\Control
         $this->addClass(['ui', 'vertical', 'segment', 'basic', $this->loaderCssName])->addStyle(['padding' => '0px!important']);
 
         if (!$this->itemSelectorTemplate) {
-            $this->itemSelectorTemplate = new HtmlTemplate('<div id="{$_id}" class="ui list" style="margin-left: 16px"><atk-tree-item-selector v-bind="initData"></atk-tree-item-selector><div class="ui hidden divider"></div>{$Input}</div>');
+            $this->itemSelectorTemplate = new HtmlTemplate('<div id="{$_id}" class="ui list" style="margin-left: 16px"><phlex-tree-item-selector v-bind="initData"></phlex-tree-item-selector><div class="ui hidden divider"></div>{$Input}</div>');
         }
 
         $this->itemSelector = \Phlex\Ui\View::addTo($this, ['template' => $this->itemSelectorTemplate]);
@@ -152,9 +152,9 @@ class TreeItemSelector extends Form\Control
         $this->itemSelector->template->tryDangerouslySetHtml('Input', $this->getInput());
 
         $this->itemSelector->vue(
-            'atk-tree-item-selector',
+            'phlex-tree-item-selector',
             [
-                'item' => ['id' => 'atk-root', 'nodes' => $this->treeItems],
+                'item' => ['id' => 'phlex-root', 'nodes' => $this->treeItems],
                 'values' => [], // need empty for Vue reactivity.
                 'field' => $this->elementId,
                 'options' => [

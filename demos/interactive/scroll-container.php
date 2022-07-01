@@ -17,7 +17,7 @@ require_once __DIR__ . '/../init-app.php';
 
 \Phlex\Ui\Header::addTo($webpage, ['Dynamic scroll in Container']);
 
-$view = \Phlex\Ui\View::addTo($webpage)->addClass('ui basic segment atk-scroller');
+$view = \Phlex\Ui\View::addTo($webpage)->addClass('ui basic segment phlex-scroller');
 
 $scrollContainer = \Phlex\Ui\View::addTo($view)->addClass('ui segment')->addStyle(['max-height' => '400px', 'overflow-y' => 'scroll']);
 
@@ -32,4 +32,4 @@ $lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $l
 $lister->setModel(new Country($webpage->db));
 
 // add dynamic scrolling.
-$lister->addJsPaginator(20, ['stateContext' => '.atk-scroller'], $scrollContainer);
+$lister->addJsPaginator(20, ['stateContext' => '.phlex-scroller'], $scrollContainer);

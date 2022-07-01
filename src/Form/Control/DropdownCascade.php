@@ -18,7 +18,7 @@ class DropdownCascade extends Dropdown
     /** @var string|Form\Control|null the form input to use for setting this dropdown list values from. */
     public $cascadeFrom;
 
-    /** @var string|Model|null the hasMany reference model that will generated value for this dropdown list. */
+    /** @var string|Model|null the hasMany/withMany reference model that will generated value for this dropdown list. */
     public $reference;
 
     /** @var Form\Control The form control object created based on cascadeFrom */

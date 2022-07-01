@@ -24,7 +24,7 @@ const template = `<sui-dropdown
                     :class="css"></sui-dropdown>`;
 
 export default {
-    name: 'atk-lookup',
+    name: 'phlex-lookup',
     template: template,
     props: ['config', 'value', 'optionalValue'],
     data: function () {
@@ -61,7 +61,7 @@ export default {
                 this.isLoading = true;
             }
             this.temp = inputValue;
-            atk.debounce(() => {
+            phlex.debounce(() => {
                 if (this.query !== this.temp) {
                     this.query = this.temp;
                     if (this.query) {
@@ -75,8 +75,8 @@ export default {
      */
         fetchItems: async function (q) {
             try {
-                const data = { atk_vlookup_q: q, atk_vlookup_field: this.field };
-                const response = await atk.apiService.suiFetch(this.url, { method: 'get', data: data });
+                const data = { phlex_vlookup_q: q, phlex_vlookup_field: this.field };
+                const response = await phlex.apiService.suiFetch(this.url, { method: 'get', data: data });
                 if (response.success) {
                     this.dropdownProps.options = response.results;
                 }

@@ -104,7 +104,7 @@ class FilterModel extends Model
         // create a name for our filter model to save as session data.
         $this->elementName = 'filter_model_' . $this->lookupField->elementId;
 
-        if ($_GET['atk_clear_filter'] ?? false) {
+        if ($_GET['phlex_clear_filter'] ?? false) {
             $this->forget();
         }
 

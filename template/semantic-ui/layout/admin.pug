@@ -1,13 +1,13 @@
-.atk-layout
-  .ui.left.vertical.menu.inverted.labeled.sidebar.atk-sidenav(class="{CssVisibility}visible{/}")
+.phlex-layout
+  .ui.left.vertical.menu.inverted.labeled.sidebar.phlex-sidenav(class="{CssVisibility}visible{/}")
     | {$LeftMenu}
-  main.atk-mainContainer.atk-admin-layout
+  main.phlex-mainContainer.phlex-admin-layout
     | {$TopMenu}
-    .atk-mainContainerWrapper
+    .phlex-mainContainerWrapper
       | {$Content}
-  footer.atk-footer
+  footer.phlex-footer
     .ui.divider
-    .ui.center.aligned.basic.segment {Footer}Made with #[a(href='http://agiletoolkit.org/' target='_blank') Agile Toolkit] v{$version}{/}
-  .atk-overlay.pushable
+    .ui.center.aligned.basic.segment {Footer}Made with #[a(href='https://phlex.dev/' target='_blank') Phlex UI] v{$version}{/}
+  .phlex-overlay.pushable
     .pusher
 = "\n"

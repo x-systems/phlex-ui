@@ -35,7 +35,7 @@ class JsSse extends JsCallback
     {
         parent::doInitialize();
 
-        if ($_GET['__atk_sse'] ?? null) {
+        if ($_GET['__phlex_sse'] ?? null) {
             $this->browserSupport = true;
             $this->initSse();
         }
@@ -53,7 +53,7 @@ class JsSse extends JsCallback
             $options['closeBeforeUnload'] = $this->closeBeforeUnload;
         }
 
-        return (new Jquery())->atkServerEvent($options)->jsRender();
+        return (new Jquery())->phlexServerEvent($options)->jsRender();
     }
 
     /**
@@ -63,7 +63,7 @@ class JsSse extends JsCallback
     {
         if ($this->browserSupport) {
             $ajaxec = $this->getAjaxec($action);
-            $this->sendEvent('js', $this->getApp()->encodeJson(['success' => $success, 'message' => 'Success', 'atkjs' => $ajaxec]), 'atk_sse_action');
+            $this->sendEvent('js', $this->getApp()->encodeJson(['success' => $success, 'message' => 'Success', 'script' => $ajaxec]), 'phlex_sse_action');
         }
     }
 
@@ -76,8 +76,8 @@ class JsSse extends JsCallback
             if ($ajaxec) {
                 $this->sendEvent(
                     'js',
-                    $this->getApp()->encodeJson(['success' => $success, 'message' => 'Success', 'atkjs' => $ajaxec]),
-                    'atk_sse_action'
+                    $this->getApp()->encodeJson(['success' => $success, 'message' => 'Success', 'script' => $ajaxec]),
+                    'phlex_sse_action'
                 );
             }
 
@@ -85,7 +85,7 @@ class JsSse extends JsCallback
             $this->getApp()->terminate();
         }
 
-        $this->getApp()->terminateJson(['success' => $success, 'message' => 'Success', 'atkjs' => $ajaxec]);
+        $this->getApp()->terminateJson(['success' => $success, 'message' => 'Success', 'script' => $ajaxec]);
     }
 
     /**

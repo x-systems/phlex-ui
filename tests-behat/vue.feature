@@ -3,10 +3,10 @@ Feature: Vue
 
   Scenario: testing InlineEdit
     Given I am on "javascript/vue-component.php"
-    When I fill in "atk_fp_country__name" with "test"
+    When I fill in "phlex_fp_country__name" with "test"
     Then I should see "new value: test"
     Then I hide js modal
 
   Scenario: testing ItemSearch
-    When I fill in "atk-vue-search" with "united kingdom"
+    When I fill in "phlex-vue-search" with "united kingdom"
     Then I should see "United Kingdom"

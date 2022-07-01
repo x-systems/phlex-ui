@@ -84,11 +84,11 @@ class Multiline extends Form\Control
 
     // Components name
     public const INPUT = 'sui-input';
-    public const READ_ONLY = 'atk-multiline-readonly';
-    public const TEXT_AREA = 'atk-multiline-textarea';
+    public const READ_ONLY = 'phlex-multiline-readonly';
+    public const TEXT_AREA = 'phlex-multiline-textarea';
     public const SELECT = 'sui-dropdown';
-    public const DATE = 'atk-date-picker';
-    public const LOOKUP = 'atk-lookup';
+    public const DATE = 'phlex-date-picker';
+    public const LOOKUP = 'phlex-lookup';
     public const TABLE_CELL = 'sui-table-cell';
 
     /**
@@ -198,7 +198,7 @@ class Multiline extends Form\Control
         parent::doInitialize();
 
         if (!$this->multiLineTemplate) {
-            $this->multiLineTemplate = new HtmlTemplate('<div id="{$_id}" class=""><atk-multiline v-bind="initData"></atk-multiline></div>');
+            $this->multiLineTemplate = new HtmlTemplate('<div id="{$_id}" class=""><phlex-multiline v-bind="initData"></phlex-multiline></div>');
         }
 
         $this->multiLine = View::addTo($this, ['template' => $this->multiLineTemplate]);
@@ -219,7 +219,7 @@ class Multiline extends Form\Control
             if ($this->form->model->getField($this->elementId)->type === 'array') {
                 $rows = [];
                 foreach ($this->rowData as $cols) {
-                    unset($cols['__atkml']);
+                    unset($cols['__phlex_multiline']);
                     $rows[] = $cols;
                 }
                 $post[$this->elementId] = json_encode($rows);
@@ -250,7 +250,7 @@ class Multiline extends Form\Control
 
         foreach ($values as $k => $row) {
             foreach ($row as $fieldName => $value) {
-                if ($fieldName === '__atkml') {
+                if ($fieldName === '__phlex_multiline') {
                     $dataRows[$k][$fieldName] = $value;
                 } else {
                     $dataRows[$k][$fieldName] = $this->getApp()->ui_persistence->typecastLoadField($this->getModel()->getField($fieldName), $value);
@@ -310,7 +310,7 @@ class Multiline extends Form\Control
         foreach ($rows as $cols) {
             $rowId = $this->getMlRowId($cols);
             foreach ($cols as $fieldName => $value) {
-                if ($fieldName === '__atkml' || $fieldName === $model->primaryKey) {
+                if ($fieldName === '__phlex_multiline' || $fieldName === $model->primaryKey) {
                     continue;
                 }
 
@@ -343,7 +343,7 @@ class Multiline extends Form\Control
         foreach ($this->rowData as $row) {
             $entity = $model->tryLoad($row[$model->primaryKey] ?? null);
             foreach ($row as $fieldName => $value) {
-                if ($fieldName === '__atkml') {
+                if ($fieldName === '__phlex_multiline') {
                     continue;
                 }
 
@@ -391,7 +391,7 @@ class Multiline extends Form\Control
     {
         $rowId = null;
         foreach ($row as $col => $value) {
-            if ($col === '__atkml') {
+            if ($col === '__phlex_multiline') {
                 $rowId = $value;
 
                 break;
@@ -495,7 +495,7 @@ class Multiline extends Form\Control
     }
 
     /**
-     * Return props for atk-date-picker component.
+     * Return props for phlex-date-picker component.
      */
     protected function getDatePickerProps(Model\Field $field): array
     {
@@ -533,7 +533,7 @@ class Multiline extends Form\Control
     }
 
     /**
-     * Set property for atk-lookup component.
+     * Set property for phlex-lookup component.
      */
     protected function getLookupProps(Model\Field $field): array
     {
@@ -665,7 +665,7 @@ class Multiline extends Form\Control
         $this->valuePropsBinding($inputValue);
 
         $this->multiLine->vue(
-            'atk-multiline',
+            'phlex-multiline',
             [
                 'data' => [
                     'formName' => $this->form->formElement->elementName,
@@ -694,7 +694,7 @@ class Multiline extends Form\Control
      */
     private function outputJson(): void
     {
-        $action = $_POST['__atkml_action'] ?? null;
+        $action = $_POST['__phlex_multiline_action'] ?? null;
 
         switch ($action) {
             case 'update-row':

@@ -178,7 +178,7 @@ class JsNotify implements JsExpressionable
             $final = new JsChain();
         }
 
-        $final->atkNotify($this->options);
+        $final->phlexNotify($this->options);
 
         return $final->jsRender();
     }

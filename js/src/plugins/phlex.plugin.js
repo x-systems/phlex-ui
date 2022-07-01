@@ -1,16 +1,16 @@
 import $ from 'jquery';
 
 /**
- * Base implementation of jQuery plugin in Agile Toolkit.
+ * Base implementation of jQuery plugin in Phlex UI.
  *
  */
 
-export default class atkPlugin {
+export default class phlexPlugin {
     /**
      * Default plugin constructor
      * @param element
      * @param options
-     * @returns {atkPlugin}
+     * @returns {phlexPlugin}
      */
     constructor(element, options) {
         this.$el = $(element);

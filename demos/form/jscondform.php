@@ -9,7 +9,7 @@ use Phlex\Ui\Form;
 /** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-//////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////
 \Phlex\Ui\Header::addTo($webpage, ['Phone', 'size' => 2]);
 
 $formPhone = Form::addTo($webpage, ['segment']);
@@ -27,7 +27,7 @@ $formPhone->setControlsDisplayRules([
     'phone4' => ['phone3' => ['number', 'minLength[5]'], 'phone2' => ['number', 'minLength[5]'], 'phone1' => ['number', 'minLength[5]']],
 ]);
 
-//////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////
 \Phlex\Ui\Header::addTo($webpage, ['Optional subscription', 'size' => 2]);
 
 $formSubscribe = Form::addTo($webpage, ['segment']);
@@ -50,7 +50,7 @@ $formSubscribe->setControlsDisplayRules([
     'f_gift' => ['gender' => 'isExactly[Female]', 'subscribe' => 'checked'],
 ]);
 
-//////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////
 \Phlex\Ui\Header::addTo($webpage, ['Dog registration', 'size' => 2]);
 
 $formDog = Form::addTo($webpage, ['segment']);
@@ -66,7 +66,7 @@ $formDog->setControlsDisplayRules([
     'hair_cut' => [['race' => 'contains[poodle]', 'age' => 'integer[1..5]'], ['race' => 'isExactly[bichon]']],
 ]);
 
-//////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////
 \Phlex\Ui\Header::addTo($webpage, ['Hide or show group', 'size' => 2]);
 
 $formGroup = Form::addTo($webpage, ['segment']);
@@ -94,7 +94,7 @@ $groupOther->addControl('favorite_pet', ['width' => 'four']);
 // Show group where 'language' belong when dev is checked.
 $formGroup->setGroupDisplayRules(['php' => ['dev' => 'checked'], 'language' => ['dev' => 'checked']]);
 
-//////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////
 /*
 \Phlex\Ui\Header::addTo($webpage, ['Hide or show accordion section', 'size'=>2]);
 
@@ -141,7 +141,7 @@ $f_acc->setGroupDisplayRules(
     ['addr2' => ['custom_shipping' => 'checked']]
 
     // JS selector of container
-    //,'.atk-form-group'        // this will hide group
+    //,'.phlex-form-group'        // this will hide group
     //,'.content'               // this will hide content of 2nd accordion section
     , $ship_section->getOwner() // this way we set selector to accordion section title block - so what? we still can't do anything about it
     //                          // BUT there is no way how to show/hide all accordion section including title and content

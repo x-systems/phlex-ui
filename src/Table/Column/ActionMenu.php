@@ -113,14 +113,14 @@ class ActionMenu extends Table\Column
 
     public function getHeaderCellHtml(Model\Field $field = null, $value = null)
     {
-        $this->table->js(true)->find('.atk-action-menu')->dropdown(
+        $this->table->js(true)->find('.phlex-action-menu')->dropdown(
             array_merge(
                 $this->options,
                 [
                     'direction' => 'auto',  // direction need to be auto.
                     'transition' => 'none', // no transition.
-                    'onShow' => (new JsChain('atk.tableDropdown.onShow')),
-                    'onHide' => (new JsChain('atk.tableDropdown.onHide')),
+                    'onShow' => (new JsChain('phlex.tableDropdown.onShow')),
+                    'onHide' => (new JsChain('phlex.tableDropdown.onHide')),
                 ]
             )
         );
@@ -140,7 +140,7 @@ class ActionMenu extends Table\Column
             $output .= $item->getHtml();
         }
 
-        $s = '<div class="' . $this->ui . ' atk-action-menu">';
+        $s = '<div class="' . $this->ui . ' phlex-action-menu">';
         $s .= '<div class="text">' . $this->label . '</div>';
         $s .= $this->icon ? '<i class="' . $this->icon . '"></i>' : '';
         $s .= '<div class="menu">';

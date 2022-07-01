@@ -1,15 +1,15 @@
 import $ from 'jquery';
-import atkPlugin from './atk.plugin';
+import phlexPlugin from './phlex.plugin';
 
-export default class JsSearch extends atkPlugin {
+export default class JsSearch extends phlexPlugin {
     main() {
         this.urlArgs = {};
         this.state = { button: false, filter: false };
         this.textInput = this.$el.find('input[type="text"]');
-        this.leftIcon = this.$el.find('.atk-filter-icon').hide();
-        this.searchAction = this.$el.find('.atk-search-button');
-        this.searchIcon = this.searchAction.find('i.atk-search-icon');
-        this.removeIcon = this.searchAction.find('i.atk-remove-icon').hide();
+        this.leftIcon = this.$el.find('.phlex-filter-icon').hide();
+        this.searchAction = this.$el.find('.phlex-search-button');
+        this.searchIcon = this.searchAction.find('i.phlex-search-icon');
+        this.removeIcon = this.searchAction.find('i.phlex-remove-icon').hide();
         this.$el.data('preValue', '');
 
         this.setInputAction();
@@ -37,7 +37,7 @@ export default class JsSearch extends atkPlugin {
    * Query server on each keystroke after proper timeout.
    */
     onAutoQueryAction() {
-        this.textInput.on('keyup', atk.debounce((e) => {
+        this.textInput.on('keyup', phlex.debounce((e) => {
             const options = $.extend({}, this.urlArgs, this.settings.uri_options);
             if (e.target.value === '' || e.keyCode === 27) {
                 this.doSearch(this.settings.uri, null, options, () => {
@@ -207,11 +207,11 @@ export default class JsSearch extends atkPlugin {
                 onComplete: cb,
             });
         } else {
-            uri = $.atkRemoveParam(uri, '_q');
-            if (options.__atk_reload) {
-                delete options.__atk_reload;
+            uri = $.phlexRemoveParam(uri, '_q');
+            if (options.__phlex_reload) {
+                delete options.__phlex_reload;
             }
-            uri = $.atkAddParams(uri, options);
+            uri = $.phlexAddParams(uri, options);
             window.location = uri;
         }
     }

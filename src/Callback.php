@@ -9,7 +9,7 @@ namespace Phlex\Ui;
  * executed directly will perform a PHP callback that you set().
  *
  * Callback function run when triggered, i.e. when it's urlTrigger param value is present in the $_GET request.
- * The current callback will be set within the $_GET['__atk_callback'] and will be set to urlTrigger as well.
+ * The current callback will be set within the $_GET['__phlex_callback'] and will be set to urlTrigger as well.
  *
  * $button = Button::addTo($layout);
  * $button->set('Click to do something')->link(
@@ -51,7 +51,7 @@ class Callback extends AbstractView
     }
 
     /**
-     * Executes user-specified action when call-back is triggered.
+     * Executes user-specified action when callback is triggered.
      *
      * @param \Closure $fx
      * @param array    $args
@@ -103,7 +103,7 @@ class Callback extends AbstractView
      */
     public function canTerminate(): bool
     {
-        return isset($_GET['__atk_callback']) && $_GET['__atk_callback'] === $this->urlTrigger;
+        return isset($_GET['__phlex_callback']) && $_GET['__phlex_callback'] === $this->urlTrigger;
     }
 
     /**
@@ -111,11 +111,11 @@ class Callback extends AbstractView
      */
     public function canTrigger(): bool
     {
-        return $this->triggerOnReload || empty($_GET['__atk_reload']);
+        return $this->triggerOnReload || empty($_GET['__phlex_reload']);
     }
 
     /**
-     * Return URL that will trigger action on this call-back. If you intend to request
+     * Return URL that will trigger action on this callback. If you intend to request
      * the URL direcly in your browser (as iframe, new tab, or document location), you
      * should use getUrl instead.
      */
@@ -125,7 +125,7 @@ class Callback extends AbstractView
     }
 
     /**
-     * Return URL that will trigger action on this call-back. If you intend to request
+     * Return URL that will trigger action on this callback. If you intend to request
      * the URL loading from inside JavaScript, it's always advised to use getJsUrl instead.
      */
     public function getUrl(string $value = 'callback'): string
@@ -138,14 +138,14 @@ class Callback extends AbstractView
      */
     private function getUrlArguments(string $value = null): array
     {
-        return ['__atk_callback' => $this->urlTrigger, $this->urlTrigger => $value ?? $this->getTriggeredValue()];
+        return ['__phlex_callback' => $this->urlTrigger, $this->urlTrigger => $value ?? $this->getTriggeredValue()];
     }
 
     protected function _getStickyArgs(): array
     {
         // DEV NOTE:
         // - getUrlArguments $value used only in https://github.com/atk4/ui/blob/08644a685a9ee07b4e94d1e35e3bd3c95b7a013d/src/VirtualPage.php#L134
-        // - $_GET['__atk_callback'] from getUrlArguments seems to control terminating behaviour!
-        return array_merge(parent::_getStickyArgs(), $this->getUrlArguments() /* TODO we do not want/need all Callback args probably*/);
+        // - $_GET['__phlex_callback'] from getUrlArguments seems to control terminating behaviour!
+        return array_merge(parent::_getStickyArgs(), $this->getUrlArguments() /* TODO we do not want/need all Callback args probably */);
     }
 }

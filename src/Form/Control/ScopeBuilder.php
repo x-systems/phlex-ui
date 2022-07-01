@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Form\Control;
 
 use Phlex\Data\Model;
+use Phlex\Data\Model\Field\Type\Selectable;
 use Phlex\Data\Model\Scope;
 use Phlex\Data\Model\Scope\Condition;
 use Phlex\Ui\Exception;
@@ -14,6 +15,8 @@ use Phlex\Ui\HtmlTemplate;
 class ScopeBuilder extends Control
 {
     use VueLookupTrait;
+
+    public const OPTION_PRESETS = self::class . '@presets';
 
     /** @var bool Do not render label for this input. */
     public $renderLabel = false;
@@ -69,15 +72,15 @@ class ScopeBuilder extends Control
      *
      * @var array
      */
-    public $atkdDateOptions = [
+    public $phlexDateOptions = [
         'useDefault' => false,
         'flatpickr' => [],
     ];
 
     /**
-     * atk-lookup and semantic-ui dropdown options.
+     * phlex-lookup and semantic-ui dropdown options.
      */
-    public $atkLookupOptions = [
+    public $phlexLookupOptions = [
         'ui' => 'small basic button',
     ];
 
@@ -252,7 +255,7 @@ class ScopeBuilder extends Control
         'lookup' => [
             'type' => 'custom-component',
             'inputType' => 'lookup',
-            'component' => 'atk-lookup',
+            'component' => 'phlex-lookup',
             'operators' => self::ENUM_OPERATORS,
             'componentProps' => [__CLASS__, 'getLookupProps'],
         ],
@@ -286,21 +289,21 @@ class ScopeBuilder extends Control
         ],
         'date' => [
             'type' => 'custom-component',
-            'component' => 'atk-date-picker',
+            'component' => 'phlex-date-picker',
             'inputType' => 'date',
             'operators' => self::DATE_OPERATORS,
             'componentProps' => [__CLASS__, 'getDatePickerProps'],
         ],
         'datetime' => [
             'type' => 'custom-component',
-            'component' => 'atk-date-picker',
+            'component' => 'phlex-date-picker',
             'inputType' => 'datetime',
             'operators' => self::DATE_OPERATORS,
             'componentProps' => [__CLASS__, 'getDatePickerProps'],
         ],
         'time' => [
             'type' => 'custom-component',
-            'component' => 'atk-date-picker',
+            'component' => 'phlex-date-picker',
             'inputType' => 'time',
             'operators' => self::DATE_OPERATORS,
             'componentProps' => [__CLASS__, 'getDatePickerProps'],
@@ -316,7 +319,7 @@ class ScopeBuilder extends Control
         parent::doInitialize();
 
         if (!$this->scopeBuilderTemplate) {
-            $this->scopeBuilderTemplate = new HtmlTemplate('<div id="{$_id}" class="ui"><atk-query-builder v-bind="initData"></atk-query-builder></div>');
+            $this->scopeBuilderTemplate = new HtmlTemplate('<div id="{$_id}" class="ui"><phlex-query-builder v-bind="initData"></phlex-query-builder></div>');
         }
 
         $this->scopeBuilderView = \Phlex\Ui\View::addTo($this, ['template' => $this->scopeBuilderTemplate]);
@@ -383,9 +386,9 @@ class ScopeBuilder extends Control
      */
     protected function addFieldRule(Model\Field $field): self
     {
-        if ($field->enum || $field->values) {
+        if ($field->getValueType() instanceof Selectable) {
             $type = 'enum';
-        } elseif ($field->getReference() !== null) {
+        } elseif ($field instanceof Model\Field\Reference) {
             $type = 'lookup';
         } else {
             $type = $field->type;
@@ -395,18 +398,18 @@ class ScopeBuilder extends Control
             'id' => $field->elementId,
             'label' => $field->getCaption(),
             'options' => $this->options[strtolower((string) $type)] ?? [],
-        ], $field->ui['scopebuilder'] ?? []), $field);
+        ], $field->getOption(self::OPTION_PRESETS, [])), $field);
 
         return $this;
     }
 
     /**
-     * Set property for atk-lookup component.
+     * Set property for phlex-lookup component.
      */
     protected function getLookupProps(Model\Field $field): array
     {
         // set any of sui-dropdown props via this property. Will be applied globally.
-        $props = $this->atkLookupOptions;
+        $props = $this->phlexLookupOptions;
         $items = $this->getFieldItems($field, 10);
         foreach ($items as $value => $text) {
             $props['options'][] = ['key' => $value, 'text' => $text, 'value' => $value];
@@ -424,12 +427,12 @@ class ScopeBuilder extends Control
     }
 
     /**
-     * Set property for atk-date-picker component.
+     * Set property for phlex-date-picker component.
      */
     protected function getDatePickerProps(Model\Field $field): array
     {
         $calendar = new Calendar();
-        $props = $this->atkdDateOptions['flatpickr'] ?? [];
+        $props = $this->phlexDateOptions['flatpickr'] ?? [];
         $format = $calendar->translateFormat($this->getApp()->ui_persistence->{$field->type . '_format'});
         $props['altFormat'] = $format;
         $props['dateFormat'] = 'Y-m-d';
@@ -443,7 +446,7 @@ class ScopeBuilder extends Control
             $props['dateFormat'] = ($field->type === 'datetime') ? 'Y-m-d H:i:S' : 'H:i:S';
         }
 
-        $props['useDefault'] = $this->atkdDateOptions['useDefault'];
+        $props['useDefault'] = $this->phlexDateOptions['useDefault'];
 
         return $props;
     }
@@ -548,7 +551,7 @@ class ScopeBuilder extends Control
         parent::doRender();
 
         $this->scopeBuilderView->vue(
-            'atk-query-builder',
+            'phlex-query-builder',
             [
                 'data' => [
                     'rules' => $this->rules,

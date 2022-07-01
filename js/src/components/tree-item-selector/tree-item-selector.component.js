@@ -4,8 +4,8 @@ const template = `<div class="item" :style="itemMargin">
         <div class="content" >
           <div @click="onToggleSelect" :style="itemCursor">{{title}}</div>
           <div class="list" v-show="open || isRoot" v-if="isParent" >
-            <atk-tree-item-selector v-for="(item, index) in item.nodes" :key="item.id" :item="item" :values="values">
-            </atk-tree-item-selector>
+            <phlex-tree-item-selector v-for="(item, index) in item.nodes" :key="item.id" :item="item" :values="values">
+            </phlex-tree-item-selector>
           </div>
         </div>
      </div>`;
@@ -14,11 +14,11 @@ export default {
     template: template,
     props: { item: Object, values: Array },
     inject: ['getRootData'],
-    name: 'atk-tree-item-selector',
+    name: 'phlex-tree-item-selector',
     data: function () {
         return {
             open: false,
-            isRoot: this.item.id === 'atk-root',
+            isRoot: this.item.id === 'phlex-root',
             isInitialized: false,
             id: this.item.id,
             nodes: this.item.nodes,

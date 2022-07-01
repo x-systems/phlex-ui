@@ -16,19 +16,19 @@ import $ from 'jquery';
  *
  */
 
-const template = `<div class="atk-item-search" :class="inputCss">
+const template = `<div class="phlex-item-search" :class="inputCss">
       <input class="ui" 
         v-model="query" 
         type="text" placeholder="Search..." 
         @keyup="onKeyup" 
         @keyup.esc="onEscape" 
-        name="atk-vue-search"/>
-        <i class="atk-search-icon" :class="classIcon"></i><span style="width:12px;cursor:pointer" @click="onClear"></span>
+        name="phlex-vue-search"/>
+        <i class="phlex-search-icon" :class="classIcon"></i><span style="width:12px;cursor:pointer" @click="onClear"></span>
     </div>
 `;
 
 export default {
-    name: 'atk-item-search',
+    name: 'phlex-item-search',
     template: template,
     props: {
         context: String,
@@ -60,7 +60,7 @@ export default {
     },
     methods: {
         onKeyup: function () {
-            atk.debounce((e) => {
+            phlex.debounce((e) => {
                 if (this.query !== this.temp) {
                     if (this.query === '') {
                         this.query = null;
@@ -93,7 +93,7 @@ export default {
         },
         sendQuery: function () {
             const that = this;
-            const options = $.extend({}, this.extraQuery, { __atk_reload: this.reload, [this.queryArg]: this.query });
+            const options = $.extend({}, this.extraQuery, { __phlex_reload: this.reload, [this.queryArg]: this.query });
             const $reload = $('#' + this.reload);
             this.isActive = true;
             $reload.api({

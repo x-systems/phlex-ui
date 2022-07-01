@@ -1,7 +1,7 @@
 import $ from 'jquery';
-import atkPlugin from './atk.plugin';
+import phlexPlugin from './phlex.plugin';
 
-export default class spinner extends atkPlugin {
+export default class spinner extends phlexPlugin {
     main() {
         this.timer = null;
         const options = this.settings;

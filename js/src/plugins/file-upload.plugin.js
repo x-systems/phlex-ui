@@ -1,8 +1,8 @@
 import $ from 'jquery';
-import atkPlugin from './atk.plugin';
+import phlexPlugin from './phlex.plugin';
 import uploadService from '../services/upload.service';
 
-export default class fileUpload extends atkPlugin {
+export default class fileUpload extends phlexPlugin {
     main() {
         this.textInput = this.$el.find('input[type="text"]');
         this.hiddenInput = this.$el.find('input[type="hidden"]');

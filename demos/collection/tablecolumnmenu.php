@@ -39,7 +39,7 @@ $colTitle->addDropdown(['Change', 'Reorder', 'Update'], function ($item) {
     return 'Title item: ' . $item;
 });
 
-////////////////////////////////////////////////
+// //////////////////////////////////////////////
 
 \Phlex\Ui\Header::addTo($webpage, ['Grid column may contains popup or dropdown menu.']);
 

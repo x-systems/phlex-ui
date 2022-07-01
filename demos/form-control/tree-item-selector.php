@@ -41,16 +41,16 @@ $form = Form::addTo($webpage);
 $control = $form->addControl('tree', [Form\Control\TreeItemSelector::class, 'treeItems' => $items, 'caption' => 'Multiple selection:'], ['type' => 'array', 'serialize' => 'json']);
 $control->set($webpage->encodeJson([201, 301, 503]));
 
-//$control->onItem(function($value) use ($webpage) {
+// $control->onItem(function($value) use ($webpage) {
 //    return new \Phlex\Ui\JsToast($webpage->encodeJson($value));
-//});
+// });
 
 $control = $form->addControl('tree1', [Form\Control\TreeItemSelector::class, 'treeItems' => $items, 'allowMultiple' => false, 'caption' => 'Single selection:']);
 $control->set(502);
 
-//$control->onItem(function($tree) {
+// $control->onItem(function($tree) {
 //    return new JsToast('Received 1');
-//});
+// });
 
 $form->onSubmit(function (Form $form) use ($webpage) {
     $response = [

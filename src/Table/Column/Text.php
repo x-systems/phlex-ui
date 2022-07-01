@@ -11,5 +11,5 @@ use Phlex\Ui\Table;
  */
 class Text extends Table\Column
 {
-    public $attr = ['all' => ['class' => ['atk-cell-expanded']]];
+    public $attr = ['all' => ['class' => ['phlex-cell-expanded']]];
 }

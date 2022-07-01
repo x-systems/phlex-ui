@@ -28,7 +28,7 @@ $form->getControl($m->key()->name)->caption = 'TestName';
 $table = $webpage->addView(new \Phlex\Ui\Table());
 $table->setModel($m);
 
-$button = Button::addTo($webpage, ['First', ['ui' => 'atk-test']]);
+$button = Button::addTo($webpage, ['First', ['ui' => 'phlex-test']]);
 $button->on('click', new \Phlex\Ui\JsModal('Edit First Record', $vp));
 
 $form->onSubmit(function ($form) use ($table) {

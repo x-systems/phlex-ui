@@ -74,7 +74,7 @@ class JsSearch extends View
     {
         parent::doInitialize();
 
-        //$this->input = Form\Control\Line::addTo($this, ['iconLeft' => 'filter',  'action' => new Button(['icon' => 'search', 'ui' => 'button atk-action'])]);
+        // $this->input = Form\Control\Line::addTo($this, ['iconLeft' => 'filter',  'action' => new Button(['icon' => 'search', 'ui' => 'button phlex-action'])]);
     }
 
     protected function doRender(): void
@@ -92,9 +92,9 @@ class JsSearch extends View
         $this->template->set('BtnSearchIcon', $this->btnSearchIcon);
         $this->template->set('BtnRemoveIcon', $this->btnRemoveIcon);
 
-        $this->js(true)->atkJsSearch([
+        $this->js(true)->phlexJsSearch([
             'uri' => $this->reload->jsUrl(),
-            'uri_options' => array_merge(['__atk_reload' => $this->reload->elementName], $this->args),
+            'uri_options' => array_merge(['__phlex_reload' => $this->reload->elementName], $this->args),
             'autoQuery' => $this->autoQuery,
             'q' => $this->initValue,
             'useAjax' => $this->useAjax,

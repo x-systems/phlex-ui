@@ -52,7 +52,7 @@ class DemoLookup extends \Phlex\Ui\Form\Control\Lookup
 
                 $ret = [
                     new \Phlex\Ui\JsToast('Form submit!. Demo can not save data.'),
-                    (new \Phlex\Ui\Jquery('.atk-modal'))->modal('hide'),
+                    (new \Phlex\Ui\Jquery('.phlex-modal'))->modal('hide'),
                 ];
 
                 if ($row = $this->renderRow($form->model)) {

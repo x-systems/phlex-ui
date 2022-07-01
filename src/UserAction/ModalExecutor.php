@@ -130,7 +130,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
             }
         };
 
-        $table = $action->getEntitySet()->table;
+        $table = $action->getModel()->table;
 
         $table_name = is_array($table) ? $getTableName($table) : $table;
 
@@ -145,7 +145,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
 
         $this->loader = \Phlex\Ui\Loader::addTo($this, ['ui' => $this->loaderUi, 'shim' => $this->loaderShim]);
         $this->loader->loadEvent = false;
-        $this->loader->addClass('atk-hide-loading-content');
+        $this->loader->addClass('phlex-hide-loading-content');
         $this->actionData = $this->loader->jsGetStoreData()['session'];
     }
 
@@ -183,11 +183,11 @@ class ModalExecutor extends Modal implements JsExecutorInterface
     {
         $id = $this->stickyGet($this->elementName);
         if ($id && $this->action->appliesTo === Model\UserAction::APPLIES_TO_SINGLE_RECORD) {
-            $this->action->setEntity($this->action->getEntitySet()->tryLoad($id));
+            $this->action->setEntity($this->action->getModel()->tryLoad($id));
         }
 
         if ($this->action->fields === true) {
-            $this->action->fields = array_keys($this->action->getEntitySet()->getFields('editable'));
+            $this->action->fields = array_keys($this->action->getModel()->getFields('editable'));
         }
 
         $this->loader->set(function ($modal) {
@@ -429,7 +429,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
     protected function jsGetExecute($obj, $id)
     {
         $success = $this->jsSuccess instanceof \Closure
-            ? ($this->jsSuccess)($this, $this->action->getEntitySet(), $id, $obj)
+            ? ($this->jsSuccess)($this, $this->action->getModel(), $id, $obj)
             : $this->jsSuccess;
 
         return [

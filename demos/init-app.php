@@ -48,8 +48,8 @@ try {
 [$rootUrl, $relUrl] = preg_split('~(?<=/)(?=demos(/|\?|$))|\?~s', $_SERVER['REQUEST_URI'], 3);
 $demosUrl = $rootUrl . 'demos/';
 
-if (file_exists(__DIR__ . '/../public/atkjs-ui.min.js')) {
-    $webpage->cdn['atk'] = $rootUrl . 'public';
+if (file_exists(__DIR__ . '/../public/phlex-ui.min.js')) {
+    $webpage->cdn['phlex'] = $rootUrl . 'public';
 }
 
 // allow custom layout override
@@ -57,7 +57,7 @@ $webpage->initBody([$webpage->stickyGet('layout') ?? \Phlex\Ui\Layout\Maestro::c
 
 $body = $webpage->body;
 if ($body instanceof \Phlex\Ui\Layout\NavigableInterface) {
-    $body->addMenuItem(['Welcome to Phlex', 'icon' => 'gift'], [$demosUrl . 'index']);
+    $body->addMenuItem(['Welcome to Phlex UI', 'icon' => 'gift'], [$demosUrl . 'index']);
 
     $path = $demosUrl . 'layout/';
     $menu = $body->addMenuGroup(['Layout', 'icon' => 'object group']);
@@ -156,6 +156,6 @@ if ($body instanceof \Phlex\Ui\Layout\NavigableInterface) {
 
     // view demo source page on Github
     \Phlex\Ui\Button::addTo($body->menu->addItem()->addClass('aligned right'), ['View Source', 'teal', 'icon' => 'github'])
-        ->on('click', $webpage->jsRedirect('https://github.com/atk4/ui/blob/develop/' . $relUrl, true));
+        ->on('click', $webpage->jsRedirect('https://github.com/x-systems/phlex-ui/blob/' . $webpage->version . '/' . $relUrl, true));
 }
 unset($body, $rootUrl, $relUrl, $demosUrl, $path, $menu);

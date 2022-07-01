@@ -70,11 +70,11 @@ class Crud extends Grid
         if ($this->getSortBy() && !empty($this->menuItems)) {
             foreach ($this->menuItems as $item) {
                 // Remove previous click handler and attach new one using sort argument.
-                $this->container->js(true, $item['item']->js()->off('click.atk_crud_item'));
+                $this->container->js(true, $item['item']->js()->off('click.phlex_crud_item'));
                 $ex = $item['executor'];
                 if ($ex instanceof UserAction\JsExecutorInterface) {
                     $ex->stickyGet($this->elementName . '_sort', $this->getSortBy());
-                    $this->container->js(true, $item['item']->js()->on('click.atk_crud_item', new JsFunction($ex->jsExecute())));
+                    $this->container->js(true, $item['item']->js()->on('click.phlex_crud_item', new JsFunction($ex->jsExecute())));
                 }
             }
         }
@@ -87,7 +87,7 @@ class Crud extends Grid
      */
     public function setModel(Model $model, $fields = null): Model
     {
-        $model->assertIsEntitySet();
+        $model->assertNotEntity();
 
         if ($fields !== null) {
             $this->displayFields = $fields;
@@ -238,7 +238,7 @@ class Crud extends Grid
     protected function setItemsAction()
     {
         foreach ($this->menuItems as $k => $item) {
-            $this->container->js(true, $item['item']->on('click.atk_crud_item', $item['executor']));
+            $this->container->js(true, $item['item']->on('click.phlex_crud_item', $item['executor']));
         }
     }
 

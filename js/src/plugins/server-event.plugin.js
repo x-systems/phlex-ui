@@ -1,19 +1,19 @@
-import atkPlugin from './atk.plugin';
+import phlexPlugin from './phlex.plugin';
 import apiService from '../services/api.service';
 
-export default class serverEvent extends atkPlugin {
+export default class serverEvent extends phlexPlugin {
     main() {
         const element = this.$el;
         const hasLoader = this.settings.showLoader;
 
         if (typeof (EventSource) !== 'undefined') {
-            this.source = new EventSource(`${this.settings.uri}&__atk_sse=1`);
+            this.source = new EventSource(`${this.settings.uri}&__phlex_sse=1`);
             if (hasLoader) {
                 element.addClass('loading');
             }
 
             this.source.onmessage = function (e) {
-                apiService.atkSuccessTest(JSON.parse(e.data));
+                apiService.phlexSuccessTest(JSON.parse(e.data));
             };
 
             this.source.onerror = (e) => {
@@ -25,8 +25,8 @@ export default class serverEvent extends atkPlugin {
                 }
             };
 
-            this.source.addEventListener('atk_sse_action', (e) => {
-                apiService.atkSuccessTest(JSON.parse(e.data));
+            this.source.addEventListener('phlex_sse_action', (e) => {
+                apiService.phlexSuccessTest(JSON.parse(e.data));
             }, false);
 
             if (this.settings.closeBeforeUnload) {
@@ -35,8 +35,8 @@ export default class serverEvent extends atkPlugin {
                 });
             }
         } else {
-            // console.log('server side event not supported fallback to atkReloadView');
-            this.$el.atkReloadView({
+            // console.log('server side event not supported fallback to phlexReloadView');
+            this.$el.phlexReloadView({
                 uri: this.settings.uri,
             });
         }

@@ -73,8 +73,8 @@ class Context extends RawMinkContext implements BehatContext
         ]);
 
         $this->getSession()->executeScript(
-            'if (Array.prototype.filter.call(document.getElementsByTagName("style"), e => e.getAttribute("about") === "atk-test-behat").length === 0) {'
-            . ' $(\'<style about="atk-test-behat">' . $css . '</style>\').appendTo(\'head\');'
+            'if (Array.prototype.filter.call(document.getElementsByTagName("style"), e => e.getAttribute("about") === "phlex-test-behat").length === 0) {'
+            . ' $(\'<style about="phlex-test-behat">' . $css . '</style>\').appendTo(\'head\');'
             . ' }'
             . 'jQuery.fx.off = true;'
         );
@@ -91,7 +91,7 @@ class Context extends RawMinkContext implements BehatContext
 
     protected function disableDebounce(): void
     {
-        $this->getSession()->executeScript('atk.options.set("debounceTimeout", 20)');
+        $this->getSession()->executeScript('phlex.options.set("debounceTimeout", 20)');
     }
 
     /**
@@ -194,7 +194,7 @@ class Context extends RawMinkContext implements BehatContext
      */
     public function iClickFirstCardOnPage(): void
     {
-        $this->getSession()->executeScript('$(".atk-card")[0].click()');
+        $this->getSession()->executeScript('$(".phlex-card")[0].click()');
     }
 
     /**
@@ -435,7 +435,7 @@ class Context extends RawMinkContext implements BehatContext
      */
     public function iSearchGridFor(string $arg1): void
     {
-        $search = $this->getSession()->getPage()->find('css', 'input.atk-grid-search');
+        $search = $this->getSession()->getPage()->find('css', 'input.phlex-grid-search');
         if (!$search) {
             throw new Exception('Unable to find search input.');
         }
@@ -672,7 +672,7 @@ class Context extends RawMinkContext implements BehatContext
     {
         return 'document.readyState === \'complete\''
             . ' && typeof jQuery !== \'undefined\' && jQuery.active === 0'
-            . ' && typeof atk !== \'undefined\' && atk.vueService.areComponentsLoaded()';
+            . ' && typeof phlex !== \'undefined\' && phlex.vueService.areComponentsLoaded()';
     }
 
     /**

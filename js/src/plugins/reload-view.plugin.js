@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import atkPlugin from './atk.plugin';
+import phlexPlugin from './phlex.plugin';
 import apiService from '../services/api.service';
 
 /**
@@ -12,24 +12,24 @@ import apiService from '../services/api.service';
  * to the urlParameter for GET method but will be included in formData
  * for POST method.
  */
-export default class reloadView extends atkPlugin {
+export default class reloadView extends phlexPlugin {
     main() {
         if (!this.settings.uri) {
             console.error('Trying to reload view without url.');
             return;
         }
 
-        const url = $.atk.getUrl(this.settings.uri);
+        const url = $.phlex.getUrl(this.settings.uri);
         const userConfig = this.settings.apiConfig ? this.settings.apiConfig : {};
 
         // add new param and remove duplicate, prioritizing the latest one.
         let urlParam = Object.assign(
-            $.atkGetQueryParam(this.settings.uri),
+            $.phlexGetQueryParam(this.settings.uri),
             this.settings.uri_options ? this.settings.uri_options : {},
         );
 
         // get store object.
-        const store = atk.dataService.getStoreData(this.settings.storeName);
+        const store = phlex.dataService.getStoreData(this.settings.storeName);
 
         // merge user settings
         const settings = {

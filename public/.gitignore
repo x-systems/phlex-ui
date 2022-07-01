@@ -3,6 +3,6 @@
 !/agileui.less
 !/logo.png
 !/agileui.css
-!/atkjs-ui.min.js
+!/phlex-ui.min.js
 !/vendors.min.js
-!/atk-vue-*.min.js
+!/phlex-vue-*.min.js

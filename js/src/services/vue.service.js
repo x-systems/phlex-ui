@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import SuiVue from 'semantic-ui-vue';
-import atkClickOutside from '../directives/click-outside.directive';
+import phlexClickOutside from '../directives/click-outside.directive';
 import { focus } from '../directives/commons.directive';
 
 Vue.use(SuiVue);
@@ -8,36 +8,36 @@ Vue.use(SuiVue);
 Vue.component('flat-picker', () => import('vue-flatpickr-component'));
 
 // Vue loader component to display while dynamic component is loading.
-const atkVueLoader = {
-    name: 'atk-vue-loader',
+const phlexVueLoader = {
+    name: 'phlex-vue-loader',
     template: '<div><div class="ui active centered inline loader"></div></div>',
 };
 
 // Vue error component to display when dynamic component loading fail.
-const atkVueError = {
-    name: 'atk-vue-error',
+const phlexVueError = {
+    name: 'phlex-vue-error',
     template: '<div class="ui negative message"><p>Error: Unable to load Vue component</p></div>',
 };
 
 // Return async component that will load on demand.
 const componentFactory = (name, component) => () => ({
-    component: component().then((r) => { atk.vueService.markComponentLoaded(name); return r; }),
-    loading: atkVueLoader,
-    error: atkVueError,
+    component: component().then((r) => { phlex.vueService.markComponentLoaded(name); return r; }),
+    loading: phlexVueLoader,
+    error: phlexVueError,
     delay: 200,
 });
 
-const atkComponents = {
-    'atk-inline-edit': componentFactory('atk-inline-edit', () => import(/* webpackChunkName: "atk-vue-inline-edit" */'../components/inline-edit.component')),
-    'atk-item-search': componentFactory('atk-item-search', () => import(/* webpackChunkName: "atk-vue-item-search" */'../components/item-search.component')),
-    'atk-multiline': componentFactory('atk-multiline', () => import(/* webpackChunkName: "atk-vue-multiline" */'../components/multiline/multiline.component')),
-    'atk-tree-item-selector': componentFactory('atk-tree-item-selector', () => import(/* webpackChunkName: "atk-vue-tree-item-selector" */'../components/tree-item-selector/tree-item-selector.component')),
-    'atk-query-builder': componentFactory('atk-query-builder', () => import(/* webpackChunkName: "atk-vue-query-builder" */'../components/query-builder/query-builder.component.vue')),
+const phlexComponents = {
+    'phlex-inline-edit': componentFactory('phlex-inline-edit', () => import(/* webpackChunkName: "phlex-vue-inline-edit" */'../components/inline-edit.component')),
+    'phlex-item-search': componentFactory('phlex-item-search', () => import(/* webpackChunkName: "phlex-vue-item-search" */'../components/item-search.component')),
+    'phlex-multiline': componentFactory('phlex-multiline', () => import(/* webpackChunkName: "phlex-vue-multiline" */'../components/multiline/multiline.component')),
+    'phlex-tree-item-selector': componentFactory('phlex-tree-item-selector', () => import(/* webpackChunkName: "phlex-vue-tree-item-selector" */'../components/tree-item-selector/tree-item-selector.component')),
+    'phlex-query-builder': componentFactory('phlex-query-builder', () => import(/* webpackChunkName: "phlex-vue-query-builder" */'../components/query-builder/query-builder.component.vue')),
 };
 
-// setup atk custom directives.
-const atkDirectives = [{ name: 'click-outside', def: atkClickOutside }, { name: 'focus', def: focus }];
-atkDirectives.forEach((directive) => {
+// setup phlex custom directives.
+const phlexDirectives = [{ name: 'click-outside', def: phlexClickOutside }, { name: 'focus', def: focus }];
+phlexDirectives.forEach((directive) => {
     Vue.directive(directive.name, directive.def);
 });
 
@@ -82,14 +82,14 @@ class VueService {
    * @param component
    * @param data
    */
-    createAtkVue(id, component, data) {
+    createPhlexVue(id, component, data) {
         this.registerComponent({
             ids: [id],
             name: component,
             instance: new Vue({
                 el: id,
                 data: { initData: data },
-                components: { [component]: atkComponents[component] },
+                components: { [component]: phlexComponents[component] },
                 mixins: [this.vueMixins],
             }),
             isLoaded: false,

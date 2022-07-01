@@ -56,11 +56,11 @@ class ApiService {
    * and allow us to properly eval the response.
    * Furthermore, the dom element responsible of the api call is returned if needed.
    *
-   * Change in response object property from eval to atkjs.
+   * Change in response object property from eval to script.
    * Under certain circumstance, response.eval was run and execute prior to onSuccess eval,
    * thus causing some code to be running twice.
-   * To avoid conflict, property name in response was change from eval to atkjs.
-   * Which mean response.atkjs now contains code to be eval.
+   * To avoid conflict, property name in response was change from eval to script.
+   * Which mean response.script now contains code to be eval.
    *
    * @param response
    * @param element
@@ -96,28 +96,28 @@ class ApiService {
                         const m = $('.ui.dimmer.modals.page').find('#' + modal);
                         if (m.length === 0) {
                             $(document.body).append(response.modals[modal].html);
-                            atk.apiService.evalResponse(response.modals[modal].js, jQuery);
+                            phlex.apiService.evalResponse(response.modals[modal].js, jQuery);
                         }
                     });
                 }
-                if (response && response.atkjs) {
+                if (response && response.script) {
                     // Call evalResponse with proper context, js code and jQuery as $ var.
-                    atk.apiService.evalResponse.call(this, response.atkjs.replace(/<\/?script>/g, ''), jQuery);
+                    phlex.apiService.evalResponse.call(this, response.script.replace(/<\/?script>/g, ''), jQuery);
                 }
-                if (atk.apiService.afterSuccessCallbacks.length > 0) {
+                if (phlex.apiService.afterSuccessCallbacks.length > 0) {
                     const self = this;
-                    const callbacks = atk.apiService.afterSuccessCallbacks;
+                    const callbacks = phlex.apiService.afterSuccessCallbacks;
                     callbacks.forEach((callback) => {
-                        atk.apiService.evalResponse.call(self, callback, jQuery);
+                        phlex.apiService.evalResponse.call(self, callback, jQuery);
                     });
-                    atk.apiService.afterSuccessCallbacks.splice(0);
+                    phlex.apiService.afterSuccessCallbacks.splice(0);
                 }
             } else if (response.isServiceError) {
                 // service can still throw an error
                 throw ({ message: response.message }); // eslint-disable-line
             }
         } catch (e) {
-            atk.apiService.showErrorModal(atk.apiService.getErrorHtml(e.message));
+            phlex.apiService.showErrorModal(phlex.apiService.getErrorHtml(e.message));
         }
     }
 
@@ -125,7 +125,7 @@ class ApiService {
    * Will wrap semantic ui api call into a Promise.
    * Can be used to retrieve json data from the server.
    * Using this will bypass regular successTest i.e. any
-   * atkjs (javascript) return from server will not be evaluated.
+   * script (javascript) return from server will not be evaluated.
    *
    * Make sure to control the server output when using
    * this function. It must at least return {success: true} in order for
@@ -155,7 +155,7 @@ class ApiService {
 
         return new Promise((resolve, reject) => {
             apiSettings.onFailure = function (r) {
-                atk.apiService.onFailure(r);
+                phlex.apiService.onFailure(r);
                 reject(r);
             };
             apiSettings.onSuccess = function (r, e) {
@@ -197,7 +197,7 @@ class ApiService {
    * @param response
    * @param content
    */
-    atkSuccessTest(response, content = null) {
+    phlexSuccessTest(response, content = null) {
         if (response.success) {
             this.onSuccess(response, content);
         } else {
@@ -214,17 +214,17 @@ class ApiService {
     // if json is returned, it should contains the error within message property
         if (Object.prototype.hasOwnProperty.call(response, 'success') && !response.success) {
             if (Object.prototype.hasOwnProperty.call(response, 'useWindow') && response.useWindow) {
-                atk.apiService.showErrorWindow(response.message);
+                phlex.apiService.showErrorWindow(response.message);
             } else {
-                atk.apiService.showErrorModal(response.message);
+                phlex.apiService.showErrorModal(response.message);
             }
         } else {
             // check if we have html returned by server with <body> content.
             const body = response.match(/<body[^>]*>[\s\S]*<\/body>/gi);
             if (body) {
-                atk.apiService.showErrorModal(body);
+                phlex.apiService.showErrorModal(body);
             } else {
-                atk.apiService.showErrorModal(response);
+                phlex.apiService.showErrorModal(response);
             }
         }
     }
@@ -257,7 +257,7 @@ class ApiService {
    * @param errorMsg
    */
     showErrorWindow(errorMsg) {
-        const error = $('<div class="atk-exception">')
+        const error = $('<div class="phlex-exception">')
             .css({
                 padding: '8px',
                 'background-color': 'rgba(0, 0, 0, 0.5)',
@@ -282,7 +282,7 @@ class ApiService {
                     'overflow-x': 'scroll',
                 }).html(errorMsg)
                 .prepend($('<i class="ui big close icon"></i>').css('float', 'right').click(function () {
-                    const $this = $(this).parents('.atk-exception');
+                    const $this = $(this).parents('.phlex-exception');
                     $this.hide();
                     $this.remove();
                 })));

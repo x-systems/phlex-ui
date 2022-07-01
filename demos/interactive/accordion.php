@@ -23,7 +23,7 @@ $b3 = \Phlex\Ui\Button::addTo($bar, ['Toggle Section #3']);
 
 \Phlex\Ui\Header::addTo($webpage, ['Accordion Sections']);
 
-$accordion = \Phlex\Ui\Accordion::addTo($webpage, ['type' => ['styled', 'fluid']/*, 'settings'=>['exclusive'=>false]*/]);
+$accordion = \Phlex\Ui\Accordion::addTo($webpage, ['type' => ['styled', 'fluid']/* , 'settings'=>['exclusive'=>false] */]);
 
 // static section
 $i1 = $accordion->addSection('Static Text');

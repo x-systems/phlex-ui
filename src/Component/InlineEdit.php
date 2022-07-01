@@ -119,7 +119,7 @@ class InlineEdit extends View
                     $this->getApp()->terminateJson([
                         'success' => true,
                         'hasValidationError' => true,
-                        'atkjs' => $this->jsError(($this->formatErrorMsg)($e, $value))->jsRender(),
+                        'script' => $this->jsError(($this->formatErrorMsg)($e, $value))->jsRender(),
                     ]);
                 }
             });
@@ -200,7 +200,7 @@ class InlineEdit extends View
 
         $fieldName = $this->field ?: 'name';
 
-        $this->vue('atk-inline-edit', [
+        $this->vue('phlex-inline-edit', [
             'initValue' => $initValue,
             'url' => $this->cb->getJsUrl(),
             'saveOnBlur' => $this->saveOnBlur,

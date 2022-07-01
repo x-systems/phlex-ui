@@ -5,12 +5,12 @@ Feature: Grid
     Given I am on "collection/grid.php"
     Then I search grid for "kingdom"
 #    make sure auto query trigger
-    And I wait for loading to start in "button.atk-search-button"
+    And I wait for loading to start in "button.phlex-search-button"
     Then I should see "United Kingdom"
     Then I press button "Test"
     Then Toast display should contains text "United Kingdom"
 #    click search remove icon
-    Then I click icon using css "i.atk-remove-icon"
+    Then I click icon using css "i.phlex-remove-icon"
     Then I should not see "United Kingdom"
 
   Scenario: search no ajax

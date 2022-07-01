@@ -49,6 +49,6 @@ class Checkbox extends Table\Column
 
     public function getDataCellTemplate(Model\Field $field = null)
     {
-        return Webpage::getTag('div', ['class' => 'ui checkbox ' . $this->class], [['input', ['type' => 'checkbox']]]);
+        return Webpage::tag('div', ['class' => 'ui checkbox ' . $this->class], [['input', ['type' => 'checkbox']]]);
     }
 }

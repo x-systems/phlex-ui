@@ -27,7 +27,7 @@ const template = `
       </div>`;
 
 export default {
-    name: 'atk-inline-edit',
+    name: 'phlex-inline-edit',
     template: template,
     props: {
         url: String,

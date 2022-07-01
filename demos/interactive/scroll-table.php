@@ -18,6 +18,6 @@ require_once __DIR__ . '/../init-app.php';
 $table = \Phlex\Ui\Table::addTo($webpage);
 
 $model = $table->setModel(new Country($webpage->db));
-//$model->addCondition(Country::hint()->key()->name, 'like', 'A%');
+// $model->addCondition(Country::hint()->key()->name, 'like', 'A%');
 
 $table->addJsPaginator(30);

@@ -13,7 +13,7 @@ class PromotionText extends \Phlex\Ui\View
         $t = \Phlex\Ui\Text::addTo($this);
         $t->addParagraph(
             <<< 'EOF'
-                Agile Toolkit base package includes:
+                Phlex UI base package includes:
                 EOF
         );
 
@@ -33,14 +33,14 @@ class PromotionText extends \Phlex\Ui\View
             ->link('https://github.com/atk4/ui/#bundled-and-planned-components');
         \Phlex\Ui\Button::addTo($gl, ['Try out interactive features', 'primary basic fluid', 'iconRight' => 'right arrow'], ['r1c2'])
             ->link(['interactive/tabs']);
-        \Phlex\Ui\Button::addTo($gl, ['Dive into Agile Data', 'primary basic fluid', 'iconRight' => 'right arrow'], ['r1c3'])
+        \Phlex\Ui\Button::addTo($gl, ['Dive into Phlex Data', 'primary basic fluid', 'iconRight' => 'right arrow'], ['r1c3'])
             ->link('https://git.io/ad');
-        \Phlex\Ui\Button::addTo($gl, ['More ATK Add-ons', 'primary basic fluid', 'iconRight' => 'right arrow'], ['r1c4'])
+        \Phlex\Ui\Button::addTo($gl, ['More Phlex Add-ons', 'primary basic fluid', 'iconRight' => 'right arrow'], ['r1c4'])
             ->link('https://github.com/atk4/ui/#add-ons-and-integrations');
 
         \Phlex\Ui\View::addTo($this, ['ui' => 'divider']);
 
         \Phlex\Ui\Message::addTo($this, ['Cool fact!', 'info', 'icon' => 'book'])->text
-            ->addParagraph('This entire demo is coded in Agile Toolkit and takes up less than 300 lines of very simple code!');
+            ->addParagraph('This entire demo is coded with Phlex UI and takes up less than 300 lines of very simple code!');
     }
 }

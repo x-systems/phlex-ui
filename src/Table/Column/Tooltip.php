@@ -61,7 +61,7 @@ class Tooltip extends Table\Column
         }
 
         return Webpage::tag('td', $extra_tags, [
-            ' {$' . $key . '}' . Webpage::getTag('span', [
+            ' {$' . $key . '}' . Webpage::tag('span', [
                 'class' => 'ui icon link {$_' . $key . '_data_visible_class}',
                 'data-tooltip' => '{$_' . $key . '_data_tooltip}',
             ], [

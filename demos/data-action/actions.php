@@ -43,7 +43,7 @@ $action = $files->addUserAction(
 );
 
 Header::addTo($webpage, [
-    'Extensions to ATK Data Actions',
+    'Extentions to Phlex Data Actions',
     'subHeader' => 'Showing different UserAction executors that can execute Phlex\Data model action.',
 ]);
 

@@ -22,7 +22,7 @@ class AccordionService {
 
     onOpening() {
         if ($(this).data('path')) {
-            $(this).atkReloadView({ uri: $(this).data('path'), uri_options: { __atk_json: 1 } });
+            $(this).phlexReloadView({ uri: $(this).data('path'), uri_options: { __phlex_json: 1 } });
         }
     }
 }

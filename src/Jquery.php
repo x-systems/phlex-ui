@@ -64,16 +64,16 @@ namespace Phlex\Ui;
  * @method Jquery visibility(...$args)
  *
  * For PhlexUI:
- * @method Jquery atkAjaxec(...$args)
- * @method Jquery atkColumnResizer(...$args)
- * @method Jquery atkConditionalForm(...$args)
- * @method Jquery atkFileUpload(...$args)
- * @method Jquery atkJsSearch(...$args)
- * @method Jquery atkJsSortable(...$args)
- * @method Jquery atkReloadView(...$args)
- * @method Jquery atkScroll(...$args)
- * @method Jquery atkServerEvent(...$args)
- * @method Jquery atkSidenav(...$args)
+ * @method Jquery phlexAjaxec(...$args)
+ * @method Jquery phlexColumnResizer(...$args)
+ * @method Jquery phlexConditionalForm(...$args)
+ * @method Jquery phlexFileUpload(...$args)
+ * @method Jquery phlexJsSearch(...$args)
+ * @method Jquery phlexJsSortable(...$args)
+ * @method Jquery phlexReloadView(...$args)
+ * @method Jquery phlexScroll(...$args)
+ * @method Jquery phlexServerEvent(...$args)
+ * @method Jquery phlexSidenav(...$args)
  */
 class Jquery extends JsChain
 {

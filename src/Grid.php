@@ -251,7 +251,7 @@ class Grid extends View
             $this->setModelLimitFromPaginator();
             // add ipp to quicksearch
             if ($this->quickSearch instanceof JsSearch) {
-                $this->container->js(true, $this->quickSearch->js()->atkJsSearch('setUrlArgs', ['ipp', $this->ipp]));
+                $this->container->js(true, $this->quickSearch->js()->phlexJsSearch('setUrlArgs', ['ipp', $this->ipp]));
             }
             $this->applySort();
 
@@ -473,7 +473,7 @@ class Grid extends View
         if (!$this->menu) {
             throw new Exception('Unable to add Filter Column without Menu');
         }
-        $this->menu->addItem(['Clear Filters'], new \Phlex\Ui\JsReload($this->table->reload, ['atk_clear_filter' => 1]));
+        $this->menu->addItem(['Clear Filters'], new \Phlex\Ui\JsReload($this->table->reload, ['phlex_clear_filter' => 1]));
         $this->table->setFilterColumn($names);
 
         return $this;
@@ -686,7 +686,7 @@ class Grid extends View
 
         if ($this->quickSearch instanceof JsSearch) {
             if ($sortBy = $this->getSortBy()) {
-                $this->container->js(true, $this->quickSearch->js()->atkJsSearch('setUrlArgs', [$this->sortTrigger, $sortBy]));
+                $this->container->js(true, $this->quickSearch->js()->phlexJsSearch('setUrlArgs', [$this->sortTrigger, $sortBy]));
             }
         }
 

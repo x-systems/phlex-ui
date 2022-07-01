@@ -20,18 +20,18 @@ $wizard->addStep('Define User Action', function ($page) {
     $t = \Phlex\Ui\Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
-            Since the early version ATK UI was about building generic UI capable of automatically read information about
+            Since the early version Phlex UI was about building generic UI capable of automatically read information about
             model Fields and visualising them correctly. Version 2.0 introduces support for "Actions" which can be declared
-            in Data layer and can use generic UI for visualising and triggering. Models of Agile Data has always supported 3
+            in Data layer and can use generic UI for visualising and triggering. Models of Phlex Data has always supported 3
             basic actions: "save" (for new and existing records) and "delete". Historically any other interaction required
-            tinkering with UI layer. Now ATK implements a generic support for arbitrary actions and then re-implements
+            tinkering with UI layer. Now Phlex implements a generic support for arbitrary actions and then re-implements
             "save", "delete" and "add" on top.
             EOF
     );
 
     $t->addParagraph(
         <<< 'EOF'
-            This enables developer to easily add more actions in the Data layers and have the rest of ATK recognise
+            This enables developer to easily add more actions in the Data layers and have the rest of Phlex recognise
             and respect those actions. Actions can be added into the model just like you are adding fields:
             EOF
     );
@@ -77,7 +77,7 @@ $wizard->addStep('UI Integration', function ($page) {
     $t = \Phlex\Ui\Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
-            Agile UI introduces a new set of views called "User Action Executors". Their job is to recognise all that meta-information
+            Phlex UI introduces a new set of views called "User Action Executors". Their job is to recognise all that meta-information
             that you have specified for the user action and requesting it from the user. "edit" user action is defined for models by default
             and you can trigger it on button-click with a very simple code:
             EOF

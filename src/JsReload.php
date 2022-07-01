@@ -53,9 +53,9 @@ class JsReload implements JsExpressionable
     public function jsRender(): string
     {
         $final = (new Jquery($this->view))
-            ->atkReloadView(
+            ->phlexReloadView(
                 [
-                    'uri' => $this->view->jsUrl(['__atk_reload' => $this->view->elementName]),
+                    'uri' => $this->view->jsUrl(['__phlex_reload' => $this->view->elementName]),
                     'uri_options' => !empty($this->args) ? $this->args : null,
                     'afterSuccess' => $this->afterSuccess ? $this->afterSuccess->jsRender() : null,
                     'apiConfig' => !empty($this->apiConfig) ? $this->apiConfig : null,

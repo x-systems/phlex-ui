@@ -39,7 +39,7 @@ $form->addControl('qb', [\Phlex\Ui\Form\Control\ScopeBuilder::class, 'model' => 
 
 $form->onSubmit(function ($form) use ($model) {
     $message = $form->model->get('qb')->toWords($model);
-    $view = (new \Phlex\Ui\View(['id' => false]))->addClass('atk-scope-builder-response');
+    $view = (new \Phlex\Ui\View(['id' => false]))->addClass('phlex-scope-builder-response');
     $view->initialize();
 
     $view->set($message);
@@ -61,7 +61,7 @@ $expectedInput = <<< 'EOF'
         {
           "type": "query-builder-rule",
           "query": {
-            "rule": "atk_fp_stat__project_budget",
+            "rule": "phlex_fp_stat__project_budget",
             "operator": ">=",
             "value": "1000",
             "option": null
@@ -75,7 +75,7 @@ $expectedInput = <<< 'EOF'
               {
                 "type": "query-builder-rule",
                 "query": {
-                  "rule": "atk_fp_stat__project_name",
+                  "rule": "phlex_fp_stat__project_name",
                   "operator": "matches regular expression",
                   "value": "[a-zA-Z]",
                   "option": null
@@ -84,7 +84,7 @@ $expectedInput = <<< 'EOF'
               {
                 "type": "query-builder-rule",
                 "query": {
-                  "rule": "atk_fp_stat__client_country_iso",
+                  "rule": "phlex_fp_stat__client_country_iso",
                   "operator": "equals",
                   "value": "BR",
                   "option": {
@@ -97,7 +97,7 @@ $expectedInput = <<< 'EOF'
               {
                 "type": "query-builder-rule",
                 "query": {
-                  "rule": "atk_fp_stat__start_date",
+                  "rule": "phlex_fp_stat__start_date",
                   "operator": "is on",
                   "value": "2020-10-22",
                   "option": null
@@ -114,7 +114,7 @@ $expectedInput = <<< 'EOF'
               {
                 "type": "query-builder-rule",
                 "query": {
-                  "rule": "atk_fp_stat__finish_time",
+                  "rule": "phlex_fp_stat__finish_time",
                   "operator": "is not on",
                   "value": "22:22",
                   "option": null
@@ -123,7 +123,7 @@ $expectedInput = <<< 'EOF'
               {
                 "type": "query-builder-rule",
                 "query": {
-                  "rule": "atk_fp_stat__is_commercial",
+                  "rule": "phlex_fp_stat__is_commercial",
                   "operator": "equals",
                   "value": "0",
                   "option": null
@@ -132,7 +132,7 @@ $expectedInput = <<< 'EOF'
               {
                 "type": "query-builder-rule",
                 "query": {
-                  "rule": "atk_fp_stat__currency",
+                  "rule": "phlex_fp_stat__currency",
                   "operator": "equals",
                   "value": "USD",
                   "option": null
@@ -146,7 +146,7 @@ $expectedInput = <<< 'EOF'
     EOF;
 
 Header::addTo($webpage, ['Word:']);
-View::addTo($webpage, ['element' => 'p', 'content' => $expectedWord])->addClass('atk-expected-word-result');
+View::addTo($webpage, ['element' => 'p', 'content' => $expectedWord])->addClass('phlex-expected-word-result');
 
 Header::addTo($webpage, ['Input:']);
-View::addTo($webpage, ['element' => 'p', 'content' => $expectedInput])->addClass('atk-expected-input-result');
+View::addTo($webpage, ['element' => 'p', 'content' => $expectedInput])->addClass('phlex-expected-input-result');

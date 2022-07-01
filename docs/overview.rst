@@ -15,7 +15,7 @@ uses Fomantic UI (https://fomantic-ui.com) for presentation.
 
 At a glance, Agile UI consists of the following:
 
-.. figure:: images/all-atk-classes.png
+.. figure:: images/all-phlex-classes.png
 
 Agile UI is designed and built for the Agile Toolkit (https://agiletoolkit.org/) platform,
 with the goal of providing a user-friendly experience when creating data-heavy API / UI
@@ -212,7 +212,7 @@ flexibility. The next example adds a "Cancel" button to a form::
 :php:class:`Button` and :php:class:`Icon` are some of the most basic components in
 Agile UI. You will find Crud / Form / Grid components much more useful:
 
-.. figure:: images/all-atk-classes.png
+.. figure:: images/all-phlex-classes.png
 
 
 Using Components
