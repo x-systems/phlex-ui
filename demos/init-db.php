@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Core\Utils;
 use Phlex\Data\Hintable\HintablePropertyDef;
 use Phlex\Data\Model;
 use Phlex\Ui\Form;
@@ -60,6 +61,7 @@ class ModelWithPrefixedFields extends Model
     {
         $seed = \Phlex\Core\Factory::mergeSeeds($seed, [
             'actual' => $this->prefixKey($name, true),
+            'caption' => Utils::getReadableCaption(preg_replace('~^phlex_fp_\w+?__~', '', $name)),
         ]);
 
         return parent::addField($name, $seed);
