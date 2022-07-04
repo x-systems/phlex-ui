@@ -656,16 +656,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.58.0",
+            "version": "2.59.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "97a34af22bde8d0ac20ab34b29d7bfe360902055"
+                "reference": "a9000603ea337c8df16cc41f8b6be95a65f4d0f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/97a34af22bde8d0ac20ab34b29d7bfe360902055",
-                "reference": "97a34af22bde8d0ac20ab34b29d7bfe360902055",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/a9000603ea337c8df16cc41f8b6be95a65f4d0f5",
+                "reference": "a9000603ea337c8df16cc41f8b6be95a65f4d0f5",
                 "shasum": ""
             },
             "require": {
@@ -680,11 +680,12 @@
                 "doctrine/orm": "^2.7",
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "kylekatarnls/multi-tester": "^2.0",
+                "ondrejmirtes/better-reflection": "*",
                 "phpmd/phpmd": "^2.9",
                 "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "^0.12.54 || ^1.0",
-                "phpunit/php-file-iterator": "^2.0.5",
-                "phpunit/phpunit": "^7.5.20 || ^8.5.23",
+                "phpstan/phpstan": "^0.12.99 || ^1.7.14",
+                "phpunit/php-file-iterator": "^2.0.5 || ^3.0.6",
+                "phpunit/phpunit": "^7.5.20 || ^8.5.26 || ^9.5.20",
                 "squizlabs/php_codesniffer": "^3.4"
             },
             "bin": [
@@ -741,15 +742,19 @@
             },
             "funding": [
                 {
-                    "url": "https://opencollective.com/Carbon",
-                    "type": "open_collective"
+                    "url": "https://github.com/sponsors/kylekatarnls",
+                    "type": "github"
                 },
                 {
-                    "url": "https://tidelift.com/funding/github/packagist/nesbot/carbon",
+                    "url": "https://opencollective.com/Carbon#sponsor",
+                    "type": "opencollective"
+                },
+                {
+                    "url": "https://tidelift.com/subscription/pkg/packagist-nesbot-carbon?utm_source=packagist-nesbot-carbon&utm_medium=referral&utm_campaign=readme",
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-25T19:31:17+00:00"
+            "time": "2022-06-29T21:43:55+00:00"
         },
         {
             "name": "psr/cache",
@@ -1830,12 +1835,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/x-systems/phlex-data.git",
-                "reference": "0d75c7b4d4b0fdad3af17a8f27a484974a82168e"
+                "reference": "9b0651d4a63f3bad08a8d8fae17eb76048954e2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/x-systems/phlex-data/zipball/0d75c7b4d4b0fdad3af17a8f27a484974a82168e",
-                "reference": "0d75c7b4d4b0fdad3af17a8f27a484974a82168e",
+                "url": "https://api.github.com/repos/x-systems/phlex-data/zipball/9b0651d4a63f3bad08a8d8fae17eb76048954e2e",
+                "reference": "9b0651d4a63f3bad08a8d8fae17eb76048954e2e",
                 "shasum": ""
             },
             "require": {
@@ -1903,7 +1908,7 @@
                 "issues": "https://github.com/x-systems/phlex-data/issues",
                 "source": "https://github.com/x-systems/phlex-data/tree/3.0.x"
             },
-            "time": "2022-06-21T12:21:36+00:00"
+            "time": "2022-07-04T07:42:26+00:00"
         }
     ],
     "packages-dev": [
@@ -2521,16 +2526,16 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "1.13.2",
+            "version": "1.13.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "5b668aef16090008790395c02c893b1ba13f7e08"
+                "reference": "648b0343343565c4a056bfc8392201385e8d89f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/5b668aef16090008790395c02c893b1ba13f7e08",
-                "reference": "5b668aef16090008790395c02c893b1ba13f7e08",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/648b0343343565c4a056bfc8392201385e8d89f0",
+                "reference": "648b0343343565c4a056bfc8392201385e8d89f0",
                 "shasum": ""
             },
             "require": {
@@ -2542,9 +2547,10 @@
             "require-dev": {
                 "doctrine/cache": "^1.11 || ^2.0",
                 "doctrine/coding-standard": "^6.0 || ^8.1",
-                "phpstan/phpstan": "^0.12.20",
+                "phpstan/phpstan": "^1.4.10 || ^1.8.0",
                 "phpunit/phpunit": "^7.5 || ^8.0 || ^9.1.5",
-                "symfony/cache": "^4.4 || ^5.2"
+                "symfony/cache": "^4.4 || ^5.2",
+                "vimeo/psalm": "^4.10"
             },
             "type": "library",
             "autoload": {
@@ -2587,9 +2593,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/annotations/issues",
-                "source": "https://github.com/doctrine/annotations/tree/1.13.2"
+                "source": "https://github.com/doctrine/annotations/tree/1.13.3"
             },
-            "time": "2021-08-05T19:00:23+00:00"
+            "time": "2022-07-02T10:48:51+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -2739,16 +2745,16 @@
         },
         {
             "name": "ergebnis/composer-normalize",
-            "version": "2.28.1",
+            "version": "2.28.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/composer-normalize.git",
-                "reference": "5466fd02eff760fe1ff568f0367251dbf93dd52d"
+                "reference": "8fa1ffdd2e65f2deca0de3af3ac7670cb8fa795b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/5466fd02eff760fe1ff568f0367251dbf93dd52d",
-                "reference": "5466fd02eff760fe1ff568f0367251dbf93dd52d",
+                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/8fa1ffdd2e65f2deca0de3af3ac7670cb8fa795b",
+                "reference": "8fa1ffdd2e65f2deca0de3af3ac7670cb8fa795b",
                 "shasum": ""
             },
             "require": {
@@ -2760,14 +2766,14 @@
                 "php": "^7.4 || ^8.0"
             },
             "require-dev": {
-                "composer/composer": "^2.3.5",
+                "composer/composer": "^2.3.8",
                 "ergebnis/license": "^1.2.0",
                 "ergebnis/php-cs-fixer-config": "^4.4.0",
                 "fakerphp/faker": "^1.19.0",
                 "phpunit/phpunit": "^9.5.21",
                 "psalm/plugin-phpunit": "~0.17.0",
                 "symfony/filesystem": "^5.4.9",
-                "vimeo/psalm": "^4.23.0"
+                "vimeo/psalm": "^4.24.0"
             },
             "type": "composer-plugin",
             "extra": {
@@ -2804,7 +2810,7 @@
                 "issues": "https://github.com/ergebnis/composer-normalize/issues",
                 "source": "https://github.com/ergebnis/composer-normalize"
             },
-            "time": "2022-06-22T20:02:07+00:00"
+            "time": "2022-07-03T10:17:05+00:00"
         },
         {
             "name": "ergebnis/json-normalizer",
