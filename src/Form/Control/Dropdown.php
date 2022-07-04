@@ -263,20 +263,20 @@ class Dropdown extends Input
         if (isset($this->model)) {
             if ($this->renderRowFunction) {
                 foreach ($this->model as $row) {
-                    $this->_addCallBackRow($row);
+                    $this->renderItemWithCallback($row);
                 }
             } else {
-                // for standard model rendering, only load id and title field
+                // for standard model rendering, only load primaryKey and titleKey field
                 $this->model->only_fields = [$this->model->titleKey, $this->model->primaryKey];
-                $this->_renderItemsForModel();
+                $this->renderItemsForModel();
             }
         } else {
             if ($this->renderRowFunction) {
                 foreach ($this->values as $key => $value) {
-                    $this->_addCallBackRow($value, $key);
+                    $this->renderItemWithCallback($value, $key);
                 }
             } else {
-                $this->_renderItemsForValues();
+                $this->renderItemsForValues();
             }
         }
     }
@@ -323,7 +323,7 @@ class Dropdown extends Input
     }
 
     // Sets the dropdown items to the template if a model is used
-    protected function _renderItemsForModel()
+    protected function renderItemsForModel()
     {
         foreach ($this->model as $key => $row) {
             $title = $row->getTitle();
@@ -335,7 +335,7 @@ class Dropdown extends Input
     }
 
     // sets the dropdown items from $this->values array
-    protected function _renderItemsForValues()
+    protected function renderItemsForValues()
     {
         foreach ($this->values as $key => $val) {
             $this->_tItem->set('value', (string) $key);
@@ -360,7 +360,7 @@ class Dropdown extends Input
      * used when a custom callback is defined for row rendering. Sets
      * values to row tempalte and appends it to main template
      */
-    protected function _addCallBackRow($row, $key = null)
+    protected function renderItemWithCallback($row, $key = null)
     {
         $res = ($this->renderRowFunction)($row, $key);
         $this->_tItem->set('value', (string) $res['value']);
