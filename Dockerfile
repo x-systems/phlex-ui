@@ -1,9 +1,9 @@
-###################################################
-## # build command:                              ##
-## docker build -f Dockerfile .. -t atk4_ui_demo ##
-## # run command:                                ##
-## docker run --rm -p 80:80 -it atk4_ui_demo     ##
-###################################################
+####################################################
+## # build command:                               ##
+## docker build -f Dockerfile .. -t phlex_ui_demo ##
+## # run command:                                 ##
+## docker run --rm -p 80:80 -it phlex_ui_demo     ##
+####################################################
 
 FROM php:apache
 
@@ -27,7 +27,7 @@ COPY js js
 COPY public public
 
 RUN (cd js && npm ci && npm run build)
-RUN (cd public && lessc agileui.less agileui.css)
+RUN (cd public && lessc phlex-ui.less phlex-ui.css)
 
 ADD composer.json .
 RUN jq 'del(."require-release")|del(."require-dev")' < composer.json > tmp && mv tmp composer.json \
