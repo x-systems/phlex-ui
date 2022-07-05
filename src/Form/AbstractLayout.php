@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Phlex\Ui\Form;
 
 use Phlex\Ui\Exception;
+use Phlex\Ui\View;
 
 /**
  * Custom Layout for a form (user-defined HTML).
  */
-abstract class AbstractLayout extends \Phlex\Ui\View
+abstract class AbstractLayout extends View
 {
     /**
      * Links layout to the form.
@@ -30,7 +31,7 @@ abstract class AbstractLayout extends \Phlex\Ui\View
     public function addControl(string $name, $control = null, $field = null)
     {
         if (!$this->form->model) {
-            $this->form->model = (new \Phlex\Ui\Misc\ProxyModel())->createEntity();
+            $this->form->model = (new View\GenericModel())->createEntity();
         }
 
         if (is_string($field)) {

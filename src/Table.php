@@ -188,7 +188,7 @@ class Table extends Lister
         }
 
         if (!$this->model) {
-            $this->model = new \Phlex\Ui\Misc\ProxyModel();
+            $this->model = new View\GenericModel();
         }
 
         // This code should be vaugely consistent with Form\Layout::addControl()

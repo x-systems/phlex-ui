@@ -37,13 +37,13 @@ $form->setModel((
 
 $form->onSubmit(function (Form $form) {
     $errors = [];
-    $modelDirty = \Closure::bind(function () use ($form): array { // TODO Model::dirty property is private
-        return $form->model->dirty;
+    $modelDirty = \Closure::bind(function () use ($form): array {
+        return $form->model->getEntry()->getDirty();
     }, null, Model::class)();
-    foreach ($modelDirty as $field => $value) {
+    foreach ($modelDirty as $key => $value) {
         // we should care only about editable fields
-        if ($form->model->getField($field)->isEditable()) {
-            $errors[] = $form->error($field, 'Value was changed, ' . $form->getApp()->encodeJson($value) . ' to ' . $form->getApp()->encodeJson($form->model->get($field)));
+        if ($form->model->getField($key)->isEditable()) {
+        	$errors[] = $form->error($key, 'Value was changed, ' . $form->getApp()->encodeJson($form->model->getEntry()->getLoaded($key)) . ' to ' . $form->getApp()->encodeJson($value));
         }
     }
 

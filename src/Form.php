@@ -306,7 +306,7 @@ class Form extends View
                 $response = $this->hook(self::HOOK_SUBMIT);
 
                 if (!$response) {
-                    if (!$this->model instanceof \Phlex\Ui\Misc\ProxyModel) {
+                    if (!$this->model instanceof View\GenericModel) {
                         $this->model->save();
 
                         return $this->success('Form data has been saved');
@@ -414,7 +414,7 @@ class Form extends View
     public function addControl(?string $name, $control = null, $field = null)
     {
         if (!$this->model) {
-            $this->model = (new \Phlex\Ui\Misc\ProxyModel())->createEntity();
+            $this->model = (new View\GenericModel())->createEntity();
         }
 
         return $this->layout->addControl($name, $control, $field);

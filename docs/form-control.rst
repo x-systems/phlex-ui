@@ -191,7 +191,7 @@ by all components::
     $model->addField('long_text', ['type'=>'text']);
 
 .. note:: All forms will be associted with a model. If form is not explicitly linked with a model, it will create
-    a ProxyModel and all form controls will be created automatically in that model. As a result, all Form Control Decorators
+    a GenericModel and all form controls will be created automatically in that model. As a result, all Form Control Decorators
     will be linked with Model Fields.
 
 Link to Model Field

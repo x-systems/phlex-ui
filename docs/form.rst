@@ -118,8 +118,8 @@ All of the above works auto-magically, but you can tweak it even more:
  - Add JS Actions around fields
  - Split up form into multiple tabs
 
-If your form is NOT associated with a model, then Form will automatically create a :php:class:`ProxyModel`
-and associate it with your Form. As you add form controls respective fields will also be added into ProxyModel.
+If your form is NOT associated with a model, then Form will automatically create a :php:class:`GenericModel`
+and associate it with your Form. As you add form controls respective fields will also be added into GenericModel.
 
 Extensions
 ----------
@@ -332,7 +332,7 @@ for you. Here is an example with date::
         echo 'date1 = '.print_r($form->model->get('date1'), true).' and date2 = '.print_r($form->model->get('date2'), true);
     });
 
-Field ``date1`` is defined inside a :php:class:`ProxyModel` as a date field and will
+Field ``date1`` is defined inside a :php:class:`GenericModel` as a date field and will
 be automatically converted into DateTime object by Persistence typecasting.
 
 Field ``date2`` has no data type, do not confuse with ui type=>date pass as second argument for Calendar field,
