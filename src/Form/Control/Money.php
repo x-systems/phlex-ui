@@ -17,14 +17,12 @@ class Money extends Input
             return;
         }
 
-        return number_format($v, $this->getApp()->ui_persistence->currency_decimals);
+        return number_format($v, $this->getCodec($this->field)->decimals ?? 2);
     }
 
     protected function doRender(): void
     {
-        if ($this->label === null) {
-            $this->label = $this->getApp()->ui_persistence->currency;
-        }
+        $this->label ??= $this->getCodec($this->field)->currency ?? null;
 
         parent::doRender();
     }

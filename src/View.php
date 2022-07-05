@@ -25,6 +25,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
         Model\Field\Type\Time::class => [View\Codec\DateTime::class, 'format' => 'H:i', 'timezone' => null],
         Model\Field\Type\Array_::class => [View\Codec\Array_::class],
         Model\Field\Type\Selectable::class => [View\Codec\Selectable::class],
+        Model\Field\Type\Money::class => [View\Codec\Money::class],
     ];
 
     // {{{ Properties of the class
