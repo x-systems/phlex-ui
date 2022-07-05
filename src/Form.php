@@ -72,14 +72,14 @@ class Form extends View
     /**
      * A current layout of a form, needed if you call $form->addControl().
      *
-     * @var \Phlex\Ui\Form\Layout
+     * @var Form\Layout
      */
     public $layout;
 
     /**
      * List of form controls currently registered with this form.
      *
-     * @var array Array of Form\Control objects
+     * @var Form\Control[]
      */
     public $controls = [];
 
@@ -504,7 +504,7 @@ class Form extends View
             try {
                 // save field value only if field was editable in form at all
                 if (!$control->readonly && !$control->disabled) {
-                    $control->set($post[$key] ?? null);
+                    $control->set($control->decode($post[$key] ?? null));
                 }
             } catch (\Phlex\Core\Exception $e) {
                 $errors[$key] = $e->getMessage();

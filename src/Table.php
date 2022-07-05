@@ -176,7 +176,7 @@ class Table extends Lister
      * pass $name parameter as null.
      *
      * @param string|null              $name            Data model field name
-     * @param array|string|object|null $columnDecorator
+     * @param array|string|object|null $columnSeed
      * @param array|string|object|null $field
      *
      * @return Table\Column

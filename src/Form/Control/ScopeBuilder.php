@@ -433,7 +433,7 @@ class ScopeBuilder extends Control
     {
         $calendar = new Calendar();
         $props = $this->phlexDateOptions['flatpickr'] ?? [];
-        $format = $calendar->translateFormat($this->getApp()->ui_persistence->{$field->type . '_format'});
+        $format = $calendar->translateFormat($this->getCodec($field)->format);
         $props['altFormat'] = $format;
         $props['dateFormat'] = 'Y-m-d';
         $props['altInput'] = true;

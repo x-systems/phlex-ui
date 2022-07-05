@@ -38,7 +38,7 @@ class Control extends View
     public $form;
 
     /**
-     * @var \Phlex\Data\Model\Field - points to model field
+     * @var Model\Field - points to model field
      */
     public $field;
 
@@ -126,14 +126,30 @@ class Control extends View
     public function set($value = null, $junk = null)
     {
         if ($this->field) {
-            $this->field->set($this->field->decode($value, $this));
-
-            return $this;
+            $this->field->set($value);
+        } else {
+            $this->content = $value;
         }
 
-        $this->content = $value;
-
         return $this;
+    }
+
+    public function encode($value)
+    {
+        if ($this->field) {
+            return $this->getCodec($this->field)->encode($value);
+        }
+
+        return $value;
+    }
+
+    public function decode($value)
+    {
+        if ($this->field) {
+            return $this->getCodec($this->field)->decode($value);
+        }
+
+        return $value;
     }
 
     /**

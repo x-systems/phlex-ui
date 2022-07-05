@@ -12,9 +12,9 @@ use Phlex\Data\Model;
  */
 class DateTime extends Model\Field\Codec
 {
-    protected $format = 'd-m-Y H:i:s.u';
+    public $format = 'd-m-Y H:i:s.u';
 
-    protected $timezone = 'UTC';
+    public $timezone = 'UTC';
 
     protected function doEncode($value)
     {
