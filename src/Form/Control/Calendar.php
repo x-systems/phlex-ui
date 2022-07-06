@@ -25,6 +25,8 @@ class Calendar extends Input
      */
     public $options = [];
 
+    public $defaultFieldType = 'date';
+
     /**
      * Set flatpickr option.
      */

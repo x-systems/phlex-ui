@@ -25,6 +25,8 @@ class Checkbox extends Form\Control
      */
     public $label;
 
+    public $defaultFieldType = 'boolean';
+
     /**
      * Constructor.
      *

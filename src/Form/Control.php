@@ -92,6 +92,13 @@ class Control extends View
     public $readonly = false;
 
     /**
+     * Field type to use for field generation in GenericModel.
+     *
+     * @var array|string|null
+     */
+    public $defaultFieldType;
+
+    /**
      * Initialization.
      */
     protected function doInitialize(): void
