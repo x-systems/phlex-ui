@@ -175,7 +175,7 @@ class Table extends Lister
      * If you don't want table column to be associated with model field, then
      * pass $name parameter as null.
      *
-     * @param string|null              $name            Data model field name
+     * @param string|null              $name       Data model field name
      * @param array|string|object|null $columnSeed
      * @param array|string|object|null $field
      *
@@ -348,7 +348,7 @@ class Table extends Lister
      * ex:
      *  $table->resizableColumn(function($j, $w){
      *       // do somethings with columns width
-     *       $columns = $this->getApp()->decodeJson($w);
+     *       $columns = Webpage::decodeJson($w);
      *   });
      *
      * @param \Closure $fx             a callback function with columns widths as parameter

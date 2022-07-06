@@ -6,6 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 use Phlex\Ui\JsToast;
+use Phlex\Ui\Webpage;
 
 /** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
@@ -39,10 +40,10 @@ $items = [
 
 $form = Form::addTo($webpage);
 $control = $form->addControl('tree', [Form\Control\TreeItemSelector::class, 'treeItems' => $items, 'caption' => 'Multiple selection:'], ['type' => 'array', 'serialize' => 'json']);
-$control->set($webpage->encodeJson([201, 301, 503]));
+$control->set(Webpage::encodeJson([201, 301, 503]));
 
 // $control->onItem(function($value) use ($webpage) {
-//    return new \Phlex\Ui\JsToast($webpage->encodeJson($value));
+//    return new \Phlex\Ui\JsToast(Webpage::encodeJson($value));
 // });
 
 $control = $form->addControl('tree1', [Form\Control\TreeItemSelector::class, 'treeItems' => $items, 'allowMultiple' => false, 'caption' => 'Single selection:']);
@@ -52,7 +53,7 @@ $control->set(502);
 //    return new JsToast('Received 1');
 // });
 
-$form->onSubmit(function (Form $form) use ($webpage) {
+$form->onSubmit(function (Form $form) {
     $response = [
         'multiple' => $form->model->get('tree'),
         'single' => $form->model->get('tree1'),
@@ -60,7 +61,7 @@ $form->onSubmit(function (Form $form) use ($webpage) {
 
     $view = new \Phlex\Ui\Message('Items: ');
     $view->initialize();
-    $view->text->addParagraph($webpage->encodeJson($response));
+    $view->text->addParagraph(Webpage::encodeJson($response));
 
     return $view;
 });

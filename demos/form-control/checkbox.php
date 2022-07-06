@@ -6,6 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
 /** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
@@ -34,8 +35,8 @@ $form->addControl('test', [Form\Control\Checkbox::class]);
 $form->addControl('test_checked', [Form\Control\Checkbox::class])->set(true);
 $form->addControl('also_checked', 'Hello World', 'boolean')->set(true);
 
-$form->onSubmit(function ($f) use ($webpage) {
-    return new \Phlex\Ui\JsToast($webpage->encodeJson($f->model->get()));
+$form->onSubmit(function ($f) {
+    return new \Phlex\Ui\JsToast(Webpage::encodeJson($f->model->get()));
 });
 
 View::addTo($webpage, ['ui' => 'divider']);

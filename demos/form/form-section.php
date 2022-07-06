@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
+use Phlex\Ui\Webpage;
 
 /** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
@@ -20,7 +21,7 @@ $model = $model->loadAny();
 $noSave = function (Form $form) {
     return new \Phlex\Ui\JsToast([
         'title' => 'POSTed field values',
-        'message' => '<pre>' . $form->getApp()->encodeJson($form->model->get()) . '</pre>',
+        'message' => '<pre>' . Webpage::encodeJson($form->model->get()) . '</pre>',
         'class' => 'success',
         'displayTime' => 5000,
     ]);

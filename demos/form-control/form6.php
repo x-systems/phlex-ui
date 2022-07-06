@@ -6,6 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 use Phlex\Ui\JsToast;
+use Phlex\Ui\Webpage;
 
 /** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
@@ -30,6 +31,6 @@ $form->addControl('six', [Form\Control\Radio::class], ['type' => ['enum', 'value
 $form->addControl('seven', null, ['type' => ['enum', 'values' => ['F' => 'female', 'M' => 'male']]])->set('M');
 $form->addControl('eight', [Form\Control\Radio::class], ['type' => ['enum', 'values' => ['F' => 'female', 'M' => 'male']]])->set('M');
 
-$form->onSubmit(function (Form $form) use ($webpage) {
-    return new JsToast($webpage->encodeJson($form->model->get()));
+$form->onSubmit(function (Form $form) {
+    return new JsToast(Webpage::encodeJson($form->model->get()));
 });

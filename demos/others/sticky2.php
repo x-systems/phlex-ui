@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Ui\Webpage;
+
 /** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
@@ -40,8 +42,8 @@ $t->setSource(['Red', 'Green', 'Blue']);
 $t->addDecorator('name', [\Phlex\Ui\Table\Column\Link::class, [], ['name']]);
 
 $frame = \Phlex\Ui\View::addTo($webpage, ['ui' => 'green segment']);
-\Phlex\Ui\Button::addTo($frame, ['does not inherit sticky get'])->on('click', function () use ($webpage) {
-    return new \Phlex\Ui\JsNotify('$_GET = ' . $webpage->encodeJson($_GET));
+\Phlex\Ui\Button::addTo($frame, ['does not inherit sticky get'])->on('click', function () {
+    return new \Phlex\Ui\JsNotify('$_GET = ' . Webpage::encodeJson($_GET));
 });
 
 \Phlex\Ui\Header::addTo($webpage, ['Use of View::url()']);

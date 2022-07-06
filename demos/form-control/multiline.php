@@ -11,6 +11,7 @@ use Phlex\Ui\Form\Control\Multiline;
 use Phlex\Ui\Header;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\JsFunction;
+use Phlex\Ui\Webpage;
 
 /** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
@@ -136,5 +137,5 @@ $multiline->jsAfterDelete = new JsFunction(['value'], [new JsExpression('console
 $form->onSubmit(function (Form $form) use ($multiline) {
     $rows = $multiline->saveRows()->getModel()->export();
 
-    return new \Phlex\Ui\JsToast($form->getApp()->encodeJson(array_values($rows)));
+    return new \Phlex\Ui\JsToast(Webpage::encodeJson(array_values($rows)));
 });

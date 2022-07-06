@@ -409,9 +409,9 @@ class Webpage extends View
      */
     public function terminate($output = '', array $headers = []): void
     {
-        $headers = $this->normalizeHeaders($headers);
+        $headers = self::normalizeHeaders($headers);
         if (empty($headers['content-type'])) {
-            $this->response_headers = $this->normalizeHeaders($this->response_headers);
+            $this->response_headers = self::normalizeHeaders($this->response_headers);
             if (empty($this->response_headers['content-type'])) {
                 throw new Exception('Content type must be always set');
             }
@@ -423,7 +423,7 @@ class Webpage extends View
 
         if ($type === 'application/json') {
             if (is_string($output)) {
-                $output = $this->decodeJson($output);
+                $output = self::decodeJson($output);
             }
             $output['modals'] = $this->getRenderedModals();
 
@@ -598,7 +598,7 @@ class Webpage extends View
             ->addMoreInfo('template_dir', $this->template_dir);
     }
 
-    protected function getRequestUrl()
+    protected static function getRequestUrl()
     {
         if (isset($_SERVER['HTTP_X_REWRITE_URL'])) { // IIS
             $request_uri = $_SERVER['HTTP_X_REWRITE_URL'];
@@ -1023,8 +1023,8 @@ class Webpage extends View
      */
     protected function outputResponse(string $data, array $headers): void
     {
-        $this->response_headers = $this->normalizeHeaders($this->response_headers);
-        $headersAll = array_merge($this->response_headers, $this->normalizeHeaders($headers));
+        $this->response_headers = self::normalizeHeaders($this->response_headers);
+        $headersAll = array_merge($this->response_headers, self::normalizeHeaders($headers));
         $headersNew = array_diff_assoc($headersAll, self::$_sentHeaders);
 
         $isCli = \PHP_SAPI === 'cli'; // for phpunit
@@ -1082,7 +1082,7 @@ class Webpage extends View
     {
         $this->outputResponse(
             $data,
-            array_merge($this->normalizeHeaders($headers), ['content-type' => 'text/html'])
+            array_merge(self::normalizeHeaders($headers), ['content-type' => 'text/html'])
         );
     }
 
@@ -1095,12 +1095,12 @@ class Webpage extends View
     private function outputResponseJson($data, array $headers = []): void
     {
         if (!is_string($data)) {
-            $data = $this->encodeJson($data);
+            $data = self::encodeJson($data);
         }
 
         $this->outputResponse(
             $data,
-            array_merge($this->normalizeHeaders($headers), ['content-type' => 'application/json'])
+            array_merge(self::normalizeHeaders($headers), ['content-type' => 'application/json'])
         );
     }
 

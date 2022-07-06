@@ -6,6 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 use Phlex\Ui\JsToast;
+use Phlex\Ui\Webpage;
 
 /** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
@@ -15,8 +16,8 @@ require_once __DIR__ . '/../init-app.php';
     'ui' => 'ignored warning message',
 ]);
 
-$formSubmit = function ($f) use ($webpage) {
-    return new JsToast($webpage->encodeJson($f->model->get()));
+$formSubmit = function ($f) {
+    return new JsToast(Webpage::encodeJson($f->model->get()));
 };
 
 $cc = \Phlex\Ui\Columns::addTo($webpage);

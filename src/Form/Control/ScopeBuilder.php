@@ -11,6 +11,7 @@ use Phlex\Data\Model\Scope\Condition;
 use Phlex\Ui\Exception;
 use Phlex\Ui\Form\Control;
 use Phlex\Ui\HtmlTemplate;
+use Phlex\Ui\Webpage;
 
 class ScopeBuilder extends Control
 {
@@ -327,7 +328,7 @@ class ScopeBuilder extends Control
         if ($this->form) {
             $this->form->onHook(\Phlex\Ui\Form::HOOK_LOAD_POST, function ($form, &$post) {
                 $key = $this->field->elementId;
-                $post[$key] = $this->queryToScope($this->getApp()->decodeJson($post[$key] ?? '{}'));
+                $post[$key] = $this->queryToScope(Webpage::decodeJson($post[$key] ?? '{}'));
             });
         }
     }

@@ -6,6 +6,7 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Data\Model;
 use Phlex\Ui\Form;
+use Phlex\Ui\Webpage;
 
 /** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
@@ -23,8 +24,8 @@ $form->addControl('category_id', [Form\Control\Dropdown::class, 'model' => new C
 $form->addControl('sub_category_id', [Form\Control\DropdownCascade::class, 'cascadeFrom' => 'category_id', 'reference' => Category::hint()->key()->SubCategories]);
 $form->addControl('product_id', [Form\Control\DropdownCascade::class, 'cascadeFrom' => 'sub_category_id', 'reference' => SubCategory::hint()->key()->Products]);
 
-$form->onSubmit(function (Form $form) use ($webpage) {
-    $message = $webpage->encodeJson($form->model->get());
+$form->onSubmit(function (Form $form) {
+    $message = Webpage::encodeJson($form->model->get());
 
     $view = new \Phlex\Ui\Message('Values: ');
     $view->initialize();
@@ -118,8 +119,8 @@ $form->addControl(
     ]
 );
 
-$form->onSubmit(function (Form $form) use ($webpage) {
-    $message = $webpage->encodeJson($form->model->get());
+$form->onSubmit(function (Form $form) {
+    $message = Webpage::encodeJson($form->model->get());
 
     $view = new \Phlex\Ui\Message('Values: ');
     $view->initialize();

@@ -9,6 +9,7 @@ use Phlex\Ui\GridLayout;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\JsFunction;
 use Phlex\Ui\JsToast;
+use Phlex\Ui\Webpage;
 
 /** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
@@ -74,6 +75,6 @@ $control->addAction(['Today', 'icon' => 'calendar day'])->on('click', $control->
 $control->addAction(['Select...', 'icon' => 'calendar'])->on('click', $control->getJsInstance()->open());
 $control->addAction(['Clear', 'icon' => 'times red'])->on('click', $control->getJsInstance()->clear());
 
-$form->onSubmit(function ($f) use ($webpage) {
-    return new JsToast($webpage->encodeJson($f->model->get()));
+$form->onSubmit(function ($f) {
+    return new JsToast(Webpage::encodeJson($f->model->get()));
 });

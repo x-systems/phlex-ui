@@ -71,6 +71,7 @@ use Phlex\Ui\HtmlTemplate;
 use Phlex\Ui\JsCallback;
 use Phlex\Ui\JsFunction;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
 class Multiline extends Form\Control
 {
@@ -207,7 +208,7 @@ class Multiline extends Form\Control
 
         // load the data associated with this input and validate it.
         $this->form->onHook(Form::HOOK_LOAD_POST, function ($form, &$post) {
-            $this->rowData = $this->typeCastLoadValues($this->getApp()->decodeJson($_POST[$this->elementId]));
+            $this->rowData = $this->typeCastLoadValues(Webpage::decodeJson($_POST[$this->elementId]));
             if ($this->rowData) {
                 $this->rowErrors = $this->validate($this->rowData);
                 if ($this->rowErrors) {
@@ -638,7 +639,7 @@ class Multiline extends Form\Control
      */
     protected function valuePropsBinding(string $values)
     {
-        $fieldValues = $this->getApp()->decodeJson($values);
+        $fieldValues = Webpage::decodeJson($values);
 
         foreach ($fieldValues as $rows) {
             foreach ($rows as $fieldName => $value) {
@@ -703,7 +704,7 @@ class Multiline extends Form\Control
                 $this->getApp()->terminateJson(['success' => true, 'message' => 'Success', 'expressions' => $expressionValues]);
                 // no break - expression above always terminate
             case 'on-change':
-                $response = call_user_func($this->onChangeFunction, $this->typeCastLoadValues($this->getApp()->decodeJson($_POST['rows'])), $this->form);
+                $response = call_user_func($this->onChangeFunction, $this->typeCastLoadValues(Webpage::decodeJson($_POST['rows'])), $this->form);
                 $this->renderCallback->terminateAjax($this->renderCallback->getAjaxec($response));
 
                 break;

@@ -7,6 +7,7 @@ namespace Phlex\Ui\Demos;
 use Phlex\Data\Model;
 use Phlex\Ui\Form;
 use Phlex\Ui\JsReload;
+use Phlex\Ui\Webpage;
 
 /** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
@@ -43,7 +44,7 @@ $form->onSubmit(function (Form $form) {
     foreach ($modelDirty as $key => $value) {
         // we should care only about editable fields
         if ($form->model->getField($key)->isEditable()) {
-        	$errors[] = $form->error($key, 'Value was changed, ' . $form->getApp()->encodeJson($form->model->getEntry()->getLoaded($key)) . ' to ' . $form->getApp()->encodeJson($value));
+            $errors[] = $form->error($key, 'Value was changed, ' . Webpage::encodeJson($form->model->getEntry()->getLoaded($key)) . ' to ' . Webpage::encodeJson($value));
         }
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
+use Phlex\Ui\Webpage;
 
 /** @var \Phlex\Ui\Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
@@ -56,8 +57,8 @@ $form->addControl('status_integer_required', [Form\Control\Dropdown::class, 'val
 $form->addControl('status_string_mandatory', [Form\Control\Dropdown::class, 'values' => $values], ['type' => 'string', 'mandatory' => true]);
 $form->addControl('status_integer_mandatory', [Form\Control\Dropdown::class, 'values' => $values], ['type' => 'integer', 'mandatory' => true]);
 
-$form->onSubmit(function (Form $form) use ($webpage) {
-    return new \Phlex\Ui\JsToast($webpage->encodeJson($form->model->get()));
+$form->onSubmit(function (Form $form) {
+    return new \Phlex\Ui\JsToast(Webpage::encodeJson($form->model->get()));
 });
 
 \Phlex\Ui\Header::addTo($tab, ['Comparing Field type vs Form control class']);
