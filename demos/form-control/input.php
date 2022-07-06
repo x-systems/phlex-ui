@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
+use Phlex\Ui\Label;
 
 /**
  * Testing fields.
@@ -31,23 +32,23 @@ Form\Control\Line::addTo($webpage, ['placeholder' => 'Search users', 'icon' => '
 Form\Control\Line::addTo($webpage, ['placeholder' => 'Search users', 'label' => 'http://']);
 
 // dropdown example
-$dd = new \Phlex\Ui\Dropdown('.com');
-$dd->setSource(['.com', '.net', '.org']);
+$dropdown = new \Phlex\Ui\Dropdown('.com');
+$dropdown->setSource(['.com', '.net', '.org']);
 Form\Control\Line::addTo($webpage, [
     'placeholder' => 'Find Domain',
-    'labelRight' => $dd,
+    'labelRight' => $dropdown,
 ]);
 
-Form\Control\Line::addTo($webpage, ['placeholder' => 'Weight', 'labelRight' => new \Phlex\Ui\Label(['kg', 'basic'])]);
-Form\Control\Line::addTo($webpage, ['label' => '$', 'labelRight' => new \Phlex\Ui\Label(['.00', 'basic'])]);
+Form\Control\Line::addTo($webpage, ['placeholder' => 'Weight', 'labelRight' => new Label(['kg', 'basic'])]);
+Form\Control\Line::addTo($webpage, ['label' => '$', 'labelRight' => new Label(['.00', 'basic'])]);
 
 Form\Control\Line::addTo($webpage, [
     'iconLeft' => 'tags',
-    'labelRight' => new \Phlex\Ui\Label(['Add Tag', 'tag']),
+    'labelRight' => new Label(['Add Tag', 'tag']),
 ]);
 
 // left/right corner is not supported, but here is work-around:
-$label = new \Phlex\Ui\Label();
+$label = new Label();
 $label->addClass('left corner');
 \Phlex\Ui\Icon::addTo($label, ['asterisk']);
 
@@ -55,7 +56,7 @@ Form\Control\Line::addTo($webpage, [
     'label' => $label,
 ])->addClass('left corner');
 
-$label = new \Phlex\Ui\Label();
+$label = new Label();
 $label->addClass('corner');
 \Phlex\Ui\Icon::addTo($label, ['asterisk']);
 
@@ -73,14 +74,14 @@ Form\Control\Line::addTo($webpage, ['actionLeft' => new \Phlex\Ui\Button([
 
 Form\Control\Line::addTo($webpage, ['iconLeft' => 'search',  'action' => 'Search']);
 
-$dd = new \Phlex\Ui\DropdownButton(['This Page', 'basic']);
-$dd->setSource(['This Organisation', 'Entire Site']);
-Form\Control\Line::addTo($webpage, ['iconLeft' => 'search',  'action' => $dd]);
+$dropdownButton = new \Phlex\Ui\DropdownButton(['This Page', 'basic']);
+$dropdownButton->setSource(['This Organisation', 'Entire Site']);
+Form\Control\Line::addTo($webpage, ['iconLeft' => 'search',  'action' => $dropdownButton]);
 
 // double actions are not supported but you can add them yourself
-$dd = new \Phlex\Ui\Dropdown(['Articles', 'compact selection']);
-$dd->setSource(['All', 'Services', 'Products']);
-\Phlex\Ui\Button::addTo(Form\Control\Line::addTo($webpage, ['iconLeft' => 'search',  'action' => $dd]), ['Search'], ['AfterAfterInput']);
+$dropdown = new \Phlex\Ui\Dropdown(['Articles', 'compact selection']);
+$dropdown->setSource(['All', 'Services', 'Products']);
+\Phlex\Ui\Button::addTo(Form\Control\Line::addTo($webpage, ['iconLeft' => 'search',  'action' => $dropdown]), ['Search'], ['AfterAfterInput']);
 
 Form\Control\Line::addTo($webpage, ['action' => new \Phlex\Ui\Button([
     'Copy', 'iconRight' => 'copy', 'teal',

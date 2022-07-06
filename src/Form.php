@@ -23,16 +23,6 @@ class Form extends View
     /** @const string Executed when self::loadPost() method is called. */
     public const HOOK_LOAD_POST = self::class . '@loadPost';
 
-//     protected static $defaultCodecs = [
-//     		[Form\Control\Line::class],
-//     		Model\Field\Type\Boolean::class => [View\Codec\Boolean::class],
-//     		Model\Field\Type\DateTime::class => [View\Codec\DateTime::class],
-//     		Model\Field\Type\Date::class => [View\Codec\DateTime::class, 'format' => 'd-m-Y', 'timezone' => null],
-//     		Model\Field\Type\Time::class => [View\Codec\DateTime::class, 'format' => 'H:i', 'timezone' => null],
-//     		Model\Field\Type\Array_::class => [View\Codec\Array_::class],
-//     		Model\Field\Type\Selectable::class => [View\Codec\Selectable::class],
-//     ];
-
     // {{{ Properties
 
     public $ui = 'form';
@@ -318,8 +308,8 @@ class Form extends View
                 return $response;
             } catch (Model\Field\ValidationException $val) {
                 $response = [];
-                foreach ($val->errors as $field => $error) {
-                    $response[] = $this->error($field, $error);
+                foreach ($val->errors as $key => $message) {
+                    $response[] = $this->error($key, $message);
                 }
 
                 return $response;
@@ -342,19 +332,19 @@ class Form extends View
     /**
      * Causes form to generate error.
      *
-     * @param string $fieldName Field name
-     * @param string $str       Error message
+     * @param string $key     Field name
+     * @param string $message Error message
      *
      * @return JsChain|array
      */
-    public function error($fieldName, $str)
+    public function error($key, $message)
     {
         // by using this hook you can overwrite default behavior of this method
         if ($this->hookHasCallbacks(self::HOOK_DISPLAY_ERROR)) {
-            return $this->hook(self::HOOK_DISPLAY_ERROR, [$fieldName, $str]);
+            return $this->hook(self::HOOK_DISPLAY_ERROR, [$key, $message]);
         }
 
-        $jsError = [$this->js()->form('add prompt', $fieldName, $str)];
+        $jsError = [$this->js()->form('add prompt', $key, $message)];
 
         return $jsError;
     }
@@ -362,38 +352,38 @@ class Form extends View
     /**
      * Causes form to generate success message.
      *
-     * @param View|string $success     Success message or a View to display in modal
-     * @param string      $sub_header  Sub-header
+     * @param View|string $header      Success header or a View to display in modal
+     * @param string      $message     Sub-header message
      * @param bool        $useTemplate Backward compatibility
      *
      * @return JsChain
      */
-    public function success($success = 'Success', $sub_header = null, $useTemplate = true)
+    public function success($header = 'Success', $message = null, $useTemplate = true)
     {
         $response = null;
         // by using this hook you can overwrite default behavior of this method
         if ($this->hookHasCallbacks(self::HOOK_DISPLAY_SUCCESS)) {
-            return $this->hook(self::HOOK_DISPLAY_SUCCESS, [$success, $sub_header]);
+            return $this->hook(self::HOOK_DISPLAY_SUCCESS, [$header, $message]);
         }
 
-        if ($success instanceof View) {
-            $response = $success;
+        if ($header instanceof View) {
+            $response = $header;
         } elseif ($useTemplate) {
             $response = $this->getApp()->loadTemplate($this->successTemplate);
-            $response->set('header', $success);
+            $response->set('header', $header);
 
-            if ($sub_header) {
-                $response->set('message', $sub_header);
+            if ($message) {
+                $response->set('message', $message);
             } else {
                 $response->del('p');
             }
 
             $response = $this->js()->html($response->renderToHtml());
         } else {
-            $response = new Message([$success, 'type' => 'success', 'icon' => 'check']);
+            $response = new Message([$header, 'type' => 'success', 'icon' => 'check']);
             $response->setApp($this->getApp());
             $response->initialize();
-            $response->text->addParagraph($sub_header);
+            $response->text->addParagraph($message);
         }
 
         return $response;
