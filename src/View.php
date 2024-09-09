@@ -383,14 +383,13 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
      * Note: this is internal method, but should be public because other objects
      *       should be able to call it.
      *
-     * @param View   $object
      * @param string $class
      *
      * @return View|null
      */
     public function getClosestOwner(self $object, $class)
     {
-        if ($object->issetOwner()) {
+        if (!$object->issetOwner()) {
             return;
         }
 
@@ -614,7 +613,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
             $style = $this->style;
             array_walk(
                 $style,
-                function (&$item, $key) {
+                static function (&$item, $key) {
                     $item = $key . ':' . $item;
                 }
             );
@@ -1055,7 +1054,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
                 $cb->apiConfig = $defaults['apiConfig'];
             }
 
-            $cb->set(function () use ($action) {
+            $cb->set(static function () use ($action) {
                 $args = func_get_args();
                 $args[0] = new Jquery(new JsExpression('this'));
 

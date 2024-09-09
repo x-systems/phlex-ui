@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Core\DebugTrait;
+use Phlex\Ui\Console;
 use Phlex\Ui\JsSse;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-/** @var \Phlex\Ui\View $testRunClass */
-$testRunClass = get_class(new class() extends \Phlex\Ui\View {
-    use \Phlex\Core\DebugTrait;
+/** @var View $testRunClass */
+$testRunClass = get_class(new class() extends View {
+    use DebugTrait;
 
     public function test()
     {
@@ -32,5 +36,5 @@ $testRunClass = get_class(new class() extends \Phlex\Ui\View {
 $sse = JsSse::addTo($webpage);
 $sse->setUrlTrigger('console_test');
 
-$console = \Phlex\Ui\Console::addTo($webpage, ['sse' => $sse]);
+$console = Console::addTo($webpage, ['sse' => $sse]);
 $console->runMethod($testRunClass::addTo($webpage), 'test');

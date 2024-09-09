@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Core\Factory;
 use Phlex\Data\Model;
+use Phlex\Data\Persistence\Sql;
 
 require_once __DIR__ . '/../init-autoloader.php';
 
@@ -13,7 +15,7 @@ if (file_exists($sqliteFile)) {
     unlink($sqliteFile);
 }
 
-$persistence = \Phlex\Data\Persistence\Sql::connect('sqlite:' . $sqliteFile);
+$persistence = Sql::connect('sqlite:' . $sqliteFile);
 
 class ImportModelWithPrefixedFields extends Model
 {
@@ -28,7 +30,7 @@ class ImportModelWithPrefixedFields extends Model
             $this->primaryKey = $this->prefixKey($key);
         }
 
-        $seed = \Phlex\Core\Factory::mergeSeeds($seed, [
+        $seed = Factory::mergeSeeds($seed, [
             'actual' => $this->prefixKey($key, true),
         ]);
 

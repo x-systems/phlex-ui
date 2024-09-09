@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Form\Layout;
 
 use Phlex\Core\Factory;
+use Phlex\Ui\Button;
 use Phlex\Ui\Exception;
 use Phlex\Ui\Form\AbstractLayout;
 
@@ -30,10 +31,10 @@ class Custom extends AbstractLayout
      *
      * @param \Phlex\Ui\Button|array|string $seed
      *
-     * @return \Phlex\Ui\Button
+     * @return Button
      */
     public function addButton($seed)
     {
-        return $this->addView(Factory::mergeSeeds([\Phlex\Ui\Button::class], $seed), 'Buttons');
+        return $this->addView(Factory::mergeSeeds([Button::class], $seed), 'Buttons');
     }
 }

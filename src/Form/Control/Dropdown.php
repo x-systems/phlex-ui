@@ -287,7 +287,7 @@ class Dropdown extends Input
     protected function doRender(): void
     {
         if ($this->isMultiple) {
-            $this->defaultClass = $this->defaultClass . ' multiple';
+            $this->defaultClass .= ' multiple';
         }
 
         $this->addClass($this->defaultClass);

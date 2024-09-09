@@ -12,7 +12,7 @@ class TypeString extends Column\FilterModel
     {
         parent::doInitialize();
 
-        $this->op->values = ['is' => 'Is', 'contains' => 'Contains', 'start' => 'Start with', 'end' => 'End with'];
+        $this->op->getValueType()->setValues(['is' => 'Is', 'contains' => 'Contains', 'start' => 'Start with', 'end' => 'End with']);
         $this->op->default = 'is';
     }
 

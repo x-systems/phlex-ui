@@ -4,86 +4,100 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Data\Model;
+use Phlex\Data\Persistence\Array_;
+use Phlex\Ui\Button;
+use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\JsExpression;
+use Phlex\Ui\LoremIpsum;
+use Phlex\Ui\Menu;
+use Phlex\Ui\Message;
+use Phlex\Ui\Modal;
+use Phlex\Ui\Text;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Header::addTo($webpage, ['Modal View']);
+Header::addTo($webpage, ['Modal View']);
 
 $session = new Session();
 // Re-usable component implementing counter
 
-\Phlex\Ui\Header::addTo($webpage, ['Static Modal Dialog']);
+Header::addTo($webpage, ['Static Modal Dialog']);
 
-$bar = \Phlex\Ui\View::addTo($webpage, ['ui' => 'buttons']);
+$bar = View::addTo($webpage, ['ui' => 'buttons']);
 
-$modal = \Phlex\Ui\Modal::addTo($webpage, ['title' => 'Add a name']);
-\Phlex\Ui\LoremIpsum::addTo($modal);
-\Phlex\Ui\Button::addTo($modal, ['Hide'])->on('click', $modal->hide());
+$modal = Modal::addTo($webpage, ['title' => 'Add a name']);
+LoremIpsum::addTo($modal);
+Button::addTo($modal, ['Hide'])->on('click', $modal->hide());
 
-$noTitle = \Phlex\Ui\Modal::addTo($webpage, ['title' => false]);
-\Phlex\Ui\LoremIpsum::addTo($noTitle);
-\Phlex\Ui\Button::addTo($noTitle, ['Hide'])->on('click', $noTitle->hide());
+$noTitle = Modal::addTo($webpage, ['title' => false]);
+LoremIpsum::addTo($noTitle);
+Button::addTo($noTitle, ['Hide'])->on('click', $noTitle->hide());
 
-$scrolling = \Phlex\Ui\Modal::addTo($webpage, ['title' => 'Long Content that Scrolls inside Modal']);
+$scrolling = Modal::addTo($webpage, ['title' => 'Long Content that Scrolls inside Modal']);
 $scrolling->addScrolling();
-\Phlex\Ui\LoremIpsum::addTo($scrolling);
-\Phlex\Ui\LoremIpsum::addTo($scrolling);
-\Phlex\Ui\LoremIpsum::addTo($scrolling);
-\Phlex\Ui\Button::addTo($scrolling, ['Hide'])->on('click', $scrolling->hide());
+LoremIpsum::addTo($scrolling);
+LoremIpsum::addTo($scrolling);
+LoremIpsum::addTo($scrolling);
+Button::addTo($scrolling, ['Hide'])->on('click', $scrolling->hide());
 
-\Phlex\Ui\Button::addTo($bar, ['Show'])->on('click', $modal->show());
-\Phlex\Ui\Button::addTo($bar, ['No Title'])->on('click', $noTitle->show());
-\Phlex\Ui\Button::addTo($bar, ['Scrolling Content'])->on('click', $scrolling->show());
+Button::addTo($bar, ['Show'])->on('click', $modal->show());
+Button::addTo($bar, ['No Title'])->on('click', $noTitle->show());
+Button::addTo($bar, ['Scrolling Content'])->on('click', $scrolling->show());
 
 // Modal demos.
 
 // REGULAR
 
-$simpleModal = \Phlex\Ui\Modal::addTo($webpage, ['title' => 'Simple modal']);
-\Phlex\Ui\Message::addTo($simpleModal)->set('Modal message here.');
+$simpleModal = Modal::addTo($webpage, ['title' => 'Simple modal']);
+Message::addTo($simpleModal)->set('Modal message here.');
 ViewTester::addTo($simpleModal);
 
-$menuBar = \Phlex\Ui\View::addTo($webpage, ['ui' => 'buttons']);
-$button = \Phlex\Ui\Button::addTo($menuBar)->set('Show Modal');
+$menuBar = View::addTo($webpage, ['ui' => 'buttons']);
+$button = Button::addTo($menuBar)->set('Show Modal');
 $button->on('click', $simpleModal->show());
 
 // DYNAMIC
 
-\Phlex\Ui\Header::addTo($webpage, ['Three levels of Modal loading dynamic content via callback']);
+Header::addTo($webpage, ['Three levels of Modal loading dynamic content via callback']);
 
 // vp1Modal will be render into page but hide until $vp1Modal->show() is activate.
-$vp1Modal = \Phlex\Ui\Modal::addTo($webpage, ['title' => 'Lorem Ipsum load dynamically']);
+$vp1Modal = Modal::addTo($webpage, ['title' => 'Lorem Ipsum load dynamically']);
 
 // vp2Modal will be render into page but hide until $vp1Modal->show() is activate.
-$vp2Modal = \Phlex\Ui\Modal::addTo($webpage, ['title' => 'Text message load dynamically'])->addClass('small');
+$vp2Modal = Modal::addTo($webpage, ['title' => 'Text message load dynamically'])->addClass('small');
 
-$vp3Modal = \Phlex\Ui\Modal::addTo($webpage, ['title' => 'Third level modal'])->addClass('small');
-$vp3Modal->set(function ($modal) {
-    \Phlex\Ui\Text::addTo($modal)->set('This is yet another modal');
-    \Phlex\Ui\LoremIpsum::addTo($modal, ['size' => 2]);
+$vp3Modal = Modal::addTo($webpage, ['title' => 'Third level modal'])->addClass('small');
+$vp3Modal->set(static function ($modal) {
+    Text::addTo($modal)->set('This is yet another modal');
+    LoremIpsum::addTo($modal, ['size' => 2]);
 });
 
 // When $vp1Modal->show() is activate, it will dynamically add this content to it.
-$vp1Modal->set(function ($modal) use ($vp2Modal) {
+$vp1Modal->set(static function ($modal) use ($vp2Modal) {
     ViewTester::addTo($modal);
-    \Phlex\Ui\View::addTo($modal, ['Showing lorem ipsum']); // need in behat test.
-    \Phlex\Ui\LoremIpsum::addTo($modal, ['size' => 2]);
-    $form = \Phlex\Ui\Form::addTo($modal);
+    View::addTo($modal, ['Showing lorem ipsum']); // need in behat test.
+    LoremIpsum::addTo($modal, ['size' => 2]);
+    $form = Form::addTo($modal);
     $form->addControl('color', null, ['enum' => ['red', 'green', 'blue'], 'default' => 'green']);
-    $form->onSubmit(function (\Phlex\Ui\Form $form) use ($vp2Modal) {
+    $form->onSubmit(static function (Form $form) use ($vp2Modal) {
         return $vp2Modal->show(['color' => $form->model->get('color')]);
     });
 });
 
 // When $vp2Modal->show() is activate, it will dynamically add this content to it.
-$vp2Modal->set(function ($modal) use ($vp3Modal) {
+$vp2Modal->set(static function ($modal) use ($vp3Modal) {
     // ViewTester::addTo($modal);
-    \Phlex\Ui\Message::addTo($modal, ['Message', @$_GET['color']])->text->addParagraph('This text is loaded using a second modal.');
-    \Phlex\Ui\Button::addTo($modal)->set('Third modal')->on('click', $vp3Modal->show());
+    Message::addTo($modal, ['Message', @$_GET['color']])->text->addParagraph('This text is loaded using a second modal.');
+    Button::addTo($modal)->set('Third modal')->on('click', $vp3Modal->show());
 });
 
-$bar = \Phlex\Ui\View::addTo($webpage, ['ui' => 'buttons']);
-$button = \Phlex\Ui\Button::addTo($bar)->set('Open Lorem Ipsum');
+$bar = View::addTo($webpage, ['ui' => 'buttons']);
+$button = Button::addTo($bar)->set('Open Lorem Ipsum');
 $button->on('click', $vp1Modal->show());
 
 // ANIMATION
@@ -100,14 +114,14 @@ $menuItems = [
     'static' => ['jiggle', 'flash', 'shake', 'pulse', 'tada', 'bounce'],
 ];
 
-\Phlex\Ui\Header::addTo($webpage, ['Modal Animation']);
+Header::addTo($webpage, ['Modal Animation']);
 
-$transitionModal = \Phlex\Ui\Modal::addTo($webpage, ['title' => 'Animated modal']);
-\Phlex\Ui\Message::addTo($transitionModal)->set('A lot of animated transition available');
+$transitionModal = Modal::addTo($webpage, ['title' => 'Animated modal']);
+Message::addTo($transitionModal)->set('A lot of animated transition available');
 $transitionModal->duration(1000);
 
-$menuBar = \Phlex\Ui\View::addTo($webpage, ['ui' => 'buttons']);
-$main = \Phlex\Ui\Menu::addTo($menuBar);
+$menuBar = View::addTo($webpage, ['ui' => 'buttons']);
+$main = Menu::addTo($menuBar);
 $transitionMenu = $main->addMenu('Select Transition');
 
 foreach ($menuItems as $key => $items) {
@@ -125,30 +139,30 @@ foreach ($menuItems as $key => $items) {
 
 // DENY APPROVE
 
-\Phlex\Ui\Header::addTo($webpage, ['Modal Options']);
+Header::addTo($webpage, ['Modal Options']);
 
-$denyApproveModal = \Phlex\Ui\Modal::addTo($webpage, ['title' => 'Deny / Approve actions']);
-\Phlex\Ui\Message::addTo($denyApproveModal)->set('This modal is only closable via the green button');
-$denyApproveModal->addDenyAction('No', new \Phlex\Ui\JsExpression('function(){window.alert("Can\'t do that."); return false;}'));
-$denyApproveModal->addApproveAction('Yes', new \Phlex\Ui\JsExpression('function(){window.alert("You\'re good to go!");}'));
+$denyApproveModal = Modal::addTo($webpage, ['title' => 'Deny / Approve actions']);
+Message::addTo($denyApproveModal)->set('This modal is only closable via the green button');
+$denyApproveModal->addDenyAction('No', new JsExpression('function(){window.alert("Can\'t do that."); return false;}'));
+$denyApproveModal->addApproveAction('Yes', new JsExpression('function(){window.alert("You\'re good to go!");}'));
 $denyApproveModal->notClosable();
 
-$menuBar = \Phlex\Ui\View::addTo($webpage, ['ui' => 'buttons']);
-$button = \Phlex\Ui\Button::addTo($menuBar)->set('Show Deny/Approve');
+$menuBar = View::addTo($webpage, ['ui' => 'buttons']);
+$button = Button::addTo($menuBar)->set('Show Deny/Approve');
 $button->on('click', $denyApproveModal->show());
 
 // MULTI STEP
 
-\Phlex\Ui\Header::addTo($webpage, ['Multiple page modal']);
+Header::addTo($webpage, ['Multiple page modal']);
 
 // Add modal to layout.
-$stepModal = \Phlex\Ui\Modal::addTo($webpage, ['title' => 'Multi step actions']);
+$stepModal = Modal::addTo($webpage, ['title' => 'Multi step actions']);
 $stepModal->setOption('observeChanges', true);
 
 // Add buttons to modal for next and previous actions.
-$action = new \Phlex\Ui\View(['ui' => 'buttons']);
-$prevAction = new \Phlex\Ui\Button(['Prev', 'labeled', 'icon' => 'left arrow']);
-$nextAction = new \Phlex\Ui\Button(['Next', 'iconRight' => 'right arrow']);
+$action = new View(['ui' => 'buttons']);
+$prevAction = new Button(['Prev', 'labeled', 'icon' => 'left arrow']);
+$nextAction = new Button(['Next', 'iconRight' => 'right arrow']);
 
 $action->addView($prevAction);
 $action->addView($nextAction);
@@ -156,7 +170,7 @@ $action->addView($nextAction);
 $stepModal->addButtonAction($action);
 
 // Set modal functionality. Will changes content according to page being displayed.
-$stepModal->set(function ($modal) use ($stepModal, $session, $prevAction, $nextAction) {
+$stepModal->set(static function ($modal) use ($stepModal, $session, $prevAction, $nextAction) {
     $page = $session->recall('page', 1);
     $success = $session->recall('success', false);
     if (isset($_GET['move'])) {
@@ -173,20 +187,20 @@ $stepModal->set(function ($modal) use ($stepModal, $session, $prevAction, $nextA
     }
     $session->memorize('page', $page);
     if ($page === 1) {
-        \Phlex\Ui\Message::addTo($modal)->set('Thanks for choosing us. We will be asking some questions along the way.');
+        Message::addTo($modal)->set('Thanks for choosing us. We will be asking some questions along the way.');
         $session->memorize('success', true);
         $modal->js(true, $prevAction->js(true)->show());
         $modal->js(true, $nextAction->js(true)->show());
         $modal->js(true, $prevAction->js()->addClass('disabled'));
         $modal->js(true, $nextAction->js(true)->removeClass('disabled'));
     } elseif ($page === 2) {
-        $modelRegister = new \Phlex\Data\Model(new \Phlex\Data\Persistence\Array_());
+        $modelRegister = new Model(new Array_());
         $modelRegister->addField('name', ['caption' => 'Please enter your name (John)']);
 
-        $form = \Phlex\Ui\Form::addTo($modal, ['segment' => true]);
+        $form = Form::addTo($modal, ['segment' => true]);
         $form->setModel($modelRegister);
 
-        $form->onSubmit(function (\Phlex\Ui\Form $form) use ($nextAction, $session) {
+        $form->onSubmit(static function (Form $form) use ($nextAction, $session) {
             if ($form->model->get('name') !== 'John') {
                 return $form->error('name', 'Your name is not John! It is "' . $form->model->get('name') . '". It should be John. Pleeease!');
             }
@@ -202,7 +216,7 @@ $stepModal->set(function ($modal) use ($stepModal, $session, $prevAction, $nextA
         $modal->js(true, $nextAction->js(true)->addClass('disabled'));
     } elseif ($page === 3) {
         $name = $session->recall('name');
-        \Phlex\Ui\Message::addTo($modal)->set("Thank you {$name} for visiting us! We will be in touch");
+        Message::addTo($modal)->set("Thank you {$name} for visiting us! We will be in touch");
         $session->memorize('success', true);
         $modal->js(true, $prevAction->js(true)->hide());
         $modal->js(true, $nextAction->js(true)->hide());
@@ -221,6 +235,6 @@ $prevAction->on('click', $stepModal->js()->phlexReloadView(
 ));
 
 // Bind display modal to page display button.
-$menuBar = \Phlex\Ui\View::addTo($webpage, ['ui' => 'buttons']);
-$button = \Phlex\Ui\Button::addTo($menuBar)->set('Multi Step Modal');
+$menuBar = View::addTo($webpage, ['ui' => 'buttons']);
+$button = Button::addTo($menuBar)->set('Multi Step Modal');
 $button->on('click', $stepModal->show());

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-class Flyers extends \Phlex\Data\Model
+use Phlex\Data\Model;
+
+class Flyers extends Model
 {
     protected function doInitialize(): void
     {

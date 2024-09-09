@@ -24,9 +24,7 @@ class TagTree
         $this->tag = $tag;
     }
 
-    private function __clone()
-    {
-    }
+    private function __clone() {}
 
     /**
      * @return static

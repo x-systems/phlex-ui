@@ -59,9 +59,9 @@ class ConfirmationExecutor extends Modal implements JsExecutorInterface
     /**
      * Properly set element id for this modal.
      */
-    public function afterActionInit(Model\UserAction $action)
+    public function afterActionInit(UserAction $action)
     {
-        $getTableName = function ($arr) {
+        $getTableName = static function ($arr) {
             foreach ($arr as $k => $v) {
                 return is_numeric($k) ? $v : $k;
             }
@@ -108,7 +108,7 @@ class ConfirmationExecutor extends Modal implements JsExecutorInterface
      *
      * @return ConfirmationExecutor
      */
-    public function setAction(Model\UserAction $action): Modal
+    public function setAction(UserAction $action): Modal
     {
         $this->action = $action;
         $this->afterActionInit($action);
@@ -128,7 +128,7 @@ class ConfirmationExecutor extends Modal implements JsExecutorInterface
     public function executeModelAction()
     {
         $id = $this->stickyGet($this->elementName);
-        if ($id && $this->action->appliesTo === Model\UserAction::APPLIES_TO_SINGLE_RECORD) {
+        if ($id && $this->action->appliesTo === UserAction::APPLIES_TO_SINGLE_RECORD) {
             $this->action->setEntity($this->action->getModel()->tryLoad($id));
         }
 

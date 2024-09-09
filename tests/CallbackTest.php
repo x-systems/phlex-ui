@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
-class WebpageMock extends \Phlex\Ui\Webpage
+use Phlex\Core\PHPUnit\TestCase;
+use Phlex\Ui\Callback;
+use Phlex\Ui\CallbackLater;
+use Phlex\Ui\Layout\Centered;
+use Phlex\Ui\VirtualPage;
+use Phlex\Ui\Webpage;
+
+class WebpageMock extends Webpage
 {
     public $terminated = false;
 
@@ -22,18 +29,18 @@ class WebpageMock extends \Phlex\Ui\Webpage
     }
 }
 
-class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
+class CallbackTest extends TestCase
 {
     /** @var string */
     private $htmlDoctypeRegex = '~^<!DOCTYPE~';
 
-    /** @var \Phlex\Ui\Webpage */
+    /** @var Webpage */
     public $app;
 
     protected function setUp(): void
     {
         $this->app = new WebpageMock(['always_run' => false, 'catch_exceptions' => false]);
-        $this->app->initBody([\Phlex\Ui\Layout\Centered::class]);
+        $this->app->initBody([Centered::class]);
 
         // reset var, between tests
         $_GET = [];
@@ -44,12 +51,12 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
     {
         $var = null;
 
-        $cb = \Phlex\Ui\Callback::addTo($this->app);
+        $cb = Callback::addTo($this->app);
 
         // simulate triggering
         $_GET[$cb->elementName] = '1';
 
-        $cb->set(function ($x) use (&$var) {
+        $cb->set(static function ($x) use (&$var) {
             $var = $x;
         }, [34]);
 
@@ -60,10 +67,10 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
     {
         $var = null;
 
-        $cb = \Phlex\Ui\Callback::addTo($this->app);
+        $cb = Callback::addTo($this->app);
 
         // don't simulate triggering
-        $cb->set(function ($x) use (&$var) {
+        $cb->set(static function ($x) use (&$var) {
             $var = $x;
         }, [34]);
 
@@ -74,12 +81,12 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
     {
         $var = null;
 
-        $cb = \Phlex\Ui\CallbackLater::addTo($this->app);
+        $cb = CallbackLater::addTo($this->app);
 
         // simulate triggering
         $_GET[$cb->elementName] = '1';
 
-        $cb->set(function ($x) use (&$var) {
+        $cb->set(static function ($x) use (&$var) {
             $var = $x;
         }, [34]);
 
@@ -95,17 +102,17 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
     {
         $var = null;
 
-        $cb = \Phlex\Ui\CallbackLater::addTo($this->app);
+        $cb = CallbackLater::addTo($this->app);
 
         // simulate triggering
         $_GET[$cb->elementName] = '1';
         $_GET[$cb->elementName . '_2'] = '1';
 
         $webpage = $this->app;
-        $cb->set(function ($x) use (&$var, $webpage, &$cbname) {
-            $cb2 = \Phlex\Ui\CallbackLater::addTo($webpage);
+        $cb->set(static function ($x) use (&$var, $webpage, &$cbname) {
+            $cb2 = CallbackLater::addTo($webpage);
             $cbname = $cb2->elementName;
-            $cb2->set(function ($y) use (&$var) {
+            $cb2->set(static function ($y) use (&$var) {
                 $var = $y;
             }, [$x]);
         }, [34]);
@@ -122,10 +129,10 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
     {
         $var = null;
 
-        $cb = \Phlex\Ui\CallbackLater::addTo($this->app);
+        $cb = CallbackLater::addTo($this->app);
 
         // don't simulate triggering
-        $cb->set(function ($x) use (&$var) {
+        $cb->set(static function ($x) use (&$var) {
             $var = $x;
         }, [34]);
 
@@ -141,12 +148,12 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
     {
         $var = null;
 
-        $vp = \Phlex\Ui\VirtualPage::addTo($this->app);
+        $vp = VirtualPage::addTo($this->app);
 
         // simulate triggering
         $_GET[$vp->elementName] = '1';
 
-        $vp->set(function ($p) use (&$var) {
+        $vp->set(static function ($p) use (&$var) {
             $var = 25;
         });
 
@@ -159,12 +166,12 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
     {
         $var = null;
 
-        $vp = \Phlex\Ui\VirtualPage::addTo($this->app, ['urlTrigger' => 'bah']);
+        $vp = VirtualPage::addTo($this->app, ['urlTrigger' => 'bah']);
 
         // simulate triggering
         $_GET['bah'] = '1';
 
-        $vp->set(function ($p) use (&$var) {
+        $vp->set(static function ($p) use (&$var) {
             $var = 25;
         });
 
@@ -184,7 +191,7 @@ class CallbackTest extends \Phlex\Core\PHPUnit\TestCase
     {
         $var = null;
 
-        $vp = \Phlex\Ui\VirtualPage::addTo($this->app);
+        $vp = VirtualPage::addTo($this->app);
 
         // simulate triggering
         $_GET[$vp->elementName] = '1';

@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
-class PaginatorTest extends \Phlex\Core\PHPUnit\TestCase
+use Phlex\Core\PHPUnit\TestCase;
+use Phlex\Ui\Paginator;
+
+class PaginatorTest extends TestCase
 {
     public $p;
 
-    public function addDataProvider()
+    public function providePaginatorCases(): iterable
     {
         return [
             // cur, range, total, expected output
@@ -34,11 +37,11 @@ class PaginatorTest extends \Phlex\Core\PHPUnit\TestCase
     }
 
     /**
-     * @dataProvider addDataProvider
+     * @dataProvider providePaginatorCases
      */
     public function testPaginator($page, $range, $total, $expected): void
     {
-        $p = new \Phlex\Ui\Paginator(['page' => $page, 'range' => $range, 'total' => $total]);
+        $p = new Paginator(['page' => $page, 'range' => $range, 'total' => $total]);
         $this->assertSame($expected, $p->getPaginatorItems());
     }
 }

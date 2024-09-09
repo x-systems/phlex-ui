@@ -76,4 +76,16 @@ class DateTime extends Model\Field\Codec
 
         return $valueDecoded;
     }
+
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    public function setFormat(string $format)
+    {
+        $this->format = $format;
+
+        return $this;
+    }
 }

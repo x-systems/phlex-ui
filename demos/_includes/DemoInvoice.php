@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Model;
+
 /**
  * Invoice class for tutorial intro.
  */
-class DemoInvoice extends \Phlex\Data\Model
+class DemoInvoice extends Model
 {
     public $dateFormat;
 
@@ -25,7 +27,7 @@ class DemoInvoice extends \Phlex\Data\Model
                 function ($v) {
                     return ($v instanceof \DateTime) ? date_format($v, $this->dateFormat) : $v;
                 },
-                function ($v) {
+                static function ($v) {
                     return $v;
                 },
             ],

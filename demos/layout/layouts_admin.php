@@ -4,14 +4,21 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Data\Model;
+use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\Layout\Admin;
+use Phlex\Ui\Layout\Centered;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$layout = \Phlex\Ui\Layout\Admin::addTo($webpage);
+$layout = Admin::addTo($webpage);
 
 $menu = $layout->menu->addMenu(['Layouts', 'icon' => 'puzzle']);
-$menu->addItem(\Phlex\Ui\Layout\Centered::class);
-$menu->addItem(\Phlex\Ui\Layout\Admin::class);
+$menu->addItem(Centered::class);
+$menu->addItem(Admin::class);
 
 $menuRight = $layout->menuRight;
 $menuRight->addItem(['Warning', 'red', 'icon' => 'red warning']);
@@ -34,10 +41,10 @@ $layout->menuLeft->addItem(['Settings', 'icon' => 'cogs']);
 
 $layout->template->set('Footer', 'Phlex UI is awesome');
 
-\Phlex\Ui\Header::addTo($layout, ['Basic Form Example']);
+Header::addTo($layout, ['Basic Form Example']);
 
-$form = \Phlex\Ui\Form::addTo($layout, ['segment']);
-$form->setModel(new \Phlex\Data\Model());
+$form = Form::addTo($layout, ['segment']);
+$form->setModel(new Model());
 
 $formGroup = $form->addGroup('Name');
 $formGroup->addControl('first_name', ['width' => 'eight']);
@@ -48,7 +55,7 @@ $formGroup = $form->addGroup('Address');
 $formGroup->addControl('address', ['width' => 'twelve']);
 $formGroup->addControl('zip', ['width' => 'four']);
 
-$form->onSubmit(function (\Phlex\Ui\Form $form) {
+$form->onSubmit(static function (Form $form) {
     $errors = [];
 
     foreach (['first_name', 'last_name', 'address'] as $field) {

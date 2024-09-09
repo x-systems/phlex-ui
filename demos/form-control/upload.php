@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
+use Phlex\Ui\JsToast;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $form = Form::addTo($webpage);
@@ -20,17 +22,17 @@ $control = $form->addControl('file', [Form\Control\Upload::class, ['accept' => [
 // $control->set('a_generated_token', 'a-file-name');
 // $control->set('a_generated_token');
 
-$img->onDelete(function ($fileId) use ($img) {
+$img->onDelete(static function ($fileId) use ($img) {
     $img->clearThumbnail('./images/default.png');
 
-    return new \Phlex\Ui\JsToast([
+    return new JsToast([
         'title' => 'Delete successfully',
         'message' => $fileId . ' has been removed',
         'class' => 'success',
     ]);
 });
 
-$img->onUpload(function ($postFile) use ($form, $img) {
+$img->onUpload(static function ($postFile) use ($form, $img) {
     if ($postFile['error'] !== 0) {
         return $form->error('img', 'Error uploading image.');
     }
@@ -48,35 +50,35 @@ $img->onUpload(function ($postFile) use ($form, $img) {
     // return $form->error('file', 'Unable to upload file.');
 
     // can also return a notifier.
-    return new \Phlex\Ui\JsToast([
+    return new JsToast([
         'title' => 'Upload success',
         'message' => 'Image is uploaded!',
         'class' => 'success',
     ]);
 });
 
-$control->onDelete(function ($fileId) {
-    return new \Phlex\Ui\JsToast([
+$control->onDelete(static function ($fileId) {
+    return new JsToast([
         'title' => 'Delete successfully',
         'message' => $fileId . ' has been removed',
         'class' => 'success',
     ]);
 });
 
-$control->onUpload(function ($files) use ($form, $control) {
+$control->onUpload(static function ($files) use ($form, $control) {
     if ($files === 'error') {
         return $form->error('file', 'Error uploading file.');
     }
     $control->setFileId('a_token');
 
-    return new \Phlex\Ui\JsToast([
+    return new JsToast([
         'title' => 'Upload success',
         'message' => 'File is uploaded!',
         'class' => 'success',
     ]);
 });
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     // implement submission here
     return $form->success('Thanks for submitting file: ' . $form->model->get('img') . ' / ' . $form->model->get('file'));
 });

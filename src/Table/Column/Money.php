@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Table\Column;
 
 use Phlex\Data\Model;
+use Phlex\Ui\Exception;
 use Phlex\Ui\Table;
 
 /**
@@ -28,7 +29,7 @@ class Money extends Table\Column
     public function getDataCellHtml(Model\Field $field = null, $extra_tags = [])
     {
         if (!isset($field)) {
-            throw new \Phlex\Ui\Exception('Money column requires a field');
+            throw new Exception('Money column requires a field');
         }
 
         return $this->getTag(

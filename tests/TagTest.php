@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
 use Phlex\Ui\Webpage;
 
-class TagTest extends \Phlex\Core\PHPUnit\TestCase
+class TagTest extends TestCase
 {
     public function assertTagRender($html, $args)
     {

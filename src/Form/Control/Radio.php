@@ -6,6 +6,7 @@ namespace Phlex\Ui\Form\Control;
 
 use Phlex\Data\Model;
 use Phlex\Ui\Form;
+use Phlex\Ui\JsExpression;
 use Phlex\Ui\Lister;
 
 /**
@@ -99,7 +100,7 @@ class Radio extends Form\Control
     public function onChange($expr, $default = [])
     {
         if (is_string($expr)) {
-            $expr = new \Phlex\Ui\JsExpression($expr);
+            $expr = new JsExpression($expr);
         }
 
         if (is_bool($default)) {

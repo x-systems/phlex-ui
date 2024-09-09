@@ -4,18 +4,27 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Model;
+use Phlex\Data\Persistence\Array_;
+use Phlex\Ui\Button;
+use Phlex\Ui\Card;
+use Phlex\Ui\Form;
 use Phlex\Ui\Header;
 use Phlex\Ui\JsToast;
 use Phlex\Ui\Message;
+use Phlex\Ui\Paginator;
+use Phlex\Ui\Text;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
+use Phlex\Ui\Wizard;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$wizard = \Phlex\Ui\Wizard::addTo($webpage);
+$wizard = Wizard::addTo($webpage);
 
-$wizard->addStep('User Interface', function ($page) {
-    $t = \Phlex\Ui\Text::addTo($page);
+$wizard->addStep('User Interface', static function ($page) {
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             Phlex UI is a "Low Code Framework" written in PHP. It is designed to simplify all aspects of web application creation:
@@ -56,13 +65,13 @@ $wizard->addStep('User Interface', function ($page) {
 
     $t->addParagraph('It all has started with a "Button" though:');
 
-    Demo::addTo($page)->setCodeAndCall(function (View $owner) {
-        \Phlex\Ui\Button::addTo($owner, ['Hello from the button!']);
+    Demo::addTo($page)->setCodeAndCall(static function (View $owner) {
+        Button::addTo($owner, ['Hello from the button!']);
     });
 });
 
-$wizard->addStep('Interactivity', function ($page) {
-    $t = \Phlex\Ui\Text::addTo($page);
+$wizard->addStep('Interactivity', static function ($page) {
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             PHP is a server-side language. That prompted us to implement server-side UI actions. They are very easy to define -
@@ -70,14 +79,14 @@ $wizard->addStep('Interactivity', function ($page) {
             EOF
     );
 
-    Demo::addTo($page)->setCodeAndCall(function (View $owner) {
-        $button = \Phlex\Ui\Button::addTo($owner, ['Click for the greeting!']);
-        $button->on('click', function () {
+    Demo::addTo($page)->setCodeAndCall(static function (View $owner) {
+        $button = Button::addTo($owner, ['Click for the greeting!']);
+        $button->on('click', static function () {
             return 'Hello World!';
         });
     });
 
-    $t = \Phlex\Ui\Text::addTo($page);
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             A component of Phlex UI (callback) enables seamless communication between the frontend components (which are often
@@ -85,25 +94,25 @@ $wizard->addStep('Interactivity', function ($page) {
             EOF
     );
 
-    Demo::addTo($page)->setCodeAndCall(function (View $owner) {
-        $seg = \Phlex\Ui\View::addTo($owner, ['ui' => 'segment']);
+    Demo::addTo($page)->setCodeAndCall(static function (View $owner) {
+        $seg = View::addTo($owner, ['ui' => 'segment']);
 
-        \Phlex\Ui\Text::addTo($seg)->set('Number of buttons: ');
+        Text::addTo($seg)->set('Number of buttons: ');
 
-        $paginator = \Phlex\Ui\Paginator::addTo($seg, [
+        $paginator = Paginator::addTo($seg, [
             'total' => 5,
             'reload' => $seg,
             'urlTrigger' => 'count',
         ]);
 
-        \Phlex\Ui\View::addTo($seg, ['ui' => 'divider']);
+        View::addTo($seg, ['ui' => 'divider']);
 
         for ($i = 1; $i <= ($_GET['count'] ?? 1); ++$i) {
-            \Phlex\Ui\Button::addTo($seg, [$i]);
+            Button::addTo($seg, [$i]);
         }
     });
 
-    $t = \Phlex\Ui\Text::addTo($page);
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             This demo also shows you how to create composite views. The '$seg' above contains text, paginator, divider and some
@@ -112,8 +121,8 @@ $wizard->addStep('Interactivity', function ($page) {
     );
 });
 
-$wizard->addStep('Business Model', function ($page) {
-    $t = \Phlex\Ui\Text::addTo($page);
+$wizard->addStep('Business Model', static function ($page) {
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             One major benefit of Server Side Rendered applications is ability to directly interact with data. In other applications
@@ -121,7 +130,7 @@ $wizard->addStep('Business Model', function ($page) {
             EOF
     );
 
-    Demo::addTo($page)->setCodeAndCall(function (View $owner) {
+    Demo::addTo($page)->setCodeAndCall(static function (View $owner) {
         /* Showing Class definition.
         class DemoInvoice extends \Phlex\Data\Model
         {
@@ -138,13 +147,13 @@ $wizard->addStep('Business Model', function ($page) {
         */
         session_start();
 
-        $model = new \Phlex\Ui\Demos\DemoInvoice(new \Phlex\Data\Persistence\Array_($_SESSION['x'] ?? []), ['dateFormat' => $owner->getApp()->ui_persistence->date_format]);
-        $model->onHook(\Phlex\Data\Model::HOOK_AFTER_SAVE, function ($model) {
+        $model = new DemoInvoice(new Array_($_SESSION['x'] ?? []), ['dateFormat' => $owner->getApp()->ui_persistence->date_format]);
+        $model->onHook(Model::HOOK_AFTER_SAVE, static function ($model) {
             $_SESSION['x'][$model->getId()] = $model->get();
         });
 
         Header::addTo($owner, ['Set invoice data:']);
-        $form = \Phlex\Ui\Form::addTo($owner);
+        $form = Form::addTo($owner);
         $model = $model->tryLoad(1);
         $form->setModel($model);
 
@@ -158,16 +167,16 @@ $wizard->addStep('Business Model', function ($page) {
             $model->save();
         }
 
-        $form->onSubmit(function ($f) {
+        $form->onSubmit(static function ($f) {
             $f->model->save();
 
             return new JsToast('Saved!');
         });
 
-        \Phlex\Ui\View::addTo($owner, ['ui' => 'divider']);
+        View::addTo($owner, ['ui' => 'divider']);
     });
 
-    $t = \Phlex\Ui\Text::addTo($page);
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             This code shows you a combination of 3 objects:
@@ -189,32 +198,32 @@ $wizard->addStep('Business Model', function ($page) {
     );
 });
 
-$wizard->addStep('Persistence', function ($page) {
-    $t = \Phlex\Ui\Text::addTo($page);
+$wizard->addStep('Persistence', static function ($page) {
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             Once your model is defined, it can be re-used later with any generic view:
             EOF
     );
 
-    Demo::addTo($page)->setCodeAndCall(function (View $owner) {
+    Demo::addTo($page)->setCodeAndCall(static function (View $owner) {
         session_start();
 
-        $model = new \Phlex\Ui\Demos\DemoInvoice(new \Phlex\Data\Persistence\Array_($_SESSION['x'] ?? []), ['dateFormat' => $owner->getApp()->ui_persistence->date_format]);
-        $model->onHook(\Phlex\Data\Model::HOOK_AFTER_SAVE, function ($model) {
+        $model = new DemoInvoice(new Array_($_SESSION['x'] ?? []), ['dateFormat' => $owner->getApp()->ui_persistence->date_format]);
+        $model->onHook(Model::HOOK_AFTER_SAVE, static function ($model) {
             $_SESSION['x'][$model->getId()] = $model->get();
         });
 
         Header::addTo($owner, ['Record display in Card View using model data.']);
         $model = $model->tryLoad(1);
         if ($model->isLoaded()) {
-            \Phlex\Ui\Card::addTo($owner, ['useLabel' => true])->setModel($model);
+            Card::addTo($owner, ['useLabel' => true])->setModel($model);
         } else {
             Message::addTo($owner, ['Empty record.']);
         }
     });
 
-    $t = \Phlex\Ui\Text::addTo($page);
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             Re-use of your Business Model code, generic and interactive views and principles of composition and a simple PHP
@@ -223,8 +232,8 @@ $wizard->addStep('Persistence', function ($page) {
     );
 });
 
-$wizard->addFinish(function ($page) use ($wizard) {
+$wizard->addFinish(static function ($page) use ($wizard) {
     PromotionText::addTo($page);
-    \Phlex\Ui\Button::addTo($wizard, ['Exit demo', 'primary', 'icon' => 'left arrow'], ['Left'])
+    Button::addTo($wizard, ['Exit demo', 'primary', 'icon' => 'left arrow'], ['Left'])
         ->link('/demos/index.php');
 });

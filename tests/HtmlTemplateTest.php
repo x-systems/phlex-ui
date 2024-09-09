@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
 use Phlex\Ui\Exception;
 use Phlex\Ui\HtmlTemplate;
 use Phlex\Ui\HtmlTemplate\TagTree;
 
-class HtmlTemplateTest extends \Phlex\Core\PHPUnit\TestCase
+class HtmlTemplateTest extends TestCase
 {
     protected function assertSameTemplate(string $expectedTemplateStr, HtmlTemplate $template): void
     {

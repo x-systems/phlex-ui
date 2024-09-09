@@ -4,25 +4,30 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Ui\Button;
 use Phlex\Ui\Form;
+use Phlex\Ui\Form\Layout\Section;
+use Phlex\Ui\Header;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Button::addTo($webpage, ['Form Sections', 'small left floated basic blue', 'icon' => 'left arrow'])
+Button::addTo($webpage, ['Form Sections', 'small left floated basic blue', 'icon' => 'left arrow'])
     ->link(['form-section']);
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'ui clearing divider']);
+View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
 $form = Form::addTo($webpage);
 
-$sublayout = $form->layout->addSubLayout([\Phlex\Ui\Form\Layout\Section::class]);
+$sublayout = $form->layout->addSubLayout([Section::class]);
 
-\Phlex\Ui\Header::addTo($sublayout, ['Please fill all form sections!', 'size' => 4]);
+Header::addTo($sublayout, ['Please fill all form sections!', 'size' => 4]);
 
 $sublayout->addControl('company_name');
 
 // Accordion
-$accordionLayout = $form->layout->addSubLayout([Form\Layout\Section\Accordion::class, 'type' => ['styled', 'fluid'], 'settings' => ['exclusive' => false]]);
+$accordionLayout = $form->layout->addSubLayout([Section\Accordion::class, 'type' => ['styled', 'fluid'], 'settings' => ['exclusive' => false]]);
 
 // Section #1
 $contactSection = $accordionLayout->addSection('Contact');
@@ -47,7 +52,7 @@ $group->addControl('country', ['width' => 'six']);
 $group->addControl('postal', ['width' => 'four']);
 
 // Sub-Accordion
-$sublayoutAccordion = $addressSection->addSubLayout([Form\Layout\Section\Accordion::class, 'type' => ['styled', 'fluid'], 'settings' => ['exclusive' => false]]);
+$sublayoutAccordion = $addressSection->addSubLayout([Section\Accordion::class, 'type' => ['styled', 'fluid'], 'settings' => ['exclusive' => false]]);
 
 // Sub-Section #1
 $section1 = $sublayoutAccordion->addSection('Business address');
@@ -62,6 +67,6 @@ $form->addControl('term', [Form\Control\Checkbox::class, 'caption' => 'Accept te
 
 $accordionLayout->activate($contactSection);
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     return $form->success('Yey!', 'You did well by filling out this form');
 });

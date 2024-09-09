@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace Phlex\Ui\Tests;
 
 use Phlex\Core\Exception;
+use Phlex\Core\PHPUnit\TestCase;
+use Phlex\Ui\View;
 
-class ViewTest extends \Phlex\Core\PHPUnit\TestCase
+class ViewTest extends TestCase
 {
     /**
      * Test redering multiple times.
      */
     public function testMultipleRender(): void
     {
-        $v = new \Phlex\Ui\View();
+        $v = new View();
         $v->set('foo');
 
         $a = $v->render();
@@ -25,11 +27,11 @@ class ViewTest extends \Phlex\Core\PHPUnit\TestCase
     {
         $this->expectException(Exception::class);
 
-        $v = new \Phlex\Ui\View();
+        $v = new View();
         $v->set('foo');
 
         $a = $v->render();
-        \Phlex\Ui\View::addTo($v);  // this should fail. No adding after rendering.
+        View::addTo($v);  // this should fail. No adding after rendering.
         $b = $v->render();
         $this->assertSame($a, $b);
     }

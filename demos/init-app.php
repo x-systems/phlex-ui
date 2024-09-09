@@ -4,17 +4,25 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Persistence\Sql;
+use Phlex\Ui\Button;
+use Phlex\Ui\Exception;
+use Phlex\Ui\Layout\Maestro;
+use Phlex\Ui\Layout\NavigableInterface;
+use Phlex\Ui\Webpage;
+use PHPUnit\Framework\TestCase;
+
 date_default_timezone_set('UTC');
 
 require_once __DIR__ . '/init-autoloader.php';
 
 // collect coverage for HTTP tests 1/2
-if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(\PHPUnit\Framework\TestCase::class, false)) {
+if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(TestCase::class, false)) {
     require_once __DIR__ . '/CoverageUtil.php';
     \CoverageUtil::start();
 }
 
-$webpage = new \Phlex\Ui\Webpage([
+$webpage = new Webpage([
     'call_exit' => (bool) ($_GET['APP_CALL_EXIT'] ?? true),
     'catch_exceptions' => (bool) ($_GET['APP_CATCH_EXCEPTIONS'] ?? true),
     'always_run' => (bool) ($_GET['APP_ALWAYS_RUN'] ?? true),
@@ -30,19 +38,19 @@ if ($webpage->catch_exceptions !== true) {
 }
 
 // collect coverage for HTTP tests 2/2
-if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(\PHPUnit\Framework\TestCase::class, false)) {
-    $webpage->onHook(\Phlex\Ui\Webpage::HOOK_BEFORE_EXIT, function () {
+if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(TestCase::class, false)) {
+    $webpage->onHook(Webpage::HOOK_BEFORE_EXIT, static function () {
         \CoverageUtil::saveData();
     });
 }
 
 try {
-    /** @var \Phlex\Data\Persistence\Sql $db */
+    /** @var Sql $db */
     require_once __DIR__ . '/init-db.php';
     $webpage->db = $db;
     unset($db);
 } catch (\Throwable $e) {
-    throw new \Phlex\Ui\Exception('Database error: ' . $e->getMessage());
+    throw new Exception('Database error: ' . $e->getMessage());
 }
 
 [$rootUrl, $relUrl] = preg_split('~(?<=/)(?=demos(/|\?|$))|\?~s', $_SERVER['REQUEST_URI'], 3);
@@ -53,10 +61,10 @@ if (file_exists(__DIR__ . '/../public/phlex-ui.min.js')) {
 }
 
 // allow custom layout override
-$webpage->initBody([$webpage->stickyGet('layout') ?? \Phlex\Ui\Layout\Maestro::class]);
+$webpage->initBody([$webpage->stickyGet('layout') ?? Maestro::class]);
 
 $body = $webpage->body;
-if ($body instanceof \Phlex\Ui\Layout\NavigableInterface) {
+if ($body instanceof NavigableInterface) {
     $body->addMenuItem(['Welcome to Phlex UI', 'icon' => 'gift'], [$demosUrl . 'index']);
 
     $path = $demosUrl . 'layout/';
@@ -155,7 +163,7 @@ if ($body instanceof \Phlex\Ui\Layout\NavigableInterface) {
     $body->addMenuItem('Recursive Views', [$path . 'recursive'], $menu);
 
     // view demo source page on Github
-    \Phlex\Ui\Button::addTo($body->menu->addItem()->addClass('aligned right'), ['View Source', 'teal', 'icon' => 'github'])
+    Button::addTo($body->menu->addItem()->addClass('aligned right'), ['View Source', 'teal', 'icon' => 'github'])
         ->on('click', $webpage->jsRedirect('https://github.com/x-systems/phlex-ui/blob/' . $webpage->version . '/' . $relUrl, true));
 }
 unset($body, $rootUrl, $relUrl, $demosUrl, $path, $menu);

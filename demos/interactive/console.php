@@ -4,12 +4,23 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Core\DebugTrait;
+use Phlex\Core\Exception;
+use Phlex\Ui\Button;
+use Phlex\Ui\Console;
+use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\Message;
+use Phlex\Ui\Tabs;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-/** @var \Phlex\Ui\View $testRunClass */
-$testRunClass = get_class(new class() extends \Phlex\Ui\View {
-    use \Phlex\Core\DebugTrait;
+/** @var View $testRunClass */
+$testRunClass = get_class(new class() extends View {
+    use DebugTrait;
 
     public function generateReport()
     {
@@ -27,79 +38,79 @@ $testRunClass = get_class(new class() extends \Phlex\Ui\View {
     }
 });
 
-$tabs = \Phlex\Ui\Tabs::addTo($webpage);
+$tabs = Tabs::addTo($webpage);
 
 $tab = $tabs->addTab('set()');
-\Phlex\Ui\Header::addTo($tab, [
+Header::addTo($tab, [
     'icon' => 'terminal',
     'Console output streaming',
     'subHeader' => 'any output your PHP script produces through console is displayed to user in real-time',
 ]);
-\Phlex\Ui\Console::addTo($tab)->set(function ($console) {
+Console::addTo($tab)->set(static function ($console) {
     $console->output('Executing test process...');
     sleep(1);
     $console->output('Now trying something dangerous..');
     sleep(1);
     echo 'direct output is captured';
 
-    throw new \Phlex\Core\Exception('BOOM - exceptions are caught');
+    throw new Exception('BOOM - exceptions are caught');
 });
 
-$tab = $tabs->addTab('runMethod()', function ($tab) use ($testRunClass) {
-    \Phlex\Ui\Header::addTo($tab, [
+$tab = $tabs->addTab('runMethod()', static function ($tab) use ($testRunClass) {
+    Header::addTo($tab, [
         'icon' => 'terminal',
         'Non-interractive method invocation',
         'subHeader' => 'console can invoke a method, which normaly would be non-interractive and can still capture debug output',
     ]);
-    \Phlex\Ui\Console::addTo($tab)->runMethod($testRunClass::addTo($tab), 'generateReport');
+    Console::addTo($tab)->runMethod($testRunClass::addTo($tab), 'generateReport');
 });
 
-$tab = $tabs->addTab('exec() single', function ($tab) {
-    \Phlex\Ui\Header::addTo($tab, [
+$tab = $tabs->addTab('exec() single', static function ($tab) {
+    Header::addTo($tab, [
         'icon' => 'terminal',
         'Command execution',
         'subHeader' => 'it is easy to run server-side commands and stream output through console',
     ]);
-    $message = \Phlex\Ui\Message::addTo($tab, ['This demo may not work', 'warning']);
+    $message = Message::addTo($tab, ['This demo may not work', 'warning']);
     $message->text->addParagraph('This demo requires Linux OS and will display error otherwise.');
-    \Phlex\Ui\Console::addTo($tab)->exec('/bin/pwd');
+    Console::addTo($tab)->exec('/bin/pwd');
 });
 
-$tab = $tabs->addTab('exec() chain', function ($tab) {
-    \Phlex\Ui\Header::addTo($tab, [
+$tab = $tabs->addTab('exec() chain', static function ($tab) {
+    Header::addTo($tab, [
         'icon' => 'terminal',
         'Command execution',
         'subHeader' => 'it is easy to run server-side commands and stream output through console',
     ]);
-    $message = \Phlex\Ui\Message::addTo($tab, ['This demo may not work', 'warning']);
+    $message = Message::addTo($tab, ['This demo may not work', 'warning']);
     $message->text->addParagraph('This demo requires Linux OS and will display error otherwise.');
-    \Phlex\Ui\Console::addTo($tab)->set(function ($console) {
+    Console::addTo($tab)->set(static function ($console) {
         $console->exec('/sbin/ping', ['-c', '5', '-i', '1', '192.168.0.1']);
         $console->exec('/sbin/ping', ['-c', '5', '-i', '2', '8.8.8.8']);
         $console->exec('/bin/no-such-command');
     });
 });
 
-$tab = $tabs->addTab('composer update', function ($tab) {
-    \Phlex\Ui\Header::addTo($tab, [
+$tab = $tabs->addTab('composer update', static function ($tab) {
+    Header::addTo($tab, [
         'icon' => 'terminal',
         'Command execution',
         'subHeader' => 'it is easy to run server-side commands and stream output through console',
     ]);
 
-    $message = \Phlex\Ui\Message::addTo($tab, ['This demo may not work', 'warning']);
+    $message = Message::addTo($tab, ['This demo may not work', 'warning']);
     $message->text->addParagraph('This demo requires you to have "bash" and "composer" installed and may display error if the process running PHP does not have write access to the "vendor" folder and "composer.*".');
 
-    $button = \Phlex\Ui\Button::addTo($message, ['I understand, proceed anyway', 'primary big']);
+    $button = Button::addTo($message, ['I understand, proceed anyway', 'primary big']);
 
-    $console = \Phlex\Ui\Console::addTo($tab, ['event' => false]);
+    $console = Console::addTo($tab, ['event' => false]);
     $console->exec('bash', ['-c', 'cd ../..; echo "Running \'composer update\' in `pwd`"; composer --no-ansi update; echo "Self-updated. OK to refresh now!"']);
 
     $button->on('click', $console->jsExecute());
 });
 
-$tab = $tabs->addTab('Use after form submit', function ($tab) {
-    \Phlex\Ui\Header::addTo($tab, [
+$tab = $tabs->addTab('Use after form submit', static function ($tab) {
+    Header::addTo($tab, [
         'icon' => 'terminal',
         'How to log form submit process',
         'subHeader' => 'Sometimes you can have long running process after form submit and want to show progress for user...',
@@ -107,11 +118,11 @@ $tab = $tabs->addTab('Use after form submit', function ($tab) {
 
     session_start();
 
-    $form = \Phlex\Ui\Form::addTo($tab);
+    $form = Form::addTo($tab);
     $form->addControls(['foo', 'bar']);
 
-    $console = \Phlex\Ui\Console::addTo($tab, ['event' => false]);
-    $console->set(function ($console) {
+    $console = Console::addTo($tab, ['event' => false]);
+    $console->set(static function ($console) {
         $model = $_SESSION['data'];
         $console->output('Executing process...');
         $console->info(var_export($model->get(), true));
@@ -122,7 +133,7 @@ $tab = $tabs->addTab('Use after form submit', function ($tab) {
     });
     $console->js(true)->hide();
 
-    $form->onSubmit(function (\Phlex\Ui\Form $form) use ($console) {
+    $form->onSubmit(static function (Form $form) use ($console) {
         $_SESSION['data'] = $form->model; // only option is to store model in session here in demo
 
         return [

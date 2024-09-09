@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Model;
+use Phlex\Ui\Crud;
 use Phlex\Ui\Form\Control\Multiline;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // This demo require specific Database setup.
 
 if (!class_exists(Client::class)) {
-    class Client extends \Phlex\Data\Model
+    class Client extends Model
     {
         public $table = 'client';
         public $caption = 'Client';
@@ -26,7 +29,7 @@ if (!class_exists(Client::class)) {
         }
     }
 
-    class Account extends \Phlex\Data\Model
+    class Account extends Model
     {
         public $caption = ' ';
 
@@ -36,20 +39,20 @@ if (!class_exists(Client::class)) {
 
             $this->addField('email', [
                 'required' => true,
-                'ui' => ['multiline' => [Multiline::INPUT => ['icon' => 'envelope', 'type' => 'email']]],
+                'options' => [Multiline::OPTION_PRESETS => [Multiline::INPUT => ['icon' => 'envelope', 'type' => 'email']]],
             ]);
             $this->addField('password', [
                 'required' => true,
-                'ui' => ['multiline' => [Multiline::INPUT => ['icon' => 'key', 'type' => 'password']]],
+                'options' => [Multiline::OPTION_PRESETS => [Multiline::INPUT => ['icon' => 'key', 'type' => 'password']]],
             ]);
             $this->addField('site', ['required' => true]);
             $this->addField('type', [
                 'default' => 'user',
                 'values' => ['user' => 'Regular User', 'admin' => 'System Admin'],
-                'ui' => ['multiline' => [Multiline::TABLE_CELL => ['width' => 'four']]],
+                'options' => [Multiline::OPTION_PRESETS => [Multiline::TABLE_CELL => ['width' => 'four']]],
             ]);
         }
     }
 }
 
-\Phlex\Ui\Crud::addTo($webpage)->setModel(new Client($webpage->db));
+Crud::addTo($webpage)->setModel(new Client($webpage->db));

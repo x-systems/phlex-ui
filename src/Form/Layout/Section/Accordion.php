@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Phlex\Ui\Form\Layout\Section;
 
 use Phlex\Ui\AccordionSection;
+use Phlex\Ui\Form;
+use Phlex\Ui\Form\Layout;
 
 /**
  * Represents form controls in accordion.
  */
 class Accordion extends \Phlex\Ui\Accordion
 {
-    public $formLayout = \Phlex\Ui\Form\Layout::class;
+    public $formLayout = Layout::class;
     public $form;
 
     /**
@@ -23,7 +25,7 @@ class Accordion extends \Phlex\Ui\Accordion
     {
         parent::doInitialize();
 
-        $this->form->onHook(\Phlex\Ui\Form::HOOK_DISPLAY_ERROR, function ($form, $fieldName, $str) {
+        $this->form->onHook(Form::HOOK_DISPLAY_ERROR, static function ($form, $fieldName, $str) {
             // default behavior
             $jsError = [$form->js()->form('add prompt', $fieldName, $str)];
 
@@ -43,7 +45,7 @@ class Accordion extends \Phlex\Ui\Accordion
      * @param string $title
      * @param string $icon
      *
-     * @return \Phlex\Ui\Form\Layout
+     * @return Layout
      */
     public function addSection($title, \Closure $callback = null, $icon = 'dropdown')
     {
@@ -61,7 +63,7 @@ class Accordion extends \Phlex\Ui\Accordion
      */
     public function getSectionIdx($section)
     {
-        if ($section instanceof \Phlex\Ui\AccordionSection) {
+        if ($section instanceof AccordionSection) {
             return parent::getSectionIdx($section);
         }
 

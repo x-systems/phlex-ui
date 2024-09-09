@@ -7,8 +7,9 @@ namespace Phlex\Ui\Demos;
 use Phlex\Ui\Button;
 use Phlex\Ui\Header;
 use Phlex\Ui\Modal;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Simulating ModalExecutor reload for Behat test.
@@ -17,7 +18,7 @@ Header::addTo($webpage, ['Testing ModalExecutor reload']);
 
 $modal = Modal::addTo($webpage, ['title' => 'Modal Executor', 'region' => 'Modals']);
 
-$modal->set(function ($modal) {
+$modal->set(static function ($modal) {
     ReloadTest::addTo($modal);
 });
 

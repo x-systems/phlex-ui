@@ -4,37 +4,45 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Ui\Button;
+use Phlex\Ui\Header;
+use Phlex\Ui\Loader;
+use Phlex\Ui\LoremIpsum;
+use Phlex\Ui\Message;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Button::addTo($webpage, ['Loader Examples - Page 2', 'small right floated basic blue', 'iconRight' => 'right arrow'])
+Button::addTo($webpage, ['Loader Examples - Page 2', 'small right floated basic blue', 'iconRight' => 'right arrow'])
     ->link(['loader2']);
 
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'clearing divider']);
+View::addTo($webpage, ['ui' => 'clearing divider']);
 
 // ViewTester will perform callback to self.
 ViewTester::addTo($webpage);
 
 // Example 1 - Basic usage of a Loader.
-\Phlex\Ui\Loader::addTo($webpage)->set(function ($p) {
+Loader::addTo($webpage)->set(static function ($p) {
     // set your time expensive function here.
     sleep(1);
-    \Phlex\Ui\Header::addTo($p, ['Loader #1']);
-    \Phlex\Ui\LoremIpsum::addTo($p, ['size' => 1]);
+    Header::addTo($p, ['Loader #1']);
+    LoremIpsum::addTo($p, ['size' => 1]);
 
     // Any dynamic views can perform call-backs just fine
     ViewTester::addTo($p);
 
     // Loader may be inside another loader, works fine.
-    $loader = \Phlex\Ui\Loader::addTo($p);
+    $loader = Loader::addTo($p);
 
     // use loadEvent to prevent manual loading or even specify custom trigger event
     $loader->loadEvent = false;
-    $loader->set(function ($p) {
+    $loader->set(static function ($p) {
         // You may pass arguments to the loader, in this case it's "color"
         sleep(1);
-        \Phlex\Ui\Header::addTo($p, ['Loader #1b - ' . $_GET['color']]);
-        \Phlex\Ui\LoremIpsum::addTo(\Phlex\Ui\View::addTo($p, ['ui' => $_GET['color'] . ' segment']), ['size' => 1]);
+        Header::addTo($p, ['Loader #1b - ' . $_GET['color']]);
+        LoremIpsum::addTo(View::addTo($p, ['ui' => $_GET['color'] . ' segment']), ['size' => 1]);
 
         // don't forget to make your own argument sticky so that Components can communicate with themselves:
         $p->getApp()->stickyGet('color');
@@ -44,19 +52,19 @@ ViewTester::addTo($webpage);
     });
 
     // button may contain load event.
-    \Phlex\Ui\Button::addTo($p, ['Load Segment Manually (2s)', 'red'])->js('click', $loader->jsLoad(['color' => 'red']));
-    \Phlex\Ui\Button::addTo($p, ['Load Segment Manually (2s)', 'blue'])->js('click', $loader->jsLoad(['color' => 'blue']));
+    Button::addTo($p, ['Load Segment Manually (2s)', 'red'])->js('click', $loader->jsLoad(['color' => 'red']));
+    Button::addTo($p, ['Load Segment Manually (2s)', 'blue'])->js('click', $loader->jsLoad(['color' => 'blue']));
 });
 
 // Example 2 - Loader with custom body.
-\Phlex\Ui\Loader::addTo($webpage, [
+Loader::addTo($webpage, [
     'ui' => '',   // this will prevent "loading spinner" from showing
     'shim' => [   // shim is displayed while content is leaded
-        \Phlex\Ui\Message::class,
+        Message::class,
         'Generating LoremIpsum, please wait...',
         'red',
     ],
-])->set(function ($p) {
+])->set(static function ($p) {
     usleep(500 * 1000);
-    \Phlex\Ui\LoremIpsum::addTo($p, ['size' => 2]);
+    LoremIpsum::addTo($p, ['size' => 2]);
 });

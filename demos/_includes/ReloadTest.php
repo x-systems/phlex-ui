@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-class ReloadTest extends \Phlex\Ui\View
+use Phlex\Ui\JsReload;
+use Phlex\Ui\Label;
+use Phlex\Ui\View;
+
+class ReloadTest extends View
 {
     protected function doInitialize(): void
     {
         parent::doInitialize();
 
-        $label = \Phlex\Ui\Label::addTo($this, ['Testing...', 'detail' => '', 'red']);
-        $reload = new \Phlex\Ui\JsReload($this, [$this->elementName => 'ok']);
+        $label = Label::addTo($this, ['Testing...', 'detail' => '', 'red']);
+        $reload = new JsReload($this, [$this->elementName => 'ok']);
 
         if (isset($_GET[$this->elementName])) {
             $label->class[] = 'green';

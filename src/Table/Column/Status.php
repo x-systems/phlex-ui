@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Table\Column;
 
 use Phlex\Data\Model;
+use Phlex\Ui\Exception;
 use Phlex\Ui\Table;
 use Phlex\Ui\Webpage;
 
@@ -35,7 +36,7 @@ class Status extends Table\Column
     public function getDataCellHtml(Model\Field $field = null, $extra_tags = [])
     {
         if ($field === null) {
-            throw new \Phlex\Ui\Exception('Status can be used only with model field');
+            throw new Exception('Status can be used only with model field');
         }
 
         $attr = $this->getTagAttributes('body');

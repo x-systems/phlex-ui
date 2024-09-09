@@ -422,7 +422,7 @@ class Table extends Lister
      *
      * @param array|bool $columns
      *
-     * @return \Phlex\Data\Model
+     * @return Model
      */
     public function setModel(Model $model, $columns = null)
     {
@@ -431,7 +431,7 @@ class Table extends Lister
         parent::setModel($model);
 
         if ($columns === null) {
-            $columns = array_keys($model->getFields('visible'));
+            $columns = array_keys($model->getActiveFields(Model::FIELD_FILTER_VISIBLE));
         } elseif ($columns === false) {
             return $this->model;
         }

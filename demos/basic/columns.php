@@ -4,10 +4,18 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Ui\Columns;
+use Phlex\Ui\Header;
+use Phlex\Ui\Icon;
+use Phlex\Ui\LoremIpsum;
+use Phlex\Ui\Table;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
+
 /**
  * Testing Columns.
  */
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // some custom style needed for our "highlight" to work. You don't need this on
@@ -23,19 +31,19 @@ $webpage->addStyle('
 }
 ');
 
-$page = \Phlex\Ui\View::addTo($webpage, ['id' => 'example']);
+$page = View::addTo($webpage, ['id' => 'example']);
 
-\Phlex\Ui\Header::addTo($page, ['Basic Usage']);
+Header::addTo($page, ['Basic Usage']);
 
-$c = \Phlex\Ui\Columns::addTo($page);
-\Phlex\Ui\LoremIpsum::addTo($c->addColumn(), [1]);
-\Phlex\Ui\LoremIpsum::addTo($c->addColumn(), [1]);
-\Phlex\Ui\LoremIpsum::addTo($c->addColumn(), [1]);
+$c = Columns::addTo($page);
+LoremIpsum::addTo($c->addColumn(), [1]);
+LoremIpsum::addTo($c->addColumn(), [1]);
+LoremIpsum::addTo($c->addColumn(), [1]);
 
-\Phlex\Ui\Header::addTo($page, ['Specifying widths, using rows or automatic flow']);
+Header::addTo($page, ['Specifying widths, using rows or automatic flow']);
 
 // highlight class will show cells as boxes, even though they contain nothing
-$c = \Phlex\Ui\Columns::addTo($page, [null, 'highlight']);
+$c = Columns::addTo($page, [null, 'highlight']);
 $c->addColumn(3);
 $c->addColumn(5);
 $c->addColumn(2);
@@ -50,38 +58,38 @@ $r->addColumn();
 $r->addColumn();
 $r->addColumn();
 
-\Phlex\Ui\Header::addTo($page, ['Content Outline']);
-$c = \Phlex\Ui\Columns::addTo($page, ['internally celled']);
+Header::addTo($page, ['Content Outline']);
+$c = Columns::addTo($page, ['internally celled']);
 
 $r = $c->addRow();
-\Phlex\Ui\Icon::addTo($r->addColumn([2, 'right aligned']), ['huge home']);
-\Phlex\Ui\LoremIpsum::addTo($r->addColumn(12), [1]);
-\Phlex\Ui\Icon::addTo($r->addColumn(2), ['huge trash']);
+Icon::addTo($r->addColumn([2, 'right aligned']), ['huge home']);
+LoremIpsum::addTo($r->addColumn(12), [1]);
+Icon::addTo($r->addColumn(2), ['huge trash']);
 
 $r = $c->addRow();
-\Phlex\Ui\Icon::addTo($r->addColumn([2, 'right aligned']), ['huge home']);
-\Phlex\Ui\LoremIpsum::addTo($r->addColumn(12), [1]);
-\Phlex\Ui\Icon::addTo($r->addColumn(2), ['huge trash']);
+Icon::addTo($r->addColumn([2, 'right aligned']), ['huge home']);
+LoremIpsum::addTo($r->addColumn(12), [1]);
+Icon::addTo($r->addColumn(2), ['huge trash']);
 
-\Phlex\Ui\Header::addTo($page, ['Add elements into columns and using classes']);
+Header::addTo($page, ['Add elements into columns and using classes']);
 
 /**
  * Example box component with some content, good for putting into columns.
  */
 
-/** @var \Phlex\Ui\View $boxClass */
-$boxClass = get_class(new class() extends \Phlex\Ui\View {
+/** @var View $boxClass */
+$boxClass = get_class(new class() extends View {
     public $ui = 'segment';
     public $content = false;
 
     protected function doInitialize(): void
     {
         parent::doInitialize();
-        \Phlex\Ui\Table::addTo($this, ['header' => false])
+        Table::addTo($this, ['header' => false])
             ->setSource(['One', 'Two', 'Three', 'Four']);
     }
 });
 
-$c = \Phlex\Ui\Columns::addTo($page, ['width' => 4]);
+$c = Columns::addTo($page, ['width' => 4]);
 $boxClass::addTo($c->addColumn(), [null, 'red']);
 $boxClass::addTo($c->addColumn([null, null, 'right floated']), [null, 'blue']);

@@ -13,6 +13,7 @@ use Phlex\Ui\Form;
 use Phlex\Ui\JsExpressionable;
 use Phlex\Ui\JsFunction;
 use Phlex\Ui\JsToast;
+use Phlex\Ui\Loader;
 use Phlex\Ui\Message;
 use Phlex\Ui\Modal;
 use Phlex\Ui\View;
@@ -99,7 +100,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
     /**
      * The Loader that will execute all action step.
      *
-     * @var \Phlex\Ui\Loader
+     * @var Loader
      */
     public $loader;
     public $loaderUi = 'ui basic segment';
@@ -124,7 +125,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
      */
     public function afterActionInit(Model\UserAction $action)
     {
-        $getTableName = function ($arr) {
+        $getTableName = static function ($arr) {
             foreach ($arr as $k => $v) {
                 return is_numeric($k) ? $v : $k;
             }
@@ -143,7 +144,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
         $this->nextStepBtn = Button::addTo($this->btns, ['Next', 'blue']);
         $this->addButtonAction($this->btns);
 
-        $this->loader = \Phlex\Ui\Loader::addTo($this, ['ui' => $this->loaderUi, 'shim' => $this->loaderShim]);
+        $this->loader = Loader::addTo($this, ['ui' => $this->loaderUi, 'shim' => $this->loaderShim]);
         $this->loader->loadEvent = false;
         $this->loader->addClass('phlex-hide-loading-content');
         $this->actionData = $this->loader->jsGetStoreData()['session'];
@@ -187,7 +188,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
         }
 
         if ($this->action->fields === true) {
-            $this->action->fields = array_keys($this->action->getModel()->getFields('editable'));
+            $this->action->fields = array_keys($this->action->getModel()->getActiveFields(Model::FIELD_FILTER_EDITABLE));
         }
 
         $this->loader->set(function ($modal) {

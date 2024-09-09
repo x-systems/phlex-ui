@@ -5,26 +5,29 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Data\Model;
+use Phlex\Ui\Button;
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
 use Phlex\Ui\JsReload;
+use Phlex\Ui\View;
 use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Testing form.
 
-\Phlex\Ui\Header::addTo($webpage, ['Form automatically decided how many columns to use']);
+Header::addTo($webpage, ['Form automatically decided how many columns to use']);
 
-$buttons = \Phlex\Ui\View::addTo($webpage, ['ui' => 'green basic buttons']);
+$buttons = View::addTo($webpage, ['ui' => 'green basic buttons']);
 
-$seg = \Phlex\Ui\View::addTo($webpage, ['ui' => 'raised segment']);
+$seg = View::addTo($webpage, ['ui' => 'raised segment']);
 
-\Phlex\Ui\Button::addTo($buttons, ['Use Country Model', 'icon' => 'arrow down'])
+Button::addTo($buttons, ['Use Country Model', 'icon' => 'arrow down'])
     ->on('click', new JsReload($seg, ['m' => 'country']));
-\Phlex\Ui\Button::addTo($buttons, ['Use File Model', 'icon' => 'arrow down'])
+Button::addTo($buttons, ['Use File Model', 'icon' => 'arrow down'])
     ->on('click', new JsReload($seg, ['m' => 'file']));
-\Phlex\Ui\Button::addTo($buttons, ['Use Stat Model', 'icon' => 'arrow down'])
+Button::addTo($buttons, ['Use Stat Model', 'icon' => 'arrow down'])
     ->on('click', new JsReload($seg, ['m' => 'stat']));
 
 $form = Form::addTo($seg, ['layout' => [Form\Layout\Columns::class]]);
@@ -36,14 +39,14 @@ $form->setModel((
     ) : new Stat($webpage->db)
 )->tryLoadAny());
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     $errors = [];
-    $modelDirty = \Closure::bind(function () use ($form): array {
+    $modelDirty = \Closure::bind(static function () use ($form): array {
         return $form->model->getEntry()->getDirty();
     }, null, Model::class)();
     foreach ($modelDirty as $key => $value) {
         // we should care only about editable fields
-        if ($form->model->getField($key)->isEditable()) {
+        if (View\Field::isEditable($form->model->getField($key))) {
             $errors[] = $form->error($key, 'Value was changed, ' . Webpage::encodeJson($form->model->getEntry()->getLoaded($key)) . ' to ' . Webpage::encodeJson($value));
         }
     }

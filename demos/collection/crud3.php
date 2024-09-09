@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Data\Model;
+use Phlex\Data\Persistence\Array_;
+use Phlex\Ui\Crud;
+use Phlex\Ui\Header;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-/** @var \Phlex\Data\Model $modelClass */
-$modelClass = get_class(new class() extends \Phlex\Data\Model {
+/** @var Model $modelClass */
+$modelClass = get_class(new class() extends Model {
     use ModelLockTrait;
 
     public $table = 'test';
@@ -39,10 +45,10 @@ $data = ['test' => [
     8 => ['id' => 8, 'name' => 'ABC2', 'code' => 18, 'country' => 'Russia'],
     9 => ['id' => 9, 'name' => 'ABC1', 'code' => 19, 'country' => 'Latvia'],
 ]];
-$p = new \Phlex\Data\Persistence\Array_($data);
+$p = new Array_($data);
 $model = new $modelClass($p);
 
 // add Crud
-\Phlex\Ui\Header::addTo($webpage, ['Crud with Array Persistence']);
-$c = \Phlex\Ui\Crud::addTo($webpage, ['ipp' => 5]);
+Header::addTo($webpage, ['Crud with Array Persistence']);
+$c = Crud::addTo($webpage, ['ipp' => 5]);
 $c->setModel($model);

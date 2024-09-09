@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\Label;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // ////////////////////////////////////////////////////////
-\Phlex\Ui\Header::addTo($webpage, ['Phone', 'size' => 2]);
+Header::addTo($webpage, ['Phone', 'size' => 2]);
 
 $formPhone = Form::addTo($webpage, ['segment']);
-\Phlex\Ui\Label::addTo($formPhone, ['Add other phone field input. Note: phone1 required a number of at least 5 char.', 'top attached'], ['AboveControls']);
+Label::addTo($formPhone, ['Add other phone field input. Note: phone1 required a number of at least 5 char.', 'top attached'], ['AboveControls']);
 
 $formPhone->addControl('phone1');
 $formPhone->addControl('phone2');
@@ -28,10 +31,10 @@ $formPhone->setControlsDisplayRules([
 ]);
 
 // ////////////////////////////////////////////////////////
-\Phlex\Ui\Header::addTo($webpage, ['Optional subscription', 'size' => 2]);
+Header::addTo($webpage, ['Optional subscription', 'size' => 2]);
 
 $formSubscribe = Form::addTo($webpage, ['segment']);
-\Phlex\Ui\Label::addTo($formSubscribe, ['Click on subscribe and add email to receive your gift.', 'top attached'], ['AboveControls']);
+Label::addTo($formSubscribe, ['Click on subscribe and add email to receive your gift.', 'top attached'], ['AboveControls']);
 
 $formSubscribe->addControl('name');
 $formSubscribe->addControl('subscribe', [Form\Control\Checkbox::class, 'Subscribe to weekly newsletter', 'toggle']);
@@ -51,10 +54,10 @@ $formSubscribe->setControlsDisplayRules([
 ]);
 
 // ////////////////////////////////////////////////////////
-\Phlex\Ui\Header::addTo($webpage, ['Dog registration', 'size' => 2]);
+Header::addTo($webpage, ['Dog registration', 'size' => 2]);
 
 $formDog = Form::addTo($webpage, ['segment']);
-\Phlex\Ui\Label::addTo($formDog, ['You can select type of hair cut only with race that contains "poodle" AND age no more than 5 year OR your dog race equals "bichon".', 'top attached'], ['AboveControls']);
+Label::addTo($formDog, ['You can select type of hair cut only with race that contains "poodle" AND age no more than 5 year OR your dog race equals "bichon".', 'top attached'], ['AboveControls']);
 $formDog->addControl('race', [Form\Control\Line::class]);
 $formDog->addControl('age');
 $formDog->addControl('hair_cut', [Form\Control\Dropdown::class, 'values' => ['Short', 'Long']]);
@@ -67,10 +70,10 @@ $formDog->setControlsDisplayRules([
 ]);
 
 // ////////////////////////////////////////////////////////
-\Phlex\Ui\Header::addTo($webpage, ['Hide or show group', 'size' => 2]);
+Header::addTo($webpage, ['Hide or show group', 'size' => 2]);
 
 $formGroup = Form::addTo($webpage, ['segment']);
-\Phlex\Ui\Label::addTo($formGroup, ['Work on form group too.', 'top attached'], ['AboveControls']);
+Label::addTo($formGroup, ['Work on form group too.', 'top attached'], ['AboveControls']);
 
 $groupBasic = $formGroup->addGroup(['Basic Information']);
 $groupBasic->addControl('first_name', ['width' => 'eight']);

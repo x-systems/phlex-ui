@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Form;
 
+use Phlex\Data\Model;
+use Phlex\Ui\Button;
 use Phlex\Ui\Exception;
+use Phlex\Ui\Form;
 use Phlex\Ui\View;
 
 /**
@@ -15,7 +18,7 @@ abstract class AbstractLayout extends View
     /**
      * Links layout to the form.
      *
-     * @var \Phlex\Ui\Form
+     * @var Form
      */
     public $form;
 
@@ -115,9 +118,9 @@ abstract class AbstractLayout extends View
      *
      * @return array
      */
-    protected function getModelFields(\Phlex\Data\Model $model)
+    protected function getModelFields(Model $model)
     {
-        return array_keys($model->getFields('editable'));
+        return array_keys($model->getActiveFields(Model::FIELD_FILTER_EDITABLE));
     }
 
     /**
@@ -125,9 +128,9 @@ abstract class AbstractLayout extends View
      *
      * @param array|null $fields
      *
-     * @return \Phlex\Data\Model
+     * @return Model
      */
-    public function setModel(\Phlex\Data\Model $model, $fields = null)
+    public function setModel(Model $model, $fields = null)
     {
         $model->assertIsEntity();
 
@@ -146,9 +149,9 @@ abstract class AbstractLayout extends View
         foreach ($fields as $fieldName) {
             $field = $model->getField($fieldName);
 
-            if ($field->isEditable()) {
+            if (View\Field::isEditable($field)) {
                 $controls[] = [$field->elementId];
-            } elseif ($field->isVisible()) {
+            } elseif (View\Field::isVisible($field)) {
                 $controls[] = [$field->elementId, ['readonly' => true]];
             }
         }
@@ -166,8 +169,6 @@ abstract class AbstractLayout extends View
     /**
      * Return Field decorator associated with
      * the form's field.
-     *
-     * @return \Phlex\Ui\Form\Control
      */
     public function getControl(string $name): Control
     {
@@ -184,7 +185,7 @@ abstract class AbstractLayout extends View
      *
      * @param \Phlex\Ui\Button|array|string $seed
      *
-     * @return \Phlex\Ui\Button
+     * @return Button
      */
     abstract public function addButton($seed);
 }

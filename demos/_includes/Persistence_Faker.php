@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Faker\Factory;
+use Faker\Generator;
 use Phlex\Data\Model;
+use Phlex\Data\Persistence\Array_;
 
-class Persistence_Faker extends \Phlex\Data\Persistence\Array_
+class Persistence_Faker extends Array_
 {
-    /** @var \Faker\Generator */
+    /** @var Generator */
     public $faker;
 
     /** @var int */
@@ -16,10 +19,10 @@ class Persistence_Faker extends \Phlex\Data\Persistence\Array_
 
     public function __construct()
     {
-        $this->faker = \Faker\Factory::create();
+        $this->faker = Factory::create();
     }
 
-    public function initPersistence(Model $model): Model
+    public function configure(Model $model): Model
     {
         $this->onHook(self::HOOK_AFTER_ADD, function ($persistence, $model) {
             $data = [];

@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Model;
+use Phlex\Data\Persistence\Static_;
+use Phlex\Ui\Header;
+use Phlex\Ui\Lister;
 use Phlex\Ui\Table;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $data = [
@@ -15,12 +20,12 @@ $data = [
     ['id' => 3, 'action' => 'Tax', 'amount' => -40],
 ];
 
-$model = new \Phlex\Data\Model(new \Phlex\Data\Persistence\Static_($data));
+$model = new Model(new Static_($data));
 $model->getField('amount')->type = 'money';
 
-\Phlex\Ui\Header::addTo($webpage, ['Table with various headers', 'subHeader' => 'Demonstrates how you can add subheaders, footnotes and other insertions into your data table', 'icon' => 'table']);
+Header::addTo($webpage, ['Table with various headers', 'subHeader' => 'Demonstrates how you can add subheaders, footnotes and other insertions into your data table', 'icon' => 'table']);
 
-$table = \Phlex\Ui\Table::addTo($webpage);
+$table = Table::addTo($webpage);
 $table->setModel($model, ['action']);
 $table->addColumn('amount', [Table\Column\Money::class]);
 
@@ -29,7 +34,7 @@ $table->template->dangerouslyAppendHtml('SubHead', '<tr class="center aligned"><
 $table->template->dangerouslyAppendHtml('Body', '<tr class="center aligned"><td colspan=2>This is part of body, goes before other rows</td></tr>');
 
 // Hook can be used to display data before row. You can also inject and format extra rows.
-$table->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (Table $table, \Phlex\Data\Model $row) {
+$table->onHook(Lister::HOOK_BEFORE_ROW, static function (Table $table, Model $row) {
     if ($row->getId() === 2) {
         $table->template->dangerouslyAppendHtml('Body', '<tr class="center aligned"><td colspan=2>This goes above row with ID=2 (' . $row->get('action') . ')</th></tr>');
     } elseif ($row->get('action') === 'Tax') {
@@ -46,13 +51,13 @@ $table->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (Table $table, \Phlex
 $table->template->dangerouslyAppendHtml('Foot', '<tr class="center aligned"><td colspan=2>This will appear above totals</th></tr>');
 $table->addTotals(['action' => 'Totals:', 'amount' => ['sum']]);
 
-\Phlex\Ui\Header::addTo($webpage, ['Columns with multiple formats', 'subHeader' => 'Single column can use logic to swap out formatters', 'icon' => 'table']);
+Header::addTo($webpage, ['Columns with multiple formats', 'subHeader' => 'Single column can use logic to swap out formatters', 'icon' => 'table']);
 
-$table = \Phlex\Ui\Table::addTo($webpage);
+$table = Table::addTo($webpage);
 $table->setModel($model, ['action']);
 
 // copy of amount through a PHP callback
-$model->addExpression('amount_copy', [function (\Phlex\Data\Model $model) {
+$model->addExpression('amount_copy', [static function (Model $model) {
     return $model->get('amount');
 }, 'type' => 'money']);
 
@@ -61,7 +66,7 @@ $table->addColumn('amount', [Table\Column\Money::class]);
 $table->addDecorator('amount', [Table\Column\Template::class, 'Refunded: {$amount}']);
 
 // column which uses selective format depending on condition
-$table->addColumn('amount_copy', [Table\Column\Multiformat::class, function ($a, $b) {
+$table->addColumn('amount_copy', [Table\Column\Multiformat::class, static function ($a, $b) {
     if ($a->get('amount_copy') > 0) {
         // Two formatters together
         return [[Table\Column\Link::class], [Table\Column\Money::class]];
@@ -78,8 +83,8 @@ $table->addColumn('amount_copy', [Table\Column\Multiformat::class, function ($a,
     return Table\Column\Money::class;
 }, 'attr' => ['all' => ['class' => ['right aligned singel line']]]]);
 
-\Phlex\Ui\Header::addTo($webpage, ['Table with resizable columns', 'subHeader' => 'Just drag column header to resize', 'icon' => 'table']);
+Header::addTo($webpage, ['Table with resizable columns', 'subHeader' => 'Just drag column header to resize', 'icon' => 'table']);
 
-$table = \Phlex\Ui\Table::addTo($webpage);
+$table = Table::addTo($webpage);
 $table->setModel($model);
 $table->addClass('celled')->resizableColumn();

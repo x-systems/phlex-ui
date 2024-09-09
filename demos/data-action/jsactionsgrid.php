@@ -6,10 +6,13 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Core\Factory;
 use Phlex\Data\Model\UserAction;
+use Phlex\Ui\Grid;
+use Phlex\Ui\Header;
 use Phlex\Ui\Icon;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Demo for Model action in Grid
@@ -25,9 +28,9 @@ Icon::addTo($specialItem, ['content' => 'window maximize outline']);
 // register this menu item in factory.
 $webpage->getExecutorFactory()->registerTrigger($webpage->getExecutorFactory()::TABLE_MENU_ITEM, $specialItem, $multiAction);
 
-\Phlex\Ui\Header::addTo($webpage, ['Execute model action from Grid menu items', 'subHeader' => 'Setting grid menu items in order to execute model actions or javascript.']);
+Header::addTo($webpage, ['Execute model action from Grid menu items', 'subHeader' => 'Setting grid menu items in order to execute model actions or javascript.']);
 
-$grid = \Phlex\Ui\Grid::addTo($webpage, ['menu' => false]);
+$grid = Grid::addTo($webpage, ['menu' => false]);
 $grid->setModel($country);
 
 $divider = Factory::factory([View::class], ['id' => false, 'class' => ['divider'], 'content' => '']);
@@ -40,7 +43,7 @@ Icon::addTo($jsHeader, ['content' => 'file code']);
 
 $grid->addActionMenuItem($jsHeader);
 // Beside model user action, grid menu items can also execute javascript.
-$grid->addActionMenuItem('Js Callback', function () {
+$grid->addActionMenuItem('Js Callback', static function () {
     return (new View())->set('Js Callback done!');
 }, 'Are you sure?');
 

@@ -13,8 +13,10 @@ declare(strict_types=1);
 namespace Phlex\Ui\Panel;
 
 use Phlex\Core\Factory;
+use Phlex\Ui\AbstractView;
 use Phlex\Ui\Button;
 use Phlex\Ui\Jquery;
+use Phlex\Ui\JsChain;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\Modal;
 use Phlex\Ui\View;
@@ -81,7 +83,7 @@ class Right extends View implements Loadable
      */
     public function service(): JsExpression
     {
-        return new \Phlex\Ui\JsChain('phlex.panelService');
+        return new JsChain('phlex.panelService');
     }
 
     /**
@@ -203,7 +205,7 @@ class Right extends View implements Loadable
         $this->js(true, $this->service()->addPanel($this->getPanelOptions()));
     }
 
-    protected function mergeStickyArgsFromChildView(): ?\Phlex\Ui\AbstractView
+    protected function mergeStickyArgsFromChildView(): ?AbstractView
     {
         return $this->dynamicContent;
     }

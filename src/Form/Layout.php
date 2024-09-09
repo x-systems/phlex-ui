@@ -5,8 +5,13 @@ declare(strict_types=1);
 namespace Phlex\Ui\Form;
 
 use Phlex\Core\Factory;
+use Phlex\Ui\Button;
+use Phlex\Ui\Form\Control\Checkbox;
+use Phlex\Ui\Form\Layout\Section;
+use Phlex\Ui\Header;
 use Phlex\Ui\HtmlTemplate;
 use Phlex\Ui\Label;
+use Phlex\Ui\View;
 
 /**
  * Provides generic layout for a form.
@@ -65,11 +70,11 @@ class Layout extends AbstractLayout
      *
      * @param \Phlex\Ui\Button|array|string $seed
      *
-     * @return \Phlex\Ui\Button
+     * @return Button
      */
     public function addButton($seed)
     {
-        return $this->addView(Factory::mergeSeeds([\Phlex\Ui\Button::class], $seed), 'Buttons');
+        return $this->addView(Factory::mergeSeeds([Button::class], $seed), 'Buttons');
     }
 
     /**
@@ -81,7 +86,7 @@ class Layout extends AbstractLayout
      */
     public function addHeader($label)
     {
-        \Phlex\Ui\Header::addTo($this, [$label, 'dividing', 'element' => 'h4']);
+        Header::addTo($this, [$label, 'dividing', 'element' => 'h4']);
 
         return $this;
     }
@@ -120,12 +125,12 @@ class Layout extends AbstractLayout
     public function addSubLayout($seed = [self::class], $addDivider = true)
     {
         $v = $this->addView(Factory::factory($seed, ['form' => $this->form]));
-        if ($v instanceof \Phlex\Ui\Form\Layout\Section) {
+        if ($v instanceof Section) {
             $v = $v->addSection();
         }
 
         if ($addDivider) {
-            \Phlex\Ui\View::addTo($this, ['ui' => 'hidden divider']);
+            View::addTo($this, ['ui' => 'hidden divider']);
         }
 
         return $v;
@@ -145,7 +150,7 @@ class Layout extends AbstractLayout
 
         foreach ($this->elements as $element) {
             // Buttons go under Button section
-            if ($element instanceof \Phlex\Ui\Button) {
+            if ($element instanceof Button) {
                 $this->template->dangerouslyAppendHtml('Buttons', $element->getHtml());
 
                 continue;
@@ -184,7 +189,7 @@ class Layout extends AbstractLayout
             $label = $element->caption ?: $element->field->getCaption();
 
             // Anything but form controls gets inserted directly
-            if ($element instanceof \Phlex\Ui\Form\Control\Checkbox) {
+            if ($element instanceof Checkbox) {
                 $template = $noLabelControl;
                 $element->template->set('Content', $label);
             }

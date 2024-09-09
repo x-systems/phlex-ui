@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Phlex\Ui\Table\Column\FilterModel;
 
 use Phlex\Data\Model;
+use Phlex\Data\Model\Field\Type\Selectable;
+use Phlex\Ui\Form;
 use Phlex\Ui\Table\Column;
 
 class TypeEnum extends Column\FilterModel
@@ -17,13 +19,9 @@ class TypeEnum extends Column\FilterModel
         $this->afterInit();
 
         $this->op = null;
-        if ($this->lookupField->values) {
-            foreach ($this->lookupField->values as $key => $value) {
-                $this->addField($key, ['type' => 'boolean', 'ui' => ['caption' => $value]]);
-            }
-        } elseif ($this->lookupField->enum) {
-            foreach ($this->lookupField->enum as $enum) {
-                $this->addField($enum, ['type' => 'boolean', 'ui' => ['caption' => $enum]]);
+        if ($this->lookupField->getValueType() instanceof Selectable) {
+            foreach ($this->lookupField->getValueType()->values as $key => $value) {
+                $this->addField($key, ['type' => 'boolean', 'options' => [Form\Control::OPTION_SEED => ['caption' => $value]]]);
             }
         }
     }

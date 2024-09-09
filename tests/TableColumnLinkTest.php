@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
+use Phlex\Data\Model;
+use Phlex\Data\Persistence\Array_;
 use Phlex\Ui\Table;
 
-class TableColumnLinkTest extends \Phlex\Core\PHPUnit\TestCase
+class TableColumnLinkTest extends TestCase
 {
     use Concerns\HandlesTable;
 
@@ -17,12 +20,12 @@ class TableColumnLinkTest extends \Phlex\Core\PHPUnit\TestCase
     protected function setUp(): void
     {
         $arr = ['table' => [1 => ['id' => 1, 'name' => 'bar', 'ref' => 'ref123', 'salary' => -123]]];
-        $db = new \Phlex\Data\Persistence\Array_($arr);
-        $m = new \Phlex\Data\Model($db, ['table' => 'table']);
+        $db = new Array_($arr);
+        $m = new Model($db, ['table' => 'table']);
         $m->addField('name');
         $m->addField('ref');
         $m->addField('salary');
-        $this->table = new \Phlex\Ui\Table();
+        $this->table = new Table();
         $this->table->initialize();
         $this->table->setModel($m, ['name', 'ref']);
     }
@@ -258,12 +261,12 @@ class TableColumnLinkTest extends \Phlex\Core\PHPUnit\TestCase
     {
         // need to reset all to set a nulled value in field name model
         $arr = ['table' => [1 => ['id' => 1, 'name' => '', 'ref' => 'ref123', 'salary' => -123]]];
-        $db = new \Phlex\Data\Persistence\Array_($arr);
-        $m = new \Phlex\Data\Model($db, ['table' => 'table']);
+        $db = new Array_($arr);
+        $m = new Model($db, ['table' => 'table']);
         $m->addField('name');
         $m->addField('ref');
         $m->addField('salary');
-        $this->table = new \Phlex\Ui\Table();
+        $this->table = new Table();
         $this->table->initialize();
         $this->table->setModel($m, ['name', 'ref']);
 

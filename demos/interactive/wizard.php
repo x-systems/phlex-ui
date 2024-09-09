@@ -5,9 +5,17 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Callback;
+use Phlex\Ui\Columns;
+use Phlex\Ui\Console;
+use Phlex\Ui\Form;
+use Phlex\Ui\Grid;
+use Phlex\Ui\Header;
+use Phlex\Ui\Message;
+use Phlex\Ui\Table\Column\Link;
+use Phlex\Ui\Webpage;
 use Phlex\Ui\Wizard;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /**
@@ -16,8 +24,8 @@ require_once __DIR__ . '/../init-app.php';
 $wizard = Wizard::addTo($webpage, ['stepCallback' => Callback::addTo($webpage, ['urlTrigger' => 'demo_wizard'])]);
 // First step will automatcally be active when you open page first. It
 // will contain the 'Next' button with a link.
-$wizard->addStep('Welcome', function (Wizard $wizard) {
-    \Phlex\Ui\Message::addTo($wizard, ['Welcome to wizard demonstration'])->text
+$wizard->addStep('Welcome', static function (Wizard $wizard) {
+    Message::addTo($wizard, ['Welcome to wizard demonstration'])->text
         ->addParagraph('Use button "Next" to advance')
         ->addParagraph('You can specify your existing database connection string which will be used
         to create a table for model of your choice');
@@ -27,13 +35,13 @@ $wizard->addStep('Welcome', function (Wizard $wizard) {
 // form on "Next" button click, performing validation and submission. You do not need
 // to return any action from form's onSubmit callback. You may also use memorize()
 // to store wizard-specific variables
-$wizard->addStep(['Set DSN', 'icon' => 'configure', 'description' => 'Database Connection String'], function (Wizard $wizard) {
-    $form = \Phlex\Ui\Form::addTo($wizard);
+$wizard->addStep(['Set DSN', 'icon' => 'configure', 'description' => 'Database Connection String'], static function (Wizard $wizard) {
+    $form = Form::addTo($wizard);
     // IMPORTANT - needed for php_unit Wizard test.
     $form->cb->setUrlTrigger('w_form_submit');
 
     $form->addControl('dsn', 'Connect DSN', ['required' => true])->placeholder = 'mysql://user:pass@db-host.example.com/mydb';
-    $form->onSubmit(function (\Phlex\Ui\Form $form) use ($wizard) {
+    $form->onSubmit(static function (Form $form) use ($wizard) {
         $wizard->memorize('dsn', $form->model->get('dsn'));
 
         return $wizard->jsNext();
@@ -43,22 +51,22 @@ $wizard->addStep(['Set DSN', 'icon' => 'configure', 'description' => 'Database C
 // Alternatvely, you may access buttonNext , buttonPrev properties of a wizard
 // and set a custom js action or even set a different link. You can use recall()
 // to access some values that were recorded on another steps.
-$wizard->addStep(['Select Model', 'description' => '"Country" or "Stat"', 'icon' => 'table'], function (Wizard $wizard) {
+$wizard->addStep(['Select Model', 'description' => '"Country" or "Stat"', 'icon' => 'table'], static function (Wizard $wizard) {
     if (isset($_GET['name'])) {
         $wizard->memorize('model', $_GET['name']);
         $wizard->getApp()->redirect($wizard->urlNext());
     }
 
-    $columns = \Phlex\Ui\Columns::addTo($wizard);
+    $columns = Columns::addTo($wizard);
 
-    $grid = \Phlex\Ui\Grid::addTo($columns->addColumn(), ['paginator' => false, 'menu' => false]);
-    \Phlex\Ui\Message::addTo($columns->addColumn(), ['Information', 'info'])->text
+    $grid = Grid::addTo($columns->addColumn(), ['paginator' => false, 'menu' => false]);
+    Message::addTo($columns->addColumn(), ['Information', 'info'])->text
         ->addParagraph('Selecting which model you would like to import into your DSN. If corresponding table already exist, we might add extra fields into it. No tables, columns or rows will be deleted.');
 
     $grid->setSource(['Country', 'Stat']);
 
     // should work after url() fix
-    $grid->addDecorator('name', [\Phlex\Ui\Table\Column\Link::class, [], ['name']]);
+    $grid->addDecorator('name', [Link::class, [], ['name']]);
 
     // $t->addDecorator('name', [\Phlex\Ui\Table\Column\Link::class, [$wizard->stepCallback->elementName=>$wizard->currentStep], ['name']]);
 
@@ -68,11 +76,11 @@ $wizard->addStep(['Select Model', 'description' => '"Country" or "Stat"', 'icon'
 // Steps may contain interractive elements. You can disable navigational buttons
 // and enable them as you see fit. Use handy js method to trigger advancement to
 // the next step.
-$wizard->addStep(['Migration', 'description' => 'Create or update table', 'icon' => 'database'], function (Wizard $wizard) {
-    $console = \Phlex\Ui\Console::addTo($wizard);
+$wizard->addStep(['Migration', 'description' => 'Create or update table', 'icon' => 'database'], static function (Wizard $wizard) {
+    $console = Console::addTo($wizard);
     $wizard->buttonFinish->addClass('disabled');
 
-    $console->set(function ($console) use ($wizard) {
+    $console->set(static function ($console) use ($wizard) {
         $dsn = $wizard->recall('dsn');
         $model = $wizard->recall('model');
 
@@ -92,6 +100,6 @@ $wizard->addStep(['Migration', 'description' => 'Create or update table', 'icon'
 // will be displayed when you click the "Finish". Finish will not add any buttons
 // because you shouldn't be able to navigate wizard back without restarting it.
 // Only one finish can be added.
-$wizard->addFinish(function (Wizard $wizard) {
-    \Phlex\Ui\Header::addTo($wizard, ['You are DONE', 'huge centered']);
+$wizard->addFinish(static function (Wizard $wizard) {
+    Header::addTo($wizard, ['You are DONE', 'huge centered']);
 });

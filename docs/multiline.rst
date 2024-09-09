@@ -145,12 +145,12 @@ Lets use the example of demos/multiline.php::
 
     class InventoryItem extends \Atk4\Data\Model
     {
-        protected function init(): void
+        protected function doInitialize(): void
         {
-            parent::init();
+            parent::doInitialize();
             $this->addField('item', ['required' => true, 'default' => 'item']);
-            $this->addField('qty', ['type' => 'number', 'caption' => 'Qty / Box', 'required' => true, 'ui' => ['multiline' => ['sui-table-cell' => ['width' => 2]]]]);
-            $this->addField('box', ['type' => 'number', 'caption' => '# of Boxes', 'required' => true, 'ui' => ['multiline' => ['sui-table-cell' => ['width' => 2]]]]);
+            $this->addField('qty', ['type' => 'number', 'caption' => 'Qty / Box', 'required' => true, 'options' => [Multiline::OPTION_PRESETS => [Multiline::TABLE_CELL => ['width' => 2]]]]);
+            $this->addField('box', ['type' => 'number', 'caption' => '# of Boxes', 'required' => true, 'options' => [Multiline::OPTION_PRESETS => [Multiline::TABLE_CELL => ['width' => 2]]]]);
             $this->addExpression('total', ['expr' => function (Model $row) {
                 return $row->get('qty') * $row->get('box');
             }, 'type' => 'number']);
@@ -212,30 +212,30 @@ Specific field components Props may be applied using the 'ui' field property whe
 
     $this->addField('email', [
         'required' => true,
-        'ui' => ['multiline' => [Multiline::INPUT => ['icon' => 'envelope', 'type' => 'email']]]
+        'options' => [Multiline::OPTION_PRESETS => [Multiline::INPUT => ['icon' => 'envelope', 'type' => 'email']]]
     ]);
     $this->addField('password', [
         'required' => true,
-        'ui' => ['multiline' => [Multiline::INPUT => ['icon' => 'key', 'type' => 'password']]]
+        'options' => [Multiline::OPTION_PRESETS => [Multiline::INPUT => ['icon' => 'key', 'type' => 'password']]]
     ]);
 
 Note on Multiline control
 -------------------------
 
-Each control inside Multiline is wrap within a table cell(sui-table-cell) component and this component can be customize as
-well using the 'ui' property of the model's field::
+Each control inside Multiline is wrap within a table cell (sui-table-cell) component and this component can be customize as
+well using the 'options' property of the model's field::
 
     $this->addExpression('total', [
         'expr' => function (Model $row) {
             return $row->get('qty') * $row->get('box');
         },
         'type' => 'integer',
-        'ui' => ['multiline' => [Multiline::TABLE_CELL => ['width' => 1, 'class' => 'blue']]],
+        'options' => [Multiline::OPTION_PRESETS => [Multiline::TABLE_CELL => ['width' => 1, 'class' => 'blue']]],
     ]);
 
 Table appearance within Multiline
 ---------------------------------
-Table(sui-table) Props can be set using $tableProps property of Multiline::
+Table (sui-table) Props can be set using $tableProps property of Multiline::
 
     $ml = $form->addControl('ml', [Multiline::class, 'tableProps' => ['color' => 'blue']]);
 

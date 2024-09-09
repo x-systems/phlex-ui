@@ -4,20 +4,30 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Model;
+use Phlex\Data\Model\UserAction;
 use Phlex\Ui\Button;
+use Phlex\Ui\Card;
+use Phlex\Ui\Crud;
+use Phlex\Ui\Form\Control\Line;
+use Phlex\Ui\Header;
+use Phlex\Ui\Menu;
+use Phlex\Ui\Text;
 use Phlex\Ui\UserAction\ExecutorFactory;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
+use Phlex\Ui\Wizard;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$wizard = \Phlex\Ui\Wizard::addTo($webpage);
+$wizard = Wizard::addTo($webpage);
 $webpage->stickyGet($wizard->elementName);
 
-$wizard->addStep('Define User Action', function ($page) {
-    \Phlex\Ui\Header::addTo($page, ['What are User Actions?']);
+$wizard->addStep('Define User Action', static function ($page) {
+    Header::addTo($page, ['What are User Actions?']);
 
-    $t = \Phlex\Ui\Text::addTo($page);
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             Since the early version Phlex UI was about building generic UI capable of automatically read information about
@@ -36,13 +46,13 @@ $wizard->addStep('Define User Action', function ($page) {
             EOF
     );
 
-    $page->add(new Demo())->setCodeAndCall(function (View $owner) {
-        $country = new \Phlex\Ui\Demos\CountryLock($owner->getApp()->db);
+    $page->add(new Demo())->setCodeAndCall(static function (View $owner) {
+        $country = new CountryLock($owner->getApp()->db);
 
         $country->addUserAction('send_message');
     });
 
-    $t = \Phlex\Ui\Text::addTo($page);
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             Once defied - actions will be visualised in the Form, Grid, Crud and CardDeck. Additionally add-ons will recognise
@@ -59,22 +69,22 @@ $wizard->addStep('Define User Action', function ($page) {
             EOF
     );
 
-    $page->add(new Demo())->setCodeAndCall(function (View $owner) {
-        $country = new \Phlex\Ui\Demos\CountryLock($owner->getApp()->db);
+    $page->add(new Demo())->setCodeAndCall(static function (View $owner) {
+        $country = new CountryLock($owner->getApp()->db);
 
-        $country->addUserAction('send_message', function () {
+        $country->addUserAction('send_message', static function () {
             return 'sent';
         });
         $country = $country->tryLoadAny();
 
-        $card = \Phlex\Ui\Card::addTo($owner);
+        $card = Card::addTo($owner);
         $card->setModel($country, [$country->key()->iso]);
         $card->addClickAction($country->getUserAction('send_message'));
     });
 });
 
-$wizard->addStep('UI Integration', function ($page) {
-    $t = \Phlex\Ui\Text::addTo($page);
+$wizard->addStep('UI Integration', static function ($page) {
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             Phlex UI introduces a new set of views called "User Action Executors". Their job is to recognise all that meta-information
@@ -83,15 +93,15 @@ $wizard->addStep('UI Integration', function ($page) {
             EOF
     );
 
-    $page->add(new Demo())->setCodeAndCall(function (View $owner) {
-        $country = new \Phlex\Ui\Demos\CountryLock($owner->getApp()->db);
+    $page->add(new Demo())->setCodeAndCall(static function (View $owner) {
+        $country = new CountryLock($owner->getApp()->db);
         $country = $country->loadAny();
 
-        \Phlex\Ui\Button::addTo($owner, ['Edit some country'])
+        Button::addTo($owner, ['Edit some country'])
             ->on('click', $country->getUserAction('edit'));
     });
 
-    $t = \Phlex\Ui\Text::addTo($page);
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             It is not only the button, but any view can have "User Action" passed as a second step of the on() call. Here the user action
@@ -99,18 +109,18 @@ $wizard->addStep('UI Integration', function ($page) {
             EOF
     );
 
-    $page->add(new Demo())->setCodeAndCall(function (View $owner) {
-        $country = new \Phlex\Ui\Demos\CountryLock($owner->getApp()->db);
+    $page->add(new Demo())->setCodeAndCall(static function (View $owner) {
+        $country = new CountryLock($owner->getApp()->db);
         $country = $country->loadAny();
 
-        $menu = \Phlex\Ui\Menu::addTo($owner);
+        $menu = Menu::addTo($owner);
         $menu->addItem('Hello');
         $menu->addItem('World', $country->getUserAction('edit'));
     });
 });
 
-$wizard->addStep('Arguments', function ($page) {
-    $t = \Phlex\Ui\Text::addTo($page);
+$wizard->addStep('Arguments', static function ($page) {
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             Next demo defines an user action that requires arguments. You can specify arguments when the user action is invoked, but if not
@@ -119,41 +129,41 @@ $wizard->addStep('Arguments', function ($page) {
             EOF
     );
 
-    $page->add(new Demo())->setCodeAndCall(function (View $owner) {
-        $model = new \Phlex\Data\Model($owner->getApp()->db, ['table' => 'test']);
+    $page->add(new Demo())->setCodeAndCall(static function (View $owner) {
+        $model = new Model($owner->getApp()->db, ['table' => 'test']);
 
         $model->addUserAction('greet', [
-            'appliesTo' => \Phlex\Data\Model\UserAction::APPLIES_TO_NO_RECORDS,
+            'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
             'args' => [
                 'age' => [
                     'type' => 'string',
                 ],
             ],
-            'callback' => function ($model, $name) {
+            'callback' => static function ($model, $name) {
                 return 'Hi ' . $name;
             },
         ]);
 
         $model->addUserAction('ask_age', [
-            'appliesTo' => \Phlex\Data\Model\UserAction::APPLIES_TO_NO_RECORDS,
+            'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
             'args' => [
                 'age' => [
                     'type' => 'integer',
                     'required' => true,
                 ],
             ],
-            'callback' => function ($model, $age) {
+            'callback' => static function ($model, $age) {
                 return 'Age is ' . $age;
             },
         ]);
 
-        $owner->addView(new \Phlex\Ui\Form\Control\Line([
+        $owner->addView(new Line([
             'action' => $model->getUserAction('greet'),
         ]));
 
-        \Phlex\Ui\View::addTo($owner, ['ui' => 'divider']);
+        View::addTo($owner, ['ui' => 'divider']);
 
-        \Phlex\Ui\Button::addTo($owner, ['Ask Age'])
+        Button::addTo($owner, ['Ask Age'])
             ->on('click', $model->getUserAction('ask_age'));
     });
 });
@@ -177,8 +187,8 @@ $wizard->addStep('More Ways', function ($page) {
 });
 */
 
-$wizard->addStep('Crud integration', function ($page) {
-    $t = \Phlex\Ui\Text::addTo($page);
+$wizard->addStep('Crud integration', static function ($page) {
+    $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
             Compared to 1.x versions Crud implementation has became much more lightweight, however you retain all the same
@@ -187,14 +197,14 @@ $wizard->addStep('Crud integration', function ($page) {
             EOF
     );
 
-    $page->add(new Demo())->setCodeAndCall(function (View $owner) {
-        $country = new \Phlex\Ui\Demos\CountryLock($owner->getApp()->db);
+    $page->add(new Demo())->setCodeAndCall(static function (View $owner) {
+        $country = new CountryLock($owner->getApp()->db);
         $country->getUserAction('add')->enabled = false;
-        $country->getUserAction('delete')->enabled = function (Country $m) { return $m->id % 2 === 0; };
+        $country->getUserAction('delete')->enabled = static function (Country $m) { return $m->id % 2 === 0; };
         $country->addUserAction('mail', [
-            'appliesTo' => \Phlex\Data\Model\UserAction::APPLIES_TO_SINGLE_RECORD,
-            'preview' => function ($model) { return 'here is email preview for ' . $model->get('name'); },
-            'callback' => function ($model) { return 'email sent to ' . $model->get('name'); },
+            'appliesTo' => UserAction::APPLIES_TO_SINGLE_RECORD,
+            'preview' => static function ($model) { return 'here is email preview for ' . $model->get('name'); },
+            'callback' => static function ($model) { return 'email sent to ' . $model->get('name'); },
             'description' => 'Email testing',
         ]);
 
@@ -204,12 +214,12 @@ $wizard->addStep('Crud integration', function ($page) {
             [Button::class, null, 'icon' => 'blue mail'],
             $country->getUserAction('mail')
         );
-        \Phlex\Ui\Crud::addTo($owner, ['ipp' => 5])->setModel($country, [$country->key()->name, $country->key()->iso]);
+        Crud::addTo($owner, ['ipp' => 5])->setModel($country, [$country->key()->name, $country->key()->iso]);
     });
 });
 
-$wizard->addFinish(function ($page) use ($wizard) {
+$wizard->addFinish(static function ($page) use ($wizard) {
     PromotionText::addTo($page);
-    \Phlex\Ui\Button::addTo($wizard, ['Exit demo', 'primary', 'icon' => 'left arrow'], ['Left'])
+    Button::addTo($wizard, ['Exit demo', 'primary', 'icon' => 'left arrow'], ['Left'])
         ->link('/demos/index.php');
 });

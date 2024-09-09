@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Ui\Button;
+use Phlex\Ui\ProgressBar;
+use Phlex\Ui\Webpage;
+
 /**
  * Demonstrates how to use tabs.
  */
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$p = \Phlex\Ui\ProgressBar::addTo($webpage, [20]);
+$p = ProgressBar::addTo($webpage, [20]);
 
-$p = \Phlex\Ui\ProgressBar::addTo($webpage, [60, 'indicating progress', 'indicating']);
-\Phlex\Ui\Button::addTo($webpage, ['increment'])->on('click', $p->jsIncrement());
-\Phlex\Ui\Button::addTo($webpage, ['set'])->on('click', $p->jsValue(20));
+$p = ProgressBar::addTo($webpage, [60, 'indicating progress', 'indicating']);
+Button::addTo($webpage, ['increment'])->on('click', $p->jsIncrement());
+Button::addTo($webpage, ['set'])->on('click', $p->jsValue(20));

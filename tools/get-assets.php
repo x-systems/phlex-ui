@@ -1,10 +1,11 @@
 <?php
 
 declare(strict_types=1);
+use Phlex\Ui\Webpage;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-class GetAssets extends \Phlex\Ui\Webpage
+class GetAssets extends Webpage
 {
     public $always_run = false;
     public $catch_exceptions = false;

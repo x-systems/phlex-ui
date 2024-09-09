@@ -5,9 +5,17 @@ declare(strict_types=1);
 namespace Phlex\Ui\Tests;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Promise\FulfilledPromise;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use Phlex\Core\PHPUnit\TestCase;
 use Phlex\Data\Persistence;
+use Phlex\Ui\Exception;
+use Phlex\Ui\Layout\Maestro;
 use Phlex\Ui\Webpage;
+use PHPUnit\Runner\BaseTestRunner;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -16,7 +24,7 @@ use Psr\Http\Message\ResponseInterface;
  *
  * Requests are emulated in the same process. It is fast, but some output or shutdown functionality can not be fully tested.
  */
-class DemosTest extends \Phlex\Core\PHPUnit\TestCase
+class DemosTest extends TestCase
 {
     /** @const string */
     protected const ROOT_DIR = __DIR__ . '/..';
@@ -54,7 +62,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
             $initVars = array_diff_key(get_defined_vars(), $initVars + ['initVars' => true]);
 
             if (array_keys($initVars) !== ['webpage']) {
-                throw new \Phlex\Ui\Exception('Demos init must setup only $webpage variable');
+                throw new Exception('Demos init must setup only $webpage variable');
             }
 
             // @phpstan-ignore-next-line remove once https://github.com/phpstan/phpstan/issues/4155 is resolved
@@ -69,9 +77,9 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     protected function onNotSuccessfulTest(\Throwable $t): void
     {
         if (!in_array($this->getStatus(), [
-            \PHPUnit\Runner\BaseTestRunner::STATUS_PASSED,
-            \PHPUnit\Runner\BaseTestRunner::STATUS_SKIPPED,
-            \PHPUnit\Runner\BaseTestRunner::STATUS_INCOMPLETE,
+            BaseTestRunner::STATUS_PASSED,
+            BaseTestRunner::STATUS_SKIPPED,
+            BaseTestRunner::STATUS_INCOMPLETE,
         ], true)) {
             if (!isset(self::$_failedParentTests[$this->getName()])) {
                 self::$_failedParentTests[$this->getName()] = $this->getStatus();
@@ -111,7 +119,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
         $_COOKIE = [];
         $_SESSION = [];
 
-        \Closure::bind(function () {
+        \Closure::bind(static function () {
             Webpage::$_sentHeaders = [];
         }, null, Webpage::class)();
     }
@@ -124,7 +132,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
                 throw new DemosTestExitException();
             }
         };
-        $webpage->initBody([\Phlex\Ui\Layout\Maestro::class]);
+        $webpage->initBody([Maestro::class]);
 
         // clone DB (mainly because all Models remains attached now, TODO can be removed once they are GCed)
         $webpage->db = clone self::$_db;
@@ -154,14 +162,14 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
                     $this->expectExceptionObject($e);
                 }
 
-                if (!($e instanceof DemosTestExitException)) {
+                if (!$e instanceof DemosTestExitException) {
                     throw $e;
                 }
             } finally {
                 $body = ob_get_clean();
             }
 
-            [$statusCode, $headers] = \Closure::bind(function () {
+            [$statusCode, $headers] = \Closure::bind(static function () {
                 $statusCode = 200;
                 $headers = Webpage::$_sentHeaders;
                 if (isset($headers[Webpage::HEADER_STATUS_CODE])) {
@@ -173,7 +181,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
             }, null, Webpage::class)();
 
             // Attach a response to the easy handle with the parsed headers.
-            $response = new \GuzzleHttp\Psr7\Response(
+            $response = new Response(
                 $statusCode,
                 $headers,
                 \GuzzleHttp\Psr7\stream_for($body),
@@ -186,7 +194,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
                 $body->rewind();
             }
 
-            return new \GuzzleHttp\Promise\FulfilledPromise($response);
+            return new FulfilledPromise($response);
         };
 
         return new Client(['base_uri' => 'http://localhost/', 'handler' => $handler]);
@@ -196,8 +204,8 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     {
         try {
             return $this->getClient()->request(isset($options['form_params']) !== null ? 'POST' : 'GET', $this->getPathWithAppVars($path), $options);
-        } catch (\GuzzleHttp\Exception\ServerException $ex) {
-            $exFactoryWithFullBody = new class('', $ex->getRequest()) extends \GuzzleHttp\Exception\RequestException {
+        } catch (ServerException $ex) {
+            $exFactoryWithFullBody = new class('', $ex->getRequest()) extends RequestException {
                 public static function getResponseBodySummary(ResponseInterface $response): string
                 {
                     return $response->getBody()->getContents();
@@ -231,7 +239,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     /** @var string */
     protected $regexSse = '~^(id|event|data).*$~m';
 
-    public function demoFilesProvider(): array
+    public function provideDemosStatusAndHtmlResponseCases(): iterable
     {
         $excludeDirs = ['_demo-data', '_includes'];
         $excludeFiles = ['layout/layouts_error.php'];
@@ -270,11 +278,11 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
             }
         }
 
-        return array_map(function (string $v) { return [$v]; }, $files);
+        return array_map(static function (string $v) { return [$v]; }, $files);
     }
 
     /**
-     * @dataProvider demoFilesProvider
+     * @dataProvider provideDemosStatusAndHtmlResponseCases
      */
     public function testDemosStatusAndHtmlResponse(string $uri): void
     {
@@ -295,7 +303,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
         $this->getResponseFromRequest('layout/layouts_error.php');
     }
 
-    public function casesDemoGetProvider(): array
+    public function provideDemoGetCases(): iterable
     {
         $files = [];
         $files[] = ['others/sticky.php?xx=YEY'];
@@ -306,7 +314,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     }
 
     /**
-     * @dataProvider casesDemoGetProvider
+     * @dataProvider provideDemoGetCases
      */
     public function testDemoGet(string $uri): void
     {
@@ -343,7 +351,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     /**
      * Test reload and loader callback.
      */
-    public function jsonResponseProvider(): array
+    public function provideDemoAssertJsonResponseCases(): iterable
     {
         $files = [];
         // simple reload
@@ -358,7 +366,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     }
 
     /**
-     * @dataProvider jsonResponseProvider
+     * @dataProvider provideDemoAssertJsonResponseCases
      */
     public function testDemoAssertJsonResponse(string $uri): void
     {
@@ -370,7 +378,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
 
         $response = $this->getResponseFromRequest($uri);
         $this->assertSame(200, $response->getStatusCode(), ' Status error on ' . $uri);
-        if (!($this instanceof DemosHttpNoExitTest)) { // content type is not set when Webpage->call_exit equals to true
+        if (!$this instanceof DemosHttpNoExitTest) { // content type is not set when Webpage->call_exit equals to true
             $this->assertSame('application/json', preg_replace('~;\s*charset=.+$~', '', $response->getHeaderLine('Content-Type')), ' Content type error on ' . $uri);
         }
         $this->assertMatchesRegularExpression($this->regexJson, $response->getBody()->getContents(), ' RegExp error on ' . $uri);
@@ -379,12 +387,12 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     /**
      * Test JsSse and Console.
      */
-    public function sseResponseProvider(): array
+    public function provideDemoAssertSseResponseCases(): iterable
     {
         $files = [];
         $files[] = ['_unit-test/sse.php?see_test=ajax&__phlex_callback=1&__phlex_sse=1'];
         $files[] = ['_unit-test/console.php?console_test=ajax&__phlex_callback=1&__phlex_sse=1'];
-        if (!($this instanceof DemosHttpNoExitTest)) { // ignore content type mismatch when Webpage->call_exit equals to true
+        if (!$this instanceof DemosHttpNoExitTest) { // ignore content type mismatch when Webpage->call_exit equals to true
             $files[] = ['_unit-test/console_run.php?console_test=ajax&__phlex_callback=1&__phlex_sse=1'];
             $files[] = ['_unit-test/console_exec.php?console_test=ajax&__phlex_callback=1&__phlex_sse=1'];
         }
@@ -393,7 +401,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     }
 
     /**
-     * @dataProvider sseResponseProvider
+     * @dataProvider provideDemoAssertSseResponseCases
      */
     public function testDemoAssertSseResponse(string $uri): void
     {
@@ -428,7 +436,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
         }
     }
 
-    public function jsonResponsePostProvider(): array
+    public function provideDemoAssertJsonResponsePostCases(): iterable
     {
         $files = [];
         $files[] = [
@@ -456,7 +464,7 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     }
 
     /**
-     * @dataProvider jsonResponsePostProvider
+     * @dataProvider provideDemoAssertJsonResponsePostCases
      */
     public function testDemoAssertJsonResponsePost(string $uri, array $postData): void
     {
@@ -466,6 +474,4 @@ class DemosTest extends \Phlex\Core\PHPUnit\TestCase
     }
 }
 
-class DemosTestExitException extends \Phlex\Ui\Exception
-{
-}
+class DemosTestExitException extends Exception {}

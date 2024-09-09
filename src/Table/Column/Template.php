@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Table\Column;
 
+use Phlex\Data\Model\Field;
 use Phlex\Ui\Table;
 
 /**
@@ -35,7 +36,7 @@ class Template extends Table\Column
          */
     }
 
-    public function getDataCellTemplate(\Phlex\Data\Model\Field $field = null)
+    public function getDataCellTemplate(Field $field = null)
     {
         return $this->template;
     }

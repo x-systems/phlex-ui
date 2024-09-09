@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Composer\Autoload\ClassLoader;
+use Phlex\Ui\Tests\ViewTest;
+
 $isRootProject = file_exists(__DIR__ . '/../vendor/autoload.php');
-/** @var \Composer\Autoload\ClassLoader $loader */
+/** @var ClassLoader $loader */
 $loader = require dirname(__DIR__, $isRootProject ? 1 : 4) . '/vendor/autoload.php';
-if (!$isRootProject && !class_exists(\Phlex\Ui\Tests\ViewTest::class)) {
+if (!$isRootProject && !class_exists(ViewTest::class)) {
     throw new \Error('Demos can be run only if phlex-ui is a root composer project or if dev files are autoloaded');
 }
 $loader->setClassMapAuthoritative(false);

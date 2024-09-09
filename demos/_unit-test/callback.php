@@ -11,27 +11,31 @@ namespace Phlex\Ui\Demos;
 use Phlex\Ui\Button;
 use Phlex\Ui\Form;
 use Phlex\Ui\Jquery;
+use Phlex\Ui\JsModal;
 use Phlex\Ui\JsToast;
+use Phlex\Ui\Table;
+use Phlex\Ui\VirtualPage;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $m = (new CountryLock($webpage->db))->setLimit(5);
 
-$vp = $webpage->addView(new \Phlex\Ui\VirtualPage());
+$vp = $webpage->addView(new VirtualPage());
 $vp->cb->triggerOnReload = false;
 
 $form = Form::addTo($vp);
 $form->setModel($m->tryLoadAny(), [$m->key()->name]);
 $form->getControl($m->key()->name)->caption = 'TestName';
 
-$table = $webpage->addView(new \Phlex\Ui\Table());
+$table = $webpage->addView(new Table());
 $table->setModel($m);
 
 $button = Button::addTo($webpage, ['First', ['ui' => 'phlex-test']]);
-$button->on('click', new \Phlex\Ui\JsModal('Edit First Record', $vp));
+$button->on('click', new JsModal('Edit First Record', $vp));
 
-$form->onSubmit(function ($form) use ($table) {
+$form->onSubmit(static function ($form) use ($table) {
     $form->model->save();
 
     return [

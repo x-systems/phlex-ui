@@ -6,17 +6,20 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Data\Model;
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\Message;
+use Phlex\Ui\Text;
 use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $demo = Demo::addTo($webpage);
 
-\Phlex\Ui\Header::addTo($demo->left, ['Dropdown sample:']);
-\Phlex\Ui\Header::addTo($demo->right, ['Cascading Dropdown']);
+Header::addTo($demo->left, ['Dropdown sample:']);
+Header::addTo($demo->right, ['Cascading Dropdown']);
 
-$txt = \Phlex\Ui\Text::addTo($demo->right);
+$txt = Text::addTo($demo->right);
 $txt->addParagraph('Dropdown may also be used in a cascade manner.');
 $form = Form::addTo($demo->right);
 
@@ -24,10 +27,10 @@ $form->addControl('category_id', [Form\Control\Dropdown::class, 'model' => new C
 $form->addControl('sub_category_id', [Form\Control\DropdownCascade::class, 'cascadeFrom' => 'category_id', 'reference' => Category::hint()->key()->SubCategories]);
 $form->addControl('product_id', [Form\Control\DropdownCascade::class, 'cascadeFrom' => 'sub_category_id', 'reference' => SubCategory::hint()->key()->Products]);
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     $message = Webpage::encodeJson($form->model->get());
 
-    $view = new \Phlex\Ui\Message('Values: ');
+    $view = new Message('Values: ');
     $view->initialize();
     $view->text->addParagraph($message);
 
@@ -53,7 +56,7 @@ $form->addControl(
         Form\Control\Dropdown::class,
         'caption' => 'Dropdown with data from Model',
         'model' => (new Country($webpage->db))->setLimit(25),
-        'renderRowFunction' => function (Country $row) {
+        'renderRowFunction' => static function (Country $row) {
             return [
                 'value' => $row->getId(),
                 'title' => $row->getTitle() . ' (' . $row->iso3 . ')',
@@ -69,7 +72,7 @@ $form->addControl(
         Form\Control\Dropdown::class,
         'caption' => 'Dropdown with data from Model',
         'model' => (new File($webpage->db))->setLimit(25),
-        'renderRowFunction' => function (File $row) {
+        'renderRowFunction' => static function (File $row) {
             return [
                 'value' => $row->getId(),
                 'title' => $row->getTitle(),
@@ -119,10 +122,10 @@ $form->addControl(
     ]
 );
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     $message = Webpage::encodeJson($form->model->get());
 
-    $view = new \Phlex\Ui\Message('Values: ');
+    $view = new Message('Values: ');
     $view->initialize();
     $view->text->addParagraph($message);
 

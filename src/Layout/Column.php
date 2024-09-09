@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Layout;
 
+use Phlex\Ui\Layout;
+
 /**
  * Implements a single content column application, typically used in your favourite
  * social application.
@@ -13,7 +15,7 @@ namespace Phlex\Ui\Layout;
  *
  * Sticky top-bar for simple navigation and three flexible areas for flexible use.
  */
-class Column extends \Phlex\Ui\Layout
+class Column extends Layout
 {
     public $defaultTemplate = 'layout/column.html';
 

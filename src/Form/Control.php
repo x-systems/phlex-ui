@@ -8,6 +8,8 @@ use Phlex\Core\Factory;
 use Phlex\Data\Model;
 use Phlex\Ui\Exception;
 use Phlex\Ui\Form;
+use Phlex\Ui\Jquery;
+use Phlex\Ui\JsExpression;
 use Phlex\Ui\View;
 
 /**
@@ -16,14 +18,14 @@ use Phlex\Ui\View;
 class Control extends View
 {
     protected static $fieldControls = [
-        [Form\Control\Line::class],
-        Model\Field\Type\Selectable::class => [Form\Control\Dropdown::class],
-        Model\Field\Type\Boolean::class => [Form\Control\Checkbox::class],
-        Model\Field\Type\Date::class => [Form\Control\Calendar::class, ['type' => 'date']],
-        Model\Field\Type\DateTime::class => [Form\Control\Calendar::class, ['type' => 'datetime']],
-        Model\Field\Type\Time::class => [Form\Control\Calendar::class, ['type' => 'time']],
-        Model\Field\Type\String_::class => [Form\Control\Line::class],
-        Model\Field\Type\Text::class => [Form\Control\Textarea::class],
+        [Control\Line::class],
+        Model\Field\Type\Selectable::class => [Control\Dropdown::class],
+        Model\Field\Type\Boolean::class => [Control\Checkbox::class],
+        Model\Field\Type\Date::class => [Control\Calendar::class, ['type' => 'date']],
+        Model\Field\Type\DateTime::class => [Control\Calendar::class, ['type' => 'datetime']],
+        Model\Field\Type\Time::class => [Control\Calendar::class, ['type' => 'time']],
+        Model\Field\Type\String_::class => [Control\Line::class],
+        Model\Field\Type\Text::class => [Control\Textarea::class],
     ];
 
     /**
@@ -204,7 +206,7 @@ class Control extends View
     public function onChange($expr, $default = [])
     {
         if (is_string($expr)) {
-            $expr = new \Phlex\Ui\JsExpression($expr);
+            $expr = new JsExpression($expr);
         }
 
         if (is_bool($default)) {
@@ -221,7 +223,7 @@ class Control extends View
      *
      * $field->jsInput(true)->val(123);
      *
-     * @return \Phlex\Ui\Jquery
+     * @return Jquery
      */
     public function jsInput($when = null, $action = null)
     {
@@ -248,20 +250,20 @@ class Control extends View
      *
      * @param array $seed Defaults to pass to Factory::factory() when control object is initialized
      */
-    public static function factory(Model\Field $field, array $seed = [], $fallbackSeed = [Form\Control\Line::class]): Form\Control
+    public static function factory(Model\Field $field, array $seed = [], $fallbackSeed = [Control\Line::class]): self
     {
         $valueType = $field->getValueType();
 
         $resolvedSeed = null;
-        if ($valueType instanceof Model\Field\Type\Array_ && $field instanceof Model\Field\Reference) {
-            $limit = ($field instanceof Model\Field\Reference\ContainsMany) ? 0 : 1;
-            $model = $field->getTheirEntity();
-            $resolvedSeed = [Form\Control\Multiline::class, 'model' => $model, 'rowLimit' => $limit, 'caption' => $model->getCaption()];
+        if ($valueType instanceof Model\Field\Type\ReferenceData\ContainedRecords) {
+            $limit = ($valueType instanceof Model\Field\Type\ReferenceData\SingleRecord) ? 1 : 0;
+            $model = $valueType->getReference()->getTheirEntity();
+            $resolvedSeed = [Control\Multiline::class, 'model' => $model, 'rowLimit' => $limit, 'caption' => $model->getCaption()];
         } elseif (!$valueType instanceof Model\Field\Type\Boolean) {
             if ($valueType instanceof Model\Field\Type\Selectable) {
-                $resolvedSeed = [Form\Control\Dropdown::class, 'values' => $valueType->values];
-            } elseif ($field instanceof Model\Field\Reference) {
-                $resolvedSeed = [Form\Control\Lookup::class, 'model' => $field->getReference()->refModel()];
+                $resolvedSeed = [Control\Dropdown::class, 'values' => $valueType->values];
+            } elseif ($valueType instanceof Model\Field\Type\ReferenceData) {
+                $resolvedSeed = [Control\Lookup::class, 'model' => $valueType->getReference()->getTheirEntity()];
             }
         }
 

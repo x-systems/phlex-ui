@@ -9,16 +9,18 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Ui\Crud;
 use Phlex\Ui\UserAction\ExecutorFactory;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // reset to default button
 $webpage->getExecutorFactory()->useTriggerDefault(ExecutorFactory::TABLE_BUTTON);
 
 $model = new CountryLock($webpage->db);
-$crud = \Phlex\Ui\Crud::addTo($webpage, ['ipp' => 10, 'menu' => ['class' => ['phlex-grid-menu']]]);
+$crud = Crud::addTo($webpage, ['ipp' => 10, 'menu' => ['class' => ['phlex-grid-menu']]]);
 $crud->setModel($model);
 
 $crud->addQuickSearch([$model->key()->name], true);

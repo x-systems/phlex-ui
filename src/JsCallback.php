@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Phlex\Ui;
 
+use Phlex\Data\Model\Field\ValidationException;
+
 class JsCallback extends Callback implements JsExpressionable
 {
     /**
@@ -115,7 +117,7 @@ class JsCallback extends Callback implements JsExpressionable
                 $ajaxec = $response ? $this->getAjaxec($response, $chain) : null;
 
                 $this->terminateAjax($ajaxec);
-            } catch (\Phlex\Data\Model\Field\ValidationException $e) {
+            } catch (ValidationException $e) {
                 // Validation exceptions will be presented to user in a friendly way
                 $msg = new Message($e->getMessage());
                 $msg->addClass('error');
@@ -168,7 +170,7 @@ class JsCallback extends Callback implements JsExpressionable
             $actions[] = $this->_getProperAction($response);
         }
 
-        $ajaxec = implode(";\n", array_map(function (JsExpressionable $r) {
+        $ajaxec = implode(";\n", array_map(static function (JsExpressionable $r) {
             return $r->jsRender();
         }, $actions));
 

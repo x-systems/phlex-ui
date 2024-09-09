@@ -7,9 +7,14 @@ namespace Phlex\Ui\Form\Control;
 use Phlex\Core\Factory;
 use Phlex\Core\HookTrait;
 use Phlex\Data\Model;
+use Phlex\Ui\Button;
+use Phlex\Ui\Callback;
+use Phlex\Ui\Form;
 use Phlex\Ui\Jquery;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\JsFunction;
+use Phlex\Ui\JsModal;
+use Phlex\Ui\VirtualPage;
 use Phlex\Ui\Webpage;
 
 class Lookup extends Input
@@ -29,7 +34,7 @@ class Lookup extends Input
     /**
      * Object used to capture requests from the browser.
      *
-     * @var \Phlex\Ui\Callback
+     * @var Callback
      */
     public $callback;
 
@@ -154,7 +159,7 @@ class Lookup extends Input
 
         $this->settings['forceSelection'] = false;
 
-        $this->callback = \Phlex\Ui\Callback::addTo($this);
+        $this->callback = Callback::addTo($this);
 
         $this->getApp()->onHook(Webpage::HOOK_BEFORE_RENDER, function () {
             $this->callback->set(\Closure::fromCallable([$this, 'outputApiResponse']));
@@ -257,24 +262,24 @@ class Lookup extends Input
 
         $buttonSeed = is_string($buttonSeed) ? ['content' => $buttonSeed] : $buttonSeed;
 
-        $defaultSeed = [\Phlex\Ui\Button::class, 'disabled' => ($this->disabled || $this->readonly)];
+        $defaultSeed = [Button::class, 'disabled' => ($this->disabled || $this->readonly)];
 
         $this->action = Factory::factory(array_merge($defaultSeed, (array) $buttonSeed));
 
         if ($this->form) {
-            $vp = \Phlex\Ui\VirtualPage::addTo($this->form);
+            $vp = VirtualPage::addTo($this->form);
         } else {
-            $vp = \Phlex\Ui\VirtualPage::addTo($this->getOwner());
+            $vp = VirtualPage::addTo($this->getOwner());
         }
 
         $vp->set(function ($page) {
-            $form = \Phlex\Ui\Form::addTo($page);
+            $form = Form::addTo($page);
 
             $model = clone $this->model;
 
             $form->setModel($model->onlyFields($this->plus['fields'] ?? []));
 
-            $form->onSubmit(function (\Phlex\Ui\Form $form) {
+            $form->onSubmit(function (Form $form) {
                 $form->model->save();
 
                 $ret = [
@@ -294,7 +299,7 @@ class Lookup extends Input
 
         $caption = $this->plus['caption'] ?? 'Add New ' . $this->model->getCaption();
 
-        $this->action->js('click', new \Phlex\Ui\JsModal($caption, $vp));
+        $this->action->js('click', new JsModal($caption, $vp));
     }
 
     /**
@@ -338,7 +343,7 @@ class Lookup extends Input
      */
     protected function applyDependencyConditions()
     {
-        if (!($this->dependency instanceof \Closure)) {
+        if (!$this->dependency instanceof \Closure) {
             return;
         }
 

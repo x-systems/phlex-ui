@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Form\Control;
 
+use Phlex\Ui\Button;
 use Phlex\Ui\Exception;
+use Phlex\Ui\JsCallback;
 use Phlex\Ui\View;
 
 /**
@@ -35,6 +37,7 @@ class Upload extends Input
      * default to true.
      *
      * @var bool
+     *
      * @obsolete
      * hasFocusEnable has been disable in js plugin and this property will be removed.
      * Upload field is only using click handler now.
@@ -51,7 +54,7 @@ class Upload extends Input
     /**
      * Callback is use for onUpload or onDelete.
      *
-     * @var \Phlex\Ui\JsCallback
+     * @var JsCallback
      */
     public $cb;
 
@@ -93,10 +96,10 @@ class Upload extends Input
 
         // $this->inputType = 'hidden';
 
-        $this->cb = \Phlex\Ui\JsCallback::addTo($this);
+        $this->cb = JsCallback::addTo($this);
 
         if (!$this->action) {
-            $this->action = new \Phlex\Ui\Button(['icon' => 'upload', 'disabled' => ($this->disabled || $this->readonly)]);
+            $this->action = new Button(['icon' => 'upload', 'disabled' => ($this->disabled || $this->readonly)]);
         }
     }
 

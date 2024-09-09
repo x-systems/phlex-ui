@@ -4,41 +4,48 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Ui\Button;
+use Phlex\Ui\Header;
+use Phlex\Ui\Jquery;
+use Phlex\Ui\JsReload;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-/** @var \Phlex\Ui\View $mySwitcherClass */
-$mySwitcherClass = get_class(new class() extends \Phlex\Ui\View {
+/** @var View $mySwitcherClass */
+$mySwitcherClass = get_class(new class() extends View {
     protected function doInitialize(): void
     {
         parent::doInitialize();
 
-        \Phlex\Ui\Header::addTo($this, ['My name is ' . $this->elementName, 'red']);
+        Header::addTo($this, ['My name is ' . $this->elementName, 'red']);
 
-        $buttons = \Phlex\Ui\View::addTo($this, ['ui' => 'basic buttons']);
-        \Phlex\Ui\Button::addTo($buttons, ['Yellow'])->setAttribute('data-id', 'yellow');
-        \Phlex\Ui\Button::addTo($buttons, ['Blue'])->setAttribute('data-id', 'blue');
-        \Phlex\Ui\Button::addTo($buttons, ['Button'])->setAttribute('data-id', 'button');
+        $buttons = View::addTo($this, ['ui' => 'basic buttons']);
+        Button::addTo($buttons, ['Yellow'])->setAttribute('data-id', 'yellow');
+        Button::addTo($buttons, ['Blue'])->setAttribute('data-id', 'blue');
+        Button::addTo($buttons, ['Button'])->setAttribute('data-id', 'button');
 
-        $buttons->on('click', '.button', new \Phlex\Ui\JsReload($this, [$this->elementName => (new \Phlex\Ui\Jquery())->data('id')]));
+        $buttons->on('click', '.button', new JsReload($this, [$this->elementName => (new Jquery())->data('id')]));
 
         switch ($this->getApp()->stickyGet($this->elementName)) {
             case 'yellow':
-                self::addTo(\Phlex\Ui\View::addTo($this, ['ui' => 'yellow segment']));
+                self::addTo(View::addTo($this, ['ui' => 'yellow segment']));
 
                 break;
             case 'blue':
-                self::addTo(\Phlex\Ui\View::addTo($this, ['ui' => 'blue segment']));
+                self::addTo(View::addTo($this, ['ui' => 'blue segment']));
 
                 break;
             case 'button':
-                \Phlex\Ui\Button::addTo(\Phlex\Ui\View::addTo($this, ['ui' => 'green segment']), ['Refresh page'])->link([]);
+                Button::addTo(View::addTo($this, ['ui' => 'green segment']), ['Refresh page'])->link([]);
 
                 break;
         }
     }
 });
 
-$view = \Phlex\Ui\View::addTo($webpage, ['ui' => 'segment']);
+$view = View::addTo($webpage, ['ui' => 'segment']);
 
 $mySwitcherClass::addTo($view);

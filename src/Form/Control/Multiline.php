@@ -64,6 +64,8 @@ declare(strict_types=1);
 namespace Phlex\Ui\Form\Control;
 
 use Phlex\Data\Model;
+use Phlex\Data\Model\Field\Type\Selectable;
+use Phlex\Data\Model\Field\Type\Text;
 use Phlex\Data\Persistence\Sql;
 use Phlex\Ui\Exception;
 use Phlex\Ui\Form;
@@ -76,6 +78,8 @@ use Phlex\Ui\Webpage;
 class Multiline extends Form\Control
 {
     use VueLookupTrait;
+
+    public const OPTION_PRESETS = self::class . '@presets';
 
     /** @var HtmlTemplate The template needed for the multiline view. */
     public $multiLineTemplate;
@@ -254,7 +258,7 @@ class Multiline extends Form\Control
                 if ($fieldName === '__phlex_multiline') {
                     $dataRows[$k][$fieldName] = $value;
                 } else {
-                    $dataRows[$k][$fieldName] = $this->getApp()->ui_persistence->typecastLoadField($this->getModel()->getField($fieldName), $value);
+                    $dataRows[$k][$fieldName] = $this->getModel()->getField($fieldName)->decode($value, $this);
                 }
             }
         }
@@ -280,7 +284,7 @@ class Multiline extends Form\Control
     public function getValue(): string
     {
         if ($this->field->type === 'array') {
-            $jsonValues = $this->getApp()->ui_persistence->_typecastSaveField($this->field, $this->field->get() ?? []);
+            $jsonValues = $this->field->encode($this->field->get(), $this);
         } else {
             // set data according to hasMany ref. or using model.
             $model = $this->getModel();
@@ -289,7 +293,7 @@ class Multiline extends Form\Control
                 $cols = [];
                 foreach ($this->rowFields as $fieldName) {
                     $field = $model->getField($fieldName);
-                    $value = $this->getApp()->ui_persistence->_typecastSaveField($field, $row->get($field->elementId));
+                    $value = $field->encode($row->get($field->elementId), $this);
                     $cols[$fieldName] = $value;
                 }
                 $rows[] = $cols;
@@ -318,7 +322,7 @@ class Multiline extends Form\Control
                 try {
                     $field = $model->getField($fieldName);
                     // Save field value only if the field was editable
-                    if (!$field->read_only) {
+                    if (!$field->isReadOnly()) {
                         $model->createEntity()->set($fieldName, $value);
                     }
                 } catch (\Phlex\Core\Exception $e) {
@@ -343,13 +347,13 @@ class Multiline extends Form\Control
 
         foreach ($this->rowData as $row) {
             $entity = $model->tryLoad($row[$model->primaryKey] ?? null);
-            foreach ($row as $fieldName => $value) {
-                if ($fieldName === '__phlex_multiline') {
+            foreach ($row as $key => $value) {
+                if ($key === '__phlex_multiline') {
                     continue;
                 }
 
-                if ($model->getField($fieldName)->isEditable()) {
-                    $entity->set($fieldName, $value);
+                if (View\Field::isEditable($model->getField($key))) {
+                    $entity->set($key, $value);
                 }
             }
             $id = $entity->save()->getId();
@@ -413,7 +417,7 @@ class Multiline extends Form\Control
         $this->initVueLookupCallback();
 
         if (!$fieldNames) {
-            $fieldNames = array_keys($model->getFields('not system'));
+            $fieldNames = array_keys($model->getActiveFields(Model::FIELD_FILTER_NOT_SYSTEM));
         }
         $this->rowFields = array_merge([$model->primaryKey], $fieldNames);
 
@@ -456,21 +460,21 @@ class Multiline extends Form\Control
             'name' => $field->elementId,
             'definition' => $this->getComponentDefinition($field),
             'cellProps' => $this->getSuiTableCellProps($field),
-            'caption' => $field->getCaption(),
+            'caption' => View\Field::getCaption($field),
             'default' => $field->default,
             'isExpr' => isset($field->expr),
-            'isEditable' => $field->isEditable(),
-            'isHidden' => $field->isHidden(),
-            'isVisible' => $field->isVisible(),
+            'isEditable' => View\Field::isEditable($field),
+            'isHidden' => View\Field::isHidden($field),
+            'isVisible' => View\Field::isVisible($field),
         ];
     }
 
     /**
      * Each field input, represent by a Vue component, is place within a table cell.
-     * This table cell is also a Vue component that can use Props: sui-table-cell.
+     * This table cell is also a Vue component that can use Props: Multiline::TABLE_CELL.
      *
-     * Cell properties can be applied globally via $options['sui-table-cell'] or per field
-     * via  $field->ui['multiline']['sui-table-cell']
+     * Cell properties can be applied globally via $options[Multiline::TABLE_CELL] or per field
+     * via  $field->setOption(Multiline::OPTION_PRESETS, Multiline::TABLE_CELL)
      */
     protected function getSuiTableCellProps(Model\Field $field): array
     {
@@ -480,35 +484,35 @@ class Multiline extends Form\Control
             $props['text-align'] = 'right';
         }
 
-        return array_merge($props, $this->componentProps[self::TABLE_CELL] ?? [], $field->ui['multiline'][self::TABLE_CELL] ?? []);
+        return array_merge($props, $this->componentProps[self::TABLE_CELL] ?? [], $field->getOption(self::OPTION_PRESETS, [])[self::TABLE_CELL] ?? []);
     }
 
     /**
      * Return props for input component.
      */
-    protected function getSuiInputProps(Model\Field $field): array
+    protected static function getSuiInputProps(self $multiline, Model\Field $field): array
     {
-        $props = $this->componentProps[self::INPUT] ?? [];
+        $props = $multiline->componentProps[self::INPUT] ?? [];
 
         $props['type'] = ($field->type === 'integer' || $field->type === 'float' || $field->type === 'money' || $field->type === 'number') ? 'number' : 'text';
 
-        return array_merge($props, $field->ui['multiline'][self::INPUT] ?? []);
+        return array_merge($props, $field->getOption(self::OPTION_PRESETS, [])[self::INPUT] ?? []);
     }
 
     /**
      * Return props for phlex-date-picker component.
      */
-    protected function getDatePickerProps(Model\Field $field): array
+    protected static function getDatePickerProps(self $multiline, Model\Field $field): array
     {
         $calendar = new Calendar();
-        $props['config'] = $this->componentProps[self::DATE] ?? [];
-        $format = $calendar->translateFormat($this->getApp()->ui_persistence->{$field->type . '_format'});
+        $props['config'] = $multiline->componentProps[self::DATE] ?? [];
+        $format = $calendar->translateFormat($field->getCodec($multiline)->getFormat());
         $props['config']['dateFormat'] = $format;
 
-        if ($field->type === 'datetime' || $field->type === 'time') {
+        if (!$field->getValueType() instanceof Field\Type\Date) {
             $props['config']['enableTime'] = true;
             $props['config']['time_24hr'] = $calendar->use24hrTimeFormat($format);
-            $props['config']['noCalendar'] = ($field->type === 'time');
+            $props['config']['noCalendar'] = $field->getValueType() instanceof Field\Type\Time;
             $props['config']['enableSeconds'] = $calendar->useSeconds($format);
         }
 
@@ -518,14 +522,14 @@ class Multiline extends Form\Control
     /**
      * Return props for Dropdown components.
      */
-    protected function getDropdownProps(Model\Field $field): array
+    protected static function getDropdownProps(self $multiline, Model\Field $field): array
     {
         $props = array_merge(
             ['floating' => false, 'closeOnBlur' => true, 'selection' => true],
-            $this->componentProps[self::SELECT] ?? []
+            $multiline->componentProps[self::SELECT] ?? []
         );
 
-        $items = $this->getFieldItems($field, $this->itemLimit);
+        $items = $multiline->getFieldItems($field, $multiline->itemLimit);
         foreach ($items as $value => $text) {
             $props['options'][] = ['key' => $value, 'text' => $text, 'value' => $value];
         }
@@ -536,24 +540,24 @@ class Multiline extends Form\Control
     /**
      * Set property for phlex-lookup component.
      */
-    protected function getLookupProps(Model\Field $field): array
+    protected static function getLookupProps(self $multiline, Model\Field $field): array
     {
         // set any of sui-dropdown props via this property. Will be applied globally.
-        $props['config'] = $this->componentProps[self::LOOKUP] ?? [];
-        $items = $this->getFieldItems($field, 10);
+        $props['config'] = $multiline->componentProps[self::LOOKUP] ?? [];
+        $items = $multiline->getFieldItems($field, 10);
         foreach ($items as $value => $text) {
             $props['config']['options'][] = ['key' => $value, 'text' => $text, 'value' => $value];
         }
 
         if ($field->getReference() !== null) {
-            $props['config']['url'] = $this->dataCb->getUrl();
+            $props['config']['url'] = $multiline->dataCb->getUrl();
             $props['config']['reference'] = $field->elementId;
             $props['config']['search'] = true;
         }
 
         $props['config']['placeholder'] ??= 'Select ' . $field->getCaption();
 
-        $this->valuePropsBinding[$field->elementId] = [__CLASS__, 'setLookupOptionValue'];
+        $multiline->valuePropsBinding[$field->elementId] = [__CLASS__, 'setLookupOptionValue'];
 
         return $props;
     }
@@ -561,21 +565,22 @@ class Multiline extends Form\Control
     /**
      * Lookup Props set based on field value.
      */
-    public function setLookupOptionValue(Model\Field $field, string $value)
+    public static function setLookupOptionValue(self $multiline, Model\Field $field, string $value)
     {
-        $model = $field->getReference()->refModel();
-        $entity = $model->tryLoadBy($field->getReference()->getTheirKey(), $value);
+        $reference = $field->getValueType()->getReference();
+        $model = $reference->createTheirModel();
+        $entity = $model->tryLoadBy($reference->getTheirKey(), $value);
         if ($entity->isLoaded()) {
             $option = [
                 'key' => $value,
                 'text' => $entity->getTitle(),
                 'value' => $value,
             ];
-            foreach ($this->fieldDefs as $key => $component) {
+            foreach ($multiline->fieldDefs as $key => $component) {
                 if ($component['name'] === $field->elementId) {
-                    $this->fieldDefs[$key]['definition']['componentProps']['optionalValue'] =
-                        isset($this->fieldDefs[$key]['definition']['componentProps']['optionalValue'])
-                        ? array_merge($this->fieldDefs[$key]['definition']['componentProps']['optionalValue'], [$option])
+                    $multiline->fieldDefs[$key]['definition']['componentProps']['optionalValue'] =
+                        isset($multiline->fieldDefs[$key]['definition']['componentProps']['optionalValue'])
+                        ? array_merge($multiline->fieldDefs[$key]['definition']['componentProps']['optionalValue'], [$option])
                         : [$option];
                 }
             }
@@ -588,24 +593,26 @@ class Multiline extends Form\Control
      */
     protected function getComponentDefinition(Model\Field $field): array
     {
-        if ($required = $field->ui['multiline']['component'] ?? null) {
+        if ($required = $field->getOption(self::OPTION_PRESETS, [])['component'] ?? null) {
             $component = $this->fieldMapToComponent[$required];
         } elseif (!$field->isEditable()) {
             $component = $this->fieldMapToComponent['readonly'];
-        } elseif ($field->enum || $field->values) {
+        } elseif ($field->getValueType() instanceof Selectable) {
             $component = $this->fieldMapToComponent['select'];
-        } elseif ($field->type === 'date' || $field->type === 'time' || $field->type === 'datetime') {
+        } elseif ($field->getValueType() instanceof DateTime) {
             $component = $this->fieldMapToComponent['date'];
-        } elseif ($field->type === 'text') {
+        } elseif ($field->getValueType() instanceof Text) {
             $component = $this->fieldMapToComponent['textarea'];
-        } elseif ($field->getReference() !== null) {
+        } elseif ($field->getValueType() instanceof ReferenceData) {
             $component = $this->fieldMapToComponent['lookup'];
         } else {
             $component = $this->fieldMapToComponent['default'];
         }
 
-        $definition = array_map(function ($value) use ($field) {
-            return is_array($value) && is_callable($value) ? call_user_func($value, $field) : $value;
+        $multiline = $this;
+
+        $definition = array_map(static function ($value) use ($multiline, $field) {
+            return is_array($value) && is_callable($value) ? call_user_func($value, $multiline, $field) : $value;
         }, $component);
 
         return $definition;
@@ -617,18 +624,23 @@ class Multiline extends Form\Control
     protected function getFieldItems(Model\Field $field, $limit = 10): array
     {
         $items = [];
-        if ($field->enum) {
-            $items = array_chunk(array_combine($field->enum, $field->enum), $limit, true)[0];
-        }
-        if ($field->values && is_array($field->values)) {
-            $items = array_chunk($field->values, $limit, true)[0];
-        } elseif ($field->getReference() !== null) {
-            $model = $field->getReference()->refModel();
-            $model->setLimit($limit);
+        $fieldValueType = $field->getValueType();
+        switch (get_class($fieldValueType)) {
+            case Selectable::class:
+                $items = array_chunk($fieldValueType->getValuesWithLabels(), $limit, true)[0];
 
-            foreach ($model as $item) {
-                $items[$item->get($field->getReference()->getTheirKey())] = $item->get($model->titleKey);
-            }
+                break;
+            case Model\Field\Type\ReferenceData::class:
+                $model = $fieldValueType->getReference()->createTheirModel();
+                $theirKey = $fieldValueType->getReference()->getTheirKey();
+
+                foreach ($model->setLimit($limit) as $entity) {
+                    $items[$entity->get($theirKey)] = $entity->getTitle();
+                }
+
+                break;
+            default:
+                break;
         }
 
         return $items;
@@ -727,7 +739,7 @@ class Multiline extends Form\Control
             $field = $model->getField($fieldName);
             if ($field instanceof Model\Field\Callback) {
                 $value = ($field->expr)($model);
-                $values[$fieldName] = $this->getApp()->ui_persistence->_typecastSaveField($field, $value);
+                $values[$fieldName] = $field->encode($value, $this);
             }
         }
 
@@ -745,15 +757,15 @@ class Multiline extends Form\Control
         $row = $_POST;
 
         foreach ($this->fieldDefs as $def) {
-            $fieldName = $def['name'];
-            if ($fieldName === $model->primaryKey) {
+            $key = $def['name'];
+            if ($key === $model->primaryKey) {
                 continue;
             }
 
-            $value = $row[$fieldName] ?? null;
-            if ($model->getField($fieldName)->isEditable()) {
+            $value = $row[$key] ?? null;
+            if (View\Field::isEditable($model->getField($key))) {
                 try {
-                    $model->set($fieldName, $value);
+                    $model->set($key, $value);
                 } catch (Model\Field\ValidationException $e) {
                     // Bypass validation at this point.
                 }
@@ -790,11 +802,11 @@ class Multiline extends Form\Control
 
             $formatValues = $this->encodeRow($model, $values);
 
-//             foreach ($values as $key => $value) {
-//                 if ($value) {
-//                     $formatValues[$key] = $model->getField($key)->encode($value, $this);
-//                 }
-//             }
+            //             foreach ($values as $key => $value) {
+            //                 if ($value) {
+            //                     $formatValues[$key] = $model->getField($key)->encode($value, $this);
+            //                 }
+            //             }
         }
 
         return $formatValues;

@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Form\Layout;
 
+use Phlex\Ui\Form\Layout;
+use Phlex\Ui\View;
+
 /**
  * Form generic layout section.
  */
-class Section extends \Phlex\Ui\View
+class Section extends View
 {
-    public $formLayout = \Phlex\Ui\Form\Layout::class;
+    public $formLayout = Layout::class;
     public $form;
 
     /**
      * Adds sub-layout in existing layout.
      *
-     * @return \Phlex\Ui\Form\Layout
+     * @return Layout
      */
     public function addSection()
     {

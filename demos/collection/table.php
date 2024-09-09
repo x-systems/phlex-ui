@@ -4,20 +4,26 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Model;
+use Phlex\Ui\Button;
+use Phlex\Ui\JsReload;
+use Phlex\Ui\JsToast;
 use Phlex\Ui\Table;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 if ($id = $_GET['id'] ?? null) {
-    $webpage->body->js(true, new \Phlex\Ui\JsToast('Details link is in simulation mode.'));
+    $webpage->body->js(true, new JsToast('Details link is in simulation mode.'));
 }
 
-$bb = \Phlex\Ui\View::addTo($webpage, ['ui' => 'buttons']);
+$bb = View::addTo($webpage, ['ui' => 'buttons']);
 
-$table = \Phlex\Ui\Table::addTo($webpage, ['celled' => true]);
-\Phlex\Ui\Button::addTo($bb, ['Refresh Table', 'icon' => 'refresh'])
-    ->on('click', new \Phlex\Ui\JsReload($table));
+$table = Table::addTo($webpage, ['celled' => true]);
+Button::addTo($bb, ['Refresh Table', 'icon' => 'refresh'])
+    ->on('click', new JsReload($table));
 
 $bb->on('click', $table->js()->reload());
 
@@ -34,22 +40,22 @@ $table->addColumn('date');
 $table->addColumn('salary', new Table\Column\Money());
 $table->addColumn('logo_url', [Table\Column\Image::class, 'caption' => 'Our Logo']);
 
-$table->onHook(Table\Column::HOOK_GET_HTML_TAGS, function ($table, \Phlex\Data\Model $row) {
+$table->onHook(Table\Column::HOOK_GET_HTML_TAGS, static function ($table, Model $row) {
     switch ($row->getId()) {
         case 1: $color = 'yellow';
 
-break;
+            break;
         case 2: $color = 'grey';
 
-break;
+            break;
         case 3: $color = 'brown';
 
-break;
+            break;
         default: $color = '';
     }
     if ($color) {
         return [
-            'name' => \Phlex\Ui\Webpage::tag('div', ['class' => 'ui ribbon ' . $color . ' label'], $row->get('name')),
+            'name' => Webpage::tag('div', ['class' => 'ui ribbon ' . $color . ' label'], $row->get('name')),
         ];
     }
 });
@@ -63,7 +69,7 @@ $myArray = [
     ['name' => 'Brett', 'surname' => 'Bird', 'birthdate' => '1988-12-20', 'cv' => null],
 ];
 
-$table = \Phlex\Ui\Table::addTo($webpage);
+$table = Table::addTo($webpage);
 $table->setSource($myArray, ['name']);
 
 // $table->addColumn('name');

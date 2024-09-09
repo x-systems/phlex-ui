@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Table\Column\FilterModel;
 
+use Phlex\Ui\Form;
 use Phlex\Ui\Table\Column;
 
 class TypeTime extends Column\FilterModel
@@ -12,7 +13,7 @@ class TypeTime extends Column\FilterModel
     {
         parent::doInitialize();
 
-        $this->op->values = [
+        $this->op->getValueType()->setValues([
             '=' => '=',
             '!=' => '!=',
             '<' => '<',
@@ -20,11 +21,11 @@ class TypeTime extends Column\FilterModel
             '>' => '>',
             '>=' => '> or equal',
             'between' => 'Between',
-        ];
+        ]);
 
         $this->op->default = '=';
         $this->value->type = 'time';
-        $this->addField('range', ['ui' => ['caption' => ''], 'type' => 'time']);
+        $this->addField('range', ['options' => [Form\Control::OPTION_SEED => ['type' => 'time', 'caption' => '']]]);
     }
 
     public function setConditionForModel($model)

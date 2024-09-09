@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui;
 
+use Phlex\Core\InjectableTrait;
+
 /**
  * Implements conditions for displaying fields on form.
  */
 class JsConditionalForm implements JsExpressionable
 {
-    use \Phlex\Core\InjectableTrait;
+    use InjectableTrait;
 
     // {{{ Properties
 

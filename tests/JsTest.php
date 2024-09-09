@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
 use Phlex\Ui\Jquery;
 use Phlex\Ui\JsChain;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\JsFunction;
+use Phlex\Ui\Webpage;
 
-class JsTest extends \Phlex\Core\PHPUnit\TestCase
+class JsTest extends TestCase
 {
     public function testBasicExpressions(): void
     {
@@ -43,7 +45,7 @@ class JsTest extends \Phlex\Core\PHPUnit\TestCase
 
             // test JSON renderer in App too
             // test extensively because of (possibly fragile) custom regex impl
-            $webpage = (new \ReflectionClass(\Phlex\Ui\Webpage::class))->newInstanceWithoutConstructor();
+            $webpage = (new \ReflectionClass(Webpage::class))->newInstanceWithoutConstructor();
             $expectedRaw = json_decode($expected);
             foreach ([
                 [$expectedRaw, $in], // direct value

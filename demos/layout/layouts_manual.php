@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Ui\Layout;
+use Phlex\Ui\Lister;
+use Phlex\Ui\Text;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$layout = new \Phlex\Ui\Layout(['defaultTemplate' => __DIR__ . '/templates/layout1.html']);
+$layout = new Layout(['defaultTemplate' => __DIR__ . '/templates/layout1.html']);
 
-\Phlex\Ui\Lister::addTo($layout, [], ['Report'])
+Lister::addTo($layout, [], ['Report'])
     ->setModel(new SomeData());
 
-$webpage->initBody([\Phlex\Ui\Layout::class]);
+$webpage->initBody([Layout::class]);
 
-\Phlex\Ui\Text::addTo($webpage)->addHtml($layout->render());
+Text::addTo($webpage)->addHtml($layout->render());

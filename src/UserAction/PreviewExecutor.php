@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\UserAction;
 
+use Phlex\Ui\Button;
+use Phlex\Ui\Message;
 use Phlex\Ui\View;
 
 class PreviewExecutor extends BasicExecutor
@@ -19,7 +21,7 @@ class PreviewExecutor extends BasicExecutor
     public function initPreview()
     {
         if (!$this->hasAllArguments()) {
-            \Phlex\Ui\Message::addTo($this, ['type' => 'error', $this->missingArgsMsg]);
+            Message::addTo($this, ['type' => 'error', $this->missingArgsMsg]);
 
             return;
         }
@@ -44,7 +46,7 @@ class PreviewExecutor extends BasicExecutor
                 break;
         }
 
-        \Phlex\Ui\Button::addToWithCl($this, $this->executorButton)->on('click', function () {
+        Button::addToWithCl($this, $this->executorButton)->on('click', function () {
             return $this->executeModelAction();
         });
     }

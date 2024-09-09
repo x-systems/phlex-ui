@@ -180,7 +180,7 @@ class Card extends View
      *
      * @param array|false $fields an array of fields name to display in content
      *
-     * @return \Phlex\Data\Model
+     * @return Model
      */
     public function setModel(Model $model, $fields = null)
     {
@@ -193,7 +193,7 @@ class Card extends View
         }
 
         if ($fields === null) {
-            $fields = array_keys($this->model->getFields(['editable', 'visible']));
+            $fields = array_keys($this->model->getActiveFields([Model::FIELD_FILTER_EDITABLE, Model::FIELD_FILTER_VISIBLE]));
         } elseif ($fields === false) {
             $fields = [];
         }

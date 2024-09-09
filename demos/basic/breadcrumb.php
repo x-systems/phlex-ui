@@ -4,17 +4,25 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Ui\Breadcrumb;
+use Phlex\Ui\Form;
+use Phlex\Ui\JsToast;
+use Phlex\Ui\Table;
+use Phlex\Ui\Table\Column\Link;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /**
  * Demonstrates how to use Breadcrumb.
  */
-$crumb = \Phlex\Ui\Breadcrumb::addTo($webpage);
+$crumb = Breadcrumb::addTo($webpage);
 $crumb->addCrumb('UI Demo', ['index']);
 $crumb->addCrumb('Breadcrumb Demo', ['breadcrumb']);
 
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
+View::addTo($webpage, ['ui' => 'divider']);
 
 $crumb->addCrumb('Countries', []);
 
@@ -28,16 +36,16 @@ if ($id = $webpage->stickyGet('country_id')) {
 
     // here we can check for additional criteria and display a deeper level on the crumb
 
-    $form = \Phlex\Ui\Form::addTo($webpage);
+    $form = Form::addTo($webpage);
     $form->setModel($model);
-    $form->onSubmit(function (\Phlex\Ui\Form $form) {
-        return new \Phlex\Ui\JsToast('Form Submitted! Data saving is not possible in demo!');
+    $form->onSubmit(static function (Form $form) {
+        return new JsToast('Form Submitted! Data saving is not possible in demo!');
     });
 } else {
     // display list of countries
-    $table = \Phlex\Ui\Table::addTo($webpage);
+    $table = Table::addTo($webpage);
     $table->setModel($model);
-    $table->addDecorator($model->key()->name, [\Phlex\Ui\Table\Column\Link::class, [], ['country_id' => 'id']]);
+    $table->addDecorator($model->key()->name, [Link::class, [], ['country_id' => 'id']]);
 }
 
 $crumb->popTitle();

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Persistence\Array_;
 use Phlex\Ui\Form;
+use Phlex\Ui\JsToast;
 use Phlex\Ui\Webpage;
 
 class FlyersForm extends Form
@@ -36,27 +38,27 @@ class FlyersForm extends Form
 
         $this->addControl('country', [
             Form\Control\Lookup::class,
-            'model' => new \Phlex\Ui\Demos\Country($this->getApp()->db),
-            'dependency' => function ($model, $data) {
+            'model' => new Country($this->getApp()->db),
+            'dependency' => static function ($model, $data) {
                 isset($data['contains']) ? $model->addCondition('name', 'like', '%' . $data['contains'] . '%') : null;
             },
             'search' => [
-                \Phlex\Ui\Demos\Country::hint()->key()->name,
-                \Phlex\Ui\Demos\Country::hint()->key()->iso,
-                \Phlex\Ui\Demos\Country::hint()->key()->iso3,
+                Country::hint()->key()->name,
+                Country::hint()->key()->iso,
+                Country::hint()->key()->iso3,
             ],
             'caption' => 'Destination',
             'placeholder' => 'Select your destination',
         ], ['required' => true]);
 
         $ml = $this->addControl('multi', [Form\Control\Multiline::class, 'rowLimit' => 4, 'addOnTab' => true, 'caption' => 'Additional passengers:', 'renderLabel' => false]);
-        $ml->setModel(new Flyers(new \Phlex\Data\Persistence\Array_($this->flyers)));
+        $ml->setModel(new Flyers(new Array_($this->flyers)));
 
         $cards = $this->addControl('cards', [Form\Control\TreeItemSelector::class, 'treeItems' => $this->cards, 'caption' => 'Flyers program:'], ['type' => 'array', 'serialize' => 'json']);
         $cards->set(Webpage::encodeJson([]));
 
-        $this->onSubmit(function ($form) {
-            return new \Phlex\Ui\JsToast('Thank you!');
+        $this->onSubmit(static function ($form) {
+            return new JsToast('Thank you!');
         });
     }
 }

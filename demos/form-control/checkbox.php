@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\JsToast;
 use Phlex\Ui\View;
 use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Testing fields.
 
-\Phlex\Ui\Header::addTo($webpage, ['CheckBoxes', 'size' => 2]);
+Header::addTo($webpage, ['CheckBoxes', 'size' => 2]);
 
 Form\Control\Checkbox::addTo($webpage, ['Make my profile visible']);
 Form\Control\Checkbox::addTo($webpage, ['Make my profile visible ticked'])->set(true);
@@ -29,14 +31,14 @@ Form\Control\Checkbox::addTo($webpage, ['Look for the clues', 'disabled toggle']
 View::addTo($webpage, ['ui' => 'divider']);
 Form\Control\Checkbox::addTo($webpage, ['Custom setting?'])->js(true)->checkbox('set indeterminate');
 
-\Phlex\Ui\Header::addTo($webpage, ['CheckBoxes in a form', 'size' => 2]);
+Header::addTo($webpage, ['CheckBoxes in a form', 'size' => 2]);
 $form = Form::addTo($webpage);
 $form->addControl('test', [Form\Control\Checkbox::class]);
 $form->addControl('test_checked', [Form\Control\Checkbox::class])->set(true);
 $form->addControl('also_checked', 'Hello World', 'boolean')->set(true);
 
-$form->onSubmit(function ($f) {
-    return new \Phlex\Ui\JsToast(Webpage::encodeJson($f->model->get()));
+$form->onSubmit(static function ($f) {
+    return new JsToast(Webpage::encodeJson($f->model->get()));
 });
 
 View::addTo($webpage, ['ui' => 'divider']);

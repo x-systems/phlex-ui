@@ -6,6 +6,7 @@ namespace Phlex\Ui\Behat;
 
 use Behat\Behat\Context\Context as BehatContext;
 use Behat\Behat\Hook\Scope\AfterStepScope;
+use Behat\Mink\Driver\Selenium2Driver;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Testwork\Tester\Result\TestResult;
 
@@ -21,7 +22,7 @@ class DumpContext extends RawMinkContext implements BehatContext
         $session = $this->getMink()->getSession();
 
         if ($event->getTestResult()->getResultCode() === TestResult::FAILED) {
-            if ($session->getDriver() instanceof \Behat\Mink\Driver\Selenium2Driver) {
+            if ($session->getDriver() instanceof Selenium2Driver) {
                 echo 'Dump of failed step:' . "\n";
                 echo 'Current page URL: ' . $session->getCurrentUrl() . "\n";
                 global $dumpPageCount;

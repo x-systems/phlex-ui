@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Phlex\Ui;
 
 use Phlex\Core\Factory;
+use Phlex\Core\SessionTrait;
 
 /**
  * Wizard widget.
  */
 class Wizard extends View
 {
-    use \Phlex\Core\SessionTrait;
+    use SessionTrait;
 
     public $defaultTemplate = 'wizard.html';
     public $ui = 'steps';
@@ -134,7 +135,7 @@ class Wizard extends View
     public function addFinish(\Closure $callback)
     {
         if (count($this->steps) === $this->currentStep + 1) {
-            $this->buttonFinish->link($this->stepCallback->getUrl((string) (count($this->steps))));
+            $this->buttonFinish->link($this->stepCallback->getUrl((string) count($this->steps)));
         } elseif ($this->currentStep === count($this->steps)) {
             $this->buttonPrev->destroy();
             $this->buttonNext->addClass('disabled')->set('Completed');
@@ -187,7 +188,7 @@ class Wizard extends View
     protected function recursiveRender(): void
     {
         if (!$this->steps) {
-            $this->addStep(['No Steps Defined', 'icon' => 'configure', 'description' => 'use $wizard->addStep() now'], function ($p) {
+            $this->addStep(['No Steps Defined', 'icon' => 'configure', 'description' => 'use $wizard->addStep() now'], static function ($p) {
                 Message::addTo($p, ['Step content will appear here', 'type' => 'error', 'text' => 'Specify callback to addStep() which would populate this area.']);
             });
         }

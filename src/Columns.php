@@ -41,7 +41,7 @@ class Columns extends View
      *
      * @param int|array $defaults specify width (1..16) or relative to $width
      *
-     * @return \Phlex\Ui\View
+     * @return View
      */
     public function addColumn($defaults = null)
     {
@@ -52,7 +52,7 @@ class Columns extends View
         $size = $defaults[0];
         unset($defaults[0]);
 
-        $column = Factory::factory([\Phlex\Ui\View::class], $defaults);
+        $column = Factory::factory([View::class], $defaults);
         $this->addView($column);
 
         if ($size && isset($this->sizes[$size])) {

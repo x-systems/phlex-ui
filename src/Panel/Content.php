@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Panel;
 
+use Phlex\Ui\AbstractView;
 use Phlex\Ui\Callback;
 use Phlex\Ui\View;
 
@@ -58,7 +59,7 @@ class Content extends View implements LoadableContent
         return ['.phlex-panel-content'];
     }
 
-    protected function mergeStickyArgsFromChildView(): ?\Phlex\Ui\AbstractView
+    protected function mergeStickyArgsFromChildView(): ?AbstractView
     {
         return $this->cb;
     }

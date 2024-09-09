@@ -8,11 +8,13 @@ use Phlex\Core\HookTrait;
 use Phlex\Data\Model;
 use Phlex\Ui\Button;
 use Phlex\Ui\Exception;
+use Phlex\Ui\Header;
 use Phlex\Ui\JsExpressionable;
 use Phlex\Ui\JsToast;
 use Phlex\Ui\Message;
+use Phlex\Ui\View;
 
-class BasicExecutor extends \Phlex\Ui\View implements ExecutorInterface
+class BasicExecutor extends View implements ExecutorInterface
 {
     use HookTrait;
 
@@ -133,7 +135,7 @@ class BasicExecutor extends \Phlex\Ui\View implements ExecutorInterface
 
         $this->addHeader();
 
-        \Phlex\Ui\Button::addToWithCl($this, $this->executorButton)->on('click', function () {
+        Button::addToWithCl($this, $this->executorButton)->on('click', function () {
             return $this->executeModelAction();
         });
     }
@@ -166,7 +168,7 @@ class BasicExecutor extends \Phlex\Ui\View implements ExecutorInterface
     public function addHeader()
     {
         if ($this->hasHeader) {
-            \Phlex\Ui\Header::addTo($this, [$this->action->getCaption(), 'subHeader' => $this->description ?: $this->action->getDescription()]);
+            Header::addTo($this, [$this->action->getCaption(), 'subHeader' => $this->description ?: $this->action->getDescription()]);
         }
     }
 }

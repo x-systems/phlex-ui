@@ -112,9 +112,7 @@ class DropdownCascade extends Dropdown
      * Call during parent::doRender()
      * Cascade Dropdown values are only render via js.
      */
-    protected function htmlRenderValue()
-    {
-    }
+    protected function htmlRenderValue() {}
 
     protected function doRender(): void
     {

@@ -4,11 +4,18 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Data\Model;
+use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\JsNotify;
+use Phlex\Ui\Label;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-/** @var \Phlex\Data\Model $notifierClass */
-$notifierClass = get_class(new class() extends \Phlex\Data\Model {
+/** @var Model $notifierClass */
+$notifierClass = get_class(new class() extends Model {
     public $table = 'notifier';
 
     protected function doInitialize(): void
@@ -25,14 +32,14 @@ $notifierClass = get_class(new class() extends \Phlex\Data\Model {
     }
 });
 
- // Notification type form
-$head = \Phlex\Ui\Header::addTo($webpage, ['Notification Types']);
+// Notification type form
+$head = Header::addTo($webpage, ['Notification Types']);
 
-$form = \Phlex\Ui\Form::addTo($webpage, ['segment']);
+$form = Form::addTo($webpage, ['segment']);
 // Unit test only.
 $form->cb->setUrlTrigger('test_notify');
 
-\Phlex\Ui\Label::addTo($form, ['Some of notification options that can be set.', 'top attached'], ['AboveControls']);
+Label::addTo($form, ['Some of notification options that can be set.', 'top attached'], ['AboveControls']);
 $form->buttonSave->set('Show');
 $form->setModel(new $notifierClass($webpage->db), false);
 
@@ -49,8 +56,8 @@ $formGroup2 = $form->addGroup(['Set Position and Attach to:']);
 $formGroup2->addControl('position', ['width' => 'four']);
 $formGroup2->addControl('attach', ['width' => 'four']);
 
-$form->onSubmit(function (\Phlex\Ui\Form $form) {
-    $notifier = new \Phlex\Ui\JsNotify();
+$form->onSubmit(static function (Form $form) {
+    $notifier = new JsNotify();
     $notifier->setColor($form->model->get('color'))
         ->setPosition($form->model->get('position'))
         ->setWidth(rtrim($form->model->get('width'), '%'))

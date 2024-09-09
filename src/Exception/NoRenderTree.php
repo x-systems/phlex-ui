@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Exception;
 
-class NoRenderTree extends \Phlex\Ui\Exception
+use Phlex\Ui\Exception;
+
+class NoRenderTree extends Exception
 {
     public function __construct($object, $action = '')
     {

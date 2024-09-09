@@ -149,7 +149,7 @@ class JsSse extends JsCallback
      */
     private function wrapData(string $string): string
     {
-        return implode('', array_map(function ($v) {
+        return implode('', array_map(static function ($v) {
             return 'data: ' . $v . "\n";
         }, preg_split('~\r?\n|\r~', $string)));
     }

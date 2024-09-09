@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Ui\CardTable;
+use Phlex\Ui\Header;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Header::addTo($webpage, ['Card displays read-only data of a single record']);
+Header::addTo($webpage, ['Card displays read-only data of a single record']);
 
-\Phlex\Ui\CardTable::addTo($webpage)->setModel((new Stat($webpage->db))->tryLoadAny());
+CardTable::addTo($webpage)->setModel((new Stat($webpage->db))->tryLoadAny());

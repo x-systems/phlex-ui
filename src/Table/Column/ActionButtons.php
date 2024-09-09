@@ -8,8 +8,10 @@ use Phlex\Core\Factory;
 use Phlex\Data\Model;
 use Phlex\Ui\Button;
 use Phlex\Ui\JsChain;
+use Phlex\Ui\Modal;
 use Phlex\Ui\Table;
 use Phlex\Ui\UserAction\ExecutorInterface;
+use Phlex\Ui\View;
 
 /**
  * Formatting action buttons column.
@@ -44,7 +46,7 @@ class ActionButtons extends Table\Column
      * @param \Phlex\Ui\View|string              $button
      * @param JsChain|\Closure|ExecutorInterface $action
      *
-     * @return \Phlex\Ui\View
+     * @return View
      */
     public function addButton($button, $action = null, string $confirmMsg = '', $isDisabled = false)
     {
@@ -55,7 +57,7 @@ class ActionButtons extends Table\Column
                 $button = [1 => $button];
             }
 
-            $button = Factory::factory([\Phlex\Ui\Button::class], Factory::mergeSeeds($button, ['id' => false]));
+            $button = Factory::factory([Button::class], Factory::mergeSeeds($button, ['id' => false]));
         }
 
         if ($isDisabled === true) {
@@ -81,10 +83,10 @@ class ActionButtons extends Table\Column
      *
      * @param \Phlex\Ui\View|string $button
      * @param string|array          $defaults modal title or modal defaults array
-     * @param \Phlex\Ui\View        $owner
+     * @param View                  $owner
      * @param array                 $args
      *
-     * @return \Phlex\Ui\View
+     * @return View
      */
     public function addModal($button, $defaults, \Closure $callback, $owner = null, $args = [])
     {
@@ -94,7 +96,7 @@ class ActionButtons extends Table\Column
             $defaults = ['title' => $defaults];
         }
 
-        $modal = \Phlex\Ui\Modal::addTo($owner, $defaults);
+        $modal = Modal::addTo($owner, $defaults);
 
         $modal->observeChanges(); // adds scrollbar if needed
 

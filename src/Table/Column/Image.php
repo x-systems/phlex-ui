@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Table\Column;
 
+use Phlex\Data\Model\Field;
 use Phlex\Ui\Table;
 
 /**
@@ -23,7 +24,7 @@ class Image extends Table\Column
      *
      * @return string
      */
-    public function getDataCellTemplate(\Phlex\Data\Model\Field $field = null)
+    public function getDataCellTemplate(Field $field = null)
     {
         $caption = $field ? $field->getCaption() : $this->elementId;
 

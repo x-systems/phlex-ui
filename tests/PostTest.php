@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
 use Phlex\Data\Model;
+use Phlex\Ui\Persistence\Post;
 
-class PostTest extends \Phlex\Core\PHPUnit\TestCase
+class PostTest extends TestCase
 {
     /** @var Model */
     public $model;
@@ -25,7 +27,7 @@ class PostTest extends \Phlex\Core\PHPUnit\TestCase
      */
     public function testPost(): void
     {
-        $p = new \Phlex\Ui\Persistence\Post();
+        $p = new Post();
 
         $m = $p->add($this->model);
 

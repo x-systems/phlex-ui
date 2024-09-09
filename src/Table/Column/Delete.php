@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Table\Column;
 
+use Phlex\Data\Model\Field;
+use Phlex\Ui\CallbackLater;
+use Phlex\Ui\Jquery;
 use Phlex\Ui\Table;
 use Phlex\Ui\Webpage;
 
@@ -16,7 +19,7 @@ class Delete extends Table\Column
     {
         parent::doInitialize();
 
-        $this->vp = $this->table->addView(new \Phlex\Ui\CallbackLater());
+        $this->vp = $this->table->addView(new CallbackLater());
         $this->vp->set(function () {
             $this->table->model->load($_POST[$this->elementName])->delete();
 
@@ -26,9 +29,9 @@ class Delete extends Table\Column
         });
     }
 
-    public function getDataCellTemplate(\Phlex\Data\Model\Field $field = null)
+    public function getDataCellTemplate(Field $field = null)
     {
-        $this->table->on('click', 'a.' . $this->elementId, null, ['confirm' => (new \Phlex\Ui\Jquery())->attr('title')])->phlexAjaxec([
+        $this->table->on('click', 'a.' . $this->elementId, null, ['confirm' => (new Jquery())->attr('title')])->phlexAjaxec([
             'uri' => $this->vp->getJsUrl(),
             'uri_options' => [$this->elementName => $this->table->jsRow()->data('id')],
         ]);

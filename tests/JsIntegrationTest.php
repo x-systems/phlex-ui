@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
 use Phlex\Ui\Button;
 use Phlex\Ui\View;
 
-class JsIntegrationTest extends \Phlex\Core\PHPUnit\TestCase
+class JsIntegrationTest extends TestCase
 {
     public function testIdIntegrity1(): void
     {

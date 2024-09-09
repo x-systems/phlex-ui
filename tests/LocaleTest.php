@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
 use Phlex\Ui\Exception;
 use Phlex\Ui\Locale;
 
-class LocaleTest extends \Phlex\Core\PHPUnit\TestCase
+class LocaleTest extends TestCase
 {
     public function testException(): void
     {

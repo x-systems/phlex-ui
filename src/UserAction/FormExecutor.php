@@ -50,6 +50,6 @@ class FormExecutor extends BasicExecutor
      */
     protected function getModelFields(Model $model)
     {
-        return array_keys($model->getFields(['editable', 'visible']));
+        return array_keys($model->getActiveFields([Model::FIELD_FILTER_EDITABLE, Model::FIELD_FILTER_VISIBLE]));
     }
 }

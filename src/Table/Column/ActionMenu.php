@@ -88,7 +88,7 @@ class ActionMenu extends Table\Column
         $name = $this->elementName . '_action_' . (count($this->items) + 1);
 
         if (!is_object($item)) {
-            $item = Factory::factory([\Phlex\Ui\View::class], ['id' => false, 'ui' => 'item', 'content' => $item]);
+            $item = Factory::factory([View::class], ['id' => false, 'ui' => 'item', 'content' => $item]);
         }
 
         $this->items[] = $item;

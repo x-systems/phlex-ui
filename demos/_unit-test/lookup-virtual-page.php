@@ -12,18 +12,19 @@ use Phlex\Ui\Grid;
 use Phlex\Ui\JsModal;
 use Phlex\Ui\JsToast;
 use Phlex\Ui\VirtualPage;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $product = new ProductLock($webpage->db);
 
 $vp = VirtualPage::addTo($webpage);
 
-$vp->set(function ($page) {
+$vp->set(static function ($page) {
     $form = Form::addTo($page);
     $form->addControl('category', [Form\Control\Lookup::class, 'model' => new Category($page->getApp()->db)]);
-    $form->onSubmit(function ($f) {
+    $form->onSubmit(static function ($f) {
         $category = $f->getControl('category')->model->load($f->model->get('category'));
 
         return new JsToast($category->getTitle());

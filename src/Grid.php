@@ -55,7 +55,7 @@ class Grid extends View
      * Calling addActionButton will add a new column inside $table, and will be re-used
      * for next addActionButton().
      *
-     * @var Table\Column\ActionButtons
+     * @var ActionButtons
      */
     public $actionButtons;
 
@@ -63,7 +63,7 @@ class Grid extends View
      * Calling addAction will add a new column inside $table with dropdown menu,
      * and will be re-used for next addActionMenuItem().
      *
-     * @var Table\Column
+     * @var Column
      */
     public $actionMenu;
 
@@ -71,7 +71,7 @@ class Grid extends View
      * Calling addSelection will add a new column inside $table, containing checkboxes.
      * This column will be stored here, in case you want to access it.
      *
-     * @var Table\Column\Checkbox
+     * @var Column\Checkbox
      */
     public $selection;
 
@@ -111,14 +111,14 @@ class Grid extends View
      *
      * @var string
      */
-    protected $actionButtonsDecorator = [Table\Column\ActionButtons::class];
+    protected $actionButtonsDecorator = [ActionButtons::class];
 
     /**
      * Defines which Table Decorator to use for ActionMenu.
      *
      * @var array
      */
-    protected $actionMenuDecorator = [Table\Column\ActionMenu::class, 'label' => 'Actions...'];
+    protected $actionMenuDecorator = [Column\ActionMenu::class, 'label' => 'Actions...'];
 
     protected function doInitialize(): void
     {
@@ -170,7 +170,7 @@ class Grid extends View
      * @param array|string|object|null $columnDecorator
      * @param array|string|object|null $field
      *
-     * @return Table\Column
+     * @return Column
      */
     public function addColumn($name, $columnDecorator = null, $field = null)
     {
@@ -359,7 +359,7 @@ class Grid extends View
      * @param JsExpression|null $afterSuccess
      * @param array             $apiConfig
      *
-     * @return \Phlex\Ui\JsReload
+     * @return JsReload
      */
     public function jsReload($args = [], $afterSuccess = null, $apiConfig = [])
     {
@@ -383,7 +383,7 @@ class Grid extends View
     /**
      * Add a button for executing a model action via an action executor.
      */
-    public function addExecutorButton(UserAction\ExecutorInterface $executor, Button $button = null)
+    public function addExecutorButton(ExecutorInterface $executor, Button $button = null)
     {
         $btn = $button ? $this->addView($button) : $this->getExecutorFactory()->createTrigger($executor->getAction(), $this->getExecutorFactory()::TABLE_BUTTON);
         $confirmation = $executor->getAction()->getConfirmation() ?: '';
@@ -473,7 +473,7 @@ class Grid extends View
         if (!$this->menu) {
             throw new Exception('Unable to add Filter Column without Menu');
         }
-        $this->menu->addItem(['Clear Filters'], new \Phlex\Ui\JsReload($this->table->reload, ['phlex_clear_filter' => 1]));
+        $this->menu->addItem(['Clear Filters'], new JsReload($this->table->reload, ['phlex_clear_filter' => 1]));
         $this->table->setFilterColumn($names);
 
         return $this;
@@ -498,7 +498,7 @@ class Grid extends View
             $menuId = $columnName;
         }
 
-        $column->addDropdown($items, function ($item) use ($fx) {
+        $column->addDropdown($items, static function ($item) use ($fx) {
             return $fx([$item]);
         }, $icon, $menuId);
     }
@@ -609,7 +609,7 @@ class Grid extends View
      *
      * @param array|bool $columns
      *
-     * @return \Phlex\Data\Model
+     * @return Model
      */
     public function setModel(Model $model, $columns = null)
     {
@@ -626,11 +626,11 @@ class Grid extends View
      * Makes rows of this grid selectable by creating new column on the left with
      * checkboxes.
      *
-     * @return Table\Column\Checkbox
+     * @return Column\Checkbox
      */
     public function addSelection()
     {
-        $this->selection = $this->table->addColumn(null, [Table\Column\Checkbox::class]);
+        $this->selection = $this->table->addColumn(null, [Column\Checkbox::class]);
 
         // Move last column to the beginning in table column array.
         array_unshift($this->table->columns, array_pop($this->table->columns));
@@ -642,11 +642,11 @@ class Grid extends View
      * Add column with drag handler on each row.
      * Drag handler allow to reorder table via drag n drop.
      *
-     * @return Table\Column
+     * @return Column
      */
     public function addDragHandler()
     {
-        $handler = $this->table->addColumn(null, [Table\Column\DragHandler::class]);
+        $handler = $this->table->addColumn(null, [Column\DragHandler::class]);
 
         // Move last column to the beginning in table column array.
         array_unshift($this->table->columns, array_pop($this->table->columns));

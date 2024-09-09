@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Ui\Button;
+use Phlex\Ui\Component\InlineEdit;
+use Phlex\Ui\Component\ItemSearch;
+use Phlex\Ui\Header;
 use Phlex\Ui\HtmlTemplate;
+use Phlex\Ui\Lister;
+use Phlex\Ui\Message;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Header::addTo($webpage, ['Component', 'size' => 2, 'icon' => 'vuejs', 'subHeader' => 'UI view handle by Vue.js']);
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
+Header::addTo($webpage, ['Component', 'size' => 2, 'icon' => 'vuejs', 'subHeader' => 'UI view handle by Vue.js']);
+View::addTo($webpage, ['ui' => 'divider']);
 
 // ****** Inline Edit *****************************
 
@@ -18,37 +26,37 @@ $model = new Country($webpage->db);
 $model = $model->loadAny();
 
 $subHeader = 'Try me. I will restore value on "Escape" or save it on "Enter" or when field get blur after it has been changed.';
-\Phlex\Ui\Header::addTo($webpage, ['Inline editing.', 'size' => 3, 'subHeader' => $subHeader]);
+Header::addTo($webpage, ['Inline editing.', 'size' => 3, 'subHeader' => $subHeader]);
 
-$inline_edit = \Phlex\Ui\Component\InlineEdit::addTo($webpage);
+$inline_edit = InlineEdit::addTo($webpage);
 $inline_edit->field = $model->key()->name;
 $inline_edit->setModel($model);
 
-$inline_edit->onChange(function ($value) {
-    $view = new \Phlex\Ui\Message();
+$inline_edit->onChange(static function ($value) {
+    $view = new Message();
     $view->initialize();
     $view->text->addParagraph('new value: ' . $value);
 
     return $view;
 });
 
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
+View::addTo($webpage, ['ui' => 'divider']);
 
 // ****** ITEM SEARCH *****************************
 
 $subHeader = 'Searching will reload the list of countries below with matching result.';
-\Phlex\Ui\Header::addTo($webpage, ['Search using a Vue component', 'subHeader' => $subHeader]);
+Header::addTo($webpage, ['Search using a Vue component', 'subHeader' => $subHeader]);
 
 $model = new Country($webpage->db);
 
 $lister_template = new HtmlTemplate('<div id="{$_id}">{List}<div class="ui icon label"><i class="{$phlex_fp_country__iso} flag"></i> {$phlex_fp_country__name}</div>{$end}{/}</div>');
 
-$view = \Phlex\Ui\View::addTo($webpage);
+$view = View::addTo($webpage);
 
-$search = \Phlex\Ui\Component\ItemSearch::addTo($view, ['ui' => 'ui compact segment']);
-$lister_container = \Phlex\Ui\View::addTo($view, ['template' => $lister_template]);
-$lister = \Phlex\Ui\Lister::addTo($lister_container, [], ['List']);
-$lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $lister, Country $row) {
+$search = ItemSearch::addTo($view, ['ui' => 'ui compact segment']);
+$lister_container = View::addTo($view, ['template' => $lister_template]);
+$lister = Lister::addTo($lister_container, [], ['List']);
+$lister->onHook(Lister::HOOK_BEFORE_ROW, static function (Lister $lister, Country $row) {
     $row->iso = mb_strtolower($row->iso);
 
     ++$lister->ipp;
@@ -60,10 +68,10 @@ $lister->onHook(\Phlex\Ui\Lister::HOOK_BEFORE_ROW, function (\Phlex\Ui\Lister $l
 $search->reload = $lister_container;
 $lister->setModel($search->setModelCondition($model))->setLimit(50);
 
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
+View::addTo($webpage, ['ui' => 'divider']);
 
 // ****** CREATING CUSTOM VUE USING EXTERNAL COMPONENT *****************************
-\Phlex\Ui\Header::addTo($webpage, ['External Component', 'subHeader' => 'Creating component using an external component definition.']);
+Header::addTo($webpage, ['External Component', 'subHeader' => 'Creating component using an external component definition.']);
 
 $webpage->requireJs('https://unpkg.com/vue-clock2@1.1.5/dist/vue-clock.min.js');
 
@@ -121,7 +129,7 @@ $clock_script = "
     </script>";
 
 // Creating the clock view and injecting js.
-$clock = \Phlex\Ui\View::addTo($webpage, ['template' => $clock_template]);
+$clock = View::addTo($webpage, ['template' => $clock_template]);
 $clock->template->tryDangerouslySetHtml('script', $clock_script);
 
 // passing some style to my-clock component.
@@ -134,6 +142,6 @@ $clock_style = [
 // creating vue using an external definition.
 $clock->vue('my-clock', ['clock' => $clock_style], 'myClock');
 
-$btn = \Phlex\Ui\Button::addTo($webpage, ['Change Style']);
+$btn = Button::addTo($webpage, ['Change Style']);
 $btn->on('click', $clock->jsEmitEvent($clock->elementName . '-clock-change-style'));
-\Phlex\Ui\View::addTo($webpage, ['element' => 'p', 'I am not part of the component but I can still change style using the eventBus.']);
+View::addTo($webpage, ['element' => 'p', 'I am not part of the component but I can still change style using the eventBus.']);

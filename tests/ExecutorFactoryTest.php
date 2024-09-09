@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
 use Phlex\Data\Model;
 use Phlex\Data\Persistence\Array_;
 use Phlex\Ui\Button;
 use Phlex\Ui\Item;
+use Phlex\Ui\Layout\Admin;
 use Phlex\Ui\UserAction\BasicExecutor;
 use Phlex\Ui\UserAction\ConfirmationExecutor;
 use Phlex\Ui\UserAction\JsCallbackExecutor;
@@ -26,7 +28,7 @@ class TestModel extends Model
         $this->addField('name');
 
         $this->addUserAction('confirm', [
-            'confirmation' => function () {
+            'confirmation' => static function () {
                 return 'confirm?';
             },
         ]);
@@ -35,7 +37,7 @@ class TestModel extends Model
     }
 }
 
-class ExecutorFactoryTest extends \Phlex\Core\PHPUnit\TestCase
+class ExecutorFactoryTest extends TestCase
 {
     /** @var Model */
     public $model;
@@ -47,7 +49,7 @@ class ExecutorFactoryTest extends \Phlex\Core\PHPUnit\TestCase
         $p = new Array_();
         $this->model = new TestModel($p);
         $this->app = $this->getApp();
-        $this->app->initBody([\Phlex\Ui\Layout\Admin::class]);
+        $this->app->initBody([Admin::class]);
     }
 
     protected function getApp()
@@ -119,8 +121,7 @@ class ExecutorFactoryTest extends \Phlex\Core\PHPUnit\TestCase
         $editAction = $this->model->getUserAction('edit');
 
         $p = new Array_();
-        $otherModelClass = get_class(new class() extends Model {
-        });
+        $otherModelClass = get_class(new class() extends Model {});
         $secondEditAction = (new $otherModelClass($p))->getUserAction('edit');
 
         $specialClass = get_class(new class() extends Model {

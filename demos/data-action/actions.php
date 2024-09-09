@@ -7,10 +7,12 @@ namespace Phlex\Ui\Demos;
 use Phlex\Ui\Button;
 use Phlex\Ui\Columns;
 use Phlex\Ui\Header;
+use Phlex\Ui\JsToast;
 use Phlex\Ui\UserAction;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $files = new FileLock($webpage->db);
@@ -30,7 +32,7 @@ $action = $files->addUserAction(
         'description' => 'Import file in a specify path.',
         // Display information prior to execute the action.
         // ModalExecutor or PreviewExecutor will display preview.
-        'preview' => function ($model, $path) {
+        'preview' => static function ($model, $path) {
             return 'Execute Import using path: "' . $path . '"';
         },
         // Argument needed to run the callback action method.
@@ -62,12 +64,12 @@ $executor = UserAction\JsCallbackExecutor::addTo($rightColumn);
 // Passing Model action to executor and action argument via url.
 $executor->setAction($action);
 // Setting user response after model action get execute.
-$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, function ($t, $m) {
-    return new \Phlex\Ui\JsToast('Files imported');
+$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, static function ($t, $m) {
+    return new JsToast('Files imported');
 });
 $executor->executeModelAction(['path' => '.']);
 
-$btn = \Phlex\Ui\Button::addTo($rightColumn, ['Import File']);
+$btn = Button::addTo($rightColumn, ['Import File']);
 $btn->on('click', $executor, ['confirm' => 'This will import a lot of file. Are you sure?']);
 
 Header::addTo($rightColumn, ['BasicExecutor']);
@@ -76,8 +78,8 @@ $executor->setAction($action);
 $executor->ui = 'segment';
 $executor->description = 'Execute Import action using "BasicExecutor" with argument "path" equal to "."';
 $executor->setArguments(['path' => '.']);
-$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, function ($x) {
-    return new \Phlex\Ui\JsToast('Done!');
+$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, static function ($x) {
+    return new JsToast('Done!');
 });
 
 View::addTo($rightColumn, ['ui' => 'hidden divider']);
@@ -89,8 +91,8 @@ $executor->ui = 'segment';
 $executor->previewType = 'console';
 $executor->description = 'Displays preview in console prior to executing';
 $executor->setArguments(['path' => '.']);
-$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, function ($x, $ret) {
-    return new \Phlex\Ui\JsToast('Confirm!');
+$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, static function ($x, $ret) {
+    return new JsToast('Confirm!');
 });
 
 Header::addTo($leftColumn, ['FormExecutor']);
@@ -99,8 +101,8 @@ $executor->setAction($action);
 $executor->ui = 'segment';
 $executor->description = 'Only fields set in $action[field] array will be added in form.';
 $executor->setArguments(['path' => '.']);
-$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, function ($x, $ret) {
-    return new \Phlex\Ui\JsToast('Confirm! ' . $x->action->getEntity()->name);
+$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, static function ($x, $ret) {
+    return new JsToast('Confirm! ' . $x->action->getEntity()->name);
 });
 
 View::addTo($leftColumn, ['ui' => 'hidden divider']);
@@ -110,6 +112,6 @@ $executor = UserAction\ArgumentFormExecutor::addTo($leftColumn, ['executorButton
 $executor->setAction($action);
 $executor->description = 'ArgumentFormExecutor will ask user about arguments set in actions.';
 $executor->ui = 'segment';
-$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, function ($x, $ret) {
-    return new \Phlex\Ui\JsToast('Imported!');
+$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, static function ($x, $ret) {
+    return new JsToast('Imported!');
 });

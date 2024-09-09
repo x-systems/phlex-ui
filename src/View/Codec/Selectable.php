@@ -22,7 +22,7 @@ class Selectable extends Model\Field\Codec
             return $valueType->getLabel($values);
         }
 
-        return implode($this->separator, array_map(fn ($value) => $valueType->getLabel($value), $values));
+        return implode($this->separator, array_map(static fn ($value) => $valueType->getLabel($value), $values));
     }
 
     protected function displaysMultipleValues(): bool

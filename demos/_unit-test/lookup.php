@@ -6,10 +6,11 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Crud;
 use Phlex\Ui\UserAction\ExecutorFactory;
+use Phlex\Ui\Webpage;
 
 // Test for hasOne Lookup as dropdown control.
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $model = new ProductLock($webpage->db);
@@ -19,7 +20,7 @@ $model->addCondition($model->key()->name, '=', 'Mustard');
 $webpage->getExecutorFactory()->useTriggerDefault(ExecutorFactory::TABLE_BUTTON);
 
 $edit = $model->getUserAction('edit');
-$edit->callback = function ($model) {
+$edit->callback = static function ($model) {
     return $model->product_category_id->getTitle() . ' - ' . $model->product_sub_category_id->getTitle();
 };
 

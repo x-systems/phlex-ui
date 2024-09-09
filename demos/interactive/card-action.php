@@ -5,20 +5,24 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Button;
+use Phlex\Ui\Card;
+use Phlex\Ui\Header;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Button::addTo($webpage, ['Card', 'small left floated basic blue', 'icon' => 'left arrow'])
+Button::addTo($webpage, ['Card', 'small left floated basic blue', 'icon' => 'left arrow'])
     ->link(['card']);
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'ui clearing divider']);
+View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
-\Phlex\Ui\Header::addTo($webpage, ['Models', 'size' => 1, 'subHeader' => 'Card may display information from many models.']);
+Header::addTo($webpage, ['Models', 'size' => 1, 'subHeader' => 'Card may display information from many models.']);
 
 $stat = new Stat($webpage->db);
 $stat = $stat->loadAny();
 
-$c = \Phlex\Ui\Card::addTo($webpage);
+$c = Card::addTo($webpage);
 $c->setModel($stat, [$stat->key()->client_name, $stat->key()->description]);
 
 $c->addSection('Project: ', $stat, [$stat->key()->start_date, $stat->key()->finish_date], true);
@@ -28,7 +32,7 @@ $notify = $country->addUserAction('Notify', [
     'args' => [
         'note' => ['type' => 'string', 'required' => true],
     ],
-    'callback' => function ($model, $note) {
+    'callback' => static function ($model, $note) {
         return 'Note to client is sent: ' . $note;
     },
 ]);

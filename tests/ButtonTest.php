@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
 use Phlex\Ui\Button;
 
-class ButtonTest extends \Phlex\Core\PHPUnit\TestCase
+class ButtonTest extends TestCase
 {
     /**
      * @doesNotPerformAssertions

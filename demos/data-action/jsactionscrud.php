@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Model;
+use Phlex\Data\Model\UserAction;
+use Phlex\Ui\Crud;
 use Phlex\Ui\Header;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 Header::addTo($webpage, ['Actions in Crud', 'subHeader' => 'Crud will automatically setup Menu items based on actions defined in model.']);
@@ -22,18 +26,18 @@ $action = $files->addUserAction(
         'caption' => 'Import',
         'callback' => 'importFromFilesystem',
         'description' => 'Import file using path:',
-        'preview' => function ($model, $path) {
+        'preview' => static function ($model, $path) {
             return 'Execute Import using path: "' . $path . '"';
         },
         'args' => [
             'path' => ['type' => 'string', 'required' => true],
         ],
-        'appliesTo' => \Phlex\Data\Model\UserAction::APPLIES_TO_NO_RECORDS,
+        'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,
     ]
 );
 
-$files->addUserAction('download', function (\Phlex\Data\Model $model) {
+$files->addUserAction('download', static function (Model $model) {
     return 'File has been download!';
 });
 
-\Phlex\Ui\Crud::addTo($webpage, ['ipp' => 10])->setModel($files);
+Crud::addTo($webpage, ['ipp' => 10])->setModel($files);

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Form\Layout\Section;
 
+use Phlex\Ui\Form\Layout;
+
 /**
  * Represents form controls in columns.
  */
 class Columns extends \Phlex\Ui\Columns
 {
-    public $formLayout = \Phlex\Ui\Form\Layout::class;
+    public $formLayout = Layout::class;
     public $form;
 
     /**
@@ -17,7 +19,7 @@ class Columns extends \Phlex\Ui\Columns
      *
      * @param int|array $defaults specify width (1..16) or relative to $width
      *
-     * @return \Phlex\Ui\Form\Layout
+     * @return Layout
      */
     public function addColumn($defaults = null)
     {

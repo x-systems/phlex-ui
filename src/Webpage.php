@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui;
 
 use Phlex\Core\DynamicMethodTrait;
+use Phlex\Core\ExceptionRenderer\Html;
 use Phlex\Core\Factory;
 use Phlex\Core\HookTrait;
 use Phlex\Data\Persistence;
@@ -287,6 +288,7 @@ class Webpage extends View
             // App need to stop output
             // set_handler to catch/trap any exception
             set_exception_handler(static function (\Throwable $t): void {});
+
             // raise exception to be trapped and stop execution
             throw new ExitApplicationException();
         }
@@ -438,7 +440,7 @@ class Webpage extends View
                 // add modal rendering to output
                 $keys[] = '#' . $key;
                 $output['script'] = $output['script'] . ';' . $modal['js'];
-                $output['html'] = $output['html'] . $modal['html'];
+                $output['html'] .= $modal['html'];
             }
             if ($keys) {
                 $ids = implode(',', $keys);
@@ -956,7 +958,7 @@ class Webpage extends View
         // IMPORTANT: always convert large integers to string, otherwise numbers can be rounded by JS
         // replace large JSON integers only, do not replace anything in JSON/JS strings
         $json = preg_replace_callback('~"(?:[^"\\\\]+|\\\\.)*+"\K|\'(?:[^\'\\\\]+|\\\\.)*+\'\K'
-            . '|(?:^|[{\[,:])[ \n\r\t]*\K-?[1-9]\d{15,}(?=[ \n\r\t]*(?:$|[}\],:]))~s', function ($matches) {
+            . '|(?:^|[{\[,:])[ \n\r\t]*\K-?[1-9]\d{15,}(?=[ \n\r\t]*(?:$|[}\],:]))~s', static function ($matches) {
                 if ($matches[0] === '' || abs((int) $matches[0]) < (2 ** 53)) {
                     return $matches[0];
                 }
@@ -979,7 +981,7 @@ class Webpage extends View
      */
     public function renderExceptionHtml(\Throwable $exception): string
     {
-        return (string) new \Phlex\Core\ExceptionRenderer\Html($exception);
+        return (string) new Html($exception);
     }
 
     /**
@@ -1052,7 +1054,7 @@ class Webpage extends View
                     if ($k === self::HEADER_STATUS_CODE) {
                         http_response_code($v === (string) (int) $v ? (int) $v : 500);
                     } else {
-                        $kCamelCase = preg_replace_callback('~(?<![a-zA-Z])[a-z]~', function ($matches) {
+                        $kCamelCase = preg_replace_callback('~(?<![a-zA-Z])[a-z]~', static function ($matches) {
                             return strtoupper($matches[0]);
                         }, $k);
 

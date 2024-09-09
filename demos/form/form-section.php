@@ -4,22 +4,26 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Ui\Button;
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\JsToast;
+use Phlex\Ui\View;
 use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Button::addTo($webpage, ['Accordion in Form', 'small right floated basic blue', 'iconRight' => 'right arrow'])
+Button::addTo($webpage, ['Accordion in Form', 'small right floated basic blue', 'iconRight' => 'right arrow'])
     ->link(['form-section-accordion']);
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'ui clearing divider']);
+View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
 $model = new CountryLock($webpage->db);
 $model = $model->loadAny();
 
 // Prevent form from saving
-$noSave = function (Form $form) {
-    return new \Phlex\Ui\JsToast([
+$noSave = static function (Form $form) {
+    return new JsToast([
         'title' => 'POSTed field values',
         'message' => '<pre>' . Webpage::encodeJson($form->model->get()) . '</pre>',
         'class' => 'success',
@@ -34,7 +38,7 @@ $form->setModel($model, false);
 
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class]);
 
-\Phlex\Ui\Header::addTo($sublayout, ['Column Section in Form']);
+Header::addTo($sublayout, ['Column Section in Form']);
 $sublayout->setModel($model, [$model->key()->name]);
 
 $colsLayout = $form->layout->addSubLayout([Form\Layout\Section\Columns::class]);
@@ -49,7 +53,7 @@ $form->addControl($model->key()->phonecode);
 
 $form->onSubmit($noSave);
 
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
+View::addTo($webpage, ['ui' => 'divider']);
 
 // //////////////////////////////
 
@@ -58,7 +62,7 @@ $form->setModel($model, false);
 
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class]);
 
-\Phlex\Ui\Header::addTo($sublayout, ['Accordion Section in Form']);
+Header::addTo($sublayout, ['Accordion Section in Form']);
 $sublayout->setModel($model, [$model->key()->name]);
 
 $accordionLayout = $form->layout->addSubLayout([Form\Layout\Section\Accordion::class]);
@@ -71,7 +75,7 @@ $a2->setModel($model, [$model->key()->numcode, $model->key()->phonecode]);
 
 $form->onSubmit($noSave);
 
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
+View::addTo($webpage, ['ui' => 'divider']);
 
 // //////////////////////////////
 
@@ -80,7 +84,7 @@ $form->setModel($model, false);
 
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class]);
 
-\Phlex\Ui\Header::addTo($sublayout, ['Tabs in Form']);
+Header::addTo($sublayout, ['Tabs in Form']);
 $sublayout->setModel($model, [$model->key()->name]);
 
 $tabsLayout = $form->layout->addSubLayout([Form\Layout\Section\Tabs::class]);
@@ -93,18 +97,18 @@ $tab2->setModel($model, [$model->key()->numcode, $model->key()->phonecode]);
 
 $form->onSubmit($noSave);
 
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
+View::addTo($webpage, ['ui' => 'divider']);
 
 // ///////////////////////////////////////
 
-\Phlex\Ui\Header::addTo($webpage, ['Color in form']);
+Header::addTo($webpage, ['Color in form']);
 
 $form = Form::addTo($webpage);
 $form->setModel($model, false);
 
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class, 'ui' => 'segment red inverted'], false);
 
-\Phlex\Ui\Header::addTo($sublayout, ['This section in Red', 'ui' => 'dividing header', 'element' => 'h2']);
+Header::addTo($sublayout, ['This section in Red', 'ui' => 'dividing header', 'element' => 'h2']);
 $sublayout->setModel($model, [$model->key()->name]);
 
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section::class, 'ui' => 'segment teal inverted']);
@@ -118,4 +122,4 @@ $c2->setModel($model, [$model->key()->numcode, $model->key()->phonecode]);
 
 $form->onSubmit($noSave);
 
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
+View::addTo($webpage, ['ui' => 'divider']);

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Table\Column;
 
+use Phlex\Data\Model\Field;
+use Phlex\Ui\JsCallback;
+use Phlex\Ui\JsSortable;
 use Phlex\Ui\Table;
 use Phlex\Ui\Webpage;
 
@@ -14,7 +17,7 @@ class DragHandler extends Table\Column
 {
     public $class;
     public $tag = 'i';
-    /** @var \Phlex\Ui\JsCallback */
+    /** @var JsCallback */
     public $cb;
 
     protected function doInitialize(): void
@@ -24,7 +27,7 @@ class DragHandler extends Table\Column
         if (!$this->class) {
             $this->class = 'content icon';
         }
-        $this->cb = \Phlex\Ui\JsSortable::addTo($this->table, ['handleClass' => 'phlex-handle']);
+        $this->cb = JsSortable::addTo($this->table, ['handleClass' => 'phlex-handle']);
     }
 
     /**
@@ -35,7 +38,7 @@ class DragHandler extends Table\Column
         $this->cb->onReorder($fx);
     }
 
-    public function getDataCellTemplate(\Phlex\Data\Model\Field $field = null)
+    public function getDataCellTemplate(Field $field = null)
     {
         return Webpage::tag($this->tag, ['class' => $this->class . ' phlex-handle', 'style' => 'cursor:pointer; color: #bcbdbd']);
     }

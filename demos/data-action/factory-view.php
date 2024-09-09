@@ -9,8 +9,9 @@ use Phlex\Ui\Card;
 use Phlex\Ui\Header;
 use Phlex\Ui\UserAction\ExecutorFactory;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 Button::addTo($webpage, ['Executor Factory in App instance', 'small left floated basic blue', 'icon' => 'left arrow'])

@@ -8,6 +8,7 @@ use Phlex\Ui\Header;
 use Phlex\Ui\Icon;
 use Phlex\Ui\Item;
 use Phlex\Ui\Jquery;
+use Phlex\Ui\Layout;
 use Phlex\Ui\Menu;
 
 /**
@@ -32,7 +33,7 @@ use Phlex\Ui\Menu;
  *
  *  - Content
  */
-class Admin extends \Phlex\Ui\Layout implements NavigableInterface
+class Admin extends Layout implements NavigableInterface
 {
     public $menuLeft;    // vertical menu
     public $menu;        // horizontal menu

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
 use Phlex\Ui\HtmlTemplate;
 use Phlex\Ui\Webpage;
 
-class WebpageTest extends \Phlex\Core\PHPUnit\TestCase
+class WebpageTest extends TestCase
 {
     protected function getApp()
     {
@@ -27,8 +28,7 @@ class WebpageTest extends \Phlex\Core\PHPUnit\TestCase
 
     public function testTemplateClassCustom(): void
     {
-        $anotherTemplateClass = new class() extends HtmlTemplate {
-        };
+        $anotherTemplateClass = new class() extends HtmlTemplate {};
 
         $webpage = $this->getApp();
         $webpage->templateClass = get_class($anotherTemplateClass);

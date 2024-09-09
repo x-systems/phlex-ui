@@ -6,75 +6,51 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
 use Phlex\Ui\GridLayout;
-use Phlex\Ui\JsExpression;
-use Phlex\Ui\JsFunction;
 use Phlex\Ui\JsToast;
 use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $layout = GridLayout::addTo($webpage, ['rows' => 1, 'columns' => 2]);
 
 $form = Form::addTo($layout, [], ['r1c1']);
 
-$webpage->ui_persistence->date_format = 'Y-m-d';
-$form->addControl('date_y_m_d', [Form\Control\Calendar::class, 'type' => 'date', 'caption' => 'Date (Y-m-d)'])
-    ->set(date('Y-m-d'));
+$form->addControl('date', [Form\Control\Calendar::class, 'type' => 'date'])
+    ->set(new \DateTime());
 
-$webpage->ui_persistence->time_format = 'G:i A';
-$form->addControl('time_g_i_a', [Form\Control\Calendar::class, 'type' => 'time', 'caption' => 'Time using am/pm'])
-    ->set(date('G:i A'));
+$form->addControl('time', [Form\Control\Calendar::class, 'type' => 'time'])
+    ->set(new \DateTime());
 
-$webpage->ui_persistence->time_format = 'H:i:s';
-$form->addControl('time_h_i_s', [Form\Control\Calendar::class, 'type' => 'time', 'caption' => 'Time using 24 hrs with seconds picker'])
-    ->set(date('H:i:s'));
+$form->addControl('datetime', [Form\Control\Calendar::class, 'type' => 'datetime'])
+    ->set(new \DateTime());
 
-$form->addControl('datetime', [Form\Control\Calendar::class, 'type' => 'datetime', 'caption' => 'Datetime (M d, Y H:i:s)'])
-    ->set(date($webpage->ui_persistence->datetime_format));
+// $form->addControl('date_range', [
+//     Form\Control\Calendar::class,
+//     'type' => 'date',
+//     'caption' => 'Range mode',
+//     'options' => ['mode' => 'range'],
+// // 	'defaultFieldType' => 'text'
+// ])->set(date('Y-m-d') . ' to ' . date('Y-m-d', strtotime('+1 Week')));
 
-$webpage->ui_persistence->date_format = 'F d, Y';
-$form->addControl('date_f_d_y', [
-    Form\Control\Calendar::class,
-    'type' => 'date',
-    'caption' => 'Allow input (F d, Y)',
-    'options' => ['allowInput' => true],
-])->set(date('F d, Y'));
+// $form->addControl('date_multi', [
+//     Form\Control\Calendar::class,
+//     'type' => 'date',
+//     'caption' => 'Multiple mode',
+//     'options' => ['mode' => 'multiple'],
+// // 	'defaultFieldType' => 'text'
+// ])->set(date('Y-m-d') . ', ' . date('Y-m-d', strtotime('+1 Day')) . ', ' . date('Y-m-d', strtotime('+2 Day')));
 
-$webpage->ui_persistence->date_format = 'Y-m-d';
-$form->addControl('date_js_format', [
-    Form\Control\Calendar::class,
-    'type' => 'date',
-    'caption' => 'Format via Javascript',
-    'options' => [
-        'formatDate' => new JsFunction(['date', 'format'], [new JsExpression('return "Date selected: " + flatpickr.formatDate(date, format)')]),
-    ],
-])->set(date('Y-m-d'));
+// $control = $form->addControl('date_action', [
+//     Form\Control\Calendar::class,
+//     'type' => 'date',
+//     'caption' => 'Javascript action',
+//     'options' => ['clickOpens' => false],
+// ])->set(date('Y-m-d'));
+// $control->addAction(['Today', 'icon' => 'calendar day'])->on('click', $control->getJsInstance()->setDate(date('Y-m-d')));
+// $control->addAction(['Select...', 'icon' => 'calendar'])->on('click', $control->getJsInstance()->open());
+// $control->addAction(['Clear', 'icon' => 'times red'])->on('click', $control->getJsInstance()->clear());
 
-$form->addControl('date_range', [
-    Form\Control\Calendar::class,
-    'type' => 'date',
-    'caption' => 'Range mode',
-    'options' => ['mode' => 'range'],
-])->set(date('Y-m-d') . ' to ' . date('Y-m-d', strtotime('+1 Week')));
-
-$form->addControl('date_multi', [
-    Form\Control\Calendar::class,
-    'type' => 'date',
-    'caption' => 'Multiple mode',
-    'options' => ['mode' => 'multiple'],
-])->set(date('Y-m-d') . ', ' . date('Y-m-d', strtotime('+1 Day')) . ', ' . date('Y-m-d', strtotime('+2 Day')));
-
-$control = $form->addControl('date_action', [
-    Form\Control\Calendar::class,
-    'type' => 'date',
-    'caption' => 'Javascript action',
-    'options' => ['clickOpens' => false],
-])->set(date('Y-m-d'));
-$control->addAction(['Today', 'icon' => 'calendar day'])->on('click', $control->getJsInstance()->setDate(date('Y-m-d')));
-$control->addAction(['Select...', 'icon' => 'calendar'])->on('click', $control->getJsInstance()->open());
-$control->addAction(['Clear', 'icon' => 'times red'])->on('click', $control->getJsInstance()->clear());
-
-$form->onSubmit(function ($f) {
+$form->onSubmit(static function ($f) {
     return new JsToast(Webpage::encodeJson($f->model->get()));
 });

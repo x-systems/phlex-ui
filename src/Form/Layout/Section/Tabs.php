@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Form\Layout\Section;
 
+use Phlex\Ui\Form\Layout;
+
 /**
  * Represents form controls in tabs.
  */
 class Tabs extends \Phlex\Ui\Tabs
 {
-    public $formLayout = \Phlex\Ui\Form\Layout::class;
+    public $formLayout = Layout::class;
     public $form;
 
     /**
@@ -19,7 +21,7 @@ class Tabs extends \Phlex\Ui\Tabs
      * @param \Closure             $callback Callback action or URL (or array with url + parameters)
      * @param array                $settings tab settings
      *
-     * @return \Phlex\Ui\Form\Layout
+     * @return Layout
      */
     public function addTab($name, \Closure $callback = null, $settings = [])
     {

@@ -10,8 +10,9 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form\Control\ScopeBuilder;
 use Phlex\Ui\Grid;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $query = <<<'EOF'

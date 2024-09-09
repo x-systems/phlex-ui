@@ -12,22 +12,23 @@ use Phlex\Ui\Form;
 use Phlex\Ui\JsToast;
 use Phlex\Ui\View;
 use Phlex\Ui\VirtualPage;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $vp = VirtualPage::addTo($webpage);
 
-$vp->set(function ($firstPage) {
+$vp->set(static function ($firstPage) {
     $secondVp = VirtualPage::addTo($firstPage);
-    $secondVp->set(function ($secondPage) {
+    $secondVp->set(static function ($secondPage) {
         View::addTo($secondPage)->set('Second Level Page')->addClass('__phlex-behat-test-second');
         $thirdVp = VirtualPage::addTo($secondPage);
-        $thirdVp->set(function ($thirdPage) {
+        $thirdVp->set(static function ($thirdPage) {
             View::addTo($thirdPage)->set('Third Level Page')->addClass('__phlex-behat-test-third');
             $form = Form::addTo($thirdPage);
             $form->addControl('category', [Form\Control\Lookup::class, 'model' => new Category($thirdPage->getApp()->db)]);
-            $form->onSubmit(function ($f) {
+            $form->onSubmit(static function ($f) {
                 $category = $f->getControl('category')->model->load($f->model->get('category'));
 
                 return new JsToast($category->getTitle());

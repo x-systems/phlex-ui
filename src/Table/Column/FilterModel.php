@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Table\Column;
 
-use Phlex\Core\NameTrait;
 use Phlex\Core\SessionTrait;
 use Phlex\Data\Model;
 use Phlex\Data\Persistence;
@@ -15,8 +14,9 @@ use Phlex\Ui\Form;
  */
 class FilterModel extends Model
 {
-    use NameTrait; // needed for SessionTrait
     use SessionTrait;
+
+    public const OPTION_TYPE = self::class . '@type';
 
     /**
      * The operator for defining a condition on a field.
@@ -42,42 +42,57 @@ class FilterModel extends Model
     /**
      * The field where this filter need to query data.
      *
-     * @var Field
+     * @var Model\Field
      */
     public $lookupField;
+
+    protected static $fieldTypes = [
+        FilterModel\TypeString::class,
+        Model\Field\Type\Boolean::class => FilterModel\TypeBoolean::class,
+        Model\Field\Type\Float_::class => FilterModel\TypeNumber::class,
+        Model\Field\Type\Integer::class => FilterModel\TypeNumber::class,
+        Model\Field\Type\Money::class => FilterModel\TypeNumber::class,
+        Model\Field\Type\DateTime::class => FilterModel\TypeDateTime::class,
+        Model\Field\Type\Date::class => FilterModel\TypeDate::class,
+        Model\Field\Type\Time::class => FilterModel\TypeTime::class,
+        Model\Field\Type\Selectable::class => FilterModel\TypeEnum::class,
+        // Model\Field\Type\ReferenceData::class => 'lookup',
+    ];
+
+    public static function registerFieldType($fieldType, $filterType = null): void
+    {
+        if (is_array($fieldTypes = $fieldType)) {
+            foreach ($fieldTypes as $fieldType => $filterType) {
+                self::registerFieldType($fieldType, $filterType);
+            }
+        }
+
+        self::$fieldTypes[$fieldType] = $filterType;
+    }
 
     /**
      * Factory method that will return a FilterModel Type class.
      */
     public static function factoryType(Model\Field $field): self
     {
-        $persistence = new Persistence\Array_();
-        $filterDomain = self::class . '\\Type';
+        $class = $field->getValueType()->resolveFromRegistry(self::$fieldTypes);
 
-        // check if field as a type and use string as default
-        if (empty($type = $field->type)) {
-            $type = 'string';
-        }
-        $class = $filterDomain . ucfirst($type);
-
-        /*
-         * You can set your own filter model condition by extending
-         * Field class and setting your filter model class.
-         */
-        if (!empty($field->filterModel) && isset($field->filterModel)) {
-            if ($field->filterModel instanceof self) {
-                return $field->filterModel;
+        // You can set your own filter model condition by adding the FilterModel::OPTION_TYPE in the field options
+        if ($customType = $field->getOption(self::OPTION_TYPE)) {
+            if ($customType instanceof self) {
+                return $customType;
             }
-            $class = $field->filterModel;
+            $class = $customType;
         }
 
-        return new $class($persistence, ['lookupField' => $field]);
+        return new $class(new Persistence\Array_(), ['lookupField' => $field]);
     }
 
     protected function doInitialize(): void
     {
         parent::doInitialize();
         $this->op = $this->addField('op', [
+            'type' => 'list',
             'options' => [
                 Form\Control::OPTION_SEED => ['caption' => ''],
             ],
@@ -138,9 +153,7 @@ class FilterModel extends Model
      * If form filter need to have a field display at certain condition, then
      * override this method in your FilterModel\TypeModel.
      */
-    public function getFormDisplayRules()
-    {
-    }
+    public function getFormDisplayRules() {}
 
     /**
      * Check if this model is using session or not.

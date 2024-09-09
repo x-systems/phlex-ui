@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Model;
+use Phlex\Data\Persistence\Static_;
+use Phlex\Ui\Header;
 use Phlex\Ui\Table;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-/** @var \Phlex\Data\Model $modelColorClass */
-$modelColorClass = get_class(new class() extends \Phlex\Data\Model {
+/** @var Model $modelColorClass */
+$modelColorClass = get_class(new class() extends Model {
     protected function doInitialize(): void
     {
         parent::doInitialize();
@@ -113,9 +117,9 @@ $keyValueString = [
     'four',
 ];
 
-\Phlex\Ui\Header::addTo($webpage, ['Table column', 'subHeader' => 'Table column decorator can be set from your model.']);
+Header::addTo($webpage, ['Table column', 'subHeader' => 'Table column decorator can be set from your model.']);
 
-$model = new $modelColorClass(new \Phlex\Data\Persistence\Static_([]));
+$model = new $modelColorClass(new Static_([]));
 
 foreach (range(1, 10) as $id) {
     $key_value = random_int(1, 4);
@@ -132,5 +136,5 @@ foreach (range(1, 10) as $id) {
     ]);
 }
 
-$table = \Phlex\Ui\Table::addTo($webpage);
+$table = Table::addTo($webpage);
 $table->setModel($model);

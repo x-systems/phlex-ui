@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Layout;
 
+use Phlex\Core\DebugTrait;
+use Phlex\Ui\Layout;
+
 /**
  * Implements a fixed-width single-column bevel in the middle of the page, centered
  * horizontally and vertically. Icon / Title will apear above the bevel.
@@ -11,9 +14,9 @@ namespace Phlex\Ui\Layout;
  * Bevel will use some padding and will contain your Content.
  * This layout is handy for a simple and single-purpose applications.
  */
-class Centered extends \Phlex\Ui\Layout
+class Centered extends Layout
 {
-    use \Phlex\Core\DebugTrait;
+    use DebugTrait;
 
     public $defaultTemplate = 'layout/centered.html';
 

@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\Label;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Header::addTo($webpage, ['Lookup dependency']);
+Header::addTo($webpage, ['Lookup dependency']);
 
 $form = Form::addTo($webpage, ['segment']);
-\Phlex\Ui\Label::addTo($form, ['Input information here', 'top attached'], ['AboveControls']);
+Label::addTo($form, ['Input information here', 'top attached'], ['AboveControls']);
 
 $form->addControl('starts_with', [
     Form\Control\Dropdown::class,
@@ -35,7 +38,7 @@ $form->addControl('contains', [
 $lookup = $form->addControl('country', [
     Form\Control\Lookup::class,
     'model' => new Country($webpage->db),
-    'dependency' => function (Country $model, $data) {
+    'dependency' => static function (Country $model, $data) {
         foreach (explode(',', $data['starts_with'] ?? '') as $letter) {
             $model->addCondition($model->key()->name, 'like', $letter . '%');
         }
@@ -46,14 +49,14 @@ $lookup = $form->addControl('country', [
     'search' => [Country::hint()->key()->name, Country::hint()->key()->iso, Country::hint()->key()->iso3],
 ]);
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     return 'Submitted: ' . print_r($form->model->get(), true);
 });
 
-\Phlex\Ui\Header::addTo($webpage, ['Lookup multiple values']);
+Header::addTo($webpage, ['Lookup multiple values']);
 
 $form = Form::addTo($webpage, ['segment']);
-\Phlex\Ui\Label::addTo($form, ['Input information here', 'top attached'], ['AboveControls']);
+Label::addTo($form, ['Input information here', 'top attached'], ['AboveControls']);
 
 $form->addControl('ends_with', [
     Form\Control\Dropdown::class,
@@ -69,13 +72,13 @@ $form->addControl('ends_with', [
 $lookup = $form->addControl('country', [
     Form\Control\Lookup::class,
     'model' => new Country($webpage->db),
-    'dependency' => function (Country $model, $data) {
+    'dependency' => static function (Country $model, $data) {
         isset($data['ends_with']) ? $model->addCondition($model->key()->name, 'like', '%' . $data['ends_with']) : null;
     },
     'multiple' => true,
     'search' => [Country::hint()->key()->name, Country::hint()->key()->iso, Country::hint()->key()->iso3],
 ]);
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     return 'Submitted: ' . print_r($form->model->get(), true);
 });

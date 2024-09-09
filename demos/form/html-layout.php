@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Persistence\Array_;
 use Phlex\Ui\Form;
 use Phlex\Ui\GridLayout;
 use Phlex\Ui\Header;
+use Phlex\Ui\JsToast;
+use Phlex\Ui\Label;
 use Phlex\Ui\Tabs;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 Header::addTo($webpage, ['Display form using Html template', 'subHeader' => 'Fully control how to display fields.']);
@@ -32,7 +36,7 @@ $right = View::addTo($gridLayout, [], ['r1c1']);
 Header::addTo($right, ['Button on right']);
 
 $form = Form::addTo($right, ['layout' => [Form\Layout::class, 'defaultTemplate' => __DIR__ . '/templates/form-button-right.html']]);
-$form->setModel((new Flyers(new \Phlex\Data\Persistence\Array_()))->tryLoadAny());
+$form->setModel((new Flyers(new Array_()))->tryLoadAny());
 $form->getControl('last_name')->hint = 'Please enter your last name.';
 
 $left = View::addTo($gridLayout, [], ['r1c2']);
@@ -43,19 +47,19 @@ $form = Form::addTo($left, [
         Form\Layout::class,
         [
             'defaultInputTemplate' => __DIR__ . '/templates/input.html',
-            'defaultHint' => [\Phlex\Ui\Label::class, 'class' => ['pointing', 'below']],
+            'defaultHint' => [Label::class, 'class' => ['pointing', 'below']],
         ],
     ],
 ]);
-$form->setModel((new Flyers(new \Phlex\Data\Persistence\Array_()))->tryLoadAny());
+$form->setModel((new Flyers(new Array_()))->tryLoadAny());
 $form->getControl('last_name')->hint = 'Please enter your last name.';
 
 // //////////////////////////////////////
 $tab = $tabs->addTab('Custom layout class');
 
 $form = Form::addTo($tab, ['layout' => [Form\Layout\Custom::class, 'defaultTemplate' => __DIR__ . '/templates/form-custom-layout.html']]);
-$form->setModel((new \Phlex\Ui\Demos\CountryLock($webpage->db))->loadAny());
+$form->setModel((new CountryLock($webpage->db))->loadAny());
 
-$form->onSubmit(function ($form) {
-    return new \Phlex\Ui\JsToast('Saving is disabled');
+$form->onSubmit(static function ($form) {
+    return new JsToast('Saving is disabled');
 });

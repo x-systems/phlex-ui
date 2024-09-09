@@ -6,17 +6,20 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Button;
 use Phlex\Ui\CardDeck;
+use Phlex\Ui\Crud;
+use Phlex\Ui\Message;
 use Phlex\Ui\UserAction\ExecutorFactory;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 Button::addTo($webpage, ['Executor Factory in View Instance', 'small right floated basic blue', 'iconRight' => 'right arrow'])
     ->link(['factory-view']);
 View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
-$msg = \Phlex\Ui\Message::addTo($webpage, [
+$msg = Message::addTo($webpage, [
     'Customizing action trigger by Overriding Executor Factory',
 ]);
 $msg->text->addParagraph('');
@@ -51,7 +54,7 @@ $webpage->setExecutorFactory(new $myFactory());
 
 $country = new CountryLock($webpage->db);
 
-$crud = \Phlex\Ui\Crud::addTo($webpage, ['ipp' => 5]);
+$crud = Crud::addTo($webpage, ['ipp' => 5]);
 $crud->setModel($country);
 
 View::addTo($webpage, ['class' => ['ui divider']]);

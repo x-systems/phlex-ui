@@ -36,7 +36,7 @@ class CardTable extends Table
                 $data[] = [
                     'id' => $key,
                     'field' => $model->getField($key)->getCaption(),
-                    'value' => $ui_values[$key],
+                    'value' => (string) $ui_values[$key],
                 ];
             }
         }

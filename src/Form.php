@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phlex\Ui;
 
 use Phlex\Core\Factory;
+use Phlex\Core\HookTrait;
 use Phlex\Data\Model;
 
 /**
@@ -12,7 +13,7 @@ use Phlex\Data\Model;
  */
 class Form extends View
 {
-    use \Phlex\Core\HookTrait;
+    use HookTrait;
 
     /** @const string Executed when form is submitted */
     public const HOOK_SUBMIT = self::class . '@submit';
@@ -262,7 +263,7 @@ class Form extends View
      *
      * @param array $fields
      *
-     * @return \Phlex\Data\Model
+     * @return Model
      */
     public function setModel(Model $model, $fields = null)
     {

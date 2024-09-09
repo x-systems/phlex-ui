@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui;
 
+use Phlex\Core\InjectableTrait;
+
 /**
  * Class JsNotify.
  */
 class JsNotify implements JsExpressionable
 {
-    use \Phlex\Core\InjectableTrait;
+    use InjectableTrait;
 
     public $options = [];
     public $attachTo;

@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Model\Field\ValidationException;
 use Phlex\Ui\Button;
 use Phlex\Ui\Header;
+use Phlex\Ui\JsExpression;
+use Phlex\Ui\Label;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Demonstrates how to use interractive buttons.
@@ -43,24 +47,24 @@ Header::addTo($webpage, ['Callbacks']);
 
 // On button click reload it and change it's title
 $b = Button::addTo($webpage, ['Callback Test']);
-$b->on('click', null, function ($b) {
+$b->on('click', null, static function ($b) {
     return $b->text(random_int(1, 20));
 });
 
 $b = Button::addTo($webpage, ['success']);
-$b->on('click', null, function ($b) {
+$b->on('click', null, static function ($b) {
     return 'success';
 });
 
 $b = Button::addTo($webpage, ['failure']);
-$b->on('click', null, function ($b) {
-    throw new \Phlex\Data\Model\Field\ValidationException(['Everything is bad']);
+$b->on('click', null, static function ($b) {
+    throw new ValidationException(['Everything is bad']);
 });
 
 Header::addTo($webpage, ['Callbacks on HTML element', 'subHeader' => 'Click on label below.']);
 
-$label = \Phlex\Ui\Label::addTo($webpage->body, ['Test']);
+$label = Label::addTo($webpage->body, ['Test']);
 
-$label->on('click', null, function ($j, $arg1) {
+$label->on('click', null, static function ($j, $arg1) {
     return 'width is ' . $arg1;
-}, [new \Phlex\Ui\JsExpression('$(window).width()')]);
+}, [new JsExpression('$(window).width()')]);

@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Table;
 
+use Phlex\Core\AppScopeTrait;
 use Phlex\Core\Factory;
+use Phlex\Core\InitializerTrait;
+use Phlex\Core\InjectableTrait;
+use Phlex\Core\TrackableTrait;
 use Phlex\Data\Model;
+use Phlex\Data\Model\Field;
 use Phlex\Ui\Exception;
 use Phlex\Ui\Jquery;
+use Phlex\Ui\JsCallback;
 use Phlex\Ui\JsExpression;
 use Phlex\Ui\Popup;
+use Phlex\Ui\Table;
 use Phlex\Ui\Webpage;
 
 /**
@@ -19,10 +26,10 @@ use Phlex\Ui\Webpage;
  */
 class Column
 {
-    use \Phlex\Core\AppScopeTrait;
-    use \Phlex\Core\InitializerTrait;
-    use \Phlex\Core\InjectableTrait;
-    use \Phlex\Core\TrackableTrait;
+    use AppScopeTrait;
+    use InitializerTrait;
+    use InjectableTrait;
+    use TrackableTrait;
 
     /** @const string */
     public const HOOK_GET_HTML_TAGS = self::class . '@getHtmlTags';
@@ -37,16 +44,16 @@ class Column
 
     protected static $fieldColumns = [
         [self::class],
-        Model\Field\Type\Password::class => [Column\Password::class],
-        Model\Field\Type\Money::class => [Column\Money::class],
-        Model\Field\Type\Text::class => [Column\Text::class],
-        Model\Field\Type\Boolean::class => [Column\Status::class, ['positive' => [true], 'negative' => [false]]],
+        Field\Type\Password::class => [Column\Password::class],
+        Field\Type\Money::class => [Column\Money::class],
+        Field\Type\Text::class => [Column\Text::class],
+        Field\Type\Boolean::class => [Column\Status::class, ['positive' => [true], 'negative' => [false]]],
     ];
 
     /**
      * Link back to the table, where column is used.
      *
-     * @var \Phlex\Ui\Table
+     * @var Table
      */
     public $table;
 
@@ -144,7 +151,7 @@ class Column
     {
         $this->hasHeaderAction = true;
 
-        $this->headerActionTag = ['div',  ['class' => 'phlex-table-dropdown'],
+        $this->headerActionTag = ['div', ['class' => 'phlex-table-dropdown'],
             [
                 ['i', ['id' => $id, 'class' => $class . ' icon'], ''],
             ],
@@ -156,7 +163,7 @@ class Column
      */
     public function setHeaderPopupIcon($icon)
     {
-        $this->headerActionTag = ['div',  ['class' => 'phlex-table-dropdown'],
+        $this->headerActionTag = ['div', ['class' => 'phlex-table-dropdown'],
             [
                 ['i', ['id' => $this->elementName . '_ac', 'class' => $icon . ' icon'], ''],
             ],
@@ -178,7 +185,7 @@ class Column
 
         $cb = $this->setHeaderDropdown($menuItems, $icon, $menuId);
 
-        $cb->onSelectItem(function ($menu, $item) use ($fx) {
+        $cb->onSelectItem(static function ($menu, $item) use ($fx) {
             return $fx($item, $menu);
         });
     }
@@ -188,13 +195,13 @@ class Column
      * This method return a callback where you can detect
      * menu item change via $cb->onMenuItem($item) function.
      *
-     * @return \Phlex\Ui\JsCallback
+     * @return JsCallback
      */
     public function setHeaderDropdown($items, string $icon = 'caret square down', string $menuId = null)
     {
         $this->hasHeaderAction = true;
         $id = $this->elementName . '_ac';
-        $this->headerActionTag = ['div',  ['class' => 'phlex-table-dropdown'],
+        $this->headerActionTag = ['div', ['class' => 'phlex-table-dropdown'],
             [
                 [
                     'div', ['id' => $id, 'class' => 'ui top left pointing dropdown', 'data-menu-id' => $menuId],
@@ -308,7 +315,7 @@ class Column
      *
      * @return string
      */
-    public function getHeaderCellHtml(Model\Field $field = null, $value = null)
+    public function getHeaderCellHtml(Field $field = null, $value = null)
     {
         if (!$this->table) {
             throw (new Exception('How $table could not be set??'))
@@ -369,7 +376,7 @@ class Column
      *
      * @return string
      */
-    public function getTotalsCellHtml(Model\Field $field, $value)
+    public function getTotalsCellHtml(Field $field, $value)
     {
         return $this->getTag('foot', $this->table->getCodec($field)->encode($value));
     }
@@ -390,7 +397,7 @@ class Column
      *
      * @return string
      */
-    public function getDataCellHtml(Model\Field $field = null, $extra_tags = [])
+    public function getDataCellHtml(Field $field = null, $extra_tags = [])
     {
         return $this->getTag('body', [$this->getDataCellTemplate($field)], $extra_tags);
     }
@@ -408,7 +415,7 @@ class Column
      *
      * @return string
      */
-    public function getDataCellTemplate(Model\Field $field = null)
+    public function getDataCellTemplate(Field $field = null)
     {
         if ($field) {
             return '{$' . $field->elementId . '}';
@@ -435,12 +442,12 @@ class Column
      * Will come up with a column object based on the field object supplied.
      * By default will use fallbackSeed column.
      *
-     * @param \Phlex\Data\Model\Field $field Data model field
-     * @param mixed                   $seed  Defaults to pass to Factory::factory() when decorator is initialized
+     * @param Field $field Data model field
+     * @param mixed $seed  Defaults to pass to Factory::factory() when decorator is initialized
      *
      * @return self
      */
-    public static function factory(Model\Field $field, $seed = [], $fallbackSeed = [self::class])
+    public static function factory(Field $field, $seed = [], $fallbackSeed = [self::class])
     {
         return self::fromSeed(Factory::mergeSeeds(
             $seed,

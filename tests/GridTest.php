@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
+use Phlex\Data\Model;
+use Phlex\Data\Persistence\Array_;
 use Phlex\Ui\Table;
 
-class GridTest extends \Phlex\Core\PHPUnit\TestCase
+class GridTest extends TestCase
 {
     use Concerns\HandlesTable;
 
@@ -18,7 +21,7 @@ class GridTest extends \Phlex\Core\PHPUnit\TestCase
             1 => ['id' => 1, 'email' => 'test@test.com', 'password' => 'abc123', 'xtra' => 'xtra'],
             2 => ['id' => 2, 'email' => 'test@yahoo.com', 'password' => 'secret'],
         ];
-        $this->m = new MyModel(new \Phlex\Data\Persistence\Array_($a));
+        $this->m = new MyModel(new Array_($a));
     }
 
     public function test1(): void
@@ -82,7 +85,7 @@ class GridTest extends \Phlex\Core\PHPUnit\TestCase
     }
 }
 
-class MyModel extends \Phlex\Data\Model
+class MyModel extends Model
 {
     public $titleKey = 'email';
 

@@ -16,7 +16,6 @@ use Phlex\Ui\Webpage;
  * text is taken by the Row Model in $tooltip_field
  *
  * @usage   : $crud->addDecorator('paid_date',  new \Phlex\Ui\Table\Column\Tooltip('note'));
- *
  * @usage   : $crud->addDecorator('paid_date',  new \Phlex\Ui\Table\Column\Tooltip('note','error red'));
  */
 class Tooltip extends Table\Column

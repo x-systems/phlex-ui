@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
+use Phlex\Data\Model;
+use Phlex\Data\Persistence\Array_;
+use Phlex\Ui\Exception;
 use Phlex\Ui\Table;
 
-class TableColumnColorRatingTest extends \Phlex\Core\PHPUnit\TestCase
+class TableColumnColorRatingTest extends TestCase
 {
     use Concerns\HandlesTable;
 
@@ -27,12 +31,12 @@ class TableColumnColorRatingTest extends \Phlex\Core\PHPUnit\TestCase
                 ],
             ],
         ];
-        $db = new \Phlex\Data\Persistence\Array_($arr);
-        $m = new \Phlex\Data\Model($db, ['table' => 'table']);
+        $db = new Array_($arr);
+        $m = new Model($db, ['table' => 'table']);
         $m->addField('name');
         $m->addField('ref');
         $m->addField('rating');
-        $this->table = new \Phlex\Ui\Table();
+        $this->table = new Table();
         $this->table->initialize();
         $this->table->setModel($m, ['name', 'ref', 'rating']);
     }
@@ -139,7 +143,7 @@ class TableColumnColorRatingTest extends \Phlex\Core\PHPUnit\TestCase
 
     public function testExceptionMinGreaterThanMax(): void
     {
-        $this->expectException(\Phlex\Ui\Exception::class);
+        $this->expectException(Exception::class);
 
         $this->table->addDecorator('rating', [
             Table\Column\ColorRating::class,
@@ -158,7 +162,7 @@ class TableColumnColorRatingTest extends \Phlex\Core\PHPUnit\TestCase
 
     public function testExceptionMinEqualsMax(): void
     {
-        $this->expectException(\Phlex\Ui\Exception::class);
+        $this->expectException(Exception::class);
 
         $this->table->addDecorator('rating', [
             Table\Column\ColorRating::class,
@@ -177,7 +181,7 @@ class TableColumnColorRatingTest extends \Phlex\Core\PHPUnit\TestCase
 
     public function testExceptionZeroSteps(): void
     {
-        $this->expectException(\Phlex\Ui\Exception::class);
+        $this->expectException(Exception::class);
 
         $this->table->addDecorator('rating', [
             Table\Column\ColorRating::class,
@@ -196,7 +200,7 @@ class TableColumnColorRatingTest extends \Phlex\Core\PHPUnit\TestCase
 
     public function testExceptionLessThan2ColorsDefined(): void
     {
-        $this->expectException(\Phlex\Ui\Exception::class);
+        $this->expectException(Exception::class);
 
         $this->table->addDecorator('rating', [
             Table\Column\ColorRating::class,

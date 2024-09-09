@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Button;
+use Phlex\Ui\Header;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\View::addTo($webpage, [
+View::addTo($webpage, [
     'Sticky GET allows us to preserve some GET arguments',
     'ui' => 'ignored info message',
 ]);
 
-/** @var \Phlex\Ui\Button $myButtonClass */
-$myButtonClass = get_class(new class() extends \Phlex\Ui\Button {
+/** @var Button $myButtonClass */
+$myButtonClass = get_class(new class() extends Button {
     protected function doRender(): void
     {
         $this->link($this->content);
@@ -32,7 +35,7 @@ $myButtonClass::addTo($webpage, [$webpage->url(['c' => 'OHO'])]);
 $myButtonClass::addTo($webpage, [$webpage->url(['xx' => 'YEY', 'c' => 'OHO'])]);
 
 // URLs presented by a blank app
-\Phlex\Ui\Header::addTo($webpage, ['URLs presented by a blank app']);
+Header::addTo($webpage, ['URLs presented by a blank app']);
 Button::addTo($webpage, [$webpage->url()]);
 Button::addTo($webpage, [$webpage->url(['b' => 2])]);
 Button::addTo($webpage, [$webpage->url(['b' => 2, 'c' => false])]);
@@ -40,7 +43,7 @@ Button::addTo($webpage, [$webpage->url(['b' => 2, 'c' => null])]);
 Button::addTo($webpage, [$webpage->url(['b' => 2, 'c' => 'abc'])]);
 
 // Sticky for xx=
-\Phlex\Ui\Header::addTo($webpage, ['Now add sticky for xx=' . $webpage->stickyGet('xx')]);
+Header::addTo($webpage, ['Now add sticky for xx=' . $webpage->stickyGet('xx')]);
 Button::addTo($webpage, [$webpage->url()]);
 Button::addTo($webpage, [$webpage->url(['b' => 2])]);
 Button::addTo($webpage, [$webpage->url(['b' => 2, 'c' => false])]);
@@ -48,7 +51,7 @@ Button::addTo($webpage, [$webpage->url(['b' => 2, 'c' => null])]);
 Button::addTo($webpage, [$webpage->url(['b' => 2, 'c' => 'abc'])]);
 
 // Sticky for c=
-\Phlex\Ui\Header::addTo($webpage, ['Now also add sticky for c=' . $webpage->stickyGet('c')]);
+Header::addTo($webpage, ['Now also add sticky for c=' . $webpage->stickyGet('c')]);
 Button::addTo($webpage, [$webpage->url()]);
 Button::addTo($webpage, [$webpage->url(['b' => 2])]);
 Button::addTo($webpage, [$webpage->url(['b' => 2, 'c' => false])]);
@@ -56,7 +59,7 @@ Button::addTo($webpage, [$webpage->url(['b' => 2, 'c' => null])]);
 Button::addTo($webpage, [$webpage->url(['b' => 2, 'c' => 'abc'])]);
 
 // Various ways to build links
-\Phlex\Ui\Header::addTo($webpage, ['Various ways to build links']);
+Header::addTo($webpage, ['Various ways to build links']);
 Button::addTo($webpage, [$webpage->url()]);
 Button::addTo($webpage, [$webpage->url('other.php')]);
 Button::addTo($webpage, [$webpage->url('other')]);

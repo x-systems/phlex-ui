@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Core\Exception;
+use Phlex\Data\Model;
+use Phlex\Data\Persistence\Array_;
+use Phlex\Ui\Button;
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\JsToast;
+use Phlex\Ui\Message;
+use Phlex\Ui\Modal;
+use Phlex\Ui\Tabs;
 use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /**
@@ -21,16 +30,16 @@ require_once __DIR__ . '/../init-app.php';
  * This approach will also prevent your application from registering shutdown handler or catching error,
  * so we will need to do a bit of work about that too.
  */
-$tabs = \Phlex\Ui\Tabs::addTo($webpage);
+$tabs = Tabs::addTo($webpage);
 
 // //////////////////////////////////////////
 $tab = $tabs->addTab('Basic Use');
 
-\Phlex\Ui\Header::addTo($tab, ['Very simple form']);
+Header::addTo($tab, ['Very simple form']);
 
 $form = Form::addTo($tab);
 $form->addControl('email');
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     // implement subscribe here
 
     return $form->success('Subscribed ' . $form->model->get('email') . ' to newsletter.');
@@ -39,7 +48,7 @@ $form->onSubmit(function (Form $form) {
 $form->buttonSave->set('Subscribe');
 $form->buttonSave->icon = 'mail';
 
-\Phlex\Ui\Header::addTo($tab, ['But very flexible']);
+Header::addTo($tab, ['But very flexible']);
 
 $form = Form::addTo($tab);
 $group = $form->addGroup(['width' => 'three']);
@@ -57,19 +66,19 @@ $form->addControl('status_integer_required', [Form\Control\Dropdown::class, 'val
 $form->addControl('status_string_mandatory', [Form\Control\Dropdown::class, 'values' => $values], ['type' => 'string', 'mandatory' => true]);
 $form->addControl('status_integer_mandatory', [Form\Control\Dropdown::class, 'values' => $values], ['type' => 'integer', 'mandatory' => true]);
 
-$form->onSubmit(function (Form $form) {
-    return new \Phlex\Ui\JsToast(Webpage::encodeJson($form->model->get()));
+$form->onSubmit(static function (Form $form) {
+    return new JsToast(Webpage::encodeJson($form->model->get()));
 });
 
-\Phlex\Ui\Header::addTo($tab, ['Comparing Field type vs Form control class']);
+Header::addTo($tab, ['Comparing Field type vs Form control class']);
 $form = Form::addTo($tab);
 $form->addControl('field', null, ['type' => 'date', 'caption' => 'Date using model field:']);
 $form->addControl('control', [Form\Control\Calendar::class, 'type' => 'date', 'caption' => 'Date using form control: ']);
 $form->buttonSave->set('Compare Date');
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     $message = 'field = ' . print_r($form->model->get('field'), true) . '; <br> control = ' . print_r($form->model->get('control'), true);
-    $view = new \Phlex\Ui\Message('Date field vs control:');
+    $view = new Message('Date field vs control:');
     $view->initialize();
     $view->text->addHtml($message);
 
@@ -79,87 +88,87 @@ $form->onSubmit(function (Form $form) {
 // //////////////////////////////////////////////////////////
 $tab = $tabs->addTab('Handler Output');
 
-\Phlex\Ui\Header::addTo($tab, ['Form can respond with manually generated error']);
+Header::addTo($tab, ['Form can respond with manually generated error']);
 $form = Form::addTo($tab);
 $form->addControl('email1');
 $form->buttonSave->set('Save1');
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     return $form->error('email1', 'some error action ' . random_int(1, 100));
 });
 
-\Phlex\Ui\Header::addTo($tab, ['..or success message']);
+Header::addTo($tab, ['..or success message']);
 $form = Form::addTo($tab);
 $form->addControl('email2');
 $form->buttonSave->set('Save2');
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     return $form->success('form was successful');
 });
 
-\Phlex\Ui\Header::addTo($tab, ['Any other view can be output']);
+Header::addTo($tab, ['Any other view can be output']);
 $form = Form::addTo($tab);
 $form->addControl('email3');
 $form->buttonSave->set('Save3');
-$form->onSubmit(function (Form $form) {
-    $view = new \Phlex\Ui\Message('some header');
+$form->onSubmit(static function (Form $form) {
+    $view = new Message('some header');
     $view->initialize();
     $view->text->addParagraph('some text ' . random_int(1, 100));
 
     return $view;
 });
 
-\Phlex\Ui\Header::addTo($tab, ['Modal can be output directly']);
+Header::addTo($tab, ['Modal can be output directly']);
 $form = Form::addTo($tab);
 $form->addControl('email4');
 $form->buttonSave->set('Save4');
-$form->onSubmit(function (Form $form) {
-    $view = new \Phlex\Ui\Message('some header');
+$form->onSubmit(static function (Form $form) {
+    $view = new Message('some header');
     $view->initialize();
     $view->text->addParagraph('some text ' . random_int(1, 100));
 
-    $modal = new \Phlex\Ui\Modal(['title' => 'Something happen', 'ui' => 'ui modal tiny']);
+    $modal = new Modal(['title' => 'Something happen', 'ui' => 'ui modal tiny']);
     $modal->addView($view);
 
     return $modal;
 });
 
-\Phlex\Ui\Header::addTo($tab, ['jsAction can be used too']);
+Header::addTo($tab, ['jsAction can be used too']);
 $form = Form::addTo($tab);
 $control = $form->addControl('email5');
 $form->buttonSave->set('Save5');
-$form->onSubmit(function (Form $form) use ($control) {
+$form->onSubmit(static function (Form $form) use ($control) {
     return $control->jsInput()->val('random is ' . random_int(1, 100));
 });
 
 // ///////////////////////////////////////////////////////////////////
 $tab = $tabs->addTab('Handler Safety');
 
-\Phlex\Ui\Header::addTo($tab, ['Form handles errors', 'size' => 2]);
+Header::addTo($tab, ['Form handles errors', 'size' => 2]);
 
 $form = Form::addTo($tab);
 $form->addControl('email');
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     $o = new \stdClass();
 
     return $o['abc'];
 });
 
-\Phlex\Ui\Header::addTo($tab, ['Form shows Phlex exceptions', 'size' => 2]);
+Header::addTo($tab, ['Form shows Phlex exceptions', 'size' => 2]);
 
 $form = Form::addTo($tab);
 $form->addControl('email');
-$form->onSubmit(function (Form $form) {
-    throw (new \Phlex\Core\Exception('testing'))
+$form->onSubmit(static function (Form $form) {
+    throw (new Exception('testing'))
         ->addMoreInfo('arg1', 'val1');
 
     return 'somehow it did not crash';
 });
 
-\Phlex\Ui\Button::addTo($form, ['Modal Test', 'secondary'])->on('click', \Phlex\Ui\Modal::addTo($form)
-    ->set(function ($p) {
+Button::addTo($form, ['Modal Test', 'secondary'])->on('click', Modal::addTo($form)
+    ->set(static function ($p) {
         $form = Form::addTo($p);
         $form->addControl('email');
-        $form->onSubmit(function (Form $form) {
-            throw (new \Phlex\Core\Exception('testing'))
+        $form->onSubmit(static function (Form $form) {
+            throw (new Exception('testing'))
                 ->addMoreInfo('arg1', 'val1');
 
             return 'somehow it did not crash';
@@ -169,9 +178,9 @@ $form->onSubmit(function (Form $form) {
 // ///////////////////////////////////////////////////////////////////
 $tab = $tabs->addTab('Complex Examples');
 
-\Phlex\Ui\Header::addTo($tab, ['Conditional response']);
+Header::addTo($tab, ['Conditional response']);
 
-$modelRegister = new \Phlex\Data\Model(new \Phlex\Data\Persistence\Array_());
+$modelRegister = new Model(new Array_());
 $modelRegister->addField('name');
 $modelRegister->addField('email');
 $modelRegister->addField('is_accept_terms', ['type' => 'boolean', 'mandatory' => true]);
@@ -180,7 +189,7 @@ $modelRegister = $modelRegister->createEntity();
 $form = Form::addTo($tab, ['segment' => true]);
 $form->setModel($modelRegister);
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     if ($form->model->get('name') !== 'John') {
         return $form->error('name', 'Your name is not John! It is "' . $form->model->get('name') . '". It should be John. Pleeease!');
     }
@@ -194,10 +203,10 @@ $form->onSubmit(function (Form $form) {
 // //////////////////////////////////////
 $tab = $tabs->addTab('Layout Control');
 
-\Phlex\Ui\Header::addTo($tab, ['Shows example of grouping and multiple errors']);
+Header::addTo($tab, ['Shows example of grouping and multiple errors']);
 
 $form = Form::addTo($tab, ['segment']);
-$form->setModel(new \Phlex\Data\Model());
+$form->setModel(new Model());
 
 $form->addHeader('Example fields added one-by-one');
 $form->addControl('name');
@@ -217,7 +226,7 @@ $group->addControl('first_name', ['width' => 'eight']);
 $group->addControl('middle_name', ['width' => 'three', 'disabled' => true]);
 $group->addControl('last_name', ['width' => 'five']);
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     $errors = [];
 
     foreach ($form->model->getFields() as $name => $ff) {

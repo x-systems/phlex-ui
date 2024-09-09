@@ -4,21 +4,28 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Ui\Button;
+use Phlex\Ui\Header;
+use Phlex\Ui\JsSse;
+use Phlex\Ui\ProgressBar;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Header::addTo($webpage, ['SSE with ProgressBar']);
+Header::addTo($webpage, ['SSE with ProgressBar']);
 
-$bar = \Phlex\Ui\ProgressBar::addTo($webpage);
+$bar = ProgressBar::addTo($webpage);
 
-$button = \Phlex\Ui\Button::addTo($webpage, ['Turn On']);
-$buttonStop = \Phlex\Ui\Button::addTo($webpage, ['Turn Off']);
+$button = Button::addTo($webpage, ['Turn On']);
+$buttonStop = Button::addTo($webpage, ['Turn Off']);
 // non-SSE way
 // $button->on('click', $bar->js()->progress(['percent'=> 40]));
 
-$sse = \Phlex\Ui\JsSse::addTo($webpage, ['showLoader' => true]);
+$sse = JsSse::addTo($webpage, ['showLoader' => true]);
 
-$button->on('click', $sse->set(function () use ($button, $sse, $bar) {
+$button->on('click', $sse->set(static function () use ($button, $sse, $bar) {
     $sse->send($button->js()->addClass('disabled'));
 
     $sse->send($bar->jsValue(20));
@@ -39,13 +46,13 @@ $button->on('click', $sse->set(function () use ($button, $sse, $bar) {
 
 $buttonStop->on('click', [$button->js()->phlexServerEvent('stop'), $button->js()->removeClass('disabled')]);
 
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'divider']);
-\Phlex\Ui\Header::addTo($webpage, ['SSE operation with user confirmation']);
+View::addTo($webpage, ['ui' => 'divider']);
+Header::addTo($webpage, ['SSE operation with user confirmation']);
 
-$sse = \Phlex\Ui\JsSse::addTo($webpage);
-$button = \Phlex\Ui\Button::addTo($webpage, ['Click me to change my text']);
+$sse = JsSse::addTo($webpage);
+$button = Button::addTo($webpage, ['Click me to change my text']);
 
-$button->on('click', $sse->set(function ($jsChain) use ($sse, $button) {
+$button->on('click', $sse->set(static function ($jsChain) use ($sse, $button) {
     $sse->send($button->js()->text('Please wait for 2 seconds...'));
     sleep(2);
 

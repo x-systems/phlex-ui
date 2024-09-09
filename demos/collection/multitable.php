@@ -4,23 +4,34 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Data\Model;
+use Phlex\Ui\Button;
+use Phlex\Ui\Columns;
+use Phlex\Ui\Header;
+use Phlex\Ui\JsExpression;
+use Phlex\Ui\JsModal;
+use Phlex\Ui\JsReload;
+use Phlex\Ui\Table;
+use Phlex\Ui\VirtualPage;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Re-usable component implementing counter
 
-/** @var \Phlex\Ui\Columns $finderClass */
-$finderClass = get_class(new class() extends \Phlex\Ui\Columns {
+/** @var Columns $finderClass */
+$finderClass = get_class(new class() extends Columns {
     public $route = [];
 
-    public function setModel(\Phlex\Data\Model $model, $route = [])
+    public function setModel(Model $model, $route = [])
     {
         parent::setModel($model);
 
         $this->addClass('internally celled');
 
         // lets add our first table here
-        $table = \Phlex\Ui\Table::addTo($this->addColumn(), ['header' => false, 'very basic selectable'])->addStyle('cursor', 'pointer');
+        $table = Table::addTo($this->addColumn(), ['header' => false, 'very basic selectable'])->addStyle('cursor', 'pointer');
         $table->setModel($model, [$model->titleKey]);
 
         $selections = explode(',', $_GET[$this->elementName] ?? '');
@@ -30,9 +41,9 @@ $finderClass = get_class(new class() extends \Phlex\Ui\Columns {
         }
 
         $path = [];
-        $jsReload = new \Phlex\Ui\JsReload($this, [$this->elementName => new \Phlex\Ui\JsExpression('[]+[]', [
+        $jsReload = new JsReload($this, [$this->elementName => new JsExpression('[]+[]', [
             $path ? (implode(',', $path) . ',') : '',
-            new \Phlex\Ui\JsExpression('$(this).data("id")'),
+            new JsExpression('$(this).data("id")'),
         ])]);
         $table->on('click', 'tr', $jsReload);
 
@@ -48,22 +59,22 @@ $finderClass = get_class(new class() extends \Phlex\Ui\Columns {
                 $route[] = $ref; // repeat last route
             }
 
-            if (!$pushModel->hasRef($ref)) {
+            if (!$pushModel->hasField($ref)) {
                 break; // no such route
             }
 
             $pushModel = $pushModel->ref($ref);
 
-            $table = \Phlex\Ui\Table::addTo($this->addColumn(), ['header' => false, 'very basic selectable'])->addStyle('cursor', 'pointer');
+            $table = Table::addTo($this->addColumn(), ['header' => false, 'very basic selectable'])->addStyle('cursor', 'pointer');
             $table->setModel($pushModel->setLimit(10), [$pushModel->titleKey]);
 
             if ($selections) {
                 $table->js(true)->find('tr[data-id=' . $selections[0] . ']')->addClass('active');
             }
 
-            $jsReload = new \Phlex\Ui\JsReload($this, [$this->elementName => new \Phlex\Ui\JsExpression('[]+[]', [
+            $jsReload = new JsReload($this, [$this->elementName => new JsExpression('[]+[]', [
                 $path ? (implode(',', $path) . ',') : '',
-                new \Phlex\Ui\JsExpression('$(this).data("id")'),
+                new JsExpression('$(this).data("id")'),
             ])]);
             $table->on('click', 'tr', $jsReload);
         }
@@ -76,16 +87,16 @@ $model = new File($webpage->db);
 $model->addCondition($model->key()->parent_folder_id, null);
 $model->setOrder([$model->key()->is_folder => 'desc', $model->key()->name]);
 
-\Phlex\Ui\Header::addTo($webpage, ['MacOS File Finder', 'subHeader' => 'Component built around Table, Columns and JsReload']);
+Header::addTo($webpage, ['MacOS File Finder', 'subHeader' => 'Component built around Table, Columns and JsReload']);
 
-$vp = \Phlex\Ui\VirtualPage::addTo($webpage)->set(function ($vp) use ($model) {
+$vp = VirtualPage::addTo($webpage)->set(static function ($vp) use ($model) {
     $model->persistence->query($model)->delete()->execute();
     $model->importFromFilesystem('.');
-    \Phlex\Ui\Button::addTo($vp, ['Import Complete', 'big green fluid'])->link('multitable.php');
+    Button::addTo($vp, ['Import Complete', 'big green fluid'])->link('multitable.php');
     $vp->js(true)->closest('.modal')->find('.header')->remove();
 });
 
-\Phlex\Ui\Button::addTo($webpage, ['Re-Import From Filesystem', 'top attached'])->on('click', new \Phlex\Ui\JsModal('Now importing ... ', $vp));
+Button::addTo($webpage, ['Re-Import From Filesystem', 'top attached'])->on('click', new JsModal('Now importing ... ', $vp));
 
 $finderClass::addTo($webpage, ['bottom attached'])
     ->addClass('top attached segment')

@@ -4,23 +4,27 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Model;
+use Phlex\Data\Persistence\Array_;
+use Phlex\Ui\Columns;
 use Phlex\Ui\Form;
 use Phlex\Ui\JsToast;
+use Phlex\Ui\View;
 use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\View::addTo($webpage, [
+View::addTo($webpage, [
     'Forms below focus on Data integration and automated layouts',
     'ui' => 'ignored warning message',
 ]);
 
-$formSubmit = function ($f) {
+$formSubmit = static function ($f) {
     return new JsToast(Webpage::encodeJson($f->model->get()));
 };
 
-$cc = \Phlex\Ui\Columns::addTo($webpage);
+$cc = Columns::addTo($webpage);
 $form = Form::addTo($cc->addColumn());
 
 // adding field without model creates a regular line
@@ -43,7 +47,7 @@ $form->addControl('six', new Form\Control\Checkbox(['caption' => 'Caption3']));
 
 $form->onSubmit($formSubmit);
 
-$model = new \Phlex\Data\Model(new \Phlex\Data\Persistence\Array_());
+$model = new Model(new Array_());
 
 // model field uses regular line form control by default
 $model->addField('one');

@@ -5,25 +5,28 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\Message;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-$output = function (string $date) {
-    $view = new \Phlex\Ui\Message();
+$output = static function (string $date) {
+    $view = new Message();
     $view->initialize();
     $view->text->addHtml($date);
 
     return $view;
 };
 
-\Phlex\Ui\Header::addTo($webpage, ['Testing flatpickr using Behat']);
+Header::addTo($webpage, ['Testing flatpickr using Behat']);
 $form = Form::addTo($webpage);
 $c = $form->addControl('field', null, ['type' => 'date']);
 $form->buttonSave->set($c->elementId);
 
-$form->onSubmit(function ($form) use ($output, $c, $webpage) {
+$form->onSubmit(static function ($form) use ($output, $c, $webpage) {
     return $output($form->model->get($c->elementId)->format($webpage->ui_persistence->date_format));
 });
 
@@ -33,7 +36,7 @@ $form = Form::addTo($webpage);
 $c = $form->addControl('date_ymd', [Form\Control\Calendar::class, 'type' => 'date']);
 $form->buttonSave->set($c->elementId);
 
-$form->onSubmit(function ($form) use ($output, $c) {
+$form->onSubmit(static function ($form) use ($output, $c) {
     return $output($form->model->get($c->elementId));
 });
 
@@ -43,7 +46,7 @@ $form = Form::addTo($webpage);
 $c = $form->addControl('time_24hr', [Form\Control\Calendar::class, 'type' => 'time']);
 $form->buttonSave->set($c->elementId);
 
-$form->onSubmit(function ($form) use ($output, $c) {
+$form->onSubmit(static function ($form) use ($output, $c) {
     return $output($form->model->get($c->elementId));
 });
 
@@ -53,7 +56,7 @@ $form = Form::addTo($webpage);
 $c = $form->addControl('time_am', [Form\Control\Calendar::class, 'type' => 'time']);
 $form->buttonSave->set($c->elementId);
 
-$form->onSubmit(function ($form) use ($output, $c) {
+$form->onSubmit(static function ($form) use ($output, $c) {
     return $output($form->model->get($c->elementId));
 });
 
@@ -63,6 +66,6 @@ $form = Form::addTo($webpage);
 $c = $form->addControl('datetime', [Form\Control\Calendar::class, 'type' => 'datetime']);
 $form->buttonSave->set($c->elementId);
 
-$form->onSubmit(function ($form) use ($output, $c) {
+$form->onSubmit(static function ($form) use ($output, $c) {
     return $output($form->model->get($c->elementId));
 });

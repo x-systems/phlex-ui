@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Table\Column\FilterModel;
 
+use Phlex\Ui\Form;
+use Phlex\Ui\Form\Control\Line;
 use Phlex\Ui\Table\Column;
 
 class TypeNumber extends Column\FilterModel
@@ -12,7 +14,7 @@ class TypeNumber extends Column\FilterModel
     {
         parent::doInitialize();
 
-        $this->op->values = [
+        $this->op->getValueType()->setValues([
             '=' => '=',
             '!=' => '!=',
             '<' => '<',
@@ -20,11 +22,11 @@ class TypeNumber extends Column\FilterModel
             '>' => '>',
             '>=' => '> or equal',
             'between' => 'Between',
-        ];
+        ]);
         $this->op->default = '=';
 
-        $this->value->ui['form'] = [\Phlex\Ui\Form\Control\Line::class, 'inputType' => 'number'];
-        $this->addField('range', ['ui' => ['caption' => '', 'form' => [\Phlex\Ui\Form\Control\Line::class, 'inputType' => 'number']]]);
+        $this->value->setOption(Form\Control::OPTION_SEED, [Line::class, 'inputType' => 'number']);
+        $this->addField('range', ['options' => [Form\Control::OPTION_SEED => [Line::class, 'inputType' => 'number', 'caption' => '']]]);
     }
 
     public function setConditionForModel($model)

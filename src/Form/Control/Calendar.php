@@ -7,6 +7,8 @@ namespace Phlex\Ui\Form\Control;
 use Phlex\Ui\Jquery;
 use Phlex\Ui\JsChain;
 use Phlex\Ui\JsExpression;
+use Phlex\Ui\JsFunction;
+use Phlex\Ui\View\Codec;
 use Phlex\Ui\Webpage;
 
 /**
@@ -40,7 +42,7 @@ class Calendar extends Input
      */
     public static function setFirstDayOfWeek(Webpage $webpage, int $day)
     {
-        $webpage->html->js(true, (new JsExpression('flatpickr.l10ns.default.firstDayOfWeek = [day]', ['day' => $day])));
+        $webpage->html->js(true, new JsExpression('flatpickr.l10ns.default.firstDayOfWeek = [day]', ['day' => $day]));
     }
 
     /**
@@ -69,15 +71,33 @@ class Calendar extends Input
      */
     public static function setDayOfWeek(Webpage $webpage, int $day)
     {
-        $webpage->html->js(true, (new JsExpression('flatpickr.l10ns.default.firstDayOfWeek = [day]', ['day' => $day])));
+        $webpage->html->js(true, new JsExpression('flatpickr.l10ns.default.firstDayOfWeek = [day]', ['day' => $day]));
     }
 
     protected function doInitialize(): void
     {
         parent::doInitialize();
 
-        // get format from Codec.
-        $this->options['dateFormat'] = $this->translateFormat($this->field->getCodec($this)->format ?? '');
+        switch ($this->type) {
+            case 'datetime':
+                $codecSeed = [Codec\DateTime::class];
+
+                break;
+            case 'time':
+                $codecSeed = [Codec\Time::class];
+
+                break;
+            case 'date':
+                $codecSeed = [Codec\Date::class];
+
+                break;
+            default:
+                break;
+        }
+
+        $this->field->getValueType()->codecs[self::class] = $codecSeed;
+
+        $this->options['dateFormat'] ??= $this->translateFormat($this->field->getCodec($this)->getFormat() ?? 'd-m-Y');
 
         if ($this->type === 'datetime' || $this->type === 'time') {
             $this->options['enableTime'] = true;
@@ -90,6 +110,10 @@ class Calendar extends Input
             // Allow edit if microseconds is set.
             $this->options['allowInput'] ??= $this->allowMicroSecondsInput($this->options['altFormat'] ?? $this->options['dateFormat']);
         }
+
+        if ('date' !== ($this->options['mode'] ?? null)) {
+            $this->defaultFieldType = 'text';
+        }
     }
 
     protected function doRender(): void
@@ -101,6 +125,13 @@ class Calendar extends Input
         $this->jsInput(true)->flatpickr($this->options);
 
         parent::doRender();
+    }
+
+    public function useFormat(string $format)
+    {
+        $this->options['dateFormat'] = $this->translateFormat($format);
+
+        return $this;
     }
 
     /**
@@ -120,7 +151,7 @@ class Calendar extends Input
     public function onChange($expr, $default = [])
     {
         if (is_string($expr)) {
-            $expr = new \Phlex\Ui\JsExpression($expr);
+            $expr = new JsExpression($expr);
         }
         if (!is_array($expr)) {
             $expr = [$expr];
@@ -132,7 +163,7 @@ class Calendar extends Input
         }
 
         // flatpickr on change event
-        $this->options['onChange'] = new \Phlex\Ui\JsFunction(['date', 'text', 'mode'], $expr, $default);
+        $this->options['onChange'] = new JsFunction(['date', 'text', 'mode'], $expr, $default);
     }
 
     /**
@@ -149,9 +180,7 @@ class Calendar extends Input
     public function translateFormat(string $format): string
     {
         // translate from php to flatpickr.
-        $format = preg_replace(['~[aA]~', '~[s]~', '~[g]~'], ['K', 'S', 'G'], $format);
-
-        return $format;
+        return preg_replace(['~[aA]~', '~[s]~', '~[g]~'], ['K', 'S', 'G'], $format);
     }
 
     public function use24hrTimeFormat(string $format): bool

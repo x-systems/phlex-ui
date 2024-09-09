@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Table\Column\FilterModel;
 
-use DateTime;
 use Phlex\Data\Model;
+use Phlex\Ui\Form;
+use Phlex\Ui\Form\Control\Line;
 use Phlex\Ui\Table\Column;
 
 class TypeDate extends Column\FilterModel
@@ -14,7 +15,7 @@ class TypeDate extends Column\FilterModel
     {
         parent::doInitialize();
 
-        $this->op->values = [
+        $this->op->getValueType()->setValues([
             '=' => 'Is',
             'within' => 'Is within',
             '<' => 'Is before',
@@ -24,11 +25,12 @@ class TypeDate extends Column\FilterModel
             '!=' => 'Is not',
             'empty' => 'Is empty',
             'not empty' => 'Is not empty',
-        ];
+        ]);
         $this->op->default = '=';
 
         // the date value to operate on.
-        $this->value->values = [
+        $this->value->type = 'enum';
+        $this->getValueType()->setValues([
             'today' => 'Today',
             'tomorrow' => 'Tomorrow',
             'yesterday' => 'Yesterday',
@@ -39,28 +41,31 @@ class TypeDate extends Column\FilterModel
             'x_day_ago' => 'Numbers of days ago',
             'x_day_now' => 'Number of days from now',
             'exact' => 'Exact date',
-        ];
+        ]);
 
         // The range value field use when within is select.
         $this->addField('range', [
-            'ui' => ['caption' => ''],
-            'values' => [
-                '-1 week' => 'The past week',
-                '-1 month' => 'The past month',
-                '-1 year' => 'The past year',
-                '+1 week' => 'The next week',
-                '+1 month' => 'The next month',
-                '+1 year' => 'The next year',
-                'x_day_before' => 'The next numbers of days before',
-                'x_day_after' => 'The next number of days after',
+            'type' => [
+                'enum',
+                'values' => [
+                    '-1 week' => 'The past week',
+                    '-1 month' => 'The past month',
+                    '-1 year' => 'The past year',
+                    '+1 week' => 'The next week',
+                    '+1 month' => 'The next month',
+                    '+1 year' => 'The next year',
+                    'x_day_before' => 'The next numbers of days before',
+                    'x_day_after' => 'The next number of days after',
+                ],
             ],
+            'options' => [Form\Control::OPTION_SEED => ['caption' => '']],
         ]);
 
         // The exact date field input when exact is select as input value.
-        $this->addField('exact_date', ['type' => 'date', 'ui' => ['caption' => '']]);
+        $this->addField('exact_date', ['type' => 'date', 'options' => [Form\Control::OPTION_SEED => ['caption' => '']]]);
 
         // The integer field to generate a date when x day selector is used.
-        $this->addField('number_days', ['ui' => ['caption' => '', 'form' => [\Phlex\Ui\Form\Control\Line::class, 'inputType' => 'number']]]);
+        $this->addField('number_days', ['options' => [Form\Control::OPTION_SEED => [Line::class, 'inputType' => 'number', 'caption' => '']]]);
     }
 
     /**
@@ -108,7 +113,7 @@ class TypeDate extends Column\FilterModel
      *
      * @param string $dateModifier the string to pass to generated a date from
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getDate($dateModifier)
     {
@@ -119,16 +124,16 @@ class TypeDate extends Column\FilterModel
                 break;
             case 'x_day_ago':
             case 'x_day_before':
-                $date = new DateTime('-' . $this->get('number_days') . ' days');
+                $date = new \DateTime('-' . $this->get('number_days') . ' days');
 
                 break;
             case 'x_day_now':
             case 'x_day_after':
-                $date = new DateTime('+' . $this->get('number_days') . ' days');
+                $date = new \DateTime('+' . $this->get('number_days') . ' days');
 
                 break;
             default:
-                $date = new DateTime($dateModifier);
+                $date = new \DateTime($dateModifier);
 
                 break;
         }

@@ -9,6 +9,7 @@ namespace Phlex\Ui\Component;
 
 use Phlex\Data\Model;
 use Phlex\Ui\Exception;
+use Phlex\Ui\JsCallback;
 use Phlex\Ui\JsToast;
 use Phlex\Ui\View;
 
@@ -19,7 +20,7 @@ class InlineEdit extends View
     /**
      * JsCallback for saving data.
      *
-     * @var \Phlex\Ui\JsCallback
+     * @var JsCallback
      */
     public $cb;
 
@@ -86,7 +87,7 @@ class InlineEdit extends View
     protected function doInitialize(): void
     {
         parent::doInitialize();
-        $this->cb = \Phlex\Ui\JsCallback::addTo($this);
+        $this->cb = JsCallback::addTo($this);
 
         // Set default validation error handler.
         if (!$this->formatErrorMsg || !($this->formatErrorMsg instanceof \Closure)) {
@@ -101,7 +102,7 @@ class InlineEdit extends View
     /**
      * Set Model of this View.
      *
-     * @return \Phlex\Data\Model
+     * @return Model
      */
     public function setModel(Model $model)
     {
@@ -138,7 +139,7 @@ class InlineEdit extends View
     {
         if (!$this->autoSave) {
             $value = $_POST['value'] ?? null;
-            $this->cb->set(function () use ($fx, $value) {
+            $this->cb->set(static function () use ($fx, $value) {
                 return $fx($value);
             });
         }
@@ -149,7 +150,7 @@ class InlineEdit extends View
      *
      * @param string $message
      *
-     * @return \Phlex\Ui\JsToast
+     * @return JsToast
      */
     public function jsSuccess($message)
     {
@@ -165,7 +166,7 @@ class InlineEdit extends View
      *
      * @param string $message
      *
-     * @return \Phlex\Ui\JsToast
+     * @return JsToast
      */
     public function jsError($message)
     {
@@ -185,8 +186,21 @@ class InlineEdit extends View
     {
         parent::doRender();
 
-        $type = ($this->model && $this->field) ? $this->model->getField($this->field)->type : 'text';
-        $type = ($type === 'string') ? 'text' : $type;
+        $type = ($this->model && $this->field) ? get_class($this->model->getField($this->field)->getValueType()) : 'text';
+        switch ($type) {
+            case Model\Field\Type\Float_::class:
+            case Model\Field\Type\Integer::class:
+                $type = 'number';
+
+                break;
+            case Model\Field\Type\String_::class:
+            case Model\Field\Type\Text::class:
+                $type = 'text';
+
+                break;
+            default:
+                break;
+        }
 
         if ($type !== 'text' && $type !== 'number') {
             throw new Exception('Only string or number field can be edited inline. Field Type = ' . $type);

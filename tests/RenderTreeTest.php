@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
 use Phlex\Ui\View;
 
 /**
  * Multiple tests to ensure that adding views through various patterns initializes them
  * nicely still.
  */
-class RenderTreeTest extends \Phlex\Core\PHPUnit\TestCase
+class RenderTreeTest extends TestCase
 {
     public function testBasic(): void
     {

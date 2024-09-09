@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Phlex\Ui;
 
+use Phlex\Core\InjectableTrait;
+
 /**
  * Implements a class that can be mapped into arbitrary JavaScript expression.
  */
 class JsExpression implements JsExpressionable
 {
-    use \Phlex\Core\InjectableTrait;
+    use InjectableTrait;
 
     /**
      * @var string

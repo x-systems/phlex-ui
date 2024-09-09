@@ -4,44 +4,51 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Ui\Accordion;
+use Phlex\Ui\Button;
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\LoremIpsum;
+use Phlex\Ui\Message;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Button::addTo($webpage, ['Nested accordions', 'small right floated basic blue', 'iconRight' => 'right arrow'])
+Button::addTo($webpage, ['Nested accordions', 'small right floated basic blue', 'iconRight' => 'right arrow'])
     ->link(['accordion-nested']);
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'clearing divider']);
+View::addTo($webpage, ['ui' => 'clearing divider']);
 
-\Phlex\Ui\Header::addTo($webpage, ['Accordion\'s section can be control programmatically.']);
+Header::addTo($webpage, ['Accordion\'s section can be control programmatically.']);
 
 // toggle menu
-$bar = \Phlex\Ui\View::addTo($webpage, ['ui' => 'buttons']);
-$b1 = \Phlex\Ui\Button::addTo($bar, ['Toggle Section #1']);
-$b2 = \Phlex\Ui\Button::addTo($bar, ['Toggle Section #2']);
-$b3 = \Phlex\Ui\Button::addTo($bar, ['Toggle Section #3']);
+$bar = View::addTo($webpage, ['ui' => 'buttons']);
+$b1 = Button::addTo($bar, ['Toggle Section #1']);
+$b2 = Button::addTo($bar, ['Toggle Section #2']);
+$b3 = Button::addTo($bar, ['Toggle Section #3']);
 
-\Phlex\Ui\Header::addTo($webpage, ['Accordion Sections']);
+Header::addTo($webpage, ['Accordion Sections']);
 
-$accordion = \Phlex\Ui\Accordion::addTo($webpage, ['type' => ['styled', 'fluid']/* , 'settings'=>['exclusive'=>false] */]);
+$accordion = Accordion::addTo($webpage, ['type' => ['styled', 'fluid']/* , 'settings'=>['exclusive'=>false] */]);
 
 // static section
 $i1 = $accordion->addSection('Static Text');
-\Phlex\Ui\Message::addTo($i1, ['This content is added on page loaded', 'ui' => 'tiny message']);
-\Phlex\Ui\LoremIpsum::addTo($i1, ['size' => 1]);
+Message::addTo($i1, ['This content is added on page loaded', 'ui' => 'tiny message']);
+LoremIpsum::addTo($i1, ['size' => 1]);
 
 // dynamic section - simple view
-$i2 = $accordion->addSection('Dynamic Text', function ($v) {
-    \Phlex\Ui\Message::addTo($v, ['Every time you open this accordion item, you will see a different text', 'ui' => 'tiny message']);
-    \Phlex\Ui\LoremIpsum::addTo($v, ['size' => 2]);
+$i2 = $accordion->addSection('Dynamic Text', static function ($v) {
+    Message::addTo($v, ['Every time you open this accordion item, you will see a different text', 'ui' => 'tiny message']);
+    LoremIpsum::addTo($v, ['size' => 2]);
 });
 
 // dynamic section - form view
-$i3 = $accordion->addSection('Dynamic Form', function ($v) {
-    \Phlex\Ui\Message::addTo($v, ['Loading a form dynamically.', 'ui' => 'tiny message']);
+$i3 = $accordion->addSection('Dynamic Form', static function ($v) {
+    Message::addTo($v, ['Loading a form dynamically.', 'ui' => 'tiny message']);
     $form = Form::addTo($v);
     $form->addControl('Email');
-    $form->onSubmit(function (Form $form) {
+    $form->onSubmit(static function (Form $form) {
         return $form->success('Subscribed ' . $form->model->get('Email') . ' to newsletter.');
     });
 });

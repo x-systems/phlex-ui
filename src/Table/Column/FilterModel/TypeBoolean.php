@@ -14,7 +14,7 @@ class TypeBoolean extends Column\FilterModel
     {
         parent::doInitialize();
 
-        $this->op->values = ['true' => 'Is Yes', 'false' => 'Is No'];
+        $this->op->getValueType()->setValues(['true' => 'Is Yes', 'false' => 'Is No']);
         $this->op->default = 'true';
     }
 

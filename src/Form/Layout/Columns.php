@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Form\Layout;
 
+use Phlex\Data\Model;
 use Phlex\Ui\Form;
+use Phlex\Ui\View;
 
 /**
  * Layout that automatically arranges itself into multiple columns.
@@ -23,9 +25,9 @@ class Columns extends Form\Layout
      *
      * @param array|null $fields
      *
-     * @return \Phlex\Data\Model
+     * @return Model
      */
-    public function setModel(\Phlex\Data\Model $model, $fields = null)
+    public function setModel(Model $model, $fields = null)
     {
         // dont add any fields automatically
         parent::setModel($model, false);
@@ -68,7 +70,7 @@ class Columns extends Form\Layout
             Form\Layout::addTo($cc, ['form' => $this->form])->setModel($model, $chunk);
         }
 
-        \Phlex\Ui\View::addTo($this, ['ui' => 'clearing hidden divider']);
+        View::addTo($this, ['ui' => 'clearing hidden divider']);
 
         return $model;
     }

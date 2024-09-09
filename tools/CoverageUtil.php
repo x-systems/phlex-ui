@@ -5,7 +5,7 @@ declare(strict_types=1);
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Filter;
-use SebastianBergmann\CodeCoverage\Report;
+use SebastianBergmann\CodeCoverage\Report\PHP;
 
 final class CoverageUtil
 {
@@ -20,7 +20,7 @@ final class CoverageUtil
     public static function start(): void
     {
         if (self::$coverage !== null) {
-            throw new \Error('Coverage already started');
+            throw new Error('Coverage already started');
         }
 
         $filter = new Filter();
@@ -32,7 +32,7 @@ final class CoverageUtil
     public static function saveData(): void
     {
         self::$coverage->stop();
-        $writer = new Report\PHP();
+        $writer = new PHP();
         $writer->process(self::$coverage, dirname(__DIR__) . '/coverage/' . basename($_SERVER['SCRIPT_NAME'], '.php') . '-' . uniqid() . '.cov');
     }
 }

@@ -4,22 +4,26 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Data\Model;
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\Label;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Testing form.
 
 // create header
-\Phlex\Ui\Header::addTo($webpage, ['Database-driven form with an enjoyable layout']);
+Header::addTo($webpage, ['Database-driven form with an enjoyable layout']);
 
 // create form
 $form = Form::addTo($webpage, ['segment']);
 // $form = Form::addTo($webpage, ['segment', 'buttonSave'=>false]);
 // $form = Form::addTo($webpage, ['segment', 'buttonSave'=>new \Phlex\Ui\Button(['Import', 'secondary', 'iconRight'=>'list'])]);
 // $form = Form::addTo($webpage, ['segment', 'buttonSave'=>[null, 'Import', 'secondary', 'iconRight'=>'list']]);
-\Phlex\Ui\Label::addTo($form, ['Input new country information here', 'top attached'], ['AboveControls']);
+Label::addTo($form, ['Input new country information here', 'top attached'], ['AboveControls']);
 
 $form->setModel(new Country($webpage->db), false);
 
@@ -27,7 +31,7 @@ $form->setModel(new Country($webpage->db), false);
 $formAddress = $form->addGroup('Basic Country Information');
 $formAddress->addControl('name', ['width' => 'sixteen'])
     ->addAction(['Check Duplicate', 'iconRight' => 'search'])
-    ->on('click', function ($val) {
+    ->on('click', static function ($val) {
         // We can't get the value until https://github.com/atk4/ui/issues/77
         return 'Value appears to be unique';
     });
@@ -46,7 +50,7 @@ $formNames->addControl('middle_name', ['width' => 'three']);
 $formNames->addControl('last_name', ['width' => 'five']);
 
 // form on submit
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     // In-form validation
     $errors = [];
     if (mb_strlen($form->model->get('first_name') ?: '') < 3) {
@@ -74,8 +78,8 @@ $form->onSubmit(function (Form $form) {
 
 // ======
 
-/** @var \Phlex\Data\Model $personClass */
-$personClass = get_class(new class() extends \Phlex\Data\Model {
+/** @var Model $personClass */
+$personClass = get_class(new class() extends Model {
     public $table = 'person';
 
     protected function doInitialize(): void

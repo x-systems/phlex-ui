@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Ui\Button;
+use Phlex\Ui\Card;
+use Phlex\Ui\GridLayout;
+use Phlex\Ui\Header;
 use Phlex\Ui\Message;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // Demo for Model action
@@ -18,24 +24,24 @@ $countryId = $entity->getId();
 // Model actions for this file are setup in DemoActionUtil.
 DemoActionsUtil::setupDemoActions($country);
 
-\Phlex\Ui\Header::addTo($webpage, ['Assign Model action to button event', 'subHeader' => 'Execute model action on this country record by clicking on the appropriate button on the right.']);
+Header::addTo($webpage, ['Assign Model action to button event', 'subHeader' => 'Execute model action on this country record by clicking on the appropriate button on the right.']);
 
 $msg = Message::addTo($webpage, ['Notes', 'type' => 'info']);
 $msg->text->addParagraph('When passing an action to a button event, Ui will determine what executor is required base on the action properties.');
 $msg->text->addParagraph('If action require arguments, fields and/or preview, then a ModalExecutor will be use.');
 
-\Phlex\Ui\View::addTo($webpage, ['ui' => 'ui clearing divider']);
+View::addTo($webpage, ['ui' => 'ui clearing divider']);
 
-$gl = \Phlex\Ui\GridLayout::addTo($webpage, ['rows' => 1, 'columns' => 2]);
-$c = \Phlex\Ui\Card::addTo($gl, ['useLabel' => true], ['r1c1']);
-$c->addContent(new \Phlex\Ui\Header(['Using country: ']));
+$gl = GridLayout::addTo($webpage, ['rows' => 1, 'columns' => 2]);
+$c = Card::addTo($gl, ['useLabel' => true], ['r1c1']);
+$c->addContent(new Header(['Using country: ']));
 $c->setModel($entity, [$country->key()->iso, $country->key()->iso3, $country->key()->phonecode]);
 
-$buttons = \Phlex\Ui\View::addTo($gl, ['ui' => 'vertical basic buttons'], ['r1c2']);
+$buttons = View::addTo($gl, ['ui' => 'vertical basic buttons'], ['r1c2']);
 
 // Create a button for every action in Country model.
 foreach ($country->getUserActions() as $action) {
-    $b = \Phlex\Ui\Button::addTo($buttons, [$action->getCaption()]);
+    $b = Button::addTo($buttons, [$action->getCaption()]);
     // Assign action to button using current model id as url arguments.
     $b->on('click', $action, ['args' => ['id' => $countryId]]);
 }

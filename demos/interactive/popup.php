@@ -4,9 +4,23 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Core\SessionTrait;
+use Phlex\Ui\Button;
+use Phlex\Ui\Columns;
+use Phlex\Ui\Dropdown;
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
+use Phlex\Ui\Item;
+use Phlex\Ui\Jquery;
+use Phlex\Ui\Label;
+use Phlex\Ui\Lister;
+use Phlex\Ui\Menu;
+use Phlex\Ui\Message;
+use Phlex\Ui\Popup;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 /**
@@ -16,9 +30,9 @@ require_once __DIR__ . '/../init-app.php';
  * render the items.
  */
 
-/** @var \Phlex\Ui\Lister $cartClass */
-$cartClass = get_class(new class() extends \Phlex\Ui\Lister {
-    use \Phlex\Core\SessionTrait;
+/** @var Lister $cartClass */
+$cartClass = get_class(new class() extends Lister {
+    use SessionTrait;
     public $items = [];
 
     public $defaultTemplate = 'lister.html';
@@ -83,39 +97,39 @@ $cartClass = get_class(new class() extends \Phlex\Ui\Lister {
  * item inside a cart reloading it afterwards.
  */
 
-/** @var \Phlex\Ui\View $itemShelfClass */
-$itemShelfClass = get_class(new class() extends \Phlex\Ui\View {
+/** @var View $itemShelfClass */
+$itemShelfClass = get_class(new class() extends View {
     public $ui = 'green segment';
 
     protected function doInitialize(): void
     {
         parent::doInitialize();
 
-        $v = \Phlex\Ui\View::addTo($this, ['ui' => 'fluid']);
-        $cols = \Phlex\Ui\Columns::addTo($v, ['ui' => 'relaxed divided grid']);
+        $v = View::addTo($this, ['ui' => 'fluid']);
+        $cols = Columns::addTo($v, ['ui' => 'relaxed divided grid']);
 
         $c1 = $cols->addColumn();
-        \Phlex\Ui\Header::addTo($c1, ['size' => 'small'])->set('Snacks');
-        $l1 = \Phlex\Ui\View::addTo($c1, ['ui' => 'list']);
-        \Phlex\Ui\Item::addTo($l1, ['content' => 'Crisps', 'ui' => 'item'])->setElement('a');
-        \Phlex\Ui\Item::addTo($l1, ['content' => 'Pork Scratchings', 'ui' => 'item'])->setElement('a');
-        \Phlex\Ui\Item::addTo($l1, ['content' => 'Candies', 'ui' => 'item'])->setElement('a');
-        \Phlex\Ui\Item::addTo($l1, ['content' => 'Sweets', 'ui' => 'item'])->setElement('a');
+        Header::addTo($c1, ['size' => 'small'])->set('Snacks');
+        $l1 = View::addTo($c1, ['ui' => 'list']);
+        Item::addTo($l1, ['content' => 'Crisps', 'ui' => 'item'])->setElement('a');
+        Item::addTo($l1, ['content' => 'Pork Scratchings', 'ui' => 'item'])->setElement('a');
+        Item::addTo($l1, ['content' => 'Candies', 'ui' => 'item'])->setElement('a');
+        Item::addTo($l1, ['content' => 'Sweets', 'ui' => 'item'])->setElement('a');
 
         $c2 = $cols->addColumn();
-        \Phlex\Ui\Header::addTo($c2, ['size' => 'small'])->set('Drinks');
-        $l2 = \Phlex\Ui\View::addTo($c2, ['ui' => 'list']);
-        \Phlex\Ui\Item::addTo($l2, ['content' => 'Fizzy Drink', 'ui' => 'item'])->setElement('a');
-        \Phlex\Ui\Item::addTo($l2, ['content' => 'Hot Latte', 'ui' => 'item'])->setElement('a');
-        \Phlex\Ui\Item::addTo($l2, ['content' => 'Water', 'ui' => 'item'])->setElement('a');
-        \Phlex\Ui\Item::addTo($l2, ['content' => 'Apple Juice', 'ui' => 'item'])->setElement('a');
+        Header::addTo($c2, ['size' => 'small'])->set('Drinks');
+        $l2 = View::addTo($c2, ['ui' => 'list']);
+        Item::addTo($l2, ['content' => 'Fizzy Drink', 'ui' => 'item'])->setElement('a');
+        Item::addTo($l2, ['content' => 'Hot Latte', 'ui' => 'item'])->setElement('a');
+        Item::addTo($l2, ['content' => 'Water', 'ui' => 'item'])->setElement('a');
+        Item::addTo($l2, ['content' => 'Apple Juice', 'ui' => 'item'])->setElement('a');
 
         $c3 = $cols->addColumn();
-        \Phlex\Ui\Header::addTo($c3, ['size' => 'small'])->set('Mains');
-        $l3 = \Phlex\Ui\View::addTo($c3, ['ui' => 'list']);
-        \Phlex\Ui\Item::addTo($l3, ['content' => 'Chicken Tikka', 'ui' => 'item'])->setElement('a');
-        \Phlex\Ui\Item::addTo($l3, ['content' => 'Green Curry', 'ui' => 'item'])->setElement('a');
-        \Phlex\Ui\Item::addTo($l3, ['content' => 'Pastries', 'ui' => 'item'])->setElement('a');
+        Header::addTo($c3, ['size' => 'small'])->set('Mains');
+        $l3 = View::addTo($c3, ['ui' => 'list']);
+        Item::addTo($l3, ['content' => 'Chicken Tikka', 'ui' => 'item'])->setElement('a');
+        Item::addTo($l3, ['content' => 'Green Curry', 'ui' => 'item'])->setElement('a');
+        Item::addTo($l3, ['content' => 'Pastries', 'ui' => 'item'])->setElement('a');
     }
 
     /**
@@ -126,26 +140,26 @@ $itemShelfClass = get_class(new class() extends \Phlex\Ui\View {
      */
     public function linkCart($cart, $jsAction = null)
     {
-        $this->on('click', '.item', function ($a, $b) use ($cart, $jsAction) {
+        $this->on('click', '.item', static function ($a, $b) use ($cart, $jsAction) {
             $cart->addItem($b);
 
             return $jsAction;
-        }, [(new \Phlex\Ui\Jquery())->text()]);
+        }, [(new Jquery())->text()]);
     }
 });
 
-\Phlex\Ui\Header::addTo($webpage)->set('Menu popup');
-$menu = \Phlex\Ui\Menu::addTo($webpage);
+Header::addTo($webpage)->set('Menu popup');
+$menu = Menu::addTo($webpage);
 
 // You may add popup on top of menu items or dropdowns. Dropdowns have a slightly different
 // look, with that triangle on the right. You don't have to add pop-up right away, it can be
 // added later.
-$browse = \Phlex\Ui\Dropdown::addTo($menu, ['Browse']);
+$browse = Dropdown::addTo($menu, ['Browse']);
 
 // Add cart item into the menu, with a popup inside
 $cartItem = $menu->addItem([$cartClass, 'icon' => 'cart'])->set('Cart');
 
-$cartPopup = \Phlex\Ui\Popup::addTo($webpage, [$cartItem, 'position' => 'bottom left']);
+$cartPopup = Popup::addTo($webpage, [$cartItem, 'position' => 'bottom left']);
 // Popup won't dissapear as you hover over it.
 $cartPopup->setHoverable();
 
@@ -178,21 +192,21 @@ $cart->destroy();
 
 // Label now can be added referencing Cart's items. Init() was colled when I added it into app, so the
 // item property is populated.
-$cartOutterLabel = \Phlex\Ui\Label::addTo($cartItem, [count($cart->items), 'floating red ']);
+$cartOutterLabel = Label::addTo($cartItem, [count($cart->items), 'floating red ']);
 if (!$cart->items) {
     $cartOutterLabel->addStyle('display', 'none');
 }
 
-$cartPopup->set(function ($popup) use ($cart) {
-    $cartInnerLabel = \Phlex\Ui\Label::addTo($popup, ['Number of items:']);
+$cartPopup->set(static function ($popup) use ($cart) {
+    $cartInnerLabel = Label::addTo($popup, ['Number of items:']);
 
     // cart is already initialized, so init() is not called again. However, cart will be rendered
     // as a child of a pop-up now.
     $cart = $popup->add($cart);
 
     $cartInnerLabel->detail = count($cart->items);
-    \Phlex\Ui\Item::addTo($popup)->setElement('hr');
-    \Phlex\Ui\Button::addTo($popup, ['Checkout', 'primary small']);
+    Item::addTo($popup)->setElement('hr');
+    Button::addTo($popup, ['Checkout', 'primary small']);
 });
 
 // Add item shelf below menu and link it with the cart
@@ -201,12 +215,12 @@ $shelf->linkCart($cart, [
     $cartOutterLabel->jsReload(),
 
     // also will hide current item from the shelf
-    (new \Phlex\Ui\Jquery())->hide(),
+    (new Jquery())->hide(),
 ]);
 
 // label placed on top of menu item, not in the popup
 
-$pop = \Phlex\Ui\Popup::addTo($webpage, [$browse, 'position' => 'bottom left', 'minWidth' => '500px'])
+$pop = Popup::addTo($webpage, [$browse, 'position' => 'bottom left', 'minWidth' => '500px'])
     ->setHoverable()
     ->setOption('delay', ['show' => 100, 'hide' => 400]);
 $shelf2 = $itemShelfClass::addTo($pop);
@@ -214,21 +228,21 @@ $shelf2 = $itemShelfClass::addTo($pop);
 
 // ////////////////////////////////////////////////////////////////////////////
 
-$userMenu = \Phlex\Ui\Menu::addTo($menu, ['ui' => false], ['RightMenu'])
+$userMenu = Menu::addTo($menu, ['ui' => false], ['RightMenu'])
     ->addClass('right menu')->removeClass('item');
 $rightMenu = $userMenu->addMenu(['', 'icon' => 'user']);
 
 // If you add popup right inside the view, it will link itself with the element. If you are adding it into other container,
 // you can still manually link it and specify an event.
-$signup = \Phlex\Ui\Popup::addTo($webpage, [$rightMenu, 'position' => 'bottom right'])->setHoverable();
+$signup = Popup::addTo($webpage, [$rightMenu, 'position' => 'bottom right'])->setHoverable();
 
 // This popup will be dynamically loaded.
 $signup->stickyGet('logged');
-$signup->set(function ($pop) {
+$signup->set(static function ($pop) {
     // contetn of the popup will be different depending on this condition.
     if (isset($_GET['logged'])) {
-        \Phlex\Ui\Message::addTo($pop, ['You are already logged in as ' . $_GET['logged']]);
-        \Phlex\Ui\Button::addTo($pop, ['Logout', 'primary', 'icon' => 'sign out'])
+        Message::addTo($pop, ['You are already logged in as ' . $_GET['logged']]);
+        Button::addTo($pop, ['Logout', 'primary', 'icon' => 'sign out'])
             ->link($pop->getApp()->url());
     } else {
         $form = Form::addTo($pop);
@@ -238,7 +252,7 @@ $signup->set(function ($pop) {
 
         // popup handles callbacks properly, so dynamic element such as form works
         // perfectly inside a popup.
-        $form->onSubmit(function (Form $form) {
+        $form->onSubmit(static function (Form $form) {
             if ($form->model->get('password') !== '123') {
                 return $form->error('password', 'Please use password "123"');
             }
@@ -252,21 +266,21 @@ $signup->set(function ($pop) {
 
 // ////////////////////////////////////////////////////////////////////////////
 
-\Phlex\Ui\Header::addTo($webpage)->set('Specifying trigger');
+Header::addTo($webpage)->set('Specifying trigger');
 
-$button = \Phlex\Ui\Button::addTo($webpage, ['Click Me', 'primary']);
+$button = Button::addTo($webpage, ['Click Me', 'primary']);
 
-$buttonPopup = \Phlex\Ui\Popup::addTo($webpage, [$button]);
+$buttonPopup = Popup::addTo($webpage, [$button]);
 
-\Phlex\Ui\Header::addTo($buttonPopup)->set('Using click events');
-\Phlex\Ui\View::addTo($buttonPopup)->set('Adding popup into button activates on click by default. Clicked popups will close if you click away.');
+Header::addTo($buttonPopup)->set('Using click events');
+View::addTo($buttonPopup)->set('Adding popup into button activates on click by default. Clicked popups will close if you click away.');
 
 $input = Form\Control\Line::addTo($webpage, ['placeholder' => 'Search users', 'icon' => 'circular search link']);
 
-$inputPopup = \Phlex\Ui\Popup::addTo($webpage, [$input, 'triggerOn' => 'focus']);
-\Phlex\Ui\View::addTo($inputPopup)->set('You can use this field to search data.');
+$inputPopup = Popup::addTo($webpage, [$input, 'triggerOn' => 'focus']);
+View::addTo($inputPopup)->set('You can use this field to search data.');
 
-$button = \Phlex\Ui\Button::addTo($webpage, [null, 'icon' => 'volume down']);
-$buttonPopup = \Phlex\Ui\Popup::addTo($webpage, [$button, 'triggerOn' => 'hover'])->setHoverable();
+$button = Button::addTo($webpage, [null, 'icon' => 'volume down']);
+$buttonPopup = Popup::addTo($webpage, [$button, 'triggerOn' => 'hover'])->setHoverable();
 
 Form\Control\Checkbox::addTo($buttonPopup, ['Just On/Off', 'slider'])->on('change', $button->js()->find('.icon')->toggleClass('up down'));

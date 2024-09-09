@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-class SomeData extends \Phlex\Data\Model
+use Phlex\Data\Model;
+
+class SomeData extends Model
 {
     public function __construct()
     {

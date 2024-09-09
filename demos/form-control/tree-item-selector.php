@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
 use Phlex\Ui\JsToast;
+use Phlex\Ui\Message;
 use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $items = [
@@ -36,7 +38,7 @@ $items = [
     ['name' => 'Appliances', 'id' => 301, 'nodes' => []],
 ];
 
-\Phlex\Ui\Header::addTo($webpage, ['Tree item selector']);
+Header::addTo($webpage, ['Tree item selector']);
 
 $form = Form::addTo($webpage);
 $control = $form->addControl('tree', [Form\Control\TreeItemSelector::class, 'treeItems' => $items, 'caption' => 'Multiple selection:'], ['type' => 'array', 'serialize' => 'json']);
@@ -53,13 +55,13 @@ $control->set(502);
 //    return new JsToast('Received 1');
 // });
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     $response = [
         'multiple' => $form->model->get('tree'),
         'single' => $form->model->get('tree1'),
     ];
 
-    $view = new \Phlex\Ui\Message('Items: ');
+    $view = new Message('Items: ');
     $view->initialize();
     $view->text->addParagraph(Webpage::encodeJson($response));
 

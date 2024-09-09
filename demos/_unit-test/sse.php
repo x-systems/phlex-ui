@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\JsExpression;
+use Phlex\Ui\JsSse;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $v = View::addTo($webpage)->set('This will trigger a network request for testing sse...');
 
-$sse = \Phlex\Ui\JsSse::addTo($webpage);
+$sse = JsSse::addTo($webpage);
 // url trigger must match php_unit test in sse provider.
 $sse->setUrlTrigger('see_test');
 
-$v->js(true, $sse->set(function () use ($sse) {
+$v->js(true, $sse->set(static function () use ($sse) {
     $sse->send(new JsExpression('console.log("test")'));
     $sse->send(new JsExpression('console.log("test")'));
     $sse->send(new JsExpression('console.log("test")'));

@@ -6,12 +6,14 @@ namespace Phlex\Ui;
 
 use Phlex\Core\DebugTrait;
 use Phlex\Core\TraitUtil;
+use Phlex\Data\Model;
+use Psr\Log\LoggerInterface;
 
 /**
  * Console is a black square component resembling terminal window. It can be programmed
  * to run a job and output results to the user.
  */
-class Console extends View implements \Psr\Log\LoggerInterface
+class Console extends View implements LoggerInterface
 {
     public $ui = 'inverted black segment';
     public $element = 'pre';
@@ -78,7 +80,7 @@ class Console extends View implements \Psr\Log\LoggerInterface
      */
     public function set($fx = null, $event = null)
     {
-        if (!($fx instanceof \Closure)) {
+        if (!$fx instanceof \Closure) {
             throw new Exception('Please specify the $callback argument');
         }
 
@@ -104,7 +106,7 @@ class Console extends View implements \Psr\Log\LoggerInterface
                 }
 
                 $output = '';
-                $this->sse->echoFunction = function ($str) use (&$output) {
+                $this->sse->echoFunction = static function ($str) use (&$output) {
                     $output .= $str;
                 };
                 $this->output($content);
@@ -167,7 +169,7 @@ class Console extends View implements \Psr\Log\LoggerInterface
      */
     public function outputHtml(string $message, array $context = [])
     {
-        $message = preg_replace_callback('/{([a-z0-9_-]+)}/i', function ($match) use ($context) {
+        $message = preg_replace_callback('/{([a-z0-9_-]+)}/i', static function ($match) use ($context) {
             if (isset($context[$match[1]])) {
                 return $context[$match[1]];
             }
@@ -302,7 +304,7 @@ class Console extends View implements \Psr\Log\LoggerInterface
     /**
      * This method is obsolete. Use Console::runMethod() instead.
      */
-    public function setModel(\Phlex\Data\Model $model, $method = null, $args = [])
+    public function setModel(Model $model, $method = null, $args = [])
     {
         $this->runMethod($model, $method, $args);
 

@@ -6,15 +6,20 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Ui\Button;
 use Phlex\Ui\Form;
+use Phlex\Ui\Header;
 use Phlex\Ui\HtmlTemplate;
+use Phlex\Ui\JsExpression;
+use Phlex\Ui\Tabs;
+use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
 /**
  * Demonstrates how to use fields with form.
  */
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
-\Phlex\Ui\Header::addTo($webpage, ['Disabled and read only form controls (normal / readonly / disabled)']);
+Header::addTo($webpage, ['Disabled and read only form controls (normal / readonly / disabled)']);
 
 $form = Form::addTo($webpage);
 
@@ -53,10 +58,8 @@ $group->addControl('radio_disb', [Form\Control\Radio::class, 'disabled' => true]
 
 $group = $form->addGroup('File upload');
 
-$onDelete = function () {
-};
-$onUpload = function () {
-};
+$onDelete = static function () {};
+$onUpload = static function () {};
 
 $control = $group->addControl('file_norm', [Form\Control\Upload::class, ['accept' => ['.png', '.jpg']]])->set('normal', 'normal.jpg');
 $control->onDelete($onDelete);
@@ -100,19 +103,18 @@ $group->addControl('date_norm', [Form\Control\Calendar::class, 'type' => 'date']
 $group->addControl('date_read', [Form\Control\Calendar::class, 'type' => 'date', 'readonly' => true])->set(date('Y-m-d'));
 $group->addControl('date_disb', [Form\Control\Calendar::class, 'type' => 'date', 'disabled' => true])->set(date('Y-m-d'));
 
-$form->onSubmit(function (Form $form) {
-});
+$form->onSubmit(static function (Form $form) {});
 
-\Phlex\Ui\Header::addTo($webpage, ['Stand Alone Line']);
+Header::addTo($webpage, ['Stand Alone Line']);
 // you can pass values to button
 $control = Form\Control\Line::addTo($webpage);
 
 $control->set('hello world');
 
 $button = $control->addAction('check value');
-$button->on('click', new \Phlex\Ui\JsExpression('alert("field value is: "+[])', [$control->jsInput()->val()]));
+$button->on('click', new JsExpression('alert("field value is: "+[])', [$control->jsInput()->val()]));
 
-\Phlex\Ui\Header::addTo($webpage, ['Line in a Form']);
+Header::addTo($webpage, ['Line in a Form']);
 $form = Form::addTo($webpage);
 
 $control = $form->addControl('Title', null, ['type' => ['enum', 'values' => ['Mr', 'Mrs', 'Miss']], 'options' => [
@@ -123,20 +125,20 @@ $control = $form->addControl('name', [Form\Control\Line::class, 'hint' => 'this 
 $control->set('value in a form');
 
 $control = $form->addControl('surname', new Form\Control\Line([
-    'hint' => [\Phlex\Ui\View::class, 'template' => new HtmlTemplate(
+    'hint' => [View::class, 'template' => new HtmlTemplate(
         'Click <a href="http://example.com/" target="_blank">here</a>'
     )],
 ]));
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     return $form->model->get('name');
 });
 
-\Phlex\Ui\Header::addTo($webpage, ['Multiple Form Layouts']);
+Header::addTo($webpage, ['Multiple Form Layouts']);
 
 $form = Form::addTo($webpage);
-$tabs = \Phlex\Ui\Tabs::addTo($form, [], ['AboveControls']);
-\Phlex\Ui\View::addTo($form, ['ui' => 'divider'], ['AboveControls']);
+$tabs = Tabs::addTo($form, [], ['AboveControls']);
+View::addTo($form, ['ui' => 'divider'], ['AboveControls']);
 
 $formPage = Form\Layout::addTo($tabs->addTab('Basic Info'), ['form' => $form]);
 $formPage->addControl('name', new Form\Control\Line());
@@ -144,11 +146,11 @@ $formPage->addControl('name', new Form\Control\Line());
 $formPage = Form\Layout::addTo($tabs->addTab('Other Info'), ['form' => $form]);
 $formPage->addControl('age', new Form\Control\Line());
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     return $form->model->get('name') . ' has age ' . $form->model->get('age');
 });
 
-\Phlex\Ui\Header::addTo($webpage, ['onChange event', 'subHeader' => 'see in browser console']);
+Header::addTo($webpage, ['onChange event', 'subHeader' => 'see in browser console']);
 
 $form = Form::addTo($webpage);
 
@@ -158,10 +160,10 @@ $c2 = $group->addControl('c2', new Form\Control\Calendar(['type' => 'date']));
 $c3 = $group->addControl('c3', new Form\Control\Calendar(['type' => 'date']));
 
 $c1->onChange('console.log("c1 changed: "+date+","+text+","+mode)');
-$c2->onChange(new \Phlex\Ui\JsExpression('console.log("c2 changed: "+date+","+text+","+mode)'));
+$c2->onChange(new JsExpression('console.log("c2 changed: "+date+","+text+","+mode)'));
 $c3->onChange([
-    new \Phlex\Ui\JsExpression('console.log("c3 changed: "+date+","+text+","+mode)'),
-    new \Phlex\Ui\JsExpression('console.log("c3 really changed: "+date+","+text+","+mode)'),
+    new JsExpression('console.log("c3 changed: "+date+","+text+","+mode)'),
+    new JsExpression('console.log("c3 really changed: "+date+","+text+","+mode)'),
 ]);
 
 $group = $form->addGroup('Line');
@@ -171,13 +173,13 @@ $f3 = $group->addControl('f3');
 $f4 = $group->addControl('f4');
 
 $f1->onChange('console.log("f1 changed")');
-$f2->onChange(new \Phlex\Ui\JsExpression('console.log("f2 changed")'));
+$f2->onChange(new JsExpression('console.log("f2 changed")'));
 $f3->onChange([
-    new \Phlex\Ui\JsExpression('console.log("f3 changed")'),
-    new \Phlex\Ui\JsExpression('console.log("f3 really changed")'),
+    new JsExpression('console.log("f3 changed")'),
+    new JsExpression('console.log("f3 really changed")'),
 ]);
-$f4->onChange(function () {
-    return new \Phlex\Ui\JsExpression('console.log("f4 changed")');
+$f4->onChange(static function () {
+    return new JsExpression('console.log("f4 changed")');
 });
 
 $group = $form->addGroup('CheckBox');
@@ -204,7 +206,7 @@ $r1 = $group->addControl('r1', new Form\Control\Radio(['values' => [
 ]));
 $r1->onChange('console.log("radio changed")');
 
-\Phlex\Ui\Header::addTo($webpage, ['Line ends of Textarea']);
+Header::addTo($webpage, ['Line ends of Textarea']);
 
 $form = Form::addTo($webpage);
 $group = $form->addGroup('Without model');
@@ -217,7 +219,7 @@ $group->addControl('m_text_crlf', [Form\Control\Textarea::class], ['type' => 'te
 $group->addControl('m_text_cr', [Form\Control\Textarea::class], ['type' => 'text'])->set("First line\rSecond line");
 $group->addControl('m_text_lf', [Form\Control\Textarea::class], ['type' => 'text'])->set("First line\nSecond line");
 
-$form->onSubmit(function (Form $form) {
+$form->onSubmit(static function (Form $form) {
     // check what values are submitted
     echo "We're URL encoding submitted values to be able to see what line end is actually submitted.";
     foreach ($form->model->get() as $k => $v) {

@@ -10,10 +10,13 @@ namespace Phlex\Ui\Demos;
 
 use Phlex\Data\Model\Scope;
 use Phlex\Data\Model\Scope\Condition;
+use Phlex\Ui\Form;
+use Phlex\Ui\Form\Control\ScopeBuilder;
 use Phlex\Ui\Header;
 use Phlex\Ui\View;
+use Phlex\Ui\Webpage;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 $model = new Stat($webpage->db, ['caption' => 'Demo Stat']);
@@ -33,13 +36,13 @@ $model->addCondition($budget);
 $model->scope()->add($scope);
 $model->scope()->add($orScope);
 
-$form = \Phlex\Ui\Form::addTo($webpage);
+$form = Form::addTo($webpage);
 
-$form->addControl('qb', [\Phlex\Ui\Form\Control\ScopeBuilder::class, 'model' => $model]);
+$form->addControl('qb', [ScopeBuilder::class, 'model' => $model]);
 
-$form->onSubmit(function ($form) use ($model) {
+$form->onSubmit(static function ($form) use ($model) {
     $message = $form->model->get('qb')->toWords($model);
-    $view = (new \Phlex\Ui\View(['id' => false]))->addClass('phlex-scope-builder-response');
+    $view = (new View(['id' => false]))->addClass('phlex-scope-builder-response');
     $view->initialize();
 
     $view->set($message);

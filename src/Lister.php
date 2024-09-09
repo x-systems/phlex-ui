@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Phlex\Ui;
 
+use Phlex\Core\HookTrait;
 use Phlex\Data\Model;
 
 class Lister extends View
 {
-    use \Phlex\Core\HookTrait;
+    use HookTrait;
 
     /** @const string */
     public const HOOK_BEFORE_ROW = self::class . '@beforeRow';

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Tests;
 
+use Phlex\Core\PHPUnit\TestCase;
 use Phlex\Data\Model;
 use Phlex\Data\Persistence;
+use Phlex\Ui\Form;
+use Phlex\Ui\View;
 
 class MyTestModel extends Model
 {
@@ -15,7 +18,7 @@ class MyTestModel extends Model
 
         $this->addField('regular_field');
         $this->addField('just_for_data', ['never_persist' => true]);
-        $this->addField('no_persist_but_show_in_ui', ['never_persist' => true, 'ui' => ['editable' => true]]);
+        $this->addField('no_persist_but_show_in_ui', ['never_persist' => true, 'options' => [View\Field::OPTION_EDITABLE => true]]);
     }
 }
 
@@ -23,43 +26,42 @@ class MyTestModel extends Model
  * Test is designed to verify that field which is explicitly editable should appear and be editable
  * even if 'never_persist' is set to true.
  */
-class ForFieldUiTest extends \Phlex\Core\PHPUnit\TestCase
+class ForFieldUiTest extends TestCase
 {
     /** @var Model */
-    public $m;
+    public $model;
 
     protected function setUp(): void
     {
-        $p = new Persistence\Array_();
-        $this->m = new MyTestModel($p);
+        $this->model = new MyTestModel(new Persistence\Array_());
     }
 
     public function testModelLevel(): void
     {
-        $this->assertTrue($this->m->getField('no_persist_but_show_in_ui')->isEditable());
+        $this->assertTrue(View\Field::isEditable($this->model->getField('no_persist_but_show_in_ui')));
     }
 
     public function testRegularField(): void
     {
-        $f = new \Phlex\Ui\Form();
-        $f->initialize();
-        $f->setModel($this->m->createEntity());
-        $this->assertFalse($f->getControl('regular_field')->readonly);
+        $form = new Form();
+        $form->initialize();
+        $form->setModel($this->model->createEntity());
+        $this->assertFalse($form->getControl('regular_field')->readonly);
     }
 
     public function testJustDataField(): void
     {
-        $f = new \Phlex\Ui\Form();
-        $f->initialize();
-        $f->setModel($this->m->createEntity(), ['just_for_data']);
-        $this->assertTrue($f->getControl('just_for_data')->readonly);
+        $form = new Form();
+        $form->initialize();
+        $form->setModel($this->model->createEntity(), ['just_for_data']);
+        $this->assertTrue($form->getControl('just_for_data')->readonly);
     }
 
     public function testShowInUi(): void
     {
-        $f = new \Phlex\Ui\Form();
-        $f->initialize();
-        $f->setModel($this->m->createEntity());
-        $this->assertFalse($f->getControl('no_persist_but_show_in_ui')->readonly);
+        $form = new Form();
+        $form->initialize();
+        $form->setModel($this->model);
+        $this->assertFalse($form->getControl('no_persist_but_show_in_ui')->readonly);
     }
 }

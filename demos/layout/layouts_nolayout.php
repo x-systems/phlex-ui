@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
-/** @var \Phlex\Ui\Webpage $webpage */
+use Phlex\Ui\Layout;
+use Phlex\Ui\LoremIpsum;
+use Phlex\Ui\Text;
+use Phlex\Ui\Webpage;
+
+/** @var Webpage $webpage */
 require_once __DIR__ . '/../init-app.php';
 
 // nothing to do with Phlex UI - will not use any Layout
-$a = new \Phlex\Ui\LoremIpsum();
+$a = new LoremIpsum();
 $text = $a->generateLorem(150);
 
-$webpage->initBody([\Phlex\Ui\Layout::class]);
+$webpage->initBody([Layout::class]);
 
-\Phlex\Ui\Text::addTo($webpage)->addParagraph($text);
+Text::addTo($webpage)->addParagraph($text);

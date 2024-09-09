@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Phlex\Ui\Demos;
 
+use Phlex\Core\Factory;
 use Phlex\Core\Utils;
 use Phlex\Data\Hintable\HintablePropertyDef;
 use Phlex\Data\Model;
+use Phlex\Ui\Exception;
 use Phlex\Ui\Form;
 use Phlex\Ui\Table;
 
@@ -18,7 +20,7 @@ try {
     }
 } catch (\PDOException $e) {
     // do not pass $e unless you can secure DSN!
-    throw (new \Phlex\Ui\Exception('This demo requires access to the database. See "demos/init-db.php"'))
+    throw (new Exception('This demo requires access to the database. See "demos/init-db.php"'))
         ->addMoreInfo('PDO error', $e->getMessage());
 }
 
@@ -59,7 +61,7 @@ class ModelWithPrefixedFields extends Model
 
     public function addField($name, $seed = []): Model\Field
     {
-        $seed = \Phlex\Core\Factory::mergeSeeds($seed, [
+        $seed = Factory::mergeSeeds($seed, [
             'actual' => $this->prefixKey($name, true),
             'caption' => Utils::getReadableCaption(preg_replace('~^phlex_fp_\w+?__~', '', $name)),
         ]);
@@ -72,17 +74,17 @@ trait ModelLockTrait
 {
     public function lock(): void
     {
-        $this->getUserAction('add')->callback = function ($model) {
+        $this->getUserAction('add')->callback = static function ($model) {
             return 'Form Submit! Data are not save in demo mode.';
         };
-        $this->getUserAction('edit')->callback = function ($model) {
+        $this->getUserAction('edit')->callback = static function ($model) {
             return 'Form Submit! Data are not save in demo mode.';
         };
 
         $delete = $this->getUserAction('delete');
         $delete->confirmation = 'Please go ahead. Demo mode does not really delete data.';
 
-        $delete->callback = function ($model) {
+        $delete->callback = static function ($model) {
             return 'Only simulating delete when in demo mode.';
         };
     }
@@ -111,7 +113,7 @@ class Country extends ModelWithPrefixedFields
         $this->addField($this->key()->numcode, ['caption' => 'ISO Numeric Code', 'type' => 'float', 'required' => true]);
         $this->addField($this->key()->phonecode, ['caption' => 'Phone Prefix', 'type' => 'float', 'required' => true]);
 
-        $this->onHook(Model::HOOK_BEFORE_SAVE, function (self $model) {
+        $this->onHook(Model::HOOK_BEFORE_SAVE, static function (self $model) {
             if (!$model->sys_name) {
                 $model->sys_name = mb_strtoupper($model->name);
             }
@@ -200,7 +202,7 @@ class Stat extends ModelWithPrefixedFields
             'theirModel' => [Country::class],
             'ourKey' => $this->key()->client_country_iso_value,
             'theirKey' => Country::hint()->key()->iso,
-            'type' => 'string',
+            'type' => 'reference_stringkey',
             'options' => [
                 Form\Control::OPTION_SEED => [Form\Control\Line::class],
             ],
@@ -210,7 +212,7 @@ class Stat extends ModelWithPrefixedFields
         $this->addField($this->key()->is_commercial, ['type' => 'boolean']);
         $this->addField($this->key()->currency, ['type' => ['enum', 'values' => ['EUR' => 'Euro', 'USD' => 'US Dollar', 'GBP' => 'Pound Sterling']]]);
         $this->addField($this->key()->currency_symbol, ['never_persist' => true]);
-        $this->onHook(Model::HOOK_AFTER_LOAD, function (self $model) {
+        $this->onHook(Model::HOOK_AFTER_LOAD, static function (self $model) {
             /* implementation for "intl"
             $locale = 'en-UK';
             $fmt = new \NumberFormatter($locale . '@currency=' . $model->currency, NumberFormatter::CURRENCY);
