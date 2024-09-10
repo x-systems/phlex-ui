@@ -18,6 +18,7 @@ use Phlex\Ui\Webpage;
 
 class ScopeBuilder extends Control
 {
+    use View\Field\TypeRegistryTrait;
     use VueLookupTrait;
 
     public const OPTION_PRESETS = self::class . '@presets';
@@ -318,7 +319,7 @@ class ScopeBuilder extends Control
         'checkbox' => 'boolean',
     ];
 
-    protected static $fieldTypes = [
+    protected static $fieldTypesRegistry = [
         'default',
         Type\Boolean::class => 'boolean',
         Type\Float_::class => 'float',
@@ -334,6 +335,10 @@ class ScopeBuilder extends Control
     protected function doInitialize(): void
     {
         parent::doInitialize();
+
+        $this->initVueLookupCallback();
+        
+        $this->buildQuery();
 
         if (!$this->scopeBuilderTemplate) {
             $this->scopeBuilderTemplate = new HtmlTemplate('<div id="{$_id}" class="ui"><phlex-query-builder v-bind="initData"></phlex-query-builder></div>');
@@ -355,30 +360,14 @@ class ScopeBuilder extends Control
     }
 
     /**
-     * Set the model to build scope for.
-     *
-     * @return Model
-     */
-    public function setModel(Model $model)
-    {
-        $model = parent::setModel($model);
-
-        $this->initVueLookupCallback();
-
-        $this->buildQuery($model);
-
-        return $model;
-    }
-
-    /**
      * Build query from model scope.
      */
-    protected function buildQuery(Model $model)
+    protected function buildQuery()
     {
-        $this->fields = $this->fields ?: array_keys($model->getFields());
+        $this->fields = $this->fields ?: array_keys($this->model->getFields());
 
         foreach ($this->fields as $fieldName) {
-            $field = $model->getField($fieldName);
+            $field = $this->model->getField($fieldName);
 
             $this->addFieldRule($field);
 
@@ -392,21 +381,10 @@ class ScopeBuilder extends Control
         if ($this->field && $this->field->get() !== null) {
             $scope = $this->field->get();
         } else {
-            $scope = $model->scope();
+            $scope = $this->model->scope();
         }
 
         $this->query = $this->scopeToQuery($scope, $inputsMap)['query'];
-    }
-
-    public static function registerFieldType($fieldType, $ruleType = null): void
-    {
-        if (is_array($fieldTypes = $fieldType)) {
-            foreach ($fieldTypes as $fieldType => $ruleType) {
-                self::registerFieldType($fieldType, $ruleType);
-            }
-        }
-
-        self::$fieldTypes[$fieldType] = $ruleType;
     }
 
     /**
@@ -414,11 +392,7 @@ class ScopeBuilder extends Control
      */
     protected function addFieldRule(Model\Field $field): self
     {
-        $ruleType = $field->getValueType()->resolveFromRegistry(self::$fieldTypes);
-
-        // if (is_callable($ruleType)) {
-        //     $ruleType = \call_user_func($ruleType, $field);
-        // }
+        $ruleType = $field->getValueType()->resolveFromRegistry(self::$fieldTypesRegistry);
 
         $this->rules[] = $this->getRule($ruleType, array_merge([
             'id' => $field->elementId,
@@ -432,17 +406,17 @@ class ScopeBuilder extends Control
     /**
      * Set property for phlex-lookup component.
      */
-    protected static function getLookupProps(self $scopebuilder, Model\Field $field): array
+    protected function getLookupProps(Model\Field $field): array
     {
         // set any of sui-dropdown props via this property. Will be applied globally.
-        $props = $scopebuilder->phlexLookupOptions;
-        $items = $scopebuilder->getFieldItems($field, 10);
+        $props = $this->phlexLookupOptions;
+        $items = $this->getFieldItems($field, 10);
         foreach ($items as $value => $text) {
             $props['options'][] = ['key' => $value, 'text' => $text, 'value' => $value];
         }
 
         if ($field->getValueType() instanceof Type\ReferenceData) {
-            $props['url'] = $scopebuilder->dataCb->getUrl();
+            $props['url'] = $this->dataCb->getUrl();
             $props['reference'] = $field->elementId;
             $props['search'] = true;
         }
@@ -455,12 +429,12 @@ class ScopeBuilder extends Control
     /**
      * Set property for phlex-date-picker component.
      */
-    protected static function getDatePickerProps(self $scopebuilder, Model\Field $field): array
+    protected function getDatePickerProps(Model\Field $field): array
     {
         $calendar = new Calendar();
-        $props = $scopebuilder->phlexDateOptions['flatpickr'] ?? [];
+        $props = $this->phlexDateOptions['flatpickr'] ?? [];
 
-        $format = $calendar->translateFormat($scopebuilder->getCodec($field)->getFormat());
+        $format = $calendar->translateFormat($this->getCodec($field)->getFormat());
         $props['altFormat'] = $format;
         $props['dateFormat'] = 'Y-m-d';
         $props['altInput'] = true;
@@ -473,7 +447,7 @@ class ScopeBuilder extends Control
             $props['dateFormat'] = $field->getValueType() instanceof Type\Time ? 'H:i:S' : 'Y-m-d H:i:S';
         }
 
-        $props['useDefault'] = $scopebuilder->phlexDateOptions['useDefault'];
+        $props['useDefault'] = $this->phlexDateOptions['useDefault'];
 
         return $props;
     }
@@ -525,11 +499,9 @@ class ScopeBuilder extends Control
             $rule = call_user_func($rule, $field, $options);
         }
 
-        $scopebuilder = $this;
-
         // map all values for callables and merge with defaults
-        return array_merge(array_map(static function ($value) use ($scopebuilder, $field, $options) {
-            return is_array($value) && is_callable($value) ? call_user_func($value, $scopebuilder, $field, $options) : $value;
+        return array_merge(array_map(function ($value) use ($field, $options) {
+            return is_array($value) && is_callable($value) ? call_user_func($value, $field, $options) : $value;
         }, $rule), $defaults);
     }
 
@@ -565,9 +537,9 @@ class ScopeBuilder extends Control
     /**
      * Returns the choices array for Select field rule.
      */
-    protected static function getChoices(self $scopebuilder, Model\Field $field, $options = []): array
+    protected function getChoices(Model\Field $field, $options = []): array
     {
-        $choices = $scopebuilder->getFieldItems($field, $options['limit'] ?? 250);
+        $choices = $this->getFieldItems($field, $options['limit'] ?? 250);
 
         $ret = [
             ['label' => '[empty]', 'value' => null],
@@ -778,11 +750,11 @@ class ScopeBuilder extends Control
         $option = null;
         switch ($type) {
             case 'lookup':
-                $fieldValueType = $condition->getModel()->getField($condition->key)->getValueType();
+                $field = $condition->getModel()->getField($condition->key);
+                $fieldValueType = $field->getValueType();
 
-                if ($fieldValueType instanceof Type\ReferenceData) {
-                    $reference = $fieldValueType->getReference();
-                    $entity = $reference->createTheirModel()->tryLoadBy($reference->getTheirKey(), $value);
+                if ($fieldValueType instanceof Model\Field\Type\ReferenceData) {
+                    $entity = $field->createTheirModel()->tryLoadBy($field->getTheirKey(), $value);
                     if ($entity->isLoaded()) {
                         $option = [
                             'key' => $value,

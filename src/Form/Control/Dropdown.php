@@ -161,6 +161,10 @@ class Dropdown extends Input
             $this->values = $fieldType->getValuesWithLabels();
         }
 
+        if ($fieldType instanceof Model\Field\Type\ReferenceData) {
+            $this->values = $fieldType->getReference()->createTheirModel()->getTitles();
+        }
+
         return parent::setField($field);
     }
 

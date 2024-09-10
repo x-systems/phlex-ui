@@ -202,6 +202,8 @@ class Multiline extends Form\Control
     {
         parent::doInitialize();
 
+        $this->initVueLookupCallback();
+
         if (!$this->multiLineTemplate) {
             $this->multiLineTemplate = new HtmlTemplate('<div id="{$_id}" class=""><phlex-multiline v-bind="initData"></phlex-multiline></div>');
         }
@@ -244,6 +246,19 @@ class Multiline extends Form\Control
 
             return $jsError;
         });
+    }
+
+    public function setField(Model\Field $field)
+    {
+        $fieldType = $field->getValueType();
+
+        if ($fieldType instanceof Model\Field\Type\ReferenceData\ContainedRecords) {
+            $this->setModel($fieldType->getReference()->getTheirEntity());
+            $this->caption = $this->getModel()->getCaption();
+            $this->rowLimit = ($fieldType instanceof Model\Field\Type\ReferenceData\SingleRecord) ? 1 : 0;
+        }
+
+        return parent::setField($field);
     }
 
     /**
@@ -414,7 +429,6 @@ class Multiline extends Form\Control
     public function setModel(Model $model, array $fieldNames = []): Model
     {
         $model = parent::setModel($model);
-        $this->initVueLookupCallback();
 
         if (!$fieldNames) {
             $fieldNames = array_keys($model->getActiveFields(Model::FIELD_FILTER_NOT_SYSTEM));

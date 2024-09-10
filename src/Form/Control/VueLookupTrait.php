@@ -19,6 +19,7 @@ trait VueLookupTrait
         if (!$this->dataCb) {
             $this->dataCb = Callback::addTo($this);
         }
+
         $this->dataCb->set(\Closure::fromCallable([$this, 'outputApiResponse']));
     }
 
@@ -32,9 +33,9 @@ trait VueLookupTrait
         $data = [];
         if ($key = $_GET['phlex_vlookup_field'] ?? null) {
             $query = $_GET['phlex_vlookup_q'] ?? null;
-            $ref = $this->getModel()->getField($key)->getReference();
-            $theirModel = $ref->refModel();
-            $theirKey = $ref->getTheirKey();
+            $reference = $this->getModel()->getField($key);
+            $theirModel = $reference->createTheirModel();
+            $theirKey = $reference->getTheirKey();
             if (!empty($query)) {
                 $theirModel->addCondition($theirModel->titleKey, 'like', '%' . $query . '%');
             }

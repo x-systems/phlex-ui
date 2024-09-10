@@ -17,7 +17,9 @@ use Phlex\Ui\View;
  */
 class Control extends View
 {
-    protected static $fieldControls = [
+    use View\Field\TypeRegistryTrait;
+
+    protected static $fieldTypesRegistry = [
         [Control\Line::class],
         Model\Field\Type\Selectable::class => [Control\Dropdown::class],
         Model\Field\Type\Boolean::class => [Control\Checkbox::class],
@@ -26,6 +28,8 @@ class Control extends View
         Model\Field\Type\Time::class => [Control\Calendar::class, ['type' => 'time']],
         Model\Field\Type\String_::class => [Control\Line::class],
         Model\Field\Type\Text::class => [Control\Textarea::class],
+        Model\Field\Type\ReferenceData::class => [Control\Lookup::class],
+        Model\Field\Type\ReferenceData\ContainedRecords::class => [Control\Multiline::class],
     ];
 
     /**
@@ -252,30 +256,12 @@ class Control extends View
      */
     public static function factory(Model\Field $field, array $seed = [], $fallbackSeed = [Control\Line::class]): self
     {
-        $valueType = $field->getValueType();
-
-        $resolvedSeed = null;
-        if ($valueType instanceof Model\Field\Type\ReferenceData\ContainedRecords) {
-            $limit = ($valueType instanceof Model\Field\Type\ReferenceData\SingleRecord) ? 1 : 0;
-            $model = $valueType->getReference()->getTheirEntity();
-            $resolvedSeed = [Control\Multiline::class, 'model' => $model, 'rowLimit' => $limit, 'caption' => $model->getCaption()];
-        } elseif (!$valueType instanceof Model\Field\Type\Boolean) {
-            if ($valueType instanceof Model\Field\Type\Selectable) {
-                $resolvedSeed = [Control\Dropdown::class, 'values' => $valueType->values];
-            } elseif ($valueType instanceof Model\Field\Type\ReferenceData) {
-                $resolvedSeed = [Control\Lookup::class, 'model' => $valueType->getReference()->getTheirEntity()];
-            }
-        }
-
-        $seed = Factory::mergeSeeds(
+        return Factory::factory(Factory::mergeSeeds(
             $seed,
             $field->getOption(self::OPTION_SEED),
-            $resolvedSeed,
-            $field->getValueType()->resolveFromRegistry(self::$fieldControls),
+            $field->getValueType()->resolveFromRegistry(self::$fieldTypesRegistry),
             $fallbackSeed
-        );
-
-        return Factory::factory($seed, [
+        ), [
             'field' => $field,
             'elementId' => $field->elementId,
         ]);

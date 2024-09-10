@@ -8,6 +8,7 @@ use Phlex\Core\SessionTrait;
 use Phlex\Data\Model;
 use Phlex\Data\Persistence;
 use Phlex\Ui\Form;
+use Phlex\Ui\View;
 
 /**
  * Implement a generic filter model for filtering column data.
@@ -15,6 +16,7 @@ use Phlex\Ui\Form;
 class FilterModel extends Model
 {
     use SessionTrait;
+    use View\Field\TypeRegistryTrait;
 
     public const OPTION_TYPE = self::class . '@type';
 
@@ -46,7 +48,7 @@ class FilterModel extends Model
      */
     public $lookupField;
 
-    protected static $fieldTypes = [
+    protected static $fieldTypesRegistry = [
         FilterModel\TypeString::class,
         Model\Field\Type\Boolean::class => FilterModel\TypeBoolean::class,
         Model\Field\Type\Float_::class => FilterModel\TypeNumber::class,
@@ -58,17 +60,6 @@ class FilterModel extends Model
         Model\Field\Type\Selectable::class => FilterModel\TypeEnum::class,
         // Model\Field\Type\ReferenceData::class => 'lookup',
     ];
-
-    public static function registerFieldType($fieldType, $filterType = null): void
-    {
-        if (is_array($fieldTypes = $fieldType)) {
-            foreach ($fieldTypes as $fieldType => $filterType) {
-                self::registerFieldType($fieldType, $filterType);
-            }
-        }
-
-        self::$fieldTypes[$fieldType] = $filterType;
-    }
 
     /**
      * Factory method that will return a FilterModel Type class.

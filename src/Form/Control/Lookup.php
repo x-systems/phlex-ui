@@ -166,6 +166,17 @@ class Lookup extends Input
         });
     }
 
+    public function setField(Model\Field $field)
+    {
+        $fieldType = $field->getValueType();
+
+        if ($fieldType instanceof Model\Field\Type\ReferenceData) {
+            $this->setModel($fieldType->getReference()->createTheirModel());
+        }
+
+        return parent::setField($field);
+    }
+
     /**
      * Returns URL which would respond with first 50 matching records.
      */
