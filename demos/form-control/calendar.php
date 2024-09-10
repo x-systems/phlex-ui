@@ -51,6 +51,6 @@ $form->addControl('datetime', [Form\Control\Calendar::class, 'type' => 'datetime
 // $control->addAction(['Select...', 'icon' => 'calendar'])->on('click', $control->getJsInstance()->open());
 // $control->addAction(['Clear', 'icon' => 'times red'])->on('click', $control->getJsInstance()->clear());
 
-$form->onSubmit(static function ($f) {
+$form->onSubmit(function ($f) {
     return new JsToast(Webpage::encodeJson($f->model->get()));
 });

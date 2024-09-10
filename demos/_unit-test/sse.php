@@ -18,7 +18,7 @@ $sse = JsSse::addTo($webpage);
 // url trigger must match php_unit test in sse provider.
 $sse->setUrlTrigger('see_test');
 
-$v->js(true, $sse->set(static function () use ($sse) {
+$v->js(true, $sse->set(function () use ($sse) {
     $sse->send(new JsExpression('console.log("test")'));
     $sse->send(new JsExpression('console.log("test")'));
     $sse->send(new JsExpression('console.log("test")'));

@@ -32,7 +32,7 @@ $action = $files->addUserAction(
         'description' => 'Import file in a specify path.',
         // Display information prior to execute the action.
         // ModalExecutor or PreviewExecutor will display preview.
-        'preview' => static function ($model, $path) {
+        'preview' => function ($model, $path) {
             return 'Execute Import using path: "' . $path . '"';
         },
         // Argument needed to run the callback action method.
@@ -64,7 +64,7 @@ $executor = UserAction\JsCallbackExecutor::addTo($rightColumn);
 // Passing Model action to executor and action argument via url.
 $executor->setAction($action);
 // Setting user response after model action get execute.
-$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, static function ($t, $m) {
+$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, function ($t, $m) {
     return new JsToast('Files imported');
 });
 $executor->executeModelAction(['path' => '.']);
@@ -78,7 +78,7 @@ $executor->setAction($action);
 $executor->ui = 'segment';
 $executor->description = 'Execute Import action using "BasicExecutor" with argument "path" equal to "."';
 $executor->setArguments(['path' => '.']);
-$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, static function ($x) {
+$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, function ($x) {
     return new JsToast('Done!');
 });
 
@@ -91,7 +91,7 @@ $executor->ui = 'segment';
 $executor->previewType = 'console';
 $executor->description = 'Displays preview in console prior to executing';
 $executor->setArguments(['path' => '.']);
-$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, static function ($x, $ret) {
+$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, function ($x, $ret) {
     return new JsToast('Confirm!');
 });
 
@@ -101,7 +101,7 @@ $executor->setAction($action);
 $executor->ui = 'segment';
 $executor->description = 'Only fields set in $action[field] array will be added in form.';
 $executor->setArguments(['path' => '.']);
-$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, static function ($x, $ret) {
+$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, function ($x, $ret) {
     return new JsToast('Confirm! ' . $x->action->getEntity()->name);
 });
 
@@ -112,6 +112,6 @@ $executor = UserAction\ArgumentFormExecutor::addTo($leftColumn, ['executorButton
 $executor->setAction($action);
 $executor->description = 'ArgumentFormExecutor will ask user about arguments set in actions.';
 $executor->ui = 'segment';
-$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, static function ($x, $ret) {
+$executor->onHook(UserAction\BasicExecutor::HOOK_AFTER_EXECUTE, function ($x, $ret) {
     return new JsToast('Imported!');
 });

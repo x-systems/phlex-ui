@@ -23,7 +23,7 @@ require_once __DIR__ . '/../init-app.php';
 
 $wizard = Wizard::addTo($webpage);
 
-$wizard->addStep('User Interface', static function ($page) {
+$wizard->addStep('User Interface', function ($page) {
     $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
@@ -65,12 +65,12 @@ $wizard->addStep('User Interface', static function ($page) {
 
     $t->addParagraph('It all has started with a "Button" though:');
 
-    Demo::addTo($page)->setCodeAndCall(static function (View $owner) {
+    Demo::addTo($page)->setCodeAndCall(function (View $owner) {
         Button::addTo($owner, ['Hello from the button!']);
     });
 });
 
-$wizard->addStep('Interactivity', static function ($page) {
+$wizard->addStep('Interactivity', function ($page) {
     $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
@@ -79,9 +79,9 @@ $wizard->addStep('Interactivity', static function ($page) {
             EOF
     );
 
-    Demo::addTo($page)->setCodeAndCall(static function (View $owner) {
+    Demo::addTo($page)->setCodeAndCall(function (View $owner) {
         $button = Button::addTo($owner, ['Click for the greeting!']);
-        $button->on('click', static function () {
+        $button->on('click', function () {
             return 'Hello World!';
         });
     });
@@ -94,7 +94,7 @@ $wizard->addStep('Interactivity', static function ($page) {
             EOF
     );
 
-    Demo::addTo($page)->setCodeAndCall(static function (View $owner) {
+    Demo::addTo($page)->setCodeAndCall(function (View $owner) {
         $seg = View::addTo($owner, ['ui' => 'segment']);
 
         Text::addTo($seg)->set('Number of buttons: ');
@@ -121,7 +121,7 @@ $wizard->addStep('Interactivity', static function ($page) {
     );
 });
 
-$wizard->addStep('Business Model', static function ($page) {
+$wizard->addStep('Business Model', function ($page) {
     $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
@@ -130,7 +130,7 @@ $wizard->addStep('Business Model', static function ($page) {
             EOF
     );
 
-    Demo::addTo($page)->setCodeAndCall(static function (View $owner) {
+    Demo::addTo($page)->setCodeAndCall(function (View $owner) {
         /* Showing Class definition.
         class DemoInvoice extends \Phlex\Data\Model
         {
@@ -148,7 +148,7 @@ $wizard->addStep('Business Model', static function ($page) {
         session_start();
 
         $model = new DemoInvoice(new Array_($_SESSION['x'] ?? []), ['dateFormat' => $owner->getApp()->ui_persistence->date_format]);
-        $model->onHook(Model::HOOK_AFTER_SAVE, static function ($model) {
+        $model->onHook(Model::HOOK_AFTER_SAVE, function ($model) {
             $_SESSION['x'][$model->getId()] = $model->get();
         });
 
@@ -167,7 +167,7 @@ $wizard->addStep('Business Model', static function ($page) {
             $model->save();
         }
 
-        $form->onSubmit(static function ($f) {
+        $form->onSubmit(function ($f) {
             $f->model->save();
 
             return new JsToast('Saved!');
@@ -198,7 +198,7 @@ $wizard->addStep('Business Model', static function ($page) {
     );
 });
 
-$wizard->addStep('Persistence', static function ($page) {
+$wizard->addStep('Persistence', function ($page) {
     $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
@@ -206,11 +206,11 @@ $wizard->addStep('Persistence', static function ($page) {
             EOF
     );
 
-    Demo::addTo($page)->setCodeAndCall(static function (View $owner) {
+    Demo::addTo($page)->setCodeAndCall(function (View $owner) {
         session_start();
 
         $model = new DemoInvoice(new Array_($_SESSION['x'] ?? []), ['dateFormat' => $owner->getApp()->ui_persistence->date_format]);
-        $model->onHook(Model::HOOK_AFTER_SAVE, static function ($model) {
+        $model->onHook(Model::HOOK_AFTER_SAVE, function ($model) {
             $_SESSION['x'][$model->getId()] = $model->get();
         });
 
@@ -232,7 +232,7 @@ $wizard->addStep('Persistence', static function ($page) {
     );
 });
 
-$wizard->addFinish(static function ($page) use ($wizard) {
+$wizard->addFinish(function ($page) use ($wizard) {
     PromotionText::addTo($page);
     Button::addTo($wizard, ['Exit demo', 'primary', 'icon' => 'left arrow'], ['Left'])
         ->link('/demos/index.php');

@@ -125,7 +125,7 @@ class ModalExecutor extends Modal implements JsExecutorInterface
      */
     public function afterActionInit(Model\UserAction $action)
     {
-        $getTableName = static function ($arr) {
+        $getTableName = function ($arr) {
             foreach ($arr as $k => $v) {
                 return is_numeric($k) ? $v : $k;
             }

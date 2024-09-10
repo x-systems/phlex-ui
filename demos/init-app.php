@@ -39,7 +39,7 @@ if ($webpage->catch_exceptions !== true) {
 
 // collect coverage for HTTP tests 2/2
 if (file_exists(__DIR__ . '/CoverageUtil.php') && !class_exists(TestCase::class, false)) {
-    $webpage->onHook(Webpage::HOOK_BEFORE_EXIT, static function () {
+    $webpage->onHook(Webpage::HOOK_BEFORE_EXIT, function () {
         \CoverageUtil::saveData();
     });
 }

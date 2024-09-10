@@ -29,7 +29,7 @@ $view = View::addTo($webpage, ['template' => new HtmlTemplate('<div>
 </div>')]);
 
 $lister = Lister::addTo($view, [], ['List']);
-$lister->onHook(Lister::HOOK_BEFORE_ROW, static function (Lister $lister, Country $row) {
+$lister->onHook(Lister::HOOK_BEFORE_ROW, function (Lister $lister, Country $row) {
     $row->iso = mb_strtolower($row->iso);
 });
 $lister->setModel(new Country($webpage->db))
@@ -49,7 +49,7 @@ $view = View::addTo($webpage, ['template' => new HtmlTemplate('<div>
 </div>')]);
 
 $lister = Lister::addTo($view, [], ['List']);
-$lister->onHook(Lister::HOOK_BEFORE_ROW, static function (Lister $lister, Country $row) {
+$lister->onHook(Lister::HOOK_BEFORE_ROW, function (Lister $lister, Country $row) {
     $row->iso = mb_strtolower($row->iso);
 });
 $lister->setModel(new Country($webpage->db))
@@ -66,7 +66,7 @@ $view = View::addTo($container, ['template' => new HtmlTemplate('<div>
 </ul>{$Content}</div>')]);
 
 $lister = Lister::addTo($view, [], ['List']);
-$lister->onHook(Lister::HOOK_BEFORE_ROW, static function (Lister $lister, Country $row) {
+$lister->onHook(Lister::HOOK_BEFORE_ROW, function (Lister $lister, Country $row) {
     $row->iso = mb_strtolower($row->iso);
 });
 
@@ -74,7 +74,7 @@ $model = $lister->setModel(new Country($webpage->db))->setLimit(12);
 
 $ipp = ItemsPerPageSelector::addTo($view, ['label' => 'Select how many countries:', 'pageLengthItems' => [12, 24, 36]], ['Content']);
 
-$ipp->onPageLengthSelect(static function ($ipp) use ($model, $container) {
+$ipp->onPageLengthSelect(function ($ipp) use ($model, $container) {
     $model->setLimit($ipp);
 
     return $container;

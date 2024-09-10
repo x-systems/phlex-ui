@@ -20,11 +20,11 @@ Button::addTo($webpage, ['Test'])->on('click', (new JsNotify('Not yet implemente
 
 $modal = Modal::addTo($webpage, ['Modal Title']);
 
-$modal->set(static function ($p) use ($modal) {
+$modal->set(function ($p) use ($modal) {
     $form = Form::addTo($p);
     $form->addControl('name', null, ['caption' => 'Add your name']);
 
-    $form->onSubmit(static function (Form $form) use ($modal) {
+    $form->onSubmit(function (Form $form) use ($modal) {
         if (empty($form->model->get('name'))) {
             return $form->error('name', 'Please add a name!');
         }

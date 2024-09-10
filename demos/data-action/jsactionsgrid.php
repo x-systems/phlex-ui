@@ -43,7 +43,7 @@ Icon::addTo($jsHeader, ['content' => 'file code']);
 
 $grid->addActionMenuItem($jsHeader);
 // Beside model user action, grid menu items can also execute javascript.
-$grid->addActionMenuItem('Js Callback', static function () {
+$grid->addActionMenuItem('Js Callback', function () {
     return (new View())->set('Js Callback done!');
 }, 'Are you sure?');
 

@@ -39,9 +39,9 @@ $form->setModel((
     ) : new Stat($webpage->db)
 )->tryLoadAny());
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     $errors = [];
-    $modelDirty = \Closure::bind(static function () use ($form): array {
+    $modelDirty = \Closure::bind(function () use ($form): array {
         return $form->model->getEntry()->getDirty();
     }, null, Model::class)();
     foreach ($modelDirty as $key => $value) {

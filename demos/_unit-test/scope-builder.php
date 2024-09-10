@@ -40,7 +40,7 @@ $form = Form::addTo($webpage);
 
 $form->addControl('qb', [ScopeBuilder::class, 'model' => $model]);
 
-$form->onSubmit(static function ($form) use ($model) {
+$form->onSubmit(function ($form) use ($model) {
     $message = $form->model->get('qb')->toWords($model);
     $view = (new View(['id' => false]))->addClass('phlex-scope-builder-response');
     $view->initialize();

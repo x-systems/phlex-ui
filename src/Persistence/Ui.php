@@ -107,7 +107,7 @@ class Ui extends Persistence
         }
 
         return is_array($value)
-            ? array_map(static function ($v) { return (string) $v; }, $value)
+            ? array_map(function ($v) { return (string) $v; }, $value)
             : (string) $value;
     }
 

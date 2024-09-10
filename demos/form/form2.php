@@ -31,7 +31,7 @@ $form->setModel(new Country($webpage->db), false);
 $formAddress = $form->addGroup('Basic Country Information');
 $formAddress->addControl('name', ['width' => 'sixteen'])
     ->addAction(['Check Duplicate', 'iconRight' => 'search'])
-    ->on('click', static function ($val) {
+    ->on('click', function ($val) {
         // We can't get the value until https://github.com/atk4/ui/issues/77
         return 'Value appears to be unique';
     });
@@ -50,7 +50,7 @@ $formNames->addControl('middle_name', ['width' => 'three']);
 $formNames->addControl('last_name', ['width' => 'five']);
 
 // form on submit
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     // In-form validation
     $errors = [];
     if (mb_strlen($form->model->get('first_name') ?: '') < 3) {

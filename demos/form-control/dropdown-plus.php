@@ -27,7 +27,7 @@ $form->addControl('category_id', [Form\Control\Dropdown::class, 'model' => new C
 $form->addControl('sub_category_id', [Form\Control\DropdownCascade::class, 'cascadeFrom' => 'category_id', 'reference' => Category::hint()->key()->SubCategories]);
 $form->addControl('product_id', [Form\Control\DropdownCascade::class, 'cascadeFrom' => 'sub_category_id', 'reference' => SubCategory::hint()->key()->Products]);
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     $message = Webpage::encodeJson($form->model->get());
 
     $view = new Message('Values: ');
@@ -56,7 +56,7 @@ $form->addControl(
         Form\Control\Dropdown::class,
         'caption' => 'Dropdown with data from Model',
         'model' => (new Country($webpage->db))->setLimit(25),
-        'renderRowFunction' => static function (Country $row) {
+        'renderRowFunction' => function (Country $row) {
             return [
                 'value' => $row->getId(),
                 'title' => $row->getTitle() . ' (' . $row->iso3 . ')',
@@ -72,7 +72,7 @@ $form->addControl(
         Form\Control\Dropdown::class,
         'caption' => 'Dropdown with data from Model',
         'model' => (new File($webpage->db))->setLimit(25),
-        'renderRowFunction' => static function (File $row) {
+        'renderRowFunction' => function (File $row) {
             return [
                 'value' => $row->getId(),
                 'title' => $row->getTitle(),
@@ -122,7 +122,7 @@ $form->addControl(
     ]
 );
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     $message = Webpage::encodeJson($form->model->get());
 
     $view = new Message('Values: ');

@@ -139,7 +139,7 @@ class InlineEdit extends View
     {
         if (!$this->autoSave) {
             $value = $_POST['value'] ?? null;
-            $this->cb->set(static function () use ($fx, $value) {
+            $this->cb->set(function () use ($fx, $value) {
                 return $fx($value);
             });
         }

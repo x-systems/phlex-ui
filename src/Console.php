@@ -106,7 +106,7 @@ class Console extends View implements LoggerInterface
                 }
 
                 $output = '';
-                $this->sse->echoFunction = static function ($str) use (&$output) {
+                $this->sse->echoFunction = function ($str) use (&$output) {
                     $output .= $str;
                 };
                 $this->output($content);
@@ -169,7 +169,7 @@ class Console extends View implements LoggerInterface
      */
     public function outputHtml(string $message, array $context = [])
     {
-        $message = preg_replace_callback('/{([a-z0-9_-]+)}/i', static function ($match) use ($context) {
+        $message = preg_replace_callback('/{([a-z0-9_-]+)}/i', function ($match) use ($context) {
             if (isset($context[$match[1]])) {
                 return $context[$match[1]];
             }

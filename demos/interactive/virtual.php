@@ -78,7 +78,7 @@ $table = Table::addTo($webpage, ['celled' => true]);
 $table->setModel(new SomeData());
 
 $frame = VirtualPage::addTo($webpage);
-$frame->set(static function ($frame) {
+$frame->set(function ($frame) {
     Header::addTo($frame, ['Clicked row with ID = ' . ($_GET['id'] ?? '')]);
 });
 

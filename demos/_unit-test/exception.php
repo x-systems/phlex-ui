@@ -20,7 +20,7 @@ $cb->setUrlTrigger('m_cb');
 $modal = Modal::addTo($webpage, ['cb' => $cb]);
 $modal->elementName = 'm_test';
 
-$modal->set(static function ($m) {
+$modal->set(function ($m) {
     throw new \Exception('TEST!');
 });
 
@@ -30,7 +30,7 @@ $button->on('click', $modal->show());
 $cb1 = CallbackLater::addTo($webpage, ['urlTrigger' => 'm2_cb']);
 $modal2 = Modal::addTo($webpage, ['cb' => $cb1]);
 
-$modal2->set(static function ($m) {
+$modal2->set(function ($m) {
     trigger_error('error triggered');
 });
 

@@ -37,7 +37,7 @@ $form->addControl('test', [Form\Control\Checkbox::class]);
 $form->addControl('test_checked', [Form\Control\Checkbox::class])->set(true);
 $form->addControl('also_checked', 'Hello World', 'boolean')->set(true);
 
-$form->onSubmit(static function ($f) {
+$form->onSubmit(function ($f) {
     return new JsToast(Webpage::encodeJson($f->model->get()));
 });
 

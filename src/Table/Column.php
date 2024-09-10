@@ -185,7 +185,7 @@ class Column
 
         $cb = $this->setHeaderDropdown($menuItems, $icon, $menuId);
 
-        $cb->onSelectItem(static function ($menu, $item) use ($fx) {
+        $cb->onSelectItem(function ($menu, $item) use ($fx) {
             return $fx($item, $menu);
         });
     }

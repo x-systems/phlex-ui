@@ -17,12 +17,12 @@ require_once __DIR__ . '/../init-app.php';
 Header::addTo($webpage, ['Card Deck', 'size' => 1, 'subHeader' => 'Card can be display in a deck, also using model action.']);
 
 $countries = new Country($webpage->db);
-$countries->addCalculatedField('Cost', static function (Country $country) {
+$countries->addCalculatedField('Cost', function (Country $country) {
     return '$ ' . number_format(random_int(500, 1500));
 });
 
 $action = $countries->addUserAction('book', [
-    'callback' => static function (Country $country, $email, $city) {
+    'callback' => function (Country $country, $email, $city) {
         return 'Your request to visit ' . ucwords($city) . ' in ' . $country->name . ' was sent to: ' . $email;
     },
 ]);
@@ -36,7 +36,7 @@ $action->args = [
 ];
 
 $infoAction = $countries->addUserAction('request_info', [
-    'callback' => static function (Country $country, $email) {
+    'callback' => function (Country $country, $email) {
         return 'Your request for information was sent to email: ' . $email;
     },
     'appliesTo' => UserAction::APPLIES_TO_NO_RECORDS,

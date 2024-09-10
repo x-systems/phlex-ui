@@ -32,7 +32,7 @@ $inline_edit = InlineEdit::addTo($webpage);
 $inline_edit->field = $model->key()->name;
 $inline_edit->setModel($model);
 
-$inline_edit->onChange(static function ($value) {
+$inline_edit->onChange(function ($value) {
     $view = new Message();
     $view->initialize();
     $view->text->addParagraph('new value: ' . $value);
@@ -56,7 +56,7 @@ $view = View::addTo($webpage);
 $search = ItemSearch::addTo($view, ['ui' => 'ui compact segment']);
 $lister_container = View::addTo($view, ['template' => $lister_template]);
 $lister = Lister::addTo($lister_container, [], ['List']);
-$lister->onHook(Lister::HOOK_BEFORE_ROW, static function (Lister $lister, Country $row) {
+$lister->onHook(Lister::HOOK_BEFORE_ROW, function (Lister $lister, Country $row) {
     $row->iso = mb_strtolower($row->iso);
 
     ++$lister->ipp;

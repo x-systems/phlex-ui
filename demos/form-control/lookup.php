@@ -53,7 +53,7 @@ $form->addControl('country3', [
     'search' => ['name', 'iso', 'iso3'],
 ]);
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     $str = $form->model->ref('country1')->get('name') . ' ' . $form->model->ref('country2')->get('name') . ' ' . (new Country($form->getApp()->db))->tryLoad($form->model->get('country3'))->get('name');
     $view = new Message('Select:'); // need in behat test.
     $view->initialize();
@@ -87,7 +87,7 @@ Form\Control\Lookup::addTo($webpage, [
 
 Header::addTo($webpage, ['Lookup input inside modal']);
 
-$modal = Modal::addTo($webpage)->set(static function ($p) {
+$modal = Modal::addTo($webpage)->set(function ($p) {
     $a = Form\Control\Lookup::addTo($p, ['placeholder' => 'Search country', 'label' => 'Country: ']);
     $a->setModel(new Country($p->getApp()->db));
 });

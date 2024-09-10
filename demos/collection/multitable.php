@@ -89,7 +89,7 @@ $model->setOrder([$model->key()->is_folder => 'desc', $model->key()->name]);
 
 Header::addTo($webpage, ['MacOS File Finder', 'subHeader' => 'Component built around Table, Columns and JsReload']);
 
-$vp = VirtualPage::addTo($webpage)->set(static function ($vp) use ($model) {
+$vp = VirtualPage::addTo($webpage)->set(function ($vp) use ($model) {
     $model->persistence->query($model)->delete()->execute();
     $model->importFromFilesystem('.');
     Button::addTo($vp, ['Import Complete', 'big green fluid'])->link('multitable.php');

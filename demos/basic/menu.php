@@ -23,7 +23,7 @@ $menu->addItem('bar');
 $menu->addItem('baz');
 $dropdown = Dropdown::addTo($menu, ['With Callback', 'dropdownOptions' => ['on' => 'hover']]);
 $dropdown->setSource(['a', 'b', 'c']);
-$dropdown->onChange(static function ($itemId) {
+$dropdown->onChange(function ($itemId) {
     return 'New seleced item id: ' . $itemId;
 });
 

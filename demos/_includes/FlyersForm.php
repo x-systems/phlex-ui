@@ -39,7 +39,7 @@ class FlyersForm extends Form
         $this->addControl('country', [
             Form\Control\Lookup::class,
             'model' => new Country($this->getApp()->db),
-            'dependency' => static function ($model, $data) {
+            'dependency' => function ($model, $data) {
                 isset($data['contains']) ? $model->addCondition('name', 'like', '%' . $data['contains'] . '%') : null;
             },
             'search' => [
@@ -57,7 +57,7 @@ class FlyersForm extends Form
         $cards = $this->addControl('cards', [Form\Control\TreeItemSelector::class, 'treeItems' => $this->cards, 'caption' => 'Flyers program:'], ['type' => 'array', 'serialize' => 'json']);
         $cards->set(Webpage::encodeJson([]));
 
-        $this->onSubmit(static function ($form) {
+        $this->onSubmit(function ($form) {
             return new JsToast('Thank you!');
         });
     }

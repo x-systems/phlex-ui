@@ -24,6 +24,6 @@ $b->on('click', new JsReload($v));
 $cb = Callback::addTo($webpage);
 $cb->setUrlTrigger('c_reload');
 
-Loader::addTo($webpage, ['cb' => $cb])->set(static function ($page) {
+Loader::addTo($webpage, ['cb' => $cb])->set(function ($page) {
     $v = View::addTo($page, ['ui' => 'segment'])->set('loaded');
 });

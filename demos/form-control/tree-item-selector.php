@@ -55,7 +55,7 @@ $control->set(502);
 //    return new JsToast('Received 1');
 // });
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     $response = [
         'multiple' => $form->model->get('tree'),
         'single' => $form->model->get('tree1'),

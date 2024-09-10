@@ -33,6 +33,6 @@ $form->addControl('six', [Form\Control\Radio::class], ['type' => ['enum', 'value
 $form->addControl('seven', null, ['type' => ['enum', 'values' => ['F' => 'female', 'M' => 'male']]])->set('M');
 $form->addControl('eight', [Form\Control\Radio::class], ['type' => ['enum', 'values' => ['F' => 'female', 'M' => 'male']]])->set('M');
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     return new JsToast(Webpage::encodeJson($form->model->get()));
 });

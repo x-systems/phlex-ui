@@ -35,13 +35,13 @@ if (isset($_GET['name'])) {
     View::addTo($frame, ['ui' => 'hidden divider']);
 
     // nested interractive elemetns will respect lockal sticky get
-    Button::addTo($frame, ['Triggering callback here will inherit color'])->on('click', static function () {
+    Button::addTo($frame, ['Triggering callback here will inherit color'])->on('click', function () {
         return new JsNotify('Color was = ' . $_GET['name']);
     });
 
     // Next we have loader, which will dynamically load console which will dynamically output "success" message.
-    Loader::addTo($frame)->set(static function ($page) {
-        Console::addTo($page)->set(static function ($console) {
+    Loader::addTo($frame)->set(function ($page) {
+        Console::addTo($page)->set(function ($console) {
             $console->output('success!, color is still ' . $_GET['name']);
         });
     });
@@ -52,7 +52,7 @@ $t->setSource(['Red', 'Green', 'Blue']);
 $t->addDecorator('name', [Link::class, [], ['name']]);
 
 $frame = View::addTo($webpage, ['ui' => 'green segment']);
-Button::addTo($frame, ['does not inherit sticky get'])->on('click', static function () {
+Button::addTo($frame, ['does not inherit sticky get'])->on('click', function () {
     return new JsNotify('$_GET = ' . Webpage::encodeJson($_GET));
 });
 
@@ -61,7 +61,7 @@ Header::addTo($webpage, ['Use of View::url()']);
 $b1 = Button::addTo($webpage);
 $b1->set($b1->url());
 
-Loader::addTo($webpage)->set(static function ($page) use ($b1) {
+Loader::addTo($webpage)->set(function ($page) use ($b1) {
     $b2 = Button::addTo($page);
     $b2->set($b2->url());
 

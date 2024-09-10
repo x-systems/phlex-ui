@@ -25,7 +25,7 @@ class Accordion extends \Phlex\Ui\Accordion
     {
         parent::doInitialize();
 
-        $this->form->onHook(Form::HOOK_DISPLAY_ERROR, static function ($form, $fieldName, $str) {
+        $this->form->onHook(Form::HOOK_DISPLAY_ERROR, function ($form, $fieldName, $str) {
             // default behavior
             $jsError = [$form->js()->form('add prompt', $fieldName, $str)];
 

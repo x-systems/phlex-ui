@@ -38,7 +38,7 @@ $form->addControl('contains', [
 $lookup = $form->addControl('country', [
     Form\Control\Lookup::class,
     'model' => new Country($webpage->db),
-    'dependency' => static function (Country $model, $data) {
+    'dependency' => function (Country $model, $data) {
         foreach (explode(',', $data['starts_with'] ?? '') as $letter) {
             $model->addCondition($model->key()->name, 'like', $letter . '%');
         }
@@ -49,7 +49,7 @@ $lookup = $form->addControl('country', [
     'search' => [Country::hint()->key()->name, Country::hint()->key()->iso, Country::hint()->key()->iso3],
 ]);
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     return 'Submitted: ' . print_r($form->model->get(), true);
 });
 
@@ -72,13 +72,13 @@ $form->addControl('ends_with', [
 $lookup = $form->addControl('country', [
     Form\Control\Lookup::class,
     'model' => new Country($webpage->db),
-    'dependency' => static function (Country $model, $data) {
+    'dependency' => function (Country $model, $data) {
         isset($data['ends_with']) ? $model->addCondition($model->key()->name, 'like', '%' . $data['ends_with']) : null;
     },
     'multiple' => true,
     'search' => [Country::hint()->key()->name, Country::hint()->key()->iso, Country::hint()->key()->iso3],
 ]);
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     return 'Submitted: ' . print_r($form->model->get(), true);
 });

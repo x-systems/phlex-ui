@@ -88,7 +88,7 @@ class JsPaginator extends JsCallback
     public function onScroll(\Closure $fx)
     {
         $page = $this->getPage();
-        $this->set(static function () use ($fx, $page) {
+        $this->set(function () use ($fx, $page) {
             return $fx($page);
         });
     }

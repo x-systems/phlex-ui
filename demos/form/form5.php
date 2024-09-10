@@ -20,7 +20,7 @@ View::addTo($webpage, [
     'ui' => 'ignored warning message',
 ]);
 
-$formSubmit = static function ($f) {
+$formSubmit = function ($f) {
     return new JsToast(Webpage::encodeJson($f->model->get()));
 };
 

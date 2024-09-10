@@ -54,7 +54,7 @@ class Dropdown extends Lister
                 ['uri' => $this->cb->getJsUrl()]
             ), ]);
 
-        $this->cb->set(static function ($j, $value) use ($fx) {
+        $this->cb->set(function ($j, $value) use ($fx) {
             return $fx($value);
         }, ['item' => 'value']);
     }

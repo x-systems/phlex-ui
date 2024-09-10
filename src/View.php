@@ -1054,7 +1054,7 @@ class View extends AbstractView implements JsExpressionable, Data\MutatorInterfa
                 $cb->apiConfig = $defaults['apiConfig'];
             }
 
-            $cb->set(static function () use ($action) {
+            $cb->set(function () use ($action) {
                 $args = func_get_args();
                 $args[0] = new Jquery(new JsExpression('this'));
 

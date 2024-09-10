@@ -31,7 +31,7 @@ $listerTemplate = '<div id="{$_id}">{List}<div id="{$_id}" class="ui segment" st
 $listerContainer = View::addTo($scrollContainer, ['template' => new HtmlTemplate($listerTemplate)]);
 
 $lister = Lister::addTo($listerContainer, [], ['List']);
-$lister->onHook(Lister::HOOK_BEFORE_ROW, static function (Lister $lister, Country $row) {
+$lister->onHook(Lister::HOOK_BEFORE_ROW, function (Lister $lister, Country $row) {
     $row->iso = mb_strtolower($row->iso);
 });
 $lister->setModel(new Country($webpage->db));

@@ -50,7 +50,7 @@ class FormTest extends TestCase
         $_GET['phlex_submit'] = 'ajax';
         $_GET['__phlex_callback'] = 'phlex_submit';
 
-        $this->f->onSubmit(static function (Form $form) use (&$submit_called, $submit) {
+        $this->f->onSubmit(function (Form $form) use (&$submit_called, $submit) {
             $submit_called = true;
             if ($submit) {
                 $submit($form->model);

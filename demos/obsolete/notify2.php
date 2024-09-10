@@ -56,7 +56,7 @@ $formGroup2 = $form->addGroup(['Set Position and Attach to:']);
 $formGroup2->addControl('position', ['width' => 'four']);
 $formGroup2->addControl('attach', ['width' => 'four']);
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     $notifier = new JsNotify();
     $notifier->setColor($form->model->get('color'))
         ->setPosition($form->model->get('position'))

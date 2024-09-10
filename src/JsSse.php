@@ -117,7 +117,7 @@ class JsSse extends JsCallback
 
         // output headers and content
         $webpage = $this->getApp();
-        \Closure::bind(static function () use ($webpage, $content): void {
+        \Closure::bind(function () use ($webpage, $content): void {
             $webpage->outputResponse($content, []);
         }, null, $webpage)();
     }
@@ -149,7 +149,7 @@ class JsSse extends JsCallback
      */
     private function wrapData(string $string): string
     {
-        return implode('', array_map(static function ($v) {
+        return implode('', array_map(function ($v) {
             return 'data: ' . $v . "\n";
         }, preg_split('~\r?\n|\r~', $string)));
     }

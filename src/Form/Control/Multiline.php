@@ -625,7 +625,7 @@ class Multiline extends Form\Control
 
         $multiline = $this;
 
-        $definition = array_map(static function ($value) use ($multiline, $field) {
+        $definition = array_map(function ($value) use ($multiline, $field) {
             return is_array($value) && is_callable($value) ? call_user_func($value, $multiline, $field) : $value;
         }, $component);
 

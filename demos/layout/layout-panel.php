@@ -52,7 +52,7 @@ $view = View::addTo($webpage, ['ui' => 'segment']);
 $text = Text::addTo($view);
 $text->set($_GET['txt'] ?? 'Not Complete');
 
-$panel1->onOpen(static function ($p) use ($view) {
+$panel1->onOpen(function ($p) use ($view) {
     $panel = View::addTo($p, ['ui' => 'basic segment']);
     $buttonNumber = $panel->stickyGet('btn');
 
@@ -87,14 +87,14 @@ $txt = Text::addTo($msg);
 $txt->addParagraph('This panel can only be closed via it\'s close icon at top right.');
 $txt->addParagraph('Try to change dropdown value and close without saving!');
 
-$panel2->onOpen(static function ($p) {
+$panel2->onOpen(function ($p) {
     $form = Form::addTo($p);
     $form->addHeader('Settings');
     $form->addControl('name', [Dropdown::class, 'values' => ['1' => 'Option 1', '2' => 'Option 2']])
         ->set('1')
         ->onChange($p->getOwner()->jsDisplayWarning(true));
 
-    $form->onSubmit(static function (Form $form) use ($p) {
+    $form->onSubmit(function (Form $form) use ($p) {
         return [
             new JsToast('Saved, closing panel.'),
             $p->getOwner()->jsDisplayWarning(false),
@@ -120,7 +120,7 @@ foreach ($country as $ct) {
     $c->on('click', $panel3->jsOpen(['id'], 'orange'));
 }
 
-$panel3->onOpen(static function ($p) use ($country, $countryId) {
+$panel3->onOpen(function ($p) use ($country, $countryId) {
     $seg = View::addTo($p, ['ui' => 'basic segment center aligned']);
     Header::addTo($seg, [$country->load($countryId)->getTitle()]);
     $buttons = View::addTo($seg, ['ui' => 'vertical basic buttons']);

@@ -31,10 +31,10 @@ $m1 = $g1->setModel(new CountryLock($webpage->db));
 $g1->addQuickSearch([CountryLock::hint()->key()->name, CountryLock::hint()->key()->iso]);
 
 // demo for additional action buttons in Crud + JsPaginator
-$g1->addModalAction(['icon' => [Icon::class, 'cogs']], 'Details', static function ($p, $id) use ($g1) {
+$g1->addModalAction(['icon' => [Icon::class, 'cogs']], 'Details', function ($p, $id) use ($g1) {
     Card::addTo($p)->setModel($g1->model->load($id));
 });
-$g1->addActionButton('red', static function ($js) {
+$g1->addActionButton('red', function ($js) {
     return $js->closest('tr')->css('color', 'red');
 });
 // THIS SHOULD GO AFTER YOU CALL addAction() !!!

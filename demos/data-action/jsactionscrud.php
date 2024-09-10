@@ -26,7 +26,7 @@ $action = $files->addUserAction(
         'caption' => 'Import',
         'callback' => 'importFromFilesystem',
         'description' => 'Import file using path:',
-        'preview' => static function ($model, $path) {
+        'preview' => function ($model, $path) {
             return 'Execute Import using path: "' . $path . '"';
         },
         'args' => [
@@ -36,7 +36,7 @@ $action = $files->addUserAction(
     ]
 );
 
-$files->addUserAction('download', static function (Model $model) {
+$files->addUserAction('download', function (Model $model) {
     return 'File has been download!';
 });
 

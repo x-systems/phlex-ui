@@ -24,7 +24,7 @@ require_once __DIR__ . '/../init-app.php';
 $wizard = Wizard::addTo($webpage);
 $webpage->stickyGet($wizard->elementName);
 
-$wizard->addStep('Define User Action', static function ($page) {
+$wizard->addStep('Define User Action', function ($page) {
     Header::addTo($page, ['What are User Actions?']);
 
     $t = Text::addTo($page);
@@ -46,7 +46,7 @@ $wizard->addStep('Define User Action', static function ($page) {
             EOF
     );
 
-    $page->add(new Demo())->setCodeAndCall(static function (View $owner) {
+    $page->add(new Demo())->setCodeAndCall(function (View $owner) {
         $country = new CountryLock($owner->getApp()->db);
 
         $country->addUserAction('send_message');
@@ -69,10 +69,10 @@ $wizard->addStep('Define User Action', static function ($page) {
             EOF
     );
 
-    $page->add(new Demo())->setCodeAndCall(static function (View $owner) {
+    $page->add(new Demo())->setCodeAndCall(function (View $owner) {
         $country = new CountryLock($owner->getApp()->db);
 
-        $country->addUserAction('send_message', static function () {
+        $country->addUserAction('send_message', function () {
             return 'sent';
         });
         $country = $country->tryLoadAny();
@@ -83,7 +83,7 @@ $wizard->addStep('Define User Action', static function ($page) {
     });
 });
 
-$wizard->addStep('UI Integration', static function ($page) {
+$wizard->addStep('UI Integration', function ($page) {
     $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
@@ -93,7 +93,7 @@ $wizard->addStep('UI Integration', static function ($page) {
             EOF
     );
 
-    $page->add(new Demo())->setCodeAndCall(static function (View $owner) {
+    $page->add(new Demo())->setCodeAndCall(function (View $owner) {
         $country = new CountryLock($owner->getApp()->db);
         $country = $country->loadAny();
 
@@ -109,7 +109,7 @@ $wizard->addStep('UI Integration', static function ($page) {
             EOF
     );
 
-    $page->add(new Demo())->setCodeAndCall(static function (View $owner) {
+    $page->add(new Demo())->setCodeAndCall(function (View $owner) {
         $country = new CountryLock($owner->getApp()->db);
         $country = $country->loadAny();
 
@@ -119,7 +119,7 @@ $wizard->addStep('UI Integration', static function ($page) {
     });
 });
 
-$wizard->addStep('Arguments', static function ($page) {
+$wizard->addStep('Arguments', function ($page) {
     $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
@@ -129,7 +129,7 @@ $wizard->addStep('Arguments', static function ($page) {
             EOF
     );
 
-    $page->add(new Demo())->setCodeAndCall(static function (View $owner) {
+    $page->add(new Demo())->setCodeAndCall(function (View $owner) {
         $model = new Model($owner->getApp()->db, ['table' => 'test']);
 
         $model->addUserAction('greet', [
@@ -139,7 +139,7 @@ $wizard->addStep('Arguments', static function ($page) {
                     'type' => 'string',
                 ],
             ],
-            'callback' => static function ($model, $name) {
+            'callback' => function ($model, $name) {
                 return 'Hi ' . $name;
             },
         ]);
@@ -152,7 +152,7 @@ $wizard->addStep('Arguments', static function ($page) {
                     'required' => true,
                 ],
             ],
-            'callback' => static function ($model, $age) {
+            'callback' => function ($model, $age) {
                 return 'Age is ' . $age;
             },
         ]);
@@ -187,7 +187,7 @@ $wizard->addStep('More Ways', function ($page) {
 });
 */
 
-$wizard->addStep('Crud integration', static function ($page) {
+$wizard->addStep('Crud integration', function ($page) {
     $t = Text::addTo($page);
     $t->addParagraph(
         <<< 'EOF'
@@ -197,14 +197,14 @@ $wizard->addStep('Crud integration', static function ($page) {
             EOF
     );
 
-    $page->add(new Demo())->setCodeAndCall(static function (View $owner) {
+    $page->add(new Demo())->setCodeAndCall(function (View $owner) {
         $country = new CountryLock($owner->getApp()->db);
         $country->getUserAction('add')->enabled = false;
-        $country->getUserAction('delete')->enabled = static function (Country $m) { return $m->id % 2 === 0; };
+        $country->getUserAction('delete')->enabled = function (Country $m) { return $m->id % 2 === 0; };
         $country->addUserAction('mail', [
             'appliesTo' => UserAction::APPLIES_TO_SINGLE_RECORD,
-            'preview' => static function ($model) { return 'here is email preview for ' . $model->get('name'); },
-            'callback' => static function ($model) { return 'email sent to ' . $model->get('name'); },
+            'preview' => function ($model) { return 'here is email preview for ' . $model->get('name'); },
+            'callback' => function ($model) { return 'email sent to ' . $model->get('name'); },
             'description' => 'Email testing',
         ]);
 
@@ -218,7 +218,7 @@ $wizard->addStep('Crud integration', static function ($page) {
     });
 });
 
-$wizard->addFinish(static function ($page) use ($wizard) {
+$wizard->addFinish(function ($page) use ($wizard) {
     PromotionText::addTo($page);
     Button::addTo($wizard, ['Exit demo', 'primary', 'icon' => 'left arrow'], ['Left'])
         ->link('/demos/index.php');

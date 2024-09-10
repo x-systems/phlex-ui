@@ -56,7 +56,7 @@ class CallbackTest extends TestCase
         // simulate triggering
         $_GET[$cb->elementName] = '1';
 
-        $cb->set(static function ($x) use (&$var) {
+        $cb->set(function ($x) use (&$var) {
             $var = $x;
         }, [34]);
 
@@ -70,7 +70,7 @@ class CallbackTest extends TestCase
         $cb = Callback::addTo($this->app);
 
         // don't simulate triggering
-        $cb->set(static function ($x) use (&$var) {
+        $cb->set(function ($x) use (&$var) {
             $var = $x;
         }, [34]);
 
@@ -86,7 +86,7 @@ class CallbackTest extends TestCase
         // simulate triggering
         $_GET[$cb->elementName] = '1';
 
-        $cb->set(static function ($x) use (&$var) {
+        $cb->set(function ($x) use (&$var) {
             $var = $x;
         }, [34]);
 
@@ -109,10 +109,10 @@ class CallbackTest extends TestCase
         $_GET[$cb->elementName . '_2'] = '1';
 
         $webpage = $this->app;
-        $cb->set(static function ($x) use (&$var, $webpage, &$cbname) {
+        $cb->set(function ($x) use (&$var, $webpage, &$cbname) {
             $cb2 = CallbackLater::addTo($webpage);
             $cbname = $cb2->elementName;
-            $cb2->set(static function ($y) use (&$var) {
+            $cb2->set(function ($y) use (&$var) {
                 $var = $y;
             }, [$x]);
         }, [34]);
@@ -132,7 +132,7 @@ class CallbackTest extends TestCase
         $cb = CallbackLater::addTo($this->app);
 
         // don't simulate triggering
-        $cb->set(static function ($x) use (&$var) {
+        $cb->set(function ($x) use (&$var) {
             $var = $x;
         }, [34]);
 
@@ -153,7 +153,7 @@ class CallbackTest extends TestCase
         // simulate triggering
         $_GET[$vp->elementName] = '1';
 
-        $vp->set(static function ($p) use (&$var) {
+        $vp->set(function ($p) use (&$var) {
             $var = 25;
         });
 
@@ -171,7 +171,7 @@ class CallbackTest extends TestCase
         // simulate triggering
         $_GET['bah'] = '1';
 
-        $vp->set(static function ($p) use (&$var) {
+        $vp->set(function ($p) use (&$var) {
             $var = 25;
         });
 

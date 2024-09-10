@@ -21,7 +21,7 @@ require_once __DIR__ . '/../init-app.php';
 
 $grid = Grid::addTo($webpage);
 $model = new CountryLock($webpage->db);
-$model->addUserAction('test', static function ($model) {
+$model->addUserAction('test', function ($model) {
     return 'test from ' . $model->getTitle() . ' was successful!';
 });
 
@@ -43,19 +43,19 @@ $grid->addColumn(null, [Template::class, 'hello<b>world</b>']);
 // Creating a button for executing model test user action.
 $grid->addExecutorButton($grid->getExecutorFactory()->create($model->getUserAction('test'), $grid));
 
-$grid->addActionButton('Say HI', static function ($j, $id) use ($grid) {
+$grid->addActionButton('Say HI', function ($j, $id) use ($grid) {
     $model = Country::assertInstanceOf($grid->model);
 
     return 'Loaded "' . $model->load($id)->name . '" from ID=' . $id;
 });
 
-$grid->addModalAction(['icon' => [Icon::class, 'external']], 'Modal Test', static function ($p, $id) {
+$grid->addModalAction(['icon' => [Icon::class, 'external']], 'Modal Test', function ($p, $id) {
     Message::addTo($p, ['Clicked on ID=' . $id]);
 });
 
 // Creating an executor for delete action.
 $deleteExecutor = $grid->getExecutorFactory()->create($model->getUserAction('delete'), $grid);
-$deleteExecutor->onHook(BasicExecutor::HOOK_AFTER_EXECUTE, static function () {
+$deleteExecutor->onHook(BasicExecutor::HOOK_AFTER_EXECUTE, function () {
     return [
         (new Jquery())->closest('tr')->transition('fade left'),
         new JsToast('Simulating delete in demo mode.'),

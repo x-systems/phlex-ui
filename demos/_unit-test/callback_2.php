@@ -28,17 +28,17 @@ $webpage->getExecutorFactory()->registerTrigger(
 $loader = Loader::addTo($webpage);
 $loader->loadEvent = false;
 
-$loader->set(static function ($p) use ($m) {
+$loader->set(function ($p) use ($m) {
     $loader_1 = Loader::addTo($p);
     $loader_1->loadEvent = false;
 
     Header::addTo($p, ['Loader-1', 'size' => 4]);
 
-    $loader_1->set(static function ($p) use ($m) {
+    $loader_1->set(function ($p) use ($m) {
         Header::addTo($p, ['Loader-2', 'size' => 4]);
         $loader_3 = Loader::addTo($p);
 
-        $loader_3->set(static function ($p) use ($m) {
+        $loader_3->set(function ($p) use ($m) {
             Header::addTo($p, ['Loader-3', 'size' => 4]);
 
             $c = Crud::addTo($p, ['ipp' => 4]);

@@ -58,8 +58,8 @@ $group->addControl('radio_disb', [Form\Control\Radio::class, 'disabled' => true]
 
 $group = $form->addGroup('File upload');
 
-$onDelete = static function () {};
-$onUpload = static function () {};
+$onDelete = function () {};
+$onUpload = function () {};
 
 $control = $group->addControl('file_norm', [Form\Control\Upload::class, ['accept' => ['.png', '.jpg']]])->set('normal', 'normal.jpg');
 $control->onDelete($onDelete);
@@ -103,7 +103,7 @@ $group->addControl('date_norm', [Form\Control\Calendar::class, 'type' => 'date']
 $group->addControl('date_read', [Form\Control\Calendar::class, 'type' => 'date', 'readonly' => true])->set(date('Y-m-d'));
 $group->addControl('date_disb', [Form\Control\Calendar::class, 'type' => 'date', 'disabled' => true])->set(date('Y-m-d'));
 
-$form->onSubmit(static function (Form $form) {});
+$form->onSubmit(function (Form $form) {});
 
 Header::addTo($webpage, ['Stand Alone Line']);
 // you can pass values to button
@@ -130,7 +130,7 @@ $control = $form->addControl('surname', new Form\Control\Line([
     )],
 ]));
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     return $form->model->get('name');
 });
 
@@ -146,7 +146,7 @@ $formPage->addControl('name', new Form\Control\Line());
 $formPage = Form\Layout::addTo($tabs->addTab('Other Info'), ['form' => $form]);
 $formPage->addControl('age', new Form\Control\Line());
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     return $form->model->get('name') . ' has age ' . $form->model->get('age');
 });
 
@@ -178,7 +178,7 @@ $f3->onChange([
     new JsExpression('console.log("f3 changed")'),
     new JsExpression('console.log("f3 really changed")'),
 ]);
-$f4->onChange(static function () {
+$f4->onChange(function () {
     return new JsExpression('console.log("f4 changed")');
 });
 
@@ -219,7 +219,7 @@ $group->addControl('m_text_crlf', [Form\Control\Textarea::class], ['type' => 'te
 $group->addControl('m_text_cr', [Form\Control\Textarea::class], ['type' => 'text'])->set("First line\rSecond line");
 $group->addControl('m_text_lf', [Form\Control\Textarea::class], ['type' => 'text'])->set("First line\nSecond line");
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     // check what values are submitted
     echo "We're URL encoding submitted values to be able to see what line end is actually submitted.";
     foreach ($form->model->get() as $k => $v) {

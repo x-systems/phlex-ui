@@ -279,7 +279,7 @@ class CardDeck extends View
      */
     protected function findCard(Model $model)
     {
-        $mapResults = static function ($a) use ($model) {
+        $mapResults = function ($a) use ($model) {
             return $a[$model->primaryKey];
         };
         $deck = [];

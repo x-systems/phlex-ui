@@ -22,7 +22,7 @@ $control = $form->addControl('file', [Form\Control\Upload::class, ['accept' => [
 // $control->set('a_generated_token', 'a-file-name');
 // $control->set('a_generated_token');
 
-$img->onDelete(static function ($fileId) use ($img) {
+$img->onDelete(function ($fileId) use ($img) {
     $img->clearThumbnail('./images/default.png');
 
     return new JsToast([
@@ -32,7 +32,7 @@ $img->onDelete(static function ($fileId) use ($img) {
     ]);
 });
 
-$img->onUpload(static function ($postFile) use ($form, $img) {
+$img->onUpload(function ($postFile) use ($form, $img) {
     if ($postFile['error'] !== 0) {
         return $form->error('img', 'Error uploading image.');
     }
@@ -57,7 +57,7 @@ $img->onUpload(static function ($postFile) use ($form, $img) {
     ]);
 });
 
-$control->onDelete(static function ($fileId) {
+$control->onDelete(function ($fileId) {
     return new JsToast([
         'title' => 'Delete successfully',
         'message' => $fileId . ' has been removed',
@@ -65,7 +65,7 @@ $control->onDelete(static function ($fileId) {
     ]);
 });
 
-$control->onUpload(static function ($files) use ($form, $control) {
+$control->onUpload(function ($files) use ($form, $control) {
     if ($files === 'error') {
         return $form->error('file', 'Error uploading file.');
     }
@@ -78,7 +78,7 @@ $control->onUpload(static function ($files) use ($form, $control) {
     ]);
 });
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     // implement submission here
     return $form->success('Thanks for submitting file: ' . $form->model->get('img') . ' / ' . $form->model->get('file'));
 });

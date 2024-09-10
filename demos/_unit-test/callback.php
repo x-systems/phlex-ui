@@ -35,7 +35,7 @@ $table->setModel($m);
 $button = Button::addTo($webpage, ['First', ['ui' => 'phlex-test']]);
 $button->on('click', new JsModal('Edit First Record', $vp));
 
-$form->onSubmit(static function ($form) use ($table) {
+$form->onSubmit(function ($form) use ($table) {
     $form->model->save();
 
     return [

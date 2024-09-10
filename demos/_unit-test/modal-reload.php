@@ -18,7 +18,7 @@ Header::addTo($webpage, ['Testing ModalExecutor reload']);
 
 $modal = Modal::addTo($webpage, ['title' => 'Modal Executor', 'region' => 'Modals']);
 
-$modal->set(static function ($modal) {
+$modal->set(function ($modal) {
     ReloadTest::addTo($modal);
 });
 

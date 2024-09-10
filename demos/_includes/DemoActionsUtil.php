@@ -15,7 +15,7 @@ class DemoActionsUtil
             'callback',
             [
                 'description' => 'Callback',
-                'callback' => static function ($model) {
+                'callback' => function ($model) {
                     return 'callback execute using country ' . $model->getTitle();
                 },
             ]
@@ -25,10 +25,10 @@ class DemoActionsUtil
             'preview',
             [
                 'description' => 'Display Preview prior to run the action',
-                'preview' => static function ($model) {
+                'preview' => function ($model) {
                     return 'Previewing country ' . $model->getTitle();
                 },
-                'callback' => static function ($model) {
+                'callback' => function ($model) {
                     return 'Done previewing ' . $model->getTitle();
                 },
             ]
@@ -40,7 +40,7 @@ class DemoActionsUtil
                 'description' => 'This action is disabled.',
                 'caption' => 'Disabled',
                 'enabled' => false,
-                'callback' => static function () {
+                'callback' => function () {
                     return 'ok';
                 },
             ]
@@ -54,7 +54,7 @@ class DemoActionsUtil
                 'args' => [
                     'age' => ['type' => 'integer', 'required' => true],
                 ],
-                'callback' => static function ($model, $age) {
+                'callback' => function ($model, $age) {
                     if ($age < 18) {
                         $text = 'Sorry not old enough to visit ' . $model->getTitle();
                     } else {
@@ -72,10 +72,10 @@ class DemoActionsUtil
                 'caption' => 'Argument/Preview',
                 'description' => 'Ask for argument "Age" and display preview prior to execute',
                 'args' => ['age' => ['type' => 'integer', 'required' => true]],
-                'preview' => static function ($model, $age) {
+                'preview' => function ($model, $age) {
                     return 'You age is: ' . $age;
                 },
-                'callback' => static function ($model, $age) {
+                'callback' => function ($model, $age) {
                     return 'age = ' . $age;
                 },
             ]
@@ -85,11 +85,11 @@ class DemoActionsUtil
             'edit_iso',
             [
                 'caption' => 'Edit ISO3',
-                'description' => static function (UserAction $action) {
+                'description' => function (UserAction $action) {
                     return 'Edit ISO3 for country: ' . $action->getEntity()->getTitle();
                 },
                 'fields' => [$country->key()->iso3],
-                'callback' => static function () {
+                'callback' => function () {
                     return 'ok';
                 },
             ]
@@ -101,10 +101,10 @@ class DemoActionsUtil
                 'caption' => 'Exception',
                 'description' => 'Throw an exception when executing an action',
                 'args' => ['age' => ['type' => 'integer']],
-                'preview' => static function () {
+                'preview' => function () {
                     return 'Be careful with this action.';
                 },
-                'callback' => static function () {
+                'callback' => function () {
                     throw new Exception('Told you, didn\'t I?');
                 },
             ]
@@ -115,10 +115,10 @@ class DemoActionsUtil
             [
                 'caption' => 'User Confirmation',
                 'description' => 'Confirm the action using a ConfirmationExecutor',
-                'confirmation' => static function ($a) {
+                'confirmation' => function ($a) {
                     return 'Are you sure you want to perform this action on: <b>' . $a->getEntity()->getTitle() . ' (' . $a->getEntity()->iso3 . ')</b>';
                 },
-                'callback' => static function ($model) {
+                'callback' => function ($model) {
                     return 'Confirm country ' . $model->getTitle();
                 },
             ]
@@ -135,12 +135,12 @@ class DemoActionsUtil
                     'gender' => ['type' => ['enum', 'values' => ['m' => 'Male', 'f' => 'Female']], 'required' => true, 'default' => 'm'],
                 ],
                 'fields' => [$country->key()->iso3],
-                'callback' => static function ($model, $age, $city, $gender) {
+                'callback' => function ($model, $age, $city, $gender) {
                     $n = $gender === 'm' ? 'Mr.' : 'Mrs.';
 
                     return 'Thank you ' . $n . ' at age ' . $age;
                 },
-                'preview' => static function ($model, $age, $city, $gender) {
+                'preview' => function ($model, $age, $city, $gender) {
                     return 'Gender = ' . $gender . ' / Age = ' . $age;
                 },
             ]

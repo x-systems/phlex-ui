@@ -67,6 +67,6 @@ $form->addControl('term', [Form\Control\Checkbox::class, 'caption' => 'Accept te
 
 $accordionLayout->activate($contactSection);
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     return $form->success('Yey!', 'You did well by filling out this form');
 });

@@ -30,25 +30,25 @@ Message::addTo($tab, ['Content of this tab will refresh only if you reload entir
 LoremIpsum::addTo($tab);
 
 // set the default active tab
-$tabs->addTab('Default Active Tab', static function ($tab) {
+$tabs->addTab('Default Active Tab', function ($tab) {
     Message::addTo($tab, ['This is the active tab by default']);
 })->setActive();
 
 // dynamic tab
-$tabs->addTab('Dynamic Lorem Ipsum', static function ($tab) {
+$tabs->addTab('Dynamic Lorem Ipsum', function ($tab) {
     Message::addTo($tab, ['Every time you come to this tab, you will see a different text']);
     LoremIpsum::addTo($tab, ['size' => (int) ($_GET['size'] ?? 1)]);
 }, ['apiSettings' => ['data' => ['size' => random_int(1, 4)]]]);
 
 // modal tab
-$tabs->addTab('Modal popup', static function ($tab) {
-    Button::addTo($tab, ['Load Lorem'])->on('click', Modal::addTo($tab)->set(static function ($p) {
+$tabs->addTab('Modal popup', function ($tab) {
+    Button::addTo($tab, ['Load Lorem'])->on('click', Modal::addTo($tab)->set(function ($p) {
         LoremIpsum::addTo($p, ['size' => 2]);
     })->show());
 });
 
 // dynamic tab
-$tabs->addTab('Dynamic Form', static function ($tab) {
+$tabs->addTab('Dynamic Form', function ($tab) {
     Message::addTo($tab, ['It takes 2 seconds for this tab to load', 'warning']);
     sleep(2);
     $modelRegister = new Model(new Array_());
@@ -56,7 +56,7 @@ $tabs->addTab('Dynamic Form', static function ($tab) {
 
     $form = Form::addTo($tab, ['segment' => true]);
     $form->setModel($modelRegister);
-    $form->onSubmit(static function (Form $form) {
+    $form->onSubmit(function (Form $form) {
         if ($form->model->get('name') !== 'John') {
             return $form->error('name', 'Your name is not John! It is "' . $form->model->get('name') . '". It should be John. Pleeease!');
         }

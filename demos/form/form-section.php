@@ -22,7 +22,7 @@ $model = new CountryLock($webpage->db);
 $model = $model->loadAny();
 
 // Prevent form from saving
-$noSave = static function (Form $form) {
+$noSave = function (Form $form) {
     return new JsToast([
         'title' => 'POSTed field values',
         'message' => '<pre>' . Webpage::encodeJson($form->model->get()) . '</pre>',

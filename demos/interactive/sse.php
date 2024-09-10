@@ -25,7 +25,7 @@ $buttonStop = Button::addTo($webpage, ['Turn Off']);
 
 $sse = JsSse::addTo($webpage, ['showLoader' => true]);
 
-$button->on('click', $sse->set(static function () use ($button, $sse, $bar) {
+$button->on('click', $sse->set(function () use ($button, $sse, $bar) {
     $sse->send($button->js()->addClass('disabled'));
 
     $sse->send($bar->jsValue(20));
@@ -52,7 +52,7 @@ Header::addTo($webpage, ['SSE operation with user confirmation']);
 $sse = JsSse::addTo($webpage);
 $button = Button::addTo($webpage, ['Click me to change my text']);
 
-$button->on('click', $sse->set(static function ($jsChain) use ($sse, $button) {
+$button->on('click', $sse->set(function ($jsChain) use ($sse, $button) {
     $sse->send($button->js()->text('Please wait for 2 seconds...'));
     sleep(2);
 

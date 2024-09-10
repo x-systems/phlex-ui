@@ -337,7 +337,7 @@ class ScopeBuilder extends Control
         parent::doInitialize();
 
         $this->initVueLookupCallback();
-        
+
         $this->buildQuery();
 
         if (!$this->scopeBuilderTemplate) {
@@ -753,7 +753,7 @@ class ScopeBuilder extends Control
                 $field = $condition->getModel()->getField($condition->key);
                 $fieldValueType = $field->getValueType();
 
-                if ($fieldValueType instanceof Model\Field\Type\ReferenceData) {
+                if ($fieldValueType instanceof Type\ReferenceData) {
                     $entity = $field->createTheirModel()->tryLoadBy($field->getTheirKey(), $value);
                     if ($entity->isLoaded()) {
                         $option = [

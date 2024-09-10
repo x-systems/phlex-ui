@@ -49,7 +49,7 @@ class Context extends RawMinkContext implements BehatContext
     protected function disableAnimations(): void
     {
         // disable all CSS/jQuery animations/transitions
-        $toCssFx = static function ($selector, $cssPairs) {
+        $toCssFx = function ($selector, $cssPairs) {
             $css = [];
             foreach ($cssPairs as $k => $v) {
                 foreach ([$k, '-moz-' . $k, '-webkit-' . $k] as $k2) {

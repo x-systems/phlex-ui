@@ -46,7 +46,7 @@ Header::addTo($tab, [
     'Console output streaming',
     'subHeader' => 'any output your PHP script produces through console is displayed to user in real-time',
 ]);
-Console::addTo($tab)->set(static function ($console) {
+Console::addTo($tab)->set(function ($console) {
     $console->output('Executing test process...');
     sleep(1);
     $console->output('Now trying something dangerous..');
@@ -56,7 +56,7 @@ Console::addTo($tab)->set(static function ($console) {
     throw new Exception('BOOM - exceptions are caught');
 });
 
-$tab = $tabs->addTab('runMethod()', static function ($tab) use ($testRunClass) {
+$tab = $tabs->addTab('runMethod()', function ($tab) use ($testRunClass) {
     Header::addTo($tab, [
         'icon' => 'terminal',
         'Non-interractive method invocation',
@@ -65,7 +65,7 @@ $tab = $tabs->addTab('runMethod()', static function ($tab) use ($testRunClass) {
     Console::addTo($tab)->runMethod($testRunClass::addTo($tab), 'generateReport');
 });
 
-$tab = $tabs->addTab('exec() single', static function ($tab) {
+$tab = $tabs->addTab('exec() single', function ($tab) {
     Header::addTo($tab, [
         'icon' => 'terminal',
         'Command execution',
@@ -76,7 +76,7 @@ $tab = $tabs->addTab('exec() single', static function ($tab) {
     Console::addTo($tab)->exec('/bin/pwd');
 });
 
-$tab = $tabs->addTab('exec() chain', static function ($tab) {
+$tab = $tabs->addTab('exec() chain', function ($tab) {
     Header::addTo($tab, [
         'icon' => 'terminal',
         'Command execution',
@@ -84,14 +84,14 @@ $tab = $tabs->addTab('exec() chain', static function ($tab) {
     ]);
     $message = Message::addTo($tab, ['This demo may not work', 'warning']);
     $message->text->addParagraph('This demo requires Linux OS and will display error otherwise.');
-    Console::addTo($tab)->set(static function ($console) {
+    Console::addTo($tab)->set(function ($console) {
         $console->exec('/sbin/ping', ['-c', '5', '-i', '1', '192.168.0.1']);
         $console->exec('/sbin/ping', ['-c', '5', '-i', '2', '8.8.8.8']);
         $console->exec('/bin/no-such-command');
     });
 });
 
-$tab = $tabs->addTab('composer update', static function ($tab) {
+$tab = $tabs->addTab('composer update', function ($tab) {
     Header::addTo($tab, [
         'icon' => 'terminal',
         'Command execution',
@@ -109,7 +109,7 @@ $tab = $tabs->addTab('composer update', static function ($tab) {
     $button->on('click', $console->jsExecute());
 });
 
-$tab = $tabs->addTab('Use after form submit', static function ($tab) {
+$tab = $tabs->addTab('Use after form submit', function ($tab) {
     Header::addTo($tab, [
         'icon' => 'terminal',
         'How to log form submit process',
@@ -122,7 +122,7 @@ $tab = $tabs->addTab('Use after form submit', static function ($tab) {
     $form->addControls(['foo', 'bar']);
 
     $console = Console::addTo($tab, ['event' => false]);
-    $console->set(static function ($console) {
+    $console->set(function ($console) {
         $model = $_SESSION['data'];
         $console->output('Executing process...');
         $console->info(var_export($model->get(), true));
@@ -133,7 +133,7 @@ $tab = $tabs->addTab('Use after form submit', static function ($tab) {
     });
     $console->js(true)->hide();
 
-    $form->onSubmit(static function (Form $form) use ($console) {
+    $form->onSubmit(function (Form $form) use ($console) {
         $_SESSION['data'] = $form->model; // only option is to store model in session here in demo
 
         return [

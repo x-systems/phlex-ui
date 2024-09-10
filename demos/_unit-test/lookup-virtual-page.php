@@ -21,10 +21,10 @@ $product = new ProductLock($webpage->db);
 
 $vp = VirtualPage::addTo($webpage);
 
-$vp->set(static function ($page) {
+$vp->set(function ($page) {
     $form = Form::addTo($page);
     $form->addControl('category', [Form\Control\Lookup::class, 'model' => new Category($page->getApp()->db)]);
-    $form->onSubmit(static function ($f) {
+    $form->onSubmit(function ($f) {
         $category = $f->getControl('category')->model->load($f->model->get('category'));
 
         return new JsToast($category->getTitle());

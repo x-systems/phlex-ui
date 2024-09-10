@@ -26,18 +26,18 @@ $model = new CountryLock($webpage->db);
 $crud = Crud::addTo($webpage, ['ipp' => 10]);
 
 // callback for model action add form.
-$crud->onFormAdd(static function ($form, $t) use ($model) {
+$crud->onFormAdd(function ($form, $t) use ($model) {
     $form->js(true, $form->getControl($model->key()->name)->jsInput()->val('Entering value via javascript'));
 });
 
 // callback for model action edit form.
-$crud->onFormEdit(static function ($form) use ($model) {
+$crud->onFormEdit(function ($form) use ($model) {
     $form->js(true, $form->getControl($model->key()->name)->jsInput()->attr('readonly', true));
 });
 
 // callback for both model action edit and add.
-$crud->onFormAddEdit(static function ($form, $ex) {
-    $form->onSubmit(static function (Form $form) use ($ex) {
+$crud->onFormAddEdit(function ($form, $ex) {
+    $form->onSubmit(function (Form $form) use ($ex) {
         return [$ex->hide(), new JsToast('Submit all right! This demo does not saved data.')];
     });
 });
@@ -64,7 +64,7 @@ $crud = Crud::addTo($column, [
 // Condition on the model can be applied on a model
 $model = new CountryLock($webpage->db);
 $model->addCondition($model->key()->numcode, '<', 200);
-$model->onHook(Model::HOOK_VALIDATE, static function ($model, $intent) {
+$model->onHook(Model::HOOK_VALIDATE, function ($model, $intent) {
     $err = [];
     if ($model->numcode >= 200) {
         $err[$model->key()->numcode] = 'Should be less than 200';
@@ -75,7 +75,7 @@ $model->onHook(Model::HOOK_VALIDATE, static function ($model, $intent) {
 $crud->setModel($model);
 
 // Because Crud inherits Grid, you can also define custom actions
-$crud->addModalAction(['icon' => [Icon::class, 'cogs']], 'Details', static function ($p, $id) use ($crud) {
+$crud->addModalAction(['icon' => [Icon::class, 'cogs']], 'Details', function ($p, $id) use ($crud) {
     $model = CountryLock::assertInstanceOf($crud->model);
     Message::addTo($p, ['Details for: ' . $model->load($id)->name . ' (id: ' . $id . ')']);
 });

@@ -72,25 +72,25 @@ $vp1Modal = Modal::addTo($webpage, ['title' => 'Lorem Ipsum load dynamically']);
 $vp2Modal = Modal::addTo($webpage, ['title' => 'Text message load dynamically'])->addClass('small');
 
 $vp3Modal = Modal::addTo($webpage, ['title' => 'Third level modal'])->addClass('small');
-$vp3Modal->set(static function ($modal) {
+$vp3Modal->set(function ($modal) {
     Text::addTo($modal)->set('This is yet another modal');
     LoremIpsum::addTo($modal, ['size' => 2]);
 });
 
 // When $vp1Modal->show() is activate, it will dynamically add this content to it.
-$vp1Modal->set(static function ($modal) use ($vp2Modal) {
+$vp1Modal->set(function ($modal) use ($vp2Modal) {
     ViewTester::addTo($modal);
     View::addTo($modal, ['Showing lorem ipsum']); // need in behat test.
     LoremIpsum::addTo($modal, ['size' => 2]);
     $form = Form::addTo($modal);
     $form->addControl('color', null, ['enum' => ['red', 'green', 'blue'], 'default' => 'green']);
-    $form->onSubmit(static function (Form $form) use ($vp2Modal) {
+    $form->onSubmit(function (Form $form) use ($vp2Modal) {
         return $vp2Modal->show(['color' => $form->model->get('color')]);
     });
 });
 
 // When $vp2Modal->show() is activate, it will dynamically add this content to it.
-$vp2Modal->set(static function ($modal) use ($vp3Modal) {
+$vp2Modal->set(function ($modal) use ($vp3Modal) {
     // ViewTester::addTo($modal);
     Message::addTo($modal, ['Message', @$_GET['color']])->text->addParagraph('This text is loaded using a second modal.');
     Button::addTo($modal)->set('Third modal')->on('click', $vp3Modal->show());
@@ -170,7 +170,7 @@ $action->addView($nextAction);
 $stepModal->addButtonAction($action);
 
 // Set modal functionality. Will changes content according to page being displayed.
-$stepModal->set(static function ($modal) use ($stepModal, $session, $prevAction, $nextAction) {
+$stepModal->set(function ($modal) use ($stepModal, $session, $prevAction, $nextAction) {
     $page = $session->recall('page', 1);
     $success = $session->recall('success', false);
     if (isset($_GET['move'])) {
@@ -200,7 +200,7 @@ $stepModal->set(static function ($modal) use ($stepModal, $session, $prevAction,
         $form = Form::addTo($modal, ['segment' => true]);
         $form->setModel($modelRegister);
 
-        $form->onSubmit(static function (Form $form) use ($nextAction, $session) {
+        $form->onSubmit(function (Form $form) use ($nextAction, $session) {
             if ($form->model->get('name') !== 'John') {
                 return $form->error('name', 'Your name is not John! It is "' . $form->model->get('name') . '". It should be John. Pleeease!');
             }

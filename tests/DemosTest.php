@@ -119,7 +119,7 @@ class DemosTest extends TestCase
         $_COOKIE = [];
         $_SESSION = [];
 
-        \Closure::bind(static function () {
+        \Closure::bind(function () {
             Webpage::$_sentHeaders = [];
         }, null, Webpage::class)();
     }
@@ -169,7 +169,7 @@ class DemosTest extends TestCase
                 $body = ob_get_clean();
             }
 
-            [$statusCode, $headers] = \Closure::bind(static function () {
+            [$statusCode, $headers] = \Closure::bind(function () {
                 $statusCode = 200;
                 $headers = Webpage::$_sentHeaders;
                 if (isset($headers[Webpage::HEADER_STATUS_CODE])) {
@@ -278,7 +278,7 @@ class DemosTest extends TestCase
             }
         }
 
-        return array_map(static function (string $v) { return [$v]; }, $files);
+        return array_map(function (string $v) { return [$v]; }, $files);
     }
 
     /**

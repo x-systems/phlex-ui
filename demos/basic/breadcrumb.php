@@ -38,7 +38,7 @@ if ($id = $webpage->stickyGet('country_id')) {
 
     $form = Form::addTo($webpage);
     $form->setModel($model);
-    $form->onSubmit(static function (Form $form) {
+    $form->onSubmit(function (Form $form) {
         return new JsToast('Form Submitted! Data saving is not possible in demo!');
     });
 } else {

@@ -287,7 +287,7 @@ class Webpage extends View
             // App as already done everything
             // App need to stop output
             // set_handler to catch/trap any exception
-            set_exception_handler(static function (\Throwable $t): void {});
+            set_exception_handler(function (\Throwable $t): void {});
 
             // raise exception to be trapped and stop execution
             throw new ExitApplicationException();
@@ -958,7 +958,7 @@ class Webpage extends View
         // IMPORTANT: always convert large integers to string, otherwise numbers can be rounded by JS
         // replace large JSON integers only, do not replace anything in JSON/JS strings
         $json = preg_replace_callback('~"(?:[^"\\\\]+|\\\\.)*+"\K|\'(?:[^\'\\\\]+|\\\\.)*+\'\K'
-            . '|(?:^|[{\[,:])[ \n\r\t]*\K-?[1-9]\d{15,}(?=[ \n\r\t]*(?:$|[}\],:]))~s', static function ($matches) {
+            . '|(?:^|[{\[,:])[ \n\r\t]*\K-?[1-9]\d{15,}(?=[ \n\r\t]*(?:$|[}\],:]))~s', function ($matches) {
                 if ($matches[0] === '' || abs((int) $matches[0]) < (2 ** 53)) {
                     return $matches[0];
                 }
@@ -1054,7 +1054,7 @@ class Webpage extends View
                     if ($k === self::HEADER_STATUS_CODE) {
                         http_response_code($v === (string) (int) $v ? (int) $v : 500);
                     } else {
-                        $kCamelCase = preg_replace_callback('~(?<![a-zA-Z])[a-z]~', static function ($matches) {
+                        $kCamelCase = preg_replace_callback('~(?<![a-zA-Z])[a-z]~', function ($matches) {
                             return strtoupper($matches[0]);
                         }, $k);
 

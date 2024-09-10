@@ -39,7 +39,7 @@ Header::addTo($tab, ['Very simple form']);
 
 $form = Form::addTo($tab);
 $form->addControl('email');
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     // implement subscribe here
 
     return $form->success('Subscribed ' . $form->model->get('email') . ' to newsletter.');
@@ -66,7 +66,7 @@ $form->addControl('status_integer_required', [Form\Control\Dropdown::class, 'val
 $form->addControl('status_string_mandatory', [Form\Control\Dropdown::class, 'values' => $values], ['type' => 'string', 'mandatory' => true]);
 $form->addControl('status_integer_mandatory', [Form\Control\Dropdown::class, 'values' => $values], ['type' => 'integer', 'mandatory' => true]);
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     return new JsToast(Webpage::encodeJson($form->model->get()));
 });
 
@@ -76,7 +76,7 @@ $form->addControl('field', null, ['type' => 'date', 'caption' => 'Date using mod
 $form->addControl('control', [Form\Control\Calendar::class, 'type' => 'date', 'caption' => 'Date using form control: ']);
 $form->buttonSave->set('Compare Date');
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     $message = 'field = ' . print_r($form->model->get('field'), true) . '; <br> control = ' . print_r($form->model->get('control'), true);
     $view = new Message('Date field vs control:');
     $view->initialize();
@@ -92,7 +92,7 @@ Header::addTo($tab, ['Form can respond with manually generated error']);
 $form = Form::addTo($tab);
 $form->addControl('email1');
 $form->buttonSave->set('Save1');
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     return $form->error('email1', 'some error action ' . random_int(1, 100));
 });
 
@@ -100,7 +100,7 @@ Header::addTo($tab, ['..or success message']);
 $form = Form::addTo($tab);
 $form->addControl('email2');
 $form->buttonSave->set('Save2');
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     return $form->success('form was successful');
 });
 
@@ -108,7 +108,7 @@ Header::addTo($tab, ['Any other view can be output']);
 $form = Form::addTo($tab);
 $form->addControl('email3');
 $form->buttonSave->set('Save3');
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     $view = new Message('some header');
     $view->initialize();
     $view->text->addParagraph('some text ' . random_int(1, 100));
@@ -120,7 +120,7 @@ Header::addTo($tab, ['Modal can be output directly']);
 $form = Form::addTo($tab);
 $form->addControl('email4');
 $form->buttonSave->set('Save4');
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     $view = new Message('some header');
     $view->initialize();
     $view->text->addParagraph('some text ' . random_int(1, 100));
@@ -135,7 +135,7 @@ Header::addTo($tab, ['jsAction can be used too']);
 $form = Form::addTo($tab);
 $control = $form->addControl('email5');
 $form->buttonSave->set('Save5');
-$form->onSubmit(static function (Form $form) use ($control) {
+$form->onSubmit(function (Form $form) use ($control) {
     return $control->jsInput()->val('random is ' . random_int(1, 100));
 });
 
@@ -146,7 +146,7 @@ Header::addTo($tab, ['Form handles errors', 'size' => 2]);
 
 $form = Form::addTo($tab);
 $form->addControl('email');
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     $o = new \stdClass();
 
     return $o['abc'];
@@ -156,7 +156,7 @@ Header::addTo($tab, ['Form shows Phlex exceptions', 'size' => 2]);
 
 $form = Form::addTo($tab);
 $form->addControl('email');
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     throw (new Exception('testing'))
         ->addMoreInfo('arg1', 'val1');
 
@@ -164,10 +164,10 @@ $form->onSubmit(static function (Form $form) {
 });
 
 Button::addTo($form, ['Modal Test', 'secondary'])->on('click', Modal::addTo($form)
-    ->set(static function ($p) {
+    ->set(function ($p) {
         $form = Form::addTo($p);
         $form->addControl('email');
-        $form->onSubmit(static function (Form $form) {
+        $form->onSubmit(function (Form $form) {
             throw (new Exception('testing'))
                 ->addMoreInfo('arg1', 'val1');
 
@@ -189,7 +189,7 @@ $modelRegister = $modelRegister->createEntity();
 $form = Form::addTo($tab, ['segment' => true]);
 $form->setModel($modelRegister);
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     if ($form->model->get('name') !== 'John') {
         return $form->error('name', 'Your name is not John! It is "' . $form->model->get('name') . '". It should be John. Pleeease!');
     }
@@ -226,7 +226,7 @@ $group->addControl('first_name', ['width' => 'eight']);
 $group->addControl('middle_name', ['width' => 'three', 'disabled' => true]);
 $group->addControl('last_name', ['width' => 'five']);
 
-$form->onSubmit(static function (Form $form) {
+$form->onSubmit(function (Form $form) {
     $errors = [];
 
     foreach ($form->model->getFields() as $name => $ff) {

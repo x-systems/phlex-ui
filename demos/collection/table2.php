@@ -34,7 +34,7 @@ $table->template->dangerouslyAppendHtml('SubHead', '<tr class="center aligned"><
 $table->template->dangerouslyAppendHtml('Body', '<tr class="center aligned"><td colspan=2>This is part of body, goes before other rows</td></tr>');
 
 // Hook can be used to display data before row. You can also inject and format extra rows.
-$table->onHook(Lister::HOOK_BEFORE_ROW, static function (Table $table, Model $row) {
+$table->onHook(Lister::HOOK_BEFORE_ROW, function (Table $table, Model $row) {
     if ($row->getId() === 2) {
         $table->template->dangerouslyAppendHtml('Body', '<tr class="center aligned"><td colspan=2>This goes above row with ID=2 (' . $row->get('action') . ')</th></tr>');
     } elseif ($row->get('action') === 'Tax') {
@@ -66,7 +66,7 @@ $table->addColumn('amount', [Table\Column\Money::class]);
 $table->addDecorator('amount', [Table\Column\Template::class, 'Refunded: {$amount}']);
 
 // column which uses selective format depending on condition
-$table->addColumn('amount_copy', [Table\Column\Multiformat::class, static function ($a, $b) {
+$table->addColumn('amount_copy', [Table\Column\Multiformat::class, function ($a, $b) {
     if ($a->get('amount_copy') > 0) {
         // Two formatters together
         return [[Table\Column\Link::class], [Table\Column\Money::class]];

@@ -74,17 +74,17 @@ trait ModelLockTrait
 {
     public function lock(): void
     {
-        $this->getUserAction('add')->callback = static function ($model) {
+        $this->getUserAction('add')->callback = function ($model) {
             return 'Form Submit! Data are not save in demo mode.';
         };
-        $this->getUserAction('edit')->callback = static function ($model) {
+        $this->getUserAction('edit')->callback = function ($model) {
             return 'Form Submit! Data are not save in demo mode.';
         };
 
         $delete = $this->getUserAction('delete');
         $delete->confirmation = 'Please go ahead. Demo mode does not really delete data.';
 
-        $delete->callback = static function ($model) {
+        $delete->callback = function ($model) {
             return 'Only simulating delete when in demo mode.';
         };
     }
@@ -113,7 +113,7 @@ class Country extends ModelWithPrefixedFields
         $this->addField($this->key()->numcode, ['caption' => 'ISO Numeric Code', 'type' => 'float', 'required' => true]);
         $this->addField($this->key()->phonecode, ['caption' => 'Phone Prefix', 'type' => 'float', 'required' => true]);
 
-        $this->onHook(Model::HOOK_BEFORE_SAVE, static function (self $model) {
+        $this->onHook(Model::HOOK_BEFORE_SAVE, function (self $model) {
             if (!$model->sys_name) {
                 $model->sys_name = mb_strtoupper($model->name);
             }
@@ -212,7 +212,7 @@ class Stat extends ModelWithPrefixedFields
         $this->addField($this->key()->is_commercial, ['type' => 'boolean']);
         $this->addField($this->key()->currency, ['type' => ['enum', 'values' => ['EUR' => 'Euro', 'USD' => 'US Dollar', 'GBP' => 'Pound Sterling']]]);
         $this->addField($this->key()->currency_symbol, ['never_persist' => true]);
-        $this->onHook(Model::HOOK_AFTER_LOAD, static function (self $model) {
+        $this->onHook(Model::HOOK_AFTER_LOAD, function (self $model) {
             /* implementation for "intl"
             $locale = 'en-UK';
             $fmt = new \NumberFormatter($locale . '@currency=' . $model->currency, NumberFormatter::CURRENCY);

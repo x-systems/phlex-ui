@@ -44,7 +44,7 @@ $inventoryItemClass = get_class(new class() extends Model {
                 'encodeFx' => function ($v) {
                     return ($v instanceof \DateTime) ? date_format($v, $this->dateFormat) : $v;
                 },
-                'decodeFx' => static function ($v) {
+                'decodeFx' => function ($v) {
                     return $v;
                 },
             ],
@@ -57,7 +57,7 @@ $inventoryItemClass = get_class(new class() extends Model {
                 'encodeFx' => function ($v) {
                     return ($v instanceof \DateTime) ? date_format($v, $this->timeFormat) : $v;
                 },
-                'decodeFx' => static function ($v) {
+                'decodeFx' => function ($v) {
                     return $v;
                 },
             ],
@@ -82,7 +82,7 @@ $inventoryItemClass = get_class(new class() extends Model {
             'options' => [Multiline::OPTION_PRESETS => [Multiline::TABLE_CELL => ['width' => 2]]],
         ]);
         $this->addExpression('total', [
-            'expr' => static function (Model $row) {
+            'expr' => function (Model $row) {
                 return $row->get('qty') * $row->get('box');
             },
             'type' => 'integer',
@@ -110,8 +110,7 @@ for ($i = 1; $i < 3; ++$i) {
 $form = Form::addTo($webpage);
 
 // Add multiline field and set model.
-$multiline = $form->addControl('ml', [Multiline::class, 'tableProps' => ['color' => 'blue'], 'itemLimit' => 10, 'addOnTab' => true]);
-$multiline->setModel($inventory);
+$multiline = $form->addControl('ml', [Multiline::class, 'model' => $inventory, 'tableProps' => ['color' => 'blue'], 'itemLimit' => 10, 'addOnTab' => true]);
 
 // Add total field.
 $sublayout = $form->layout->addSubLayout([Form\Layout\Section\Columns::class]);
@@ -120,7 +119,7 @@ $column = $sublayout->addColumn(4);
 $controlTotal = $column->addControl('total', ['readonly' => true])->set($total);
 
 // Update total when qty and box value in any row has changed.
-$multiline->onLineChange(static function ($rows, $form) use ($controlTotal) {
+$multiline->onLineChange(function ($rows, $form) use ($controlTotal) {
     $total = 0;
     foreach ($rows as $row => $cols) {
         $qty = $cols['qty'] ?? 0;
@@ -134,7 +133,7 @@ $multiline->onLineChange(static function ($rows, $form) use ($controlTotal) {
 $multiline->jsAfterAdd = new JsFunction(['value'], [new JsExpression('console.log(value)')]);
 $multiline->jsAfterDelete = new JsFunction(['value'], [new JsExpression('console.log(value)')]);
 
-$form->onSubmit(static function (Form $form) use ($multiline) {
+$form->onSubmit(function (Form $form) use ($multiline) {
     $rows = $multiline->saveRows()->getModel()->export();
 
     return new JsToast(Webpage::encodeJson(array_values($rows)));

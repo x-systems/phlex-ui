@@ -140,7 +140,7 @@ $itemShelfClass = get_class(new class() extends View {
      */
     public function linkCart($cart, $jsAction = null)
     {
-        $this->on('click', '.item', static function ($a, $b) use ($cart, $jsAction) {
+        $this->on('click', '.item', function ($a, $b) use ($cart, $jsAction) {
             $cart->addItem($b);
 
             return $jsAction;
@@ -197,7 +197,7 @@ if (!$cart->items) {
     $cartOutterLabel->addStyle('display', 'none');
 }
 
-$cartPopup->set(static function ($popup) use ($cart) {
+$cartPopup->set(function ($popup) use ($cart) {
     $cartInnerLabel = Label::addTo($popup, ['Number of items:']);
 
     // cart is already initialized, so init() is not called again. However, cart will be rendered
@@ -238,7 +238,7 @@ $signup = Popup::addTo($webpage, [$rightMenu, 'position' => 'bottom right'])->se
 
 // This popup will be dynamically loaded.
 $signup->stickyGet('logged');
-$signup->set(static function ($pop) {
+$signup->set(function ($pop) {
     // contetn of the popup will be different depending on this condition.
     if (isset($_GET['logged'])) {
         Message::addTo($pop, ['You are already logged in as ' . $_GET['logged']]);
@@ -252,7 +252,7 @@ $signup->set(static function ($pop) {
 
         // popup handles callbacks properly, so dynamic element such as form works
         // perfectly inside a popup.
-        $form->onSubmit(static function (Form $form) {
+        $form->onSubmit(function (Form $form) {
             if ($form->model->get('password') !== '123') {
                 return $form->error('password', 'Please use password "123"');
             }

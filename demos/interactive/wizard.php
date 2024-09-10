@@ -24,7 +24,7 @@ require_once __DIR__ . '/../init-app.php';
 $wizard = Wizard::addTo($webpage, ['stepCallback' => Callback::addTo($webpage, ['urlTrigger' => 'demo_wizard'])]);
 // First step will automatcally be active when you open page first. It
 // will contain the 'Next' button with a link.
-$wizard->addStep('Welcome', static function (Wizard $wizard) {
+$wizard->addStep('Welcome', function (Wizard $wizard) {
     Message::addTo($wizard, ['Welcome to wizard demonstration'])->text
         ->addParagraph('Use button "Next" to advance')
         ->addParagraph('You can specify your existing database connection string which will be used
@@ -35,13 +35,13 @@ $wizard->addStep('Welcome', static function (Wizard $wizard) {
 // form on "Next" button click, performing validation and submission. You do not need
 // to return any action from form's onSubmit callback. You may also use memorize()
 // to store wizard-specific variables
-$wizard->addStep(['Set DSN', 'icon' => 'configure', 'description' => 'Database Connection String'], static function (Wizard $wizard) {
+$wizard->addStep(['Set DSN', 'icon' => 'configure', 'description' => 'Database Connection String'], function (Wizard $wizard) {
     $form = Form::addTo($wizard);
     // IMPORTANT - needed for php_unit Wizard test.
     $form->cb->setUrlTrigger('w_form_submit');
 
     $form->addControl('dsn', 'Connect DSN', ['required' => true])->placeholder = 'mysql://user:pass@db-host.example.com/mydb';
-    $form->onSubmit(static function (Form $form) use ($wizard) {
+    $form->onSubmit(function (Form $form) use ($wizard) {
         $wizard->memorize('dsn', $form->model->get('dsn'));
 
         return $wizard->jsNext();
@@ -51,7 +51,7 @@ $wizard->addStep(['Set DSN', 'icon' => 'configure', 'description' => 'Database C
 // Alternatvely, you may access buttonNext , buttonPrev properties of a wizard
 // and set a custom js action or even set a different link. You can use recall()
 // to access some values that were recorded on another steps.
-$wizard->addStep(['Select Model', 'description' => '"Country" or "Stat"', 'icon' => 'table'], static function (Wizard $wizard) {
+$wizard->addStep(['Select Model', 'description' => '"Country" or "Stat"', 'icon' => 'table'], function (Wizard $wizard) {
     if (isset($_GET['name'])) {
         $wizard->memorize('model', $_GET['name']);
         $wizard->getApp()->redirect($wizard->urlNext());
@@ -76,11 +76,11 @@ $wizard->addStep(['Select Model', 'description' => '"Country" or "Stat"', 'icon'
 // Steps may contain interractive elements. You can disable navigational buttons
 // and enable them as you see fit. Use handy js method to trigger advancement to
 // the next step.
-$wizard->addStep(['Migration', 'description' => 'Create or update table', 'icon' => 'database'], static function (Wizard $wizard) {
+$wizard->addStep(['Migration', 'description' => 'Create or update table', 'icon' => 'database'], function (Wizard $wizard) {
     $console = Console::addTo($wizard);
     $wizard->buttonFinish->addClass('disabled');
 
-    $console->set(static function ($console) use ($wizard) {
+    $console->set(function ($console) use ($wizard) {
         $dsn = $wizard->recall('dsn');
         $model = $wizard->recall('model');
 
@@ -100,6 +100,6 @@ $wizard->addStep(['Migration', 'description' => 'Create or update table', 'icon'
 // will be displayed when you click the "Finish". Finish will not add any buttons
 // because you shouldn't be able to navigate wizard back without restarting it.
 // Only one finish can be added.
-$wizard->addFinish(static function (Wizard $wizard) {
+$wizard->addFinish(function (Wizard $wizard) {
     Header::addTo($wizard, ['You are DONE', 'huge centered']);
 });

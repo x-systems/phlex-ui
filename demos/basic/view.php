@@ -71,7 +71,7 @@ Button::addTo($webpage, ['Jiggle plane', 'icon' => 'expand'])->on('click', $plan
 Button::addTo($webpage, ['Reload plane', 'icon' => 'refresh'])->on('click', new JsReload($plane));
 
 Header::addTo($webpage, ['Can be on a Virtual Page']);
-$vp = VirtualPage::addTo($webpage)->set(static function ($page) use ($planeTemplate) {
+$vp = VirtualPage::addTo($webpage)->set(function ($page) use ($planeTemplate) {
     $plane = View::addTo($page, ['template' => $planeTemplate]);
     Label::addTo($page, ['Plane ID: ', 'bottom attached', 'detail' => $plane->elementName]);
 });

@@ -24,7 +24,7 @@ View::addTo($webpage, ['ui' => 'clearing divider']);
 ViewTester::addTo($webpage);
 
 // Example 1 - Basic usage of a Loader.
-Loader::addTo($webpage)->set(static function ($p) {
+Loader::addTo($webpage)->set(function ($p) {
     // set your time expensive function here.
     sleep(1);
     Header::addTo($p, ['Loader #1']);
@@ -38,7 +38,7 @@ Loader::addTo($webpage)->set(static function ($p) {
 
     // use loadEvent to prevent manual loading or even specify custom trigger event
     $loader->loadEvent = false;
-    $loader->set(static function ($p) {
+    $loader->set(function ($p) {
         // You may pass arguments to the loader, in this case it's "color"
         sleep(1);
         Header::addTo($p, ['Loader #1b - ' . $_GET['color']]);
@@ -64,7 +64,7 @@ Loader::addTo($webpage, [
         'Generating LoremIpsum, please wait...',
         'red',
     ],
-])->set(static function ($p) {
+])->set(function ($p) {
     usleep(500 * 1000);
     LoremIpsum::addTo($p, ['size' => 2]);
 });

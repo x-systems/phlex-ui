@@ -16,6 +16,6 @@ $form->cb->setUrlTrigger('test_submit');
 
 $form->addControl('f1')->set('v1');
 
-$form->onSubmit(static function ($form) {
+$form->onSubmit(function ($form) {
     return new JsToast('Post ok');
 });

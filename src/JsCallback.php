@@ -170,7 +170,7 @@ class JsCallback extends Callback implements JsExpressionable
             $actions[] = $this->_getProperAction($response);
         }
 
-        $ajaxec = implode(";\n", array_map(static function (JsExpressionable $r) {
+        $ajaxec = implode(";\n", array_map(function (JsExpressionable $r) {
             return $r->jsRender();
         }, $actions));
 
