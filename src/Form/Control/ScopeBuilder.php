@@ -416,7 +416,7 @@ class ScopeBuilder extends Control
         }
 
         if ($field->getValueType() instanceof Type\ReferenceData) {
-            $props['url'] = $this->dataCb->getUrl();
+            $props['url'] = $this->dataCallback->getUrl();
             $props['reference'] = $field->elementId;
             $props['search'] = true;
         }

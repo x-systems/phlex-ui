@@ -564,7 +564,7 @@ class Multiline extends Form\Control
         }
 
         if ($field->getReference() !== null) {
-            $props['config']['url'] = $multiline->dataCb->getUrl();
+            $props['config']['url'] = $multiline->dataCallback->getUrl();
             $props['config']['reference'] = $field->elementId;
             $props['config']['search'] = true;
         }

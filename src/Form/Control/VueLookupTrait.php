@@ -12,15 +12,15 @@ use Phlex\Ui\Callback;
 trait VueLookupTrait
 {
     /** @var Callback */
-    public $dataCb;
+    public $dataCallback;
 
     public function initVueLookupCallback(): void
     {
-        if (!$this->dataCb) {
-            $this->dataCb = Callback::addTo($this);
+        if (!$this->dataCallback) {
+            $this->dataCallback = Callback::addTo($this);
         }
 
-        $this->dataCb->set(\Closure::fromCallable([$this, 'outputApiResponse']));
+        $this->dataCallback->set(\Closure::fromCallable([$this, 'outputApiResponse']));
     }
 
     /**
