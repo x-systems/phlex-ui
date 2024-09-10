@@ -58,7 +58,6 @@ class FilterModel extends Model
         Model\Field\Type\Date::class => FilterModel\TypeDate::class,
         Model\Field\Type\Time::class => FilterModel\TypeTime::class,
         Model\Field\Type\Selectable::class => FilterModel\TypeEnum::class,
-        // Model\Field\Type\ReferenceData::class => 'lookup',
     ];
 
     /**
@@ -66,7 +65,7 @@ class FilterModel extends Model
      */
     public static function factoryType(Model\Field $field): self
     {
-        $class = $field->getValueType()->resolveFromRegistry(self::$fieldTypes);
+        $class = $field->getValueType()->resolveFromRegistry(self::$fieldTypesRegistry);
 
         // You can set your own filter model condition by adding the FilterModel::OPTION_TYPE in the field options
         if ($customType = $field->getOption(self::OPTION_TYPE)) {
