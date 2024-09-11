@@ -63,7 +63,7 @@ $finderClass = get_class(new class() extends Columns {
                 break; // no such route
             }
 
-            $pushModel = $pushModel->ref($ref);
+            $pushModel = $pushModel->getTheirEntity($ref);
 
             $table = Table::addTo($this->addColumn(), ['header' => false, 'very basic selectable'])->addStyle('cursor', 'pointer');
             $table->setModel($pushModel->setLimit(10), [$pushModel->titleKey]);

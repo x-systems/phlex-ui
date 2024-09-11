@@ -64,6 +64,7 @@ declare(strict_types=1);
 namespace Phlex\Ui\Form\Control;
 
 use Phlex\Data\Model;
+use Phlex\Data\Model\Field\Reference;
 use Phlex\Data\Model\Field\Type\Selectable;
 use Phlex\Data\Model\Field\Type\Text;
 use Phlex\Data\Persistence\Sql;
@@ -250,12 +251,10 @@ class Multiline extends Form\Control
 
     public function setField(Model\Field $field)
     {
-        $fieldType = $field->getValueType();
-
-        if ($fieldType instanceof Model\Field\Type\ReferenceData\ContainedRecords) {
-            $this->setModel($fieldType->getReference()->getTheirEntity());
+        if ($field instanceof Reference) {
+            $this->setModel($field->createTheirModel());
             $this->caption = $this->getModel()->getCaption();
-            $this->rowLimit = ($fieldType instanceof Model\Field\Type\ReferenceData\SingleRecord) ? 1 : 0;
+            $this->rowLimit = ($field->getValueType() instanceof Model\Field\Type\ReferenceData\SingleRecord) ? 1 : 0;
         }
 
         return parent::setField($field);
@@ -459,7 +458,7 @@ class Multiline extends Form\Control
             $modelEntity = $this->form->model;
         }
 
-        return $this->setModel($modelEntity->ref($refModelName), $fieldNames);
+        return $this->setModel($modelEntity->getTheirEntity($refModelName), $fieldNames);
     }
 
     /**
@@ -504,9 +503,9 @@ class Multiline extends Form\Control
     /**
      * Return props for input component.
      */
-    protected static function getSuiInputProps(self $multiline, Model\Field $field): array
+    protected function getSuiInputProps(Model\Field $field): array
     {
-        $props = $multiline->componentProps[self::INPUT] ?? [];
+        $props = $this->componentProps[self::INPUT] ?? [];
 
         $props['type'] = ($field->type === 'integer' || $field->type === 'float' || $field->type === 'money' || $field->type === 'number') ? 'number' : 'text';
 
@@ -516,11 +515,11 @@ class Multiline extends Form\Control
     /**
      * Return props for phlex-date-picker component.
      */
-    protected static function getDatePickerProps(self $multiline, Model\Field $field): array
+    protected function getDatePickerProps(Model\Field $field): array
     {
         $calendar = new Calendar();
-        $props['config'] = $multiline->componentProps[self::DATE] ?? [];
-        $format = $calendar->translateFormat($field->getCodec($multiline)->getFormat());
+        $props['config'] = $this->componentProps[self::DATE] ?? [];
+        $format = $calendar->translateFormat($field->getCodec($this)->getFormat());
         $props['config']['dateFormat'] = $format;
 
         if (!$field->getValueType() instanceof Field\Type\Date) {
@@ -536,14 +535,14 @@ class Multiline extends Form\Control
     /**
      * Return props for Dropdown components.
      */
-    protected static function getDropdownProps(self $multiline, Model\Field $field): array
+    protected function getDropdownProps(Model\Field $field): array
     {
         $props = array_merge(
             ['floating' => false, 'closeOnBlur' => true, 'selection' => true],
-            $multiline->componentProps[self::SELECT] ?? []
+            $this->componentProps[self::SELECT] ?? []
         );
 
-        $items = $multiline->getFieldItems($field, $multiline->itemLimit);
+        $items = $this->getFieldItems($field, $this->itemLimit);
         foreach ($items as $value => $text) {
             $props['options'][] = ['key' => $value, 'text' => $text, 'value' => $value];
         }
@@ -554,24 +553,24 @@ class Multiline extends Form\Control
     /**
      * Set property for phlex-lookup component.
      */
-    protected static function getLookupProps(self $multiline, Model\Field $field): array
+    protected function getLookupProps(Model\Field $field): array
     {
         // set any of sui-dropdown props via this property. Will be applied globally.
-        $props['config'] = $multiline->componentProps[self::LOOKUP] ?? [];
-        $items = $multiline->getFieldItems($field, 10);
+        $props['config'] = $this->componentProps[self::LOOKUP] ?? [];
+        $items = $this->getFieldItems($field, 10);
         foreach ($items as $value => $text) {
             $props['config']['options'][] = ['key' => $value, 'text' => $text, 'value' => $value];
         }
 
-        if ($field->getReference() !== null) {
-            $props['config']['url'] = $multiline->dataCallback->getUrl();
+        if ($field instanceof Reference) {
+            $props['config']['url'] = $this->dataCallback->getUrl();
             $props['config']['reference'] = $field->elementId;
             $props['config']['search'] = true;
         }
 
         $props['config']['placeholder'] ??= 'Select ' . $field->getCaption();
 
-        $multiline->valuePropsBinding[$field->elementId] = [__CLASS__, 'setLookupOptionValue'];
+        $this->valuePropsBinding[$field->elementId] = [__CLASS__, 'setLookupOptionValue'];
 
         return $props;
     }
@@ -579,9 +578,8 @@ class Multiline extends Form\Control
     /**
      * Lookup Props set based on field value.
      */
-    public static function setLookupOptionValue(self $multiline, Model\Field $field, string $value)
+    public function setLookupOptionValue(Reference $reference, string $value)
     {
-        $reference = $field->getValueType()->getReference();
         $model = $reference->createTheirModel();
         $entity = $model->tryLoadBy($reference->getTheirKey(), $value);
         if ($entity->isLoaded()) {
@@ -590,11 +588,11 @@ class Multiline extends Form\Control
                 'text' => $entity->getTitle(),
                 'value' => $value,
             ];
-            foreach ($multiline->fieldDefs as $key => $component) {
-                if ($component['name'] === $field->elementId) {
-                    $multiline->fieldDefs[$key]['definition']['componentProps']['optionalValue'] =
-                        isset($multiline->fieldDefs[$key]['definition']['componentProps']['optionalValue'])
-                        ? array_merge($multiline->fieldDefs[$key]['definition']['componentProps']['optionalValue'], [$option])
+            foreach ($this->fieldDefs as $key => $component) {
+                if ($component['name'] === $reference->elementId) {
+                    $this->fieldDefs[$key]['definition']['componentProps']['optionalValue'] =
+                        isset($this->fieldDefs[$key]['definition']['componentProps']['optionalValue'])
+                        ? array_merge($this->fieldDefs[$key]['definition']['componentProps']['optionalValue'], [$option])
                         : [$option];
                 }
             }
@@ -611,22 +609,20 @@ class Multiline extends Form\Control
             $component = $this->fieldMapToComponent[$required];
         } elseif (!$field->isEditable()) {
             $component = $this->fieldMapToComponent['readonly'];
+        } elseif ($field->getValueType() instanceof ReferenceData) {
+            $component = $this->fieldMapToComponent['lookup'];
         } elseif ($field->getValueType() instanceof Selectable) {
             $component = $this->fieldMapToComponent['select'];
         } elseif ($field->getValueType() instanceof DateTime) {
             $component = $this->fieldMapToComponent['date'];
         } elseif ($field->getValueType() instanceof Text) {
             $component = $this->fieldMapToComponent['textarea'];
-        } elseif ($field->getValueType() instanceof ReferenceData) {
-            $component = $this->fieldMapToComponent['lookup'];
         } else {
             $component = $this->fieldMapToComponent['default'];
         }
-
-        $multiline = $this;
-
-        $definition = array_map(function ($value) use ($multiline, $field) {
-            return is_array($value) && is_callable($value) ? call_user_func($value, $multiline, $field) : $value;
+        // var_dump(get_class($field->getValueType()), $component);
+        $definition = array_map(function ($value) use ($field) {
+            return is_array($value) && is_callable($value) ? call_user_func($value, $field) : $value;
         }, $component);
 
         return $definition;
@@ -645,8 +641,8 @@ class Multiline extends Form\Control
 
                 break;
             case Model\Field\Type\ReferenceData::class:
-                $model = $fieldValueType->getReference()->createTheirModel();
-                $theirKey = $fieldValueType->getReference()->getTheirKey();
+                $model = $field->getReference()->createTheirModel();
+                $theirKey = $field->getReference()->getTheirKey();
 
                 foreach ($model->setLimit($limit) as $entity) {
                     $items[$entity->get($theirKey)] = $entity->getTitle();

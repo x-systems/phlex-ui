@@ -98,7 +98,7 @@ active. (See :ref:`system_pattern`)::
             }
 
             // Load company data (System) for present user
-            $this->company = $this->user->ref('company_id');
+            $this->company = $this->user->getTheirEntity('company_id');
 
             $this->initLayout([\Atk4\Ui\Layout\Admin::class]);
 
@@ -111,7 +111,7 @@ After declaring your Application class like this, you can use it conveniently an
     include'vendor/autoload.php';
     $app = new Warehouse();
     Crud::addTo($app)
-        ->setModel($app->system->ref('Order'));
+        ->setModel($app->system->getTheirEntity('Order'));
 
 
 Quick Usage and Page pattern
@@ -228,7 +228,7 @@ Since the `Crud` component is interactive, it may want to generate requests to i
 include `order_id` otherwise the scope will be incomplete. Agile UI solves that with StickyGet arguments::
 
     $order_id = $app->stickyGet('order_id');
-    $crud->setModel($order->load($order_id)->ref('Payment'));
+    $crud->setModel($order->load($order_id)->getTheirEntity('Payment'));
 
 This make sure that pagination, editing, addition or any other operation that Crud implements will always
 address same model scope.

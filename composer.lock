@@ -1946,12 +1946,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/x-systems/phlex-data.git",
-                "reference": "ac01b70e30d5e122a67db108ea48a5143dc1164a"
+                "reference": "4cd394506cf030165b837e5688a3ddab8db0110f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/x-systems/phlex-data/zipball/ac01b70e30d5e122a67db108ea48a5143dc1164a",
-                "reference": "ac01b70e30d5e122a67db108ea48a5143dc1164a",
+                "url": "https://api.github.com/repos/x-systems/phlex-data/zipball/4cd394506cf030165b837e5688a3ddab8db0110f",
+                "reference": "4cd394506cf030165b837e5688a3ddab8db0110f",
                 "shasum": ""
             },
             "require": {
@@ -2019,7 +2019,7 @@
                 "issues": "https://github.com/x-systems/phlex-data/issues",
                 "source": "https://github.com/x-systems/phlex-data/tree/3.0.x"
             },
-            "time": "2024-09-08T21:51:43+00:00"
+            "time": "2024-09-10T18:06:55+00:00"
         }
     ],
     "packages-dev": [

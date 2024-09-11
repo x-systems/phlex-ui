@@ -54,7 +54,7 @@ $form->addControl('country3', [
 ]);
 
 $form->onSubmit(function (Form $form) {
-    $str = $form->model->ref('country1')->get('name') . ' ' . $form->model->ref('country2')->get('name') . ' ' . (new Country($form->getApp()->db))->tryLoad($form->model->get('country3'))->get('name');
+    $str = $form->model->getTheirEntity('country1')->get('name') . ' ' . $form->model->getTheirEntity('country2')->get('name') . ' ' . (new Country($form->getApp()->db))->tryLoad($form->model->get('country3'))->get('name');
     $view = new Message('Select:'); // need in behat test.
     $view->initialize();
     $view->text->addParagraph($str);

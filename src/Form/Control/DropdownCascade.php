@@ -43,7 +43,7 @@ class DropdownCascade extends Dropdown
 
         $this->cascadeControlValue = $_POST[$this->cascadeControl->elementName] ?? $this->cascadeControl->field->get();
 
-        $this->model = $this->cascadeControl->model ? $this->cascadeControl->model->ref($this->reference) : null;
+        $this->model = $this->cascadeControl->model ? $this->cascadeControl->model->getTheirEntity($this->reference) : null;
 
         // setup initial values and add it via dropdownOptions.
         $values = $this->getJsValues($this->getNewValues((string) $this->cascadeControlValue), (string) $this->field->get());
@@ -74,7 +74,7 @@ class DropdownCascade extends Dropdown
             return [['value' => '', 'text' => $this->empty, 'name' => $this->empty]];
         }
 
-        $model = $this->cascadeControl->model->load($id)->ref($this->reference);
+        $model = $this->cascadeControl->model->load($id)->getTheirEntity($this->reference);
         $values = [];
         foreach ($model as $k => $row) {
             if ($this->renderRowFunction) {

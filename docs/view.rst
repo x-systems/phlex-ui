@@ -391,7 +391,7 @@ will automatically clone region of a parent.
 
     $profile = View::addTo($app, ['template'=>'myview.html']);
     $profile->setModel($user);
-    Lister::addTo($profile, [], ['Tags'])->setModel($user->ref('Tags'));
+    Lister::addTo($profile, [], ['Tags'])->setModel($user->getTheirEntity('Tags'));
 
 In this set-up a template ``myview.html`` will be populated with fields from ``$user`` model. Next,
 a Lister is added inside Tags region which will use the contents of a given tag as a default

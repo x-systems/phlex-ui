@@ -443,7 +443,7 @@ If set to true, multiple items can be selected in Dropdown. They will be sent co
 
 By default Dropdown will save values as comma-separated string value in data model, but it also supports model fields with array type.
 See this example from Model class init method::
-    $expr_model = $this->ref('Expressions');
+    $expr_model = $this->getTheirEntity('Expressions');
     $this->addField('expressions', [
         'type'      => 'array',
         'required'  => true,

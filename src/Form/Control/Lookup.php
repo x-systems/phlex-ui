@@ -171,7 +171,11 @@ class Lookup extends Input
         $fieldType = $field->getValueType();
 
         if ($fieldType instanceof Model\Field\Type\ReferenceData) {
-            $this->setModel($fieldType->getReference()->createTheirModel());
+            $reference = $field->getReference();
+
+            $this->caption ??= $field->getReference()->getCaption();
+
+            $this->setModel($reference->createTheirModel());
         }
 
         return parent::setField($field);
