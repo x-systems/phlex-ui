@@ -81,9 +81,7 @@ $wizard->addStep('Interactivity', function ($page) {
 
     Demo::addTo($page)->setCodeAndCall(function (View $owner) {
         $button = Button::addTo($owner, ['Click for the greeting!']);
-        $button->on('click', function () {
-            return 'Hello World!';
-        });
+        $button->on('click', fn () => 'Hello World!');
     });
 
     $t = Text::addTo($page);
@@ -160,7 +158,6 @@ $wizard->addStep('Business Model', function ($page) {
         if (!$model->isLoaded()) {
             // set default data
             $model->setMulti([
-                'id' => 1,
                 'reference' => 'Inv-' . random_int(1000, 9999),
                 'date' => date($owner->getApp()->ui_persistence->date_format),
             ]);

@@ -150,7 +150,7 @@ class Table extends Lister
     {
         if (!$this->templateHead) {
             $this->templateHead = $this->template->cloneRegion('Head');
-            $this->t_row_master = $this->template->cloneRegion('Row');
+            $this->templateRow = $this->template->cloneRegion('Row');
             $this->templateTotals = $this->template->cloneRegion('Totals');
             $this->templateEmpty = $this->template->cloneRegion('Empty');
 
@@ -461,9 +461,9 @@ class Table extends Lister
         }
 
         // Generate template for data row
-        $this->t_row_master->dangerouslySetHtml('cells', $this->getDataRowHtml());
-        $this->t_row_master->set('_id', '{$_id}');
-        $this->templateRow = new HtmlTemplate($this->t_row_master->renderToHtml());
+        $this->templateRow->dangerouslySetHtml('cells', $this->getDataRowHtml());
+        $this->templateRow->set('_id', '{$_id}');
+        $this->templateRow = new HtmlTemplate($this->templateRow->renderToHtml());
 
         // Iterate data rows
         $this->_rendered_rows_count = 0;

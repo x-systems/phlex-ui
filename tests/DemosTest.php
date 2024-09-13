@@ -37,6 +37,16 @@ class DemosTest extends TestCase
     /** @var Persistence\Sql Initialized DB connection */
     private static $_db;
 
+    protected static string $regexHtml = '~^<!DOCTYPE html>\s*<html.*</html>$~s';
+    protected static string $regexJson = '~^(?<json>\s*(?:
+           (?<number>-?(?=[1-9]|0(?!\d))\d+(\.\d+)?(E[+-]?\d+)?)
+           |(?<boolean>true|false|null)
+           |(?<string>"([^"\\\]*|\\\["\\\bfnrt/]|\\\u[0-9a-f]{4})*")
+           |(?<array>\[(?:(?&json)(?:,(?&json))*|\s*)\])
+           |(?<object>\{(?:(?<pair>\s*(?&string)\s*:(?&json))(?:,(?&pair))*|\s*)\})
+        )\s*)$~sx';
+    protected static string $regexSse = '~^(event: [^\n]+\n(data: [^\n]*\n)+\n: x{4096}\n\n)+$~';
+
     /** @var array */
     private static $_failedParentTests = [];
 
@@ -221,24 +231,6 @@ class DemosTest extends TestCase
         return 'demos/' . $path;
     }
 
-    /** @var string */
-    protected $regexHtml = '~^<!DOCTYPE~';
-    /** @var string */
-    protected $regexJson = '~
-        (?(DEFINE)
-           (?<number>   -? (?= [1-9]|0(?!\d) ) \d+ (\.\d+)? ([eE] [+-]? \d+)? )
-           (?<boolean>   true | false | null )
-           (?<string>    " ([^"\\\\]* | \\\\ ["\\\\bfnrt/] | \\\\ u [0-9a-f]{4} )* " )
-           (?<array>     \[  (?:  (?&json)  (?: , (?&json)  )*  )?  \s* \] )
-           (?<pair>      \s* (?&string) \s* : (?&json)  )
-           (?<object>    \{  (?:  (?&pair)  (?: , (?&pair)  )*  )?  \s* \} )
-           (?<json>   \s* (?: (?&number) | (?&boolean) | (?&string) | (?&array) | (?&object) ) \s* )
-        )
-        \A (?&json) \Z
-        ~six';
-    /** @var string */
-    protected $regexSse = '~^(id|event|data).*$~m';
-
     public function provideDemosStatusAndHtmlResponseCases(): iterable
     {
         $excludeDirs = ['_demo-data', '_includes'];
@@ -288,7 +280,7 @@ class DemosTest extends TestCase
     {
         $response = $this->getResponseFromRequest($uri);
         $this->assertSame(200, $response->getStatusCode(), ' Status error on ' . $uri);
-        $this->assertMatchesRegularExpression($this->regexHtml, $response->getBody()->getContents(), ' RegExp error on ' . $uri);
+        $this->assertMatchesRegularExpression(self::$regexHtml, $response->getBody()->getContents(), ' RegExp error on ' . $uri);
     }
 
     public function testResponseError(): void
@@ -321,7 +313,7 @@ class DemosTest extends TestCase
         $response = $this->getResponseFromRequest($uri);
         $this->assertSame(200, $response->getStatusCode(), ' Status error on ' . $uri);
         $this->assertSame('text/html', preg_replace('~;\s*charset=.+$~', '', $response->getHeaderLine('Content-Type')), ' Content type error on ' . $uri);
-        $this->assertMatchesRegularExpression($this->regexHtml, $response->getBody()->getContents(), ' RegExp error on ' . $uri);
+        $this->assertMatchesRegularExpression(self::$regexHtml, $response->getBody()->getContents(), ' RegExp error on ' . $uri);
     }
 
     public function testWizard(): void
@@ -341,11 +333,11 @@ class DemosTest extends TestCase
         );
 
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertMatchesRegularExpression($this->regexJson, $response->getBody()->getContents());
+        $this->assertMatchesRegularExpression(self::$regexJson, $response->getBody()->getContents());
 
         $response = $this->getResponseFromRequest('interactive/wizard.php?atk_admin_wizard=2&name=Country');
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertMatchesRegularExpression($this->regexHtml, $response->getBody()->getContents());
+        $this->assertMatchesRegularExpression(self::$regexHtml, $response->getBody()->getContents());
     }
 
     /**
@@ -381,7 +373,7 @@ class DemosTest extends TestCase
         if (!$this instanceof DemosHttpNoExitTest) { // content type is not set when Webpage->call_exit equals to true
             $this->assertSame('application/json', preg_replace('~;\s*charset=.+$~', '', $response->getHeaderLine('Content-Type')), ' Content type error on ' . $uri);
         }
-        $this->assertMatchesRegularExpression($this->regexJson, $response->getBody()->getContents(), ' RegExp error on ' . $uri);
+        $this->assertMatchesRegularExpression(self::$regexJson, $response->getBody()->getContents(), ' RegExp error on ' . $uri);
     }
 
     /**
@@ -389,15 +381,10 @@ class DemosTest extends TestCase
      */
     public function provideDemoAssertSseResponseCases(): iterable
     {
-        $files = [];
-        $files[] = ['_unit-test/sse.php?see_test=ajax&__phlex_callback=1&__phlex_sse=1'];
-        $files[] = ['_unit-test/console.php?console_test=ajax&__phlex_callback=1&__phlex_sse=1'];
-        if (!$this instanceof DemosHttpNoExitTest) { // ignore content type mismatch when Webpage->call_exit equals to true
-            $files[] = ['_unit-test/console_run.php?console_test=ajax&__phlex_callback=1&__phlex_sse=1'];
-            $files[] = ['_unit-test/console_exec.php?console_test=ajax&__phlex_callback=1&__phlex_sse=1'];
-        }
-
-        return $files;
+        yield ['_unit-test/sse.php?see_test=ajax&__phlex_callback=1&__phlex_sse=1'];
+        yield ['_unit-test/console.php?console_test=ajax&__phlex_callback=1&__phlex_sse=1'];
+        yield ['_unit-test/console_run.php?console_test=ajax&__phlex_callback=1&__phlex_sse=1'];
+        yield ['_unit-test/console_exec.php?console_test=ajax&__phlex_callback=1&__phlex_sse=1'];
     }
 
     /**
@@ -412,28 +399,9 @@ class DemosTest extends TestCase
             return;
         }
 
-        $response = $this->getResponseFromRequest($uri);
-        $this->assertSame(200, $response->getStatusCode(), ' Status error on ' . $uri);
-
-        $output_rows = preg_split('~\r?\n|\r~', $response->getBody()->getContents());
-
-        $this->assertGreaterThan(0, count($output_rows), ' Response is empty on ' . $uri);
-
-        // check SSE Syntax
-        foreach ($output_rows as $index => $sse_line) {
-            if (empty($sse_line)) {
-                continue;
-            }
-
-            preg_match_all($this->regexSse, $sse_line, $matchesAll);
-            $format_match_string = implode('', $matchesAll[0] ?? ['error']);
-
-            $this->assertSame(
-                $sse_line,
-                $format_match_string,
-                ' Testing SSE response line ' . $index . ' with content ' . $sse_line . ' on ' . $uri
-            );
-        }
+        $response = $this->getResponseFromRequest($path);
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertMatchesRegularExpression(self::$regexSse, $response->getBody()->getContents());
     }
 
     public function provideDemoAssertJsonResponsePostCases(): iterable
@@ -470,7 +438,7 @@ class DemosTest extends TestCase
     {
         $response = $this->getResponseFromRequest($uri, ['form_params' => $postData]);
         $this->assertSame(200, $response->getStatusCode(), ' Status error on ' . $uri);
-        $this->assertMatchesRegularExpression($this->regexJson, $response->getBody()->getContents(), ' RegExp error on ' . $uri);
+        $this->assertMatchesRegularExpression(self::$regexJson, $response->getBody()->getContents(), ' RegExp error on ' . $uri);
     }
 }
 

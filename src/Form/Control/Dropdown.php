@@ -271,7 +271,7 @@ class Dropdown extends Input
                 }
             } else {
                 // for standard model rendering, only load primaryKey and titleKey field
-                $this->model->only_fields = [$this->model->titleKey, $this->model->primaryKey];
+                $this->model->setActiveFields([$this->model->titleKey, $this->model->primaryKey]);
                 $this->renderItemsForModel();
             }
         } else {

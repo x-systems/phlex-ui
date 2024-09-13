@@ -52,6 +52,12 @@ class Wizard extends View
      */
     public $buttonNext;
 
+    /** @var Button */
+    public $buttonFinish;
+
+    /** @var HtmlTemplate */
+    private $stepTemplate;
+
     /**
      * Icon that will be used on all steps by default.
      *  - 'empty' , since no such icon exists, no visible icon will be used unless step is completed

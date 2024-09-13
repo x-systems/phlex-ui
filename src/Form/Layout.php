@@ -195,12 +195,16 @@ class Layout extends AbstractLayout
             }
 
             if ($this->label && $this->inline) {
-                $element->placeholder = $label;
+                if ($element instanceof Control\Input) {
+                    $element->placeholder = $label;
+                }
                 $label = $this->label;
                 $this->label = null;
             } elseif ($this->label || $this->inline) {
                 $template = $noLabelControl;
-                $element->placeholder = $label;
+                if ($element instanceof Control\Input) {
+                    $element->placeholder = $label;
+                }
             }
 
             // Controls get extra pampering
